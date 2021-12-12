@@ -5,3 +5,28 @@
 html {
   font-family: "Roboto", "Lucida Grande", "DejaVu Sans", "Bitstream Vera Sans", Verdana, Arial, sans-serif;
 }
+
+body {
+  display: grid;
+  grid-template-areas:
+          'header header header'
+          '. main .'
+          'footer footer footer'
+;
+  grid-template-columns: auto minmax(700px, 1440px) auto;
+}
+
+header {
+  grid-area: header;
+  background: green;
+}
+
+main {
+  grid-area: main;
+  background: yellow;
+}
+
+footer {
+  grid-area: footer;
+  background: red;
+}

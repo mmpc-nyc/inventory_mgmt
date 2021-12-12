@@ -15,3 +15,17 @@ ul {
   margin: 0;
   padding: 0;
 }
+
+.item_list {
+  display: grid;
+}
+
+.item_list_heading {
+  font-weight: bold;
+}
+
+.storage_item {
+  display: grid;
+  grid-template-columns: 1fr 3fr 1fr 5fr;
+
+}
