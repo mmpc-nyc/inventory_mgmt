@@ -1,3 +1,6 @@
-from django.shortcuts import render
+from django.http import HttpResponse
 
-# Create your views here.
+
+def success(request, *args, **kwargs):
+    response = HttpResponse(headers={'response': 'success'}, )
+    return response

@@ -1,6 +1,8 @@
-from django.views.generic import RedirectView
 from django.urls import path, include
+from inventory.views.storage_views import StorageList
 
 urlpatterns = [
-    path('', RedirectView.as_view(url='customers'), name='home'),
+    path('storage', include([
+        path('', StorageList.as_view(), name='storage_list'),
+    ])),
 ]

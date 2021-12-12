@@ -1,7 +1,7 @@
 from django.contrib.admin import register
 from simple_history.admin import SimpleHistoryAdmin
 
-from inventory.models.inventory_models import Item, ItemType, Storage
+from inventory.models.inventory_models import Item, ItemType, Storage, Location
 
 
 @register(Item)
@@ -26,4 +26,8 @@ class ItemTypeAdmin(SimpleHistoryAdmin):
 
 @register(Storage)
 class InventoryAdmin(SimpleHistoryAdmin):
+    pass
+
+@register(Location)
+class LocationAdmin(SimpleHistoryAdmin):
     pass

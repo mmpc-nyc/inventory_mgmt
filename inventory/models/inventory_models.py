@@ -10,8 +10,8 @@ from django_currentuser.db.models import CurrentUserField
 from simple_history.models import HistoricalRecords
 
 from inventory.exceptions import ItemStatusError, ItemConditionError, InventoryLogicError
-from .helper_models import CreatedUpdatedModel
-from .job_models import Job
+from inventory.models.helper_models import CreatedUpdatedModel
+from inventory.models.job_models import Job
 
 User = get_user_model()
 
@@ -79,7 +79,8 @@ class Item(CreatedUpdatedModel):
     editor = CurrentUserField(related_name='inventory_item_editor', on_delete=models.SET_NULL, on_update=True)
     creator = CurrentUserField(related_name='inventory_item_creator', on_delete=models.SET_NULL)
     condition = models.CharField(max_length=16, choices=ItemCondition.choices, default=ItemCondition.NEW)
-    storage = models.ForeignKey('Storage', on_delete=models.CASCADE, blank=True, null=True)
+    storage = models.ForeignKey('Storage', on_delete=models.SET_NULL, blank=True, null=True)
+    location = models.ForeignKey('Location', on_delete=models.SET_NULL, blank=True, null=True)
     item_type = models.ForeignKey('ItemType', on_delete=models.CASCADE)
     history = HistoricalRecords()
 
