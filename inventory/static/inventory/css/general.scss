@@ -29,3 +29,8 @@ ul {
   grid-template-columns: 1fr 3fr 1fr 5fr;
 
 }
+
+.item_item {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+}
