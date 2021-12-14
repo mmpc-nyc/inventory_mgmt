@@ -6,6 +6,6 @@
         <span class="item_list_heading">Location</span>
     </li>
 {% for storage_item in storage_list %}
-    {% include 'inventory/components/storage_item_component.html' with storage_item=storage_item %}
+    {% include 'inventory/partials/storage_item_component.html' with storage_item=storage_item %}
 {% endfor %}
 </ul>

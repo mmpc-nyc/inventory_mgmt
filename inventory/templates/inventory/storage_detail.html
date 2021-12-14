@@ -1,6 +1,6 @@
 {% extends 'inventory/base.html' %}
 {% block main %}
     <main>
-        {% include 'inventory/components/item_list.html' with item_list=storage.item_set.all %}
+        {% include 'inventory/partials/item_list.html' with item_list=storage.item_set.all %}
     </main>
 {% endblock %}

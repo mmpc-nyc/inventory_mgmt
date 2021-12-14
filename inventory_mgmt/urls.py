@@ -9,7 +9,7 @@ urlpatterns = [
     path('accounts/', include('allauth.urls'), name='socialaccount_signup'),
     path('admin/', admin.site.urls),
     path('main/', include(('main.urls', 'main'), namespace='main')),
-    path('inventory/', include(('inventory.urls', 'inventory'), namespace='inventory')),
+    path('', include(('inventory.urls', 'inventory'), namespace='inventory')),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

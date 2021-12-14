@@ -10,6 +10,6 @@
         <span class="item_list_heading">Type</span>
     </li>
     {% for item_item in item_list %}
-        {% include 'inventory/components/item_item.html' with item_item=item_item %}
+        {% include 'inventory/partials/item_item.html' with item_item=item_item %}
     {% endfor %}
 </ul>

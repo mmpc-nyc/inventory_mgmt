@@ -1,44 +1,56 @@
 from django.contrib.auth import get_user_model
 from django.db import models
-from .location_models import Location
-
-# Create your models here.
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django_currentuser.db.models import CurrentUserField
+from phonenumber_field.modelfields import PhoneNumberField
 from simple_history.models import HistoricalRecords
-
-from inventory.exceptions import ItemStatusError, ItemConditionError, InventoryLogicError
-from inventory.models.helper_models import CreatedUpdatedModel
-from inventory.models.job_models import Job
-
-User = get_user_model()
+from inventory.exceptions import ItemStatusError, InventoryLogicError, ItemConditionError
 
 
-class Storage(CreatedUpdatedModel):
-    """A holder for all inventory items"""
+class CreatedUpdatedModel(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    edited = models.DateTimeField(auto_now=True)
 
-    class StorageStatus(models.TextChoices):
-        """Choices for setting the status of a storage location
-        Active: Available for picking up and dropping off items
-        Inactive: Not in use. Items cannot be picked up or dropped off from this location
-        Full: The storage location is currently full. No items can be dropped off.
-        """
+    class Meta:
+        abstract = True
 
-        ACTIVE = 'ACTIVE', _('Active')
-        INACTIVE = 'INACTIVE', _('Inactive')
-        FULL = 'FULL', _('Full')
 
-    name = models.CharField(max_length=150, blank=True)
-    status = models.CharField(max_length=16, choices=StorageStatus.choices, default=StorageStatus.ACTIVE)
-    location = models.ForeignKey(Location, on_delete=models.CASCADE)
-    editor = CurrentUserField(User, related_name='inventory_editor', on_delete=models.CASCADE)
-    creator = models.ForeignKey(User, related_name='inventory_creator', on_delete=models.CASCADE)
-    history = HistoricalRecords()
+class Contact(CreatedUpdatedModel):
+    first_name = models.CharField(max_length=150)
+    last_name = models.CharField(max_length=150)
+    email = models.EmailField(blank=True)
+    phone_number = PhoneNumberField(default='', blank=True)
+    customer = models.ForeignKey('Customer', on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'{self.name}'
+        return f'{self.first_name} {self.last_name}'
+
+    class Meta:
+        ordering = ('first_name', 'last_name', 'email',)
+
+
+class Customer(CreatedUpdatedModel):
+    first_name = models.CharField(max_length=150)
+    last_name = models.CharField(max_length=150)
+    company_name = models.CharField(max_length=150, blank=True, default='')
+    email = models.EmailField(blank=True)
+    location = models.ManyToManyField('Location', through='CustomerLocation', related_name='location')
+
+    def get_absolute_url(self):
+        return reverse_lazy('inventory:customer_detail', kwargs={'pk': self.pk})
+
+    @property
+    def name(self) -> str:
+        return f'{self.company_name}' if self.company_name else f'{self.first_name} {self.last_name}'
+
+    def __str__(self):
+        return f'{self.first_name} {self.last_name}'
+
+    class Meta:
+        ordering = ('company_name', 'first_name', 'last_name',)
 
 
 class Item(CreatedUpdatedModel):
@@ -73,9 +85,9 @@ class Item(CreatedUpdatedModel):
 
     name = models.CharField(max_length=150)
     label = models.CharField(max_length=150, null=True, blank=True)
-    job = models.ForeignKey(Job, on_delete=models.SET_NULL, null=True, blank=True)
+    job = models.ForeignKey('Job', on_delete=models.SET_NULL, null=True, blank=True)
     status = models.CharField(max_length=16, choices=ItemStatus.choices, default=ItemStatus.STORED)
-    employee = models.ForeignKey(User, related_name='inventory_item_employee', on_delete=models.SET_NULL, null=True, blank=True)
+    employee = models.ForeignKey(get_user_model(), related_name='inventory_item_employee', on_delete=models.SET_NULL, null=True, blank=True)
     editor = CurrentUserField(related_name='inventory_item_editor', on_delete=models.SET_NULL, on_update=True)
     creator = CurrentUserField(related_name='inventory_item_creator', on_delete=models.SET_NULL)
     condition = models.CharField(max_length=16, choices=ItemCondition.choices, default=ItemCondition.NEW)
@@ -86,6 +98,9 @@ class Item(CreatedUpdatedModel):
 
     def __str__(self):
         return f'{self.name}'
+
+    def get_absolute_url(self):
+        return reverse_lazy('inventory:item_detail', kwargs={'pk': self.pk})
 
     def store(self, storage_id: int = None) -> 'Item':
         """Stores the item at a storage location. By default the item is returned to it's original location.
@@ -144,6 +159,62 @@ class Item(CreatedUpdatedModel):
         return super().save(*args, **kwargs)
 
 
+class Location(CreatedUpdatedModel):
+    name = models.CharField(max_length=150, blank=True)
+    street_number = models.CharField(max_length=20, blank=True)
+    route = models.CharField(max_length=100, blank=True)
+    raw = models.CharField(max_length=200)
+    formatted = models.CharField(max_length=200, blank=True)
+    latitude = models.FloatField(blank=True, null=True)
+    longitude = models.FloatField(blank=True, null=True)
+
+    def __str__(self):
+        return f'{self.name}'
+
+    def get_absolute_url(self):
+        return reverse_lazy('inventory:location_detail', kwargs={'pk': self.pk})
+
+    def save(self, *args, **kwargs):
+        self.name = self.name or self.formatted or self.raw
+        super().save(*args, **kwargs)
+
+    class Meta:
+        ordering = ('name',)
+
+
+class CustomerLocation(models.Model):
+    location = models.ForeignKey('Location', on_delete=models.CASCADE)
+    customer = models.ForeignKey('Customer', on_delete=models.CASCADE)
+
+
+class Storage(CreatedUpdatedModel):
+    """A holder for all inventory items"""
+
+    class StorageStatus(models.TextChoices):
+        """Choices for setting the status of a storage location
+        Active: Available for picking up and dropping off items
+        Inactive: Not in use. Items cannot be picked up or dropped off from this location
+        Full: The storage location is currently full. No items can be dropped off.
+        """
+
+        ACTIVE = 'ACTIVE', _('Active')
+        INACTIVE = 'INACTIVE', _('Inactive')
+        FULL = 'FULL', _('Full')
+
+    name = models.CharField(max_length=150, blank=True)
+    status = models.CharField(max_length=16, choices=StorageStatus.choices, default=StorageStatus.ACTIVE)
+    location = models.ForeignKey(Location, on_delete=models.CASCADE)
+    editor = CurrentUserField(get_user_model(), related_name='inventory_editor', on_delete=models.CASCADE)
+    creator = models.ForeignKey(get_user_model(), related_name='inventory_creator', on_delete=models.CASCADE)
+    history = HistoricalRecords()
+
+    def __str__(self):
+        return f'{self.name}'
+
+    def get_absolute_url(self):
+        return reverse_lazy('inventory:storage_detail', kwargs={'pk': self.pk})
+
+
 class ItemType(models.Model):
     name = models.CharField(max_length=150)
     short_name = models.SlugField(unique=True)
@@ -165,3 +236,34 @@ class NotificationPreference(models.Model):
 @receiver(post_save, sender=Item)
 def set_default_warehouse(sender, instance: Item, created, **kwargs):
     instance.storage_id = 1
+
+
+class Job(CreatedUpdatedModel):
+    """Model for scheduling jobs to allow easier assignment of inventory, services and products"""
+
+    class JobStatus(models.TextChoices):
+        ACTIVE = 'ACTIVE', _('Active')
+        CANCELED = 'CANCELED', _('Canceled')
+        COMPLETED = 'COMPLETED', _('Completed')
+
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    status = models.CharField(max_length=16, choices=JobStatus.choices, default=JobStatus.ACTIVE)
+    employee = models.ManyToManyField(get_user_model(), related_name='job_employees')
+    editor = CurrentUserField(related_name='job_editor', on_delete=models.CASCADE, on_update=True)
+    creator = CurrentUserField(related_name='job_creator', on_delete=models.CASCADE)
+    location = models.ForeignKey(Location, on_delete=models.CASCADE)
+    date = models.DateTimeField()
+    history = HistoricalRecords()
+
+    def save(self, **kwargs):
+        # TODO Implement a method that only allows updates if the job is in active status.
+        print(kwargs)
+        # if self.status == self.JobStatus.ACTIVE:
+        return super().save(**kwargs)
+
+    def __str__(self):
+        return f'Job {self.id} for {self.customer} @ {self.date}'
+
+    @property
+    def employees(self):
+        return self.employee.all()

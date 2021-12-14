@@ -1,0 +1,14 @@
+<nav id="top_nav">
+    <span class="navbar_link">
+        {% if user_context == 'manager' %}
+            {% include 'inventory/components/navbar_links_for_manager.html' %}
+        {% elif user_context == 'editor' %}
+            {% include 'inventory/components/navbar_links_for_editor.html' %}
+        {% elif user_context == 'customer' %}
+            {% include 'inventory/components/navbar_links_for_customer.html' %}
+        {% else %}
+            {% include 'inventory/components/btn.html' with link='login' text='Login' %}
+        {% endif %}
+    </span>
+    {% include 'inventory/components/context_switcher.html' %}
+</nav>

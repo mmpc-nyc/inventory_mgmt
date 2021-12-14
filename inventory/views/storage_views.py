@@ -1,27 +1,36 @@
-from django.views.generic import DetailView, ListView, UpdateView, DeleteView
-
-from inventory.models.inventory_models import Storage, Item
-
-
-class StorageList(ListView):
-    model = Storage
-    template_name_suffix = '_list'
-    extra_context = {'title': 'Storage List'}
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.views.generic import DetailView, ListView, CreateView, DeleteView, UpdateView
+from inventory.models import Storage
 
 
-class StorageDetail(DetailView):
+class StorageDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     model = Storage
     template_name_suffix = '_detail'
     extra_context = {'title': 'Storage Detail'}
+    permission_required = {'any': 'inventory_view_storage'}
 
 
-class ItemList(ListView):
-    model = Item
+class StorageListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
+    model = Storage
     template_name_suffix = '_list'
-    extra_context = {'title': 'Item List'}
+    extra_context = {'title': 'Storage List'}
+    permission_required = {'any': 'inventory_view_storage'}
 
 
-class ItemDetail(DetailView):
-    model = Item
-    template_name_suffix = '_detail'
-    extra_context = {'title': 'Item Detail'}
+class StorageCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+    model = Storage
+    template_name_suffix = '_create'
+    permission_required = {'any': ('storage_create_storage',)}
+
+
+class StorageDeleteView(PermissionRequiredMixin, CreateView, DeleteView):
+    model = Storage
+    template_name_suffix = '_delete'
+    permission_required = {'any': ('inventory_delete_storage',)}
+
+
+class StorageUpdateView(PermissionRequiredMixin, CreateView, UpdateView):
+    model = Storage
+    template_name_suffix = '_update'
+    permission_required = {'any': ('inventory_update_storage',)}
+
