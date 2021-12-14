@@ -1,0 +1,15 @@
+#top_navbar {
+  display: grid;
+  grid-template-areas: 'navbar_context_switcher navbar_links navbar_userinfo';
+  grid-template-columns: 1fr 1fr 1fr;
+
+  .navbar_links {
+    grid-area: navbar_links;
+  }
+  .navbar_context_switcher {
+    grid-area: navbar_context_switcher;
+  }
+  .navbar_userinfo {
+    grid-area: navbar_userinfo;
+  }
+}

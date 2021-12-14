@@ -1,6 +1,7 @@
 @import "normalize";
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;700&display=swap');
 @import "general";
+@import "components";
 
 html {
   font-family: "Roboto", "Lucida Grande", "DejaVu Sans", "Bitstream Vera Sans", Verdana, Arial, sans-serif;
@@ -9,9 +10,9 @@ html {
 body {
   display: grid;
   grid-template-areas:
-          'header header header'
+          '. header .'
           '. main .'
-          'footer footer footer'
+          '. footer .'
 ;
   grid-template-columns: auto minmax(700px, 1440px) auto;
 }

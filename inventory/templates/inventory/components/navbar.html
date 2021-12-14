@@ -1,5 +1,7 @@
-<nav id="top_nav">
-    <span class="navbar_link">
+<nav id="top_navbar">
+
+    <span class="navbar_context_switcher">{% include 'inventory/components/context_switcher.html' %}</span>
+    <span class="navbar_links">
         {% if user_context == 'manager' %}
             {% include 'inventory/components/navbar_links_for_manager.html' %}
         {% elif user_context == 'editor' %}
@@ -7,8 +9,13 @@
         {% elif user_context == 'customer' %}
             {% include 'inventory/components/navbar_links_for_customer.html' %}
         {% else %}
-            {% include 'inventory/components/btn.html' with link='login' text='Login' %}
         {% endif %}
     </span>
-    {% include 'inventory/components/context_switcher.html' %}
+    <span class="navbar_userinfo">
+    {% if request.user.is_authenticated %}
+        {{ request.user.username }}
+    {% else %}
+        {% include 'inventory/components/btn.html' with link='login' text='Login' %}
+    {% endif %}
+    </span>
 </nav>
