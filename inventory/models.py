@@ -7,7 +7,7 @@ from django.utils.translation import gettext_lazy as _
 from django_currentuser.db.models import CurrentUserField
 from phonenumber_field.modelfields import PhoneNumberField
 from simple_history.models import HistoricalRecords
-from inventory.exceptions import ItemStatusError, InventoryLogicError, ItemConditionError
+from inventory.exceptions import InventoryItemStatusError, InventoryLogicError, InventoryItemConditionError
 
 
 class CreatedUpdatedModel(models.Model):
@@ -53,109 +53,109 @@ class Customer(CreatedUpdatedModel):
         ordering = ('company_name', 'first_name', 'last_name',)
 
 
-class Item(CreatedUpdatedModel):
-    """An item that can be inventoried"""
+class InventoryItem(CreatedUpdatedModel):
+    """An inventory item that can be inventoried"""
 
-    class ItemStatus(models.TextChoices):
-        """Item status choices
-        Stored: Item stored in Storage
-        Deployed: Item deployed at customer location
-        Decommissioned: Item no longer in use and not in inventory
-        Picked Up: Item is currently with the employee. Not at any customer location or storage.
+    class InventoryItemStatus(models.TextChoices):
+        """InventoryItem status choices
+        Stored: InventoryItem stored in Inventory
+        Deployed: InventoryItem deployed at customer location
+        Decommissioned: InventoryItem no longer in use and not in inventory
+        Picked Up: InventoryItem is currently with the employee. Not at any customer location or inventory.
         """
         STORED = 'STORED', _('Stored')
         DEPLOYED = 'DEPLOYED', _('Deployed')
         DECOMMISSIONED = 'DECOMMISSIONED', _('Decommissioned')
         PICKED_UP = 'PICKED_UP', _('Picked Up')
 
-    class ItemCondition(models.TextChoices):
-        """Current condition of an item.
-        New: Brand new item that has not been used. When the item is picked up it is automatically changed to working.
-        Working: Item is in good working condition
-        Damaged: Item is damaged and needs repair
-        Irreparable: Item is damaged beyond repair. This item should be decommissioned
+    class Condition(models.TextChoices):
+        """Current condition of an inventory item.
+        New: Brand new inventory item that has not been used. When the inventory item is picked up it is automatically changed to working.
+        Working: InventoryItem is in good working condition
+        Damaged: InventoryItem is damaged and needs repair
+        Irreparable: InventoryItem is damaged beyond repair. This inventory item should be decommissioned
         """
         NEW = 'NEW', _('New')
         WORKING = 'WORKING', _('Working')
         DAMAGED = 'DAMAGED', _('Damaged')
         IRREPARABLE = 'IRREPARABLE', _('Irreparable')
 
-    class ItemNotificationMessage:
-        """Possible class for selecting different kinds of item based notification messages"""
+    class InventoryItemNotificationMessage:
+        """Possible class for selecting different kinds of inventory item based notification messages"""
 
     name = models.CharField(max_length=150)
     label = models.CharField(max_length=150, null=True, blank=True)
     job = models.ForeignKey('Job', on_delete=models.SET_NULL, null=True, blank=True)
-    status = models.CharField(max_length=16, choices=ItemStatus.choices, default=ItemStatus.STORED)
-    employee = models.ForeignKey(get_user_model(), related_name='inventory_item_employee', on_delete=models.SET_NULL, null=True, blank=True)
-    editor = CurrentUserField(related_name='inventory_item_editor', on_delete=models.SET_NULL, on_update=True)
-    creator = CurrentUserField(related_name='inventory_item_creator', on_delete=models.SET_NULL)
-    condition = models.CharField(max_length=16, choices=ItemCondition.choices, default=ItemCondition.NEW)
-    storage = models.ForeignKey('Storage', on_delete=models.SET_NULL, blank=True, null=True)
+    status = models.CharField(max_length=16, choices=InventoryItemStatus.choices, default=InventoryItemStatus.STORED)
+    employee = models.ForeignKey(get_user_model(), related_name='inventoryitem_employee', on_delete=models.SET_NULL, null=True, blank=True)
+    editor = CurrentUserField(related_name='inventoryitem_editor', on_delete=models.SET_NULL, on_update=True)
+    creator = CurrentUserField(related_name='inventoryitem_creator', on_delete=models.SET_NULL)
+    condition = models.CharField(max_length=16, choices=Condition.choices, default=Condition.NEW)
+    inventory = models.ForeignKey('Inventory', on_delete=models.SET_NULL, blank=True, null=True)
     location = models.ForeignKey('Location', on_delete=models.SET_NULL, blank=True, null=True)
-    item_type = models.ForeignKey('ItemType', on_delete=models.CASCADE)
+    inventoryitem_type = models.ForeignKey('InventoryItemType', on_delete=models.CASCADE)
     history = HistoricalRecords()
 
     def __str__(self):
         return f'{self.name}'
 
     def get_absolute_url(self):
-        return reverse_lazy('inventory:item_detail', kwargs={'pk': self.pk})
+        return reverse_lazy('inventory:inventoryitem_detail', kwargs={'pk': self.pk})
 
-    def store(self, storage_id: int = None) -> 'Item':
-        """Stores the item at a storage location. By default the item is returned to it's original location.
-        If a storage_id is supplied the item is moved to a new storage location with the given storage_id"""
-        if self.status == self.ItemStatus.DECOMMISSIONED:
-            raise ItemStatusError('decommissioned item cannot be stored')
-        if storage_id is None and self.storage_id is None:
-            raise InventoryLogicError('the current item does not have a storage associated with it. A storage_id must '
+    def store(self, inventory_id: int = None) -> 'InventoryItem':
+        """Stores the inventory item at a inventory location. By default the inventory item is returned to it's original location.
+        If a inventory_id is supplied the inventory item is moved to a new inventory location with the given inventory_id"""
+        if self.status == self.InventoryItemStatus.DECOMMISSIONED:
+            raise InventoryItemStatusError('decommissioned inventory item cannot be stored')
+        if inventory_id is None and self.inventory_id is None:
+            raise InventoryLogicError('the current inventory item does not have a inventory associated with it. A inventory_id must '
                                       'be passed')
-        if self.status == Item.ItemStatus.STORED and type(self.storage_id) != type(None) and type(storage_id) != type(None) and int(self.storage_id) == int(storage_id):
-            raise InventoryLogicError('cannot store item in a location it is already stored in')
-        if storage_id is not None:
-            self.storage_id = storage_id
-        self.location_id = Storage.objects.get(id=storage_id).location_id
+        if self.status == InventoryItem.InventoryItemStatus.STORED and type(self.inventory_id) != type(None) and type(inventory_id) != type(None) and int(self.inventory_id) == int(inventory_id):
+            raise InventoryLogicError('cannot store inventory item in a location it is already stored in')
+        if inventory_id is not None:
+            self.inventory_id = inventory_id
+        self.location_id = Inventory.objects.get(id=inventory_id).location_id
         self.employee = None
-        self.status = self.ItemStatus.STORED
+        self.status = self.InventoryItemStatus.STORED
         return self.save()
 
-    def pickup(self, employee_id: int) -> 'Item':
-        """Item is picked up from a customer location or a storage location. An employee is assigned to the item."""
-        if self.status == self.ItemStatus.DECOMMISSIONED:
-            raise ItemStatusError('decommissioned item cannot be picked up')
-        if self.condition == self.ItemCondition.NEW:
-            self.condition = self.ItemCondition.WORKING
+    def pickup(self, employee_id: int) -> 'InventoryItem':
+        """InventoryItem is picked up from a customer location or a inventory location. An employee is assigned to the inventory item."""
+        if self.status == self.InventoryItemStatus.DECOMMISSIONED:
+            raise InventoryItemStatusError('decommissioned inventory item cannot be picked up')
+        if self.condition == self.Condition.NEW:
+            self.condition = self.Condition.WORKING
         if self.employee_id == employee_id:
-            raise InventoryLogicError('the same user cannot pick up an item they are already holding')
+            raise InventoryLogicError('the same user cannot pick up an inventory item they are already holding')
         self.location = None
         self.employee_id = employee_id
-        self.status = self.ItemStatus.PICKED_UP
+        self.status = self.InventoryItemStatus.PICKED_UP
         return self.save()
 
-    def deploy(self, location_id: int) -> 'Item':
-        """Deploys the item at a customer location"""
-        if self.status == self.ItemStatus.DECOMMISSIONED:
-            raise ItemStatusError('decommissioned item cannot be deployed')
-        if self.status != self.ItemStatus.PICKED_UP:
-            raise ItemStatusError('item must be picked up before it can be deployed')
-        if self.condition in self.ItemCondition.DAMAGED or self.ItemCondition.IRREPARABLE:
-            raise ItemConditionError('broken or irreparable item cannot be deployed')
+    def deploy(self, location_id: int) -> 'InventoryItem':
+        """Deploys the inventory item at a customer location"""
+        if self.status == self.InventoryItemStatus.DECOMMISSIONED:
+            raise InventoryItemStatusError('decommissioned inventory item cannot be deployed')
+        if self.status != self.InventoryItemStatus.PICKED_UP:
+            raise InventoryItemStatusError('item must be picked up before it can be deployed')
+        if self.condition in self.Condition.DAMAGED or self.Condition.IRREPARABLE:
+            raise InventoryItemConditionError('broken or irreparable item cannot be deployed')
         self.location_id = location_id
-        self.status = self.ItemStatus.DEPLOYED
+        self.status = self.InventoryItemStatus.DEPLOYED
         return self.save()
 
-    def decommission(self) -> 'Item':
-        """Decommissions the item and removes all employee, storage, and location associations"""
+    def decommission(self) -> 'InventoryItem':
+        """Decommissions the item and removes all employee, inventory, and location associations"""
         notification_message: str = ''  # TODO  Add notification message for decommissioning an item.
         self.location = None
         self.employee = None
-        self.storage = None
-        self.status = self.ItemStatus.DECOMMISSIONED
+        self.inventory = None
+        self.status = self.InventoryItemStatus.DECOMMISSIONED
         return self.save()
 
     def save(self, *args, **kwargs):
-        if self.storage and not self.location:
-            self.location_id = self.storage.location_id
+        if self.inventory and not self.location:
+            self.location_id = self.inventory.location_id
         return super().save(*args, **kwargs)
 
 
@@ -187,14 +187,14 @@ class CustomerLocation(models.Model):
     customer = models.ForeignKey('Customer', on_delete=models.CASCADE)
 
 
-class Storage(CreatedUpdatedModel):
+class Inventory(CreatedUpdatedModel):
     """A holder for all inventory items"""
 
-    class StorageStatus(models.TextChoices):
-        """Choices for setting the status of a storage location
+    class InventoryStatus(models.TextChoices):
+        """Choices for setting the status of a inventory location
         Active: Available for picking up and dropping off items
-        Inactive: Not in use. Items cannot be picked up or dropped off from this location
-        Full: The storage location is currently full. No items can be dropped off.
+        Inactive: Not in use. InventoryItems cannot be picked up or dropped off from this location
+        Full: The inventory location is currently full. No items can be dropped off.
         """
 
         ACTIVE = 'ACTIVE', _('Active')
@@ -202,7 +202,7 @@ class Storage(CreatedUpdatedModel):
         FULL = 'FULL', _('Full')
 
     name = models.CharField(max_length=150, blank=True)
-    status = models.CharField(max_length=16, choices=StorageStatus.choices, default=StorageStatus.ACTIVE)
+    status = models.CharField(max_length=16, choices=InventoryStatus.choices, default=InventoryStatus.ACTIVE)
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
     editor = CurrentUserField(get_user_model(), related_name='inventory_editor', on_delete=models.CASCADE)
     creator = models.ForeignKey(get_user_model(), related_name='inventory_creator', on_delete=models.CASCADE)
@@ -212,10 +212,10 @@ class Storage(CreatedUpdatedModel):
         return f'{self.name}'
 
     def get_absolute_url(self):
-        return reverse_lazy('inventory:storage_detail', kwargs={'pk': self.pk})
+        return reverse_lazy('inventory:inventory_detail', kwargs={'pk': self.pk})
 
 
-class ItemType(models.Model):
+class InventoryItemType(models.Model):
     name = models.CharField(max_length=150)
     short_name = models.SlugField(unique=True)
 
@@ -233,9 +233,9 @@ class NotificationPreference(models.Model):
     pass
 
 
-@receiver(post_save, sender=Item)
-def set_default_warehouse(sender, instance: Item, created, **kwargs):
-    instance.storage_id = 1
+@receiver(post_save, sender=InventoryItem)
+def set_default_warehouse(sender, instance: InventoryItem, created, **kwargs):
+    instance.inventory_id = 1
 
 
 class Job(CreatedUpdatedModel):

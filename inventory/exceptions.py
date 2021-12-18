@@ -1,13 +1,13 @@
 from main.exceptions import BaseError
 
 
-class ItemStatusError(BaseError):
-    """Exceptions related to Item Status"""
+class InventoryItemStatusError(BaseError):
+    """Exceptions related to InventoryItem Status"""
     pass
 
 
-class ItemConditionError(BaseError):
-    """Exceptions related to Item Condition"""
+class InventoryItemConditionError(BaseError):
+    """Exceptions related to InventoryItem Condition"""
     pass
 
 

@@ -1,0 +1,8 @@
+<li class="inventoryitem" id="inventoryitem_{{ inventory.id }}">
+    <span class="inventoryitem_id" id="inventoryitem_id_{{ inventory.id }}">
+        <a href="{% url 'inventory:inventory_detail' pk=inventory.id %}">{{ inventory.id }}</a>
+    </span>
+    <span class="inventoryitem_name" id="inventoryitem_name{{ inventory.id }}">{{ inventory.name }}</span>
+    <span class="inventoryitem_status" id="inventoryitem_status{{ inventory.id }}">{{ inventory.status }}</span>
+    <span class="inventoryitem_location" id="inventoryitem_location{{ inventory.id }}">{{ inventory.location }}</span>
+</li>

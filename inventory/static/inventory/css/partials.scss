@@ -1,0 +1,18 @@
+.item_list {
+  display: grid;
+}
+
+.item_list_heading {
+  font-weight: bold;
+}
+
+.inventory_list_detail {
+  display: grid;
+  grid-template-columns: 1fr 3fr 1fr 5fr;
+
+}
+
+.inventoryitem_list_detail {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+}

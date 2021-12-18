@@ -1,3 +1,15 @@
+header {
+  grid-area: header;
+}
+
+main {
+  grid-area: main;
+}
+
+footer {
+  grid-area: footer;
+}
+
 #top_navbar {
   display: grid;
   grid-template-areas: 'navbar_context_switcher navbar_links navbar_userinfo';
@@ -5,9 +17,6 @@
 
   .navbar_links {
     grid-area: navbar_links;
-  }
-  .navbar_context_switcher {
-    grid-area: navbar_context_switcher;
   }
   .navbar_userinfo {
     grid-area: navbar_userinfo;

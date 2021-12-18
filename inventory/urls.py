@@ -1,25 +1,25 @@
 from django.urls import path, include
 from inventory.views import customer_views
-from inventory.views import item_views
+from inventory.views import inventoryitem_views
 from inventory.views import job_views
-from inventory.views import storage_views
+from inventory.views import inventory_views
 from inventory.views.dashboard_views import HomeView
 
 urlpatterns = [
     path('', HomeView.as_view(), name='home'),
-    path('storage/', include([
-        path('', storage_views.StorageListView.as_view(), name='storage_list'),
-        path('create', storage_views.StorageCreateView.as_view(), name='storage_create'),
-        path('<int:pk>', storage_views.StorageDetailView.as_view(), name='storage_detail'),
-        path('<int:pk>/delete', storage_views.StorageDeleteView.as_view(), name='storage_delete'),
-        path('<int:pk>/update', storage_views.StorageUpdateView.as_view(), name='storage_update'),
+    path('inventory/', include([
+        path('', inventory_views.InventoryListView.as_view(), name='inventory_list'),
+        path('create', inventory_views.InventoryCreateView.as_view(), name='inventory_create'),
+        path('<int:pk>', inventory_views.InventoryDetailView.as_view(), name='inventory_detail'),
+        path('<int:pk>/delete', inventory_views.InventoryDeleteView.as_view(), name='inventory_delete'),
+        path('<int:pk>/update', inventory_views.InventoryUpdateView.as_view(), name='inventory_update'),
     ])),
-    path('items/', include([
-        path('', item_views.ItemListView.as_view(), name='item_list'),
-        path('create', item_views.ItemCreateView.as_view(), name='item_create'),
-        path('<int:pk>', item_views.ItemDetailView.as_view(), name='item_detail'),
-        path('<int:pk>/delete', item_views.ItemDeleteView.as_view(), name='item_delete'),
-        path('<int:pk>/update', item_views.ItemUpdateView.as_view(), name='item_update'),
+    path('inventoryitems/', include([
+        path('', inventoryitem_views.InventoryItemListView.as_view(), name='inventoryitem_list'),
+        path('create', inventoryitem_views.InventoryItemCreateView.as_view(), name='inventoryitem_create'),
+        path('<int:pk>', inventoryitem_views.InventoryItemDetailView.as_view(), name='inventoryitem_detail'),
+        path('<int:pk>/delete', inventoryitem_views.InventoryItemDeleteView.as_view(), name='inventoryitem_delete'),
+        path('<int:pk>/update', inventoryitem_views.InventoryItemUpdateView.as_view(), name='inventoryitem_update'),
     ])),
     path('jobs/', include([
         path('', job_views.JobListView.as_view(), name='job_list'),

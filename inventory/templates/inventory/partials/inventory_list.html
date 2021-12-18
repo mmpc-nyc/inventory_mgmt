@@ -1,11 +1,11 @@
-<ul class="item_list" id="storage_item_list">
-    <li class="storage_item">
+<ul class="inventory_list" id="inventory_list">
+    <li class="inventory_list_detail">
         <span class="item_list_heading">ID</span>
         <span class="item_list_heading">Name</span>
         <span class="item_list_heading">Status</span>
         <span class="item_list_heading">Location</span>
     </li>
-{% for storage_item in storage_list %}
-    {% include 'inventory/partials/storage_item_component.html' with storage_item=storage_item %}
+{% for inventory in inventory_list %}
+    {% include 'inventory/partials/inventory_list_detail.html' with inventory=inventory %}
 {% endfor %}
 </ul>
