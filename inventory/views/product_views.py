@@ -12,6 +12,7 @@ class ProductDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView)
 
 class ProductListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = Product
+    paginate_by = 50
     template_name_suffix = '_list'
     extra_context = {'title': 'Product List'}
     permission_required = {'any': ('inventory_view_product',)}

@@ -1,0 +1,7 @@
+<div class="pagination">
+    {% if page_obj.has_previous %}
+    {% endif %}
+    {{ page_obj.number }}
+    {% if page_obj.has_next %}
+    {% endif %}
+</div>
