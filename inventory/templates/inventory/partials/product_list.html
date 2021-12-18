@@ -1,0 +1,15 @@
+<ul class="product_list" id="product_list">
+    <li class="item_item">
+        <span class="product_list_heading">Name</span>
+        <span class="product_list_heading">Label</span>
+        <span class="product_list_heading">Job</span>
+        <span class="product_list_heading">Status</span>
+        <span class="product_list_heading">Employee</span>
+        <span class="product_list_heading">Condition</span>
+        <span class="product_list_heading">Inventory</span>
+        <span class="product_list_heading">Type</span>
+    </li>
+    {% for product in product_list %}
+        {% include 'inventory/partials/product_list_detail.html' with product=product %}
+    {% endfor %}
+</ul>

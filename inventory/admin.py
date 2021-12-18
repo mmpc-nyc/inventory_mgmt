@@ -1,11 +1,11 @@
 from django.contrib.admin import register
 from simple_history.admin import SimpleHistoryAdmin
 
-from inventory.models import InventoryItem, Location, Inventory, InventoryItemType
+from inventory.models import Product, Location, Inventory, ProductType
 
 
-@register(InventoryItem)
-class InventoryItemAdmin(SimpleHistoryAdmin):
+@register(Product)
+class ProductAdmin(SimpleHistoryAdmin):
     list_display = [
         'name',
         'label',
@@ -14,13 +14,13 @@ class InventoryItemAdmin(SimpleHistoryAdmin):
         'employee',
         'condition',
         'inventory',
-        'inventoryitem_type',
+        'product_type',
     ]
     history_list_display = list_display
 
 
-@register(InventoryItemType)
-class InventoryItemTypeAdmin(SimpleHistoryAdmin):
+@register(ProductType)
+class ProductTypeAdmin(SimpleHistoryAdmin):
     pass
 
 

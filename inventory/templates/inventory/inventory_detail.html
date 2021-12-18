@@ -1,6 +1,6 @@
 {% extends 'inventory/base.html' %}
 {% block main %}
     <main>
-        {% include 'inventory/partials/inventoryitem_list.html' with inventoryitem_list=inventory.inventoryitem_set.all %}
+        {% include 'inventory/partials/product_list.html' with product_list=inventory.product_set.all %}
     </main>
 {% endblock %}
