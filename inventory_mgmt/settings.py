@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'django_currentuser',
     'phonenumber_field',
     'simple_history',
+    'django_htmx',
     'main.apps.MainConfig',
     'inventory.apps.InventoryConfig',
     'users'
@@ -43,6 +44,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_htmx.middleware.HtmxMiddleware',
 ]
 
 ROOT_URLCONF = 'inventory_mgmt.urls'

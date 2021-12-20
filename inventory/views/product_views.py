@@ -1,17 +1,20 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.views.generic import DetailView, ListView, CreateView, DeleteView, UpdateView
+
+from inventory.filters import ProductFilter
 from inventory.models import Product
+from inventory.views.mixins import HTMXDetailView, HTMXListView
 
 
-class ProductDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
+class ProductDetailView(LoginRequiredMixin, PermissionRequiredMixin, HTMXDetailView):
     model = Product
-    template_name_suffix = '_detail'
     extra_context = {'title': 'Product Detail'}
     permission_required = {'any': ('inventory_view_product',)}
 
 
-class ProductListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
+class ProductListView(LoginRequiredMixin, PermissionRequiredMixin, HTMXListView):
     model = Product
+    filterset_class = ProductFilter
     paginate_by = 50
     template_name_suffix = '_list'
     extra_context = {'title': 'Product List'}

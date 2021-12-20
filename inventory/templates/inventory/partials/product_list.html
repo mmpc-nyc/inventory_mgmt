@@ -9,7 +9,7 @@
         <span class="product_list_heading">Inventory</span>
         <span class="product_list_heading">Type</span>
     </li>
-    {% for product in product_list %}
-        {% include 'inventory/partials/product_list_detail.html' with product=product %}
+    {% for object in object_list %}
+        {% include 'inventory/partials/product_list_detail.html' with object=object %}
     {% endfor %}
 </ul>

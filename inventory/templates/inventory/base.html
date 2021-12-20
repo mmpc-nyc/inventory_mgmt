@@ -1,4 +1,6 @@
 {% load static %}
+{% load django_htmx %}
+{% django_htmx_script %}
 <!DOCTYPE html>
 <html>
     <head>
@@ -6,6 +8,7 @@
         <title>{{ title }}</title>
     </head>
     <body>
+        <ul id="search_results"></ul>
         {% include 'inventory/components/header.html' %}
 
         {% if breadcrumbs %}
@@ -17,5 +20,12 @@
         {% include 'inventory/components/footer.html' %}
 
         {% block javascript %}{% endblock %}
+        <script src="https://unpkg.com/htmx.org@1.6.1"></script>
+        <script>
+            document.body.addEventListener('htmx:configRequest', (event) => {
+                event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+})
+
+        </script>
     </body>
 </html>

@@ -1,7 +1,8 @@
 from django_filters import FilterSet, rest_framework as filters
-
 from inventory.models import Product, Inventory, ProductType
-from main.filters import User
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 
 class ProductFilter(FilterSet):

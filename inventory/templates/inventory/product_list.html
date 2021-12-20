@@ -1,6 +1,14 @@
 {% extends 'inventory/base.html' %}
 {% block main %}
     <main>
-        {% include 'inventory/partials/product_list.html' with product_list=page_obj.object_list %}
+        <input
+                class="form-control"
+                name="name"
+                hx-get="{% url 'inventory:product_list' %}"
+                hx-include="[name=name]"
+                hx-trigger="keyup changed delay:500ms"
+                hx-target="#product_list"
+        >
+        {% include 'inventory/partials/product_list.html' with product_list=object_list %}
     </main>
 {% endblock %}
