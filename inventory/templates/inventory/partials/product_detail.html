@@ -1,0 +1,19 @@
+<li
+        class="product_detail"
+        id="product_detail_{{ object.id }}"
+>
+    <span class="product_detail_name" id="product_detail_name_{{ object.id }}">{{ object.name }}</span>
+    <span class="product_detail_label" id="product_detail_label_{{ object.id }}">{{ object.label }}</span>
+    <span class="product_detail_job" id="product_detail_job_{{ object.id }}">{{ object.job }}</span>
+    <span class="product_detail_status" id="product_detail_status_{{ object.id }}">{{ object.status }}</span>
+    <span class="product_detail_employee" id="product_detail_employee_{{ object.id }}">{{ object.employee }}</span>
+    <span class="product_detail_condition" id="product_detail_condition_{{ object.id }}">{{ object.condition }}</span>
+    <span class="product_detail_inventory" id="product_detail_inventory_{{ object.id }}">{{ object.inventory }}</span>
+    <span class="product_detail_type" id="product_detail_type_{{ object.id }}">{{ object.type }}</span>
+    <a
+            class="btn_danger"
+            hx-delete="{{ object.id }}"
+            hx-target="closest li"
+            hx-swap="outerHTML swap:1s"
+    >Delete</a>
+</li>

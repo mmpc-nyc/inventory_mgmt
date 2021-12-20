@@ -1,15 +1,16 @@
 <ul class="product_list" id="product_list">
-    <li class="item_item">
-        <span class="product_list_heading">Name</span>
-        <span class="product_list_heading">Label</span>
-        <span class="product_list_heading">Job</span>
-        <span class="product_list_heading">Status</span>
-        <span class="product_list_heading">Employee</span>
-        <span class="product_list_heading">Condition</span>
-        <span class="product_list_heading">Inventory</span>
-        <span class="product_list_heading">Type</span>
+    <li class="product_detail">
+        <span class="product_detail_name">Name</span>
+        <span class="product_detail_label" id=>Label</span>
+        <span class="product_detail_job">Job</span>
+        <span class="product_detail_status">Status</span>
+        <span class="product_detail_employee" >Employee</span>
+        <span class="product_detail_condition">Condition</span>
+        <span class="product_detail_inventory">Inventory</span>
+        <span class="product_detail_type">Type</span>
+        <span class="product_detail_actions">Actions</span>
     </li>
     {% for object in object_list %}
-        {% include 'inventory/partials/product_list_detail.html' with object=object %}
+        {% include 'inventory/partials/product_detail.html' with object=object %}
     {% endfor %}
 </ul>
