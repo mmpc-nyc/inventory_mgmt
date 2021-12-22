@@ -8,4 +8,5 @@
 {% for stock in stock_list %}
     {% include 'inventory/partials/stock_list_detail.html' with stock=stock %}
 {% endfor %}
+    <a href="{% url 'inventory:stock_create' %}"><i class="material-icons">add</i></a>
 </ul>

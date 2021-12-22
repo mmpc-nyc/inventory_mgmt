@@ -8,11 +8,11 @@ from inventory.views.dashboard_views import HomeView
 urlpatterns = [
     path('', HomeView.as_view(), name='home'),
     path('stock/', include([
-        path('', stock_views.InventoryListView.as_view(), name='stock_list'),
-        path('create', stock_views.InventoryCreateView.as_view(), name='stock_create'),
-        path('<int:pk>', stock_views.InventoryDetailView.as_view(), name='stock_detail'),
-        path('<int:pk>/delete', stock_views.InventoryDeleteView.as_view(), name='stock_delete'),
-        path('<int:pk>/update', stock_views.InventoryUpdateView.as_view(), name='stock_update'),
+        path('', stock_views.StockListView.as_view(), name='stock_list'),
+        path('create', stock_views.StockCreateView.as_view(), name='stock_create'),
+        path('<int:pk>', stock_views.StockDetailView.as_view(), name='stock_detail'),
+        path('<int:pk>/delete', stock_views.StockDeleteView.as_view(), name='stock_delete'),
+        path('<int:pk>/update', stock_views.StockUpdateView.as_view(), name='stock_update'),
     ])),
     path('products/', include([
         path('', product_views.ProductListView.as_view(), name='product_list'),

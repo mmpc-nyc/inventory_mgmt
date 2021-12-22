@@ -4,6 +4,11 @@
 {% load qr_code %}
 <!DOCTYPE html>
 <html>
+<head>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'inventory/css/style.css' %}">
+    <title>{{ title }}</title>
+</head>
 <body>
 <ul id="search_results"></ul>
 {% include 'inventory/components/header.html' %}
@@ -26,8 +31,4 @@
 
 </script>
 </body>
-<head>
-        <link rel="stylesheet" href="{% static 'inventory/css/style.css' %}">
-        <title>{{ title }}</title>
-    </head>
 </html>
