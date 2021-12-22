@@ -24,12 +24,19 @@ class Category(MPTTModel):
         return f'{self.name}'
 
 
+class Email(models.Model):
+    email = models.EmailField(blank=True)
+
+
+class PhoneNumber(models.Model):
+    phone_number = PhoneNumberField(default='', blank=True)
+
+
 class Contact(models.Model):
     first_name = models.CharField(max_length=150)
     last_name = models.CharField(max_length=150)
-    email = models.EmailField(blank=True)
-    phone_number = PhoneNumberField(default='', blank=True)
-    customer = models.ForeignKey('Customer', on_delete=models.CASCADE)
+    emails = models.ManyToManyField('Email', through='ContactEmail', related_name='emails')
+    phone_numbers = models.ManyToManyField('PhoneNumber', through='ContactPhoneNumber', related_name='phone_numbers')
     history = HistoricalRecords()
 
     def __str__(self):
@@ -38,7 +45,22 @@ class Contact(models.Model):
     class Meta:
         verbose_name = _('Contact')
         verbose_name_plural = _('Contacts')
-        ordering = ('first_name', 'last_name', 'email',)
+        ordering = ('first_name', 'last_name',)
+
+
+class ContactEmail(models.Model):
+    contact = models.ForeignKey('Contact', on_delete=models.CASCADE)
+    email = models.ForeignKey('Email', on_delete=models.CASCADE)
+
+
+class ContactPhoneNumber(models.Model):
+    contact = models.ForeignKey('Contact', on_delete=models.CASCADE)
+    phone_number = models.ForeignKey('PhoneNumber', on_delete=models.CASCADE)
+
+
+class CustomerContact(models.Model):
+    customer = models.ForeignKey('Customer', on_delete=models.CASCADE)
+    contact = models.ForeignKey('Contact', on_delete=models.CASCADE)
 
 
 class Customer(MPTTModel):
@@ -46,6 +68,7 @@ class Customer(MPTTModel):
     last_name = models.CharField(max_length=150)
     company_name = models.CharField(max_length=150, blank=True, default='')
     email = models.EmailField(blank=True)
+    contact = models.ManyToManyField('Contact', through='CustomerContact', related_name='contact')
     location = models.ManyToManyField('Location', through='CustomerLocation', related_name='location')
     history = HistoricalRecords()
     parent = TreeForeignKey('self', on_delete=models.PROTECT)
@@ -309,8 +332,6 @@ class Job(models.Model):
 
     def save(self, **kwargs):
         # TODO Implement a method that only allows updates if the job is in active status.
-        print(kwargs)
-        # if self.status == self.JobStatus.ACTIVE:
         return super().save(**kwargs)
 
     class Meta:
