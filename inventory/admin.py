@@ -7,32 +7,32 @@ from inventory.models import Product, Location, Stock, GenericProduct, Customer,
 
 @register(CustomerLocation)
 class CustomerLocationAdmin(SimpleHistoryAdmin):
-    ...
+    list_display = ('customer', 'location')
 
 
 @register(ContactEmail)
 class ContactEmailAdmin(SimpleHistoryAdmin):
-    ...
+    list_display = ('contact', 'email',)
 
 
 @register(ContactPhoneNumber)
 class ContactPhoneNumberAdmin(SimpleHistoryAdmin):
-    ...
+    list_display = ('contact', 'phone_number',)
 
 
 @register(GenericProduct)
 class GenericProductAdmin(SimpleHistoryAdmin):
-    ...
+    list_display = ('name',)
 
 
 @register(Customer)
 class CustomerAdmin(SimpleHistoryAdmin):
-    ...
+    list_display = ('first_name', 'last_name', 'company_name', 'parent')
 
 
 @register(Contact)
 class ContactAdmin(SimpleHistoryAdmin):
-    ...
+    list_display = ('first_name', 'last_name',)
 
 
 @register(Product)

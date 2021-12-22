@@ -106,14 +106,13 @@ class CustomerContact(models.Model):
 
 class Customer(MPTTModel):
     #  TODO  Write Description
+    #  TODO  Fix bug with history model
     first_name = models.CharField(max_length=150)
     last_name = models.CharField(max_length=150)
     company_name = models.CharField(max_length=150, blank=True, default='')
-    email = models.EmailField(blank=True)
     contact = models.ManyToManyField('Contact', through='CustomerContact', related_name='contact')
     location = models.ManyToManyField('Location', through='CustomerLocation', related_name='location')
-    history = HistoricalRecords()
-    parent = TreeForeignKey('self', on_delete=models.PROTECT)
+    parent = TreeForeignKey('self', on_delete=models.PROTECT, blank=True, null=True)
 
     def get_absolute_url(self):
         return reverse_lazy('inventory:customer_detail', kwargs={'pk': self.pk})
