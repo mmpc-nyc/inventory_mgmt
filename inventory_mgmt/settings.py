@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'mptt',
+    'qr_code',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
