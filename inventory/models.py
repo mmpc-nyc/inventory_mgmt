@@ -205,7 +205,8 @@ class Product(models.Model):
         DAMAGED = 'DAMAGED', _('Damaged')
         IRREPARABLE = 'IRREPARABLE', _('Irreparable')
 
-    name = models.ForeignKey('GenericProduct', on_delete=models.PROTECT)
+    name = models.CharField(max_length=150)
+    generic_name = models.ForeignKey('GenericProduct', on_delete=models.PROTECT)
     brand = models.ForeignKey('Brand', on_delete=models.CASCADE)
     product_type = models.ForeignKey(ProductType, on_delete=models.CASCADE)
     status = models.CharField(max_length=16, choices=ProductStatus.choices, default=ProductStatus.STORED)

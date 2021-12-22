@@ -22,13 +22,13 @@
     grid-template-areas: 'name  condition inventory type actions';
   }
 
-  .product_detail_name {grid-area:name;}
-  .product_detail_label {grid-area:label;}
-  .product_detail_job {grid-area:job;}
-  .product_detail_status {grid-area:status;}
-  .product_detail_employee {grid-area:employee;}
-  .product_detail_condition {grid-area:condition;}
-  .product_detail_inventory {grid-area:inventory;}
-  .product_detail_type {grid-area:type;}
-  .product_detail_actions {grid-area:actions;}
+  .product_name {grid-area:name;}
+  .product_label {grid-area:label;}
+  .product_job {grid-area:job;}
+  .product_status {grid-area:status;}
+  .product_employee {grid-area:employee;}
+  .product_condition {grid-area:condition;}
+  .product_inventory {grid-area:inventory;}
+  .product_type {grid-area:type;}
+  .product_actions {grid-area:actions;}
 }

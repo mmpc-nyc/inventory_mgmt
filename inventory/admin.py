@@ -37,13 +37,23 @@ class ContactAdmin(SimpleHistoryAdmin):
 
 @register(Product)
 class ProductAdmin(SimpleHistoryAdmin):
-    list_display = ['name', 'job', 'status', 'employee', 'condition', 'inventory', ]
+    list_display = (
+        'name',
+        'brand',
+        'product_type',
+        'generic_name',
+        'job',
+        'status',
+        'employee',
+        'condition',
+        'inventory',
+    )
     history_list_display = list_display
 
 
 @register(Stock)
 class InventoryAdmin(SimpleHistoryAdmin):
-    ...
+    list_display = ('name', 'status', 'location', )
 
 
 @register(Location)
@@ -63,9 +73,9 @@ class CategoryAdmin(SimpleHistoryAdmin):
 
 @register(ProductType)
 class ProductTypeAdmin(SimpleHistoryAdmin):
-    ...
+    list_display = ('name', )
 
 
 @register(Brand)
 class BrandAdmin(SimpleHistoryAdmin):
-    ...
+    list_display = ('name', )
