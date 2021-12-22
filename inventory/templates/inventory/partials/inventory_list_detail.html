@@ -1,8 +1,0 @@
-<li class="product" id="product_{{ inventory.id }}">
-    <span class="product_id" id="product_id_{{ inventory.id }}">
-        <a href="{% url 'inventory:inventory_detail' pk=inventory.id %}">{{ inventory.id }}</a>
-    </span>
-    <span class="product_name" id="product_name{{ inventory.id }}">{{ inventory.name }}</span>
-    <span class="product_status" id="product_status{{ inventory.id }}">{{ inventory.status }}</span>
-    <span class="product_location" id="product_location{{ inventory.id }}">{{ inventory.location }}</span>
-</li>

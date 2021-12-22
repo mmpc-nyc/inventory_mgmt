@@ -2,17 +2,17 @@ from django.urls import path, include
 from inventory.views import customer_views
 from inventory.views import product_views
 from inventory.views import job_views
-from inventory.views import inventory_views
+from inventory.views import stock_views
 from inventory.views.dashboard_views import HomeView
 
 urlpatterns = [
     path('', HomeView.as_view(), name='home'),
-    path('inventory/', include([
-        path('', inventory_views.InventoryListView.as_view(), name='inventory_list'),
-        path('create', inventory_views.InventoryCreateView.as_view(), name='inventory_create'),
-        path('<int:pk>', inventory_views.InventoryDetailView.as_view(), name='inventory_detail'),
-        path('<int:pk>/delete', inventory_views.InventoryDeleteView.as_view(), name='inventory_delete'),
-        path('<int:pk>/update', inventory_views.InventoryUpdateView.as_view(), name='inventory_update'),
+    path('stock/', include([
+        path('', stock_views.InventoryListView.as_view(), name='stock_list'),
+        path('create', stock_views.InventoryCreateView.as_view(), name='stock_create'),
+        path('<int:pk>', stock_views.InventoryDetailView.as_view(), name='stock_detail'),
+        path('<int:pk>/delete', stock_views.InventoryDeleteView.as_view(), name='stock_delete'),
+        path('<int:pk>/update', stock_views.InventoryUpdateView.as_view(), name='stock_update'),
     ])),
     path('products/', include([
         path('', product_views.ProductListView.as_view(), name='product_list'),

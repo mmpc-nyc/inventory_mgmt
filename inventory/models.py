@@ -1,43 +1,54 @@
 from django.contrib.auth import get_user_model
 from django.db import models
-from django.db.models.signals import post_save
-from django.dispatch import receiver
+from mptt.models import MPTTModel, TreeForeignKey
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
-from django_currentuser.db.models import CurrentUserField
 from phonenumber_field.modelfields import PhoneNumberField
 from simple_history.models import HistoricalRecords
-from inventory.exceptions import ProductStatusError, InventoryLogicError, ProductConditionError
+from inventory.exceptions import ProductStatusError, StockLogicError, ProductConditionError
 
 
-class CreatedUpdatedModel(models.Model):
-    created = models.DateTimeField(auto_now_add=True)
-    edited = models.DateTimeField(auto_now=True)
+class Category(MPTTModel):
+    name = models.CharField(max_length=64)
+    slug = models.SlugField()
+    parent = TreeForeignKey('self', on_delete=models.CASCADE, blank=True, null=True)
+
+    class MPTTMeta:
+        order_insertion_by = ['name', ]
 
     class Meta:
-        abstract = True
+        verbose_name = _('Category')
+        verbose_name_plural = _('Categories')
+
+    def __str__(self):
+        return f'{self.name}'
 
 
-class Contact(CreatedUpdatedModel):
+class Contact(models.Model):
     first_name = models.CharField(max_length=150)
     last_name = models.CharField(max_length=150)
     email = models.EmailField(blank=True)
     phone_number = PhoneNumberField(default='', blank=True)
     customer = models.ForeignKey('Customer', on_delete=models.CASCADE)
+    history = HistoricalRecords()
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
 
     class Meta:
+        verbose_name = _('Contact')
+        verbose_name_plural = _('Contacts')
         ordering = ('first_name', 'last_name', 'email',)
 
 
-class Customer(CreatedUpdatedModel):
+class Customer(MPTTModel):
     first_name = models.CharField(max_length=150)
     last_name = models.CharField(max_length=150)
     company_name = models.CharField(max_length=150, blank=True, default='')
     email = models.EmailField(blank=True)
     location = models.ManyToManyField('Location', through='CustomerLocation', related_name='location')
+    history = HistoricalRecords()
+    parent = TreeForeignKey('self', on_delete=models.PROTECT)
 
     def get_absolute_url(self):
         return reverse_lazy('inventory:customer_detail', kwargs={'pk': self.pk})
@@ -49,99 +60,150 @@ class Customer(CreatedUpdatedModel):
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
 
+    class MPTTMeta:
+        order_insertion_by = ['company_name', 'first_name', 'last_name', ]
+
     class Meta:
+        verbose_name = _('Customer')
+        verbose_name_plural = _('Customers')
         ordering = ('company_name', 'first_name', 'last_name',)
 
 
-class Product(CreatedUpdatedModel):
+class ProductStatus(models.TextChoices):
+    """Product status choices
+    Stored: Product stored in Inventory
+    Deployed: Product deployed at customer location
+    Decommissioned: Product no longer in use and not in inventory
+    Inactive: The product is no longer active but is still stored in the inventory
+    Recall: The product is inactive and should no longer be used.
+    Picked Up: Product is currently with the employee. Not at any customer location or inventory.
+    """
+    STORED = 'STORED', _('Stored')
+    DEPLOYED = 'DEPLOYED', _('Deployed')
+    DECOMMISSIONED = 'DECOMMISSIONED', _('Decommissioned')
+    INACTIVE = 'INACTIVE', _('Inactive')
+    RECALL = 'RECALL', _('Recall')
+    PICKED_UP = 'PICKED_UP', _('Picked Up')
+
+
+class GenericProduct(models.Model):
+    """A generic product container that relates to different versions of the same product.
+    For example: a product having different brands or different sizes or colors
+    """
+    category = TreeForeignKey('Category', on_delete=models.SET_NULL, null=True, blank=True)
+    name = models.CharField(max_length=150, unique=True)
+    status = models.CharField(max_length=16, choices=ProductStatus.choices, default=ProductStatus.STORED)
+    history = HistoricalRecords()
+
+    def __str__(self):
+        return f'{self.name}'
+
+    class Meta:
+        verbose_name = _('Generic Product')
+        verbose_name_plural = _('Generic Products')
+
+
+class Brand(models.Model):
+    name = models.CharField(max_length=64)
+
+    def __str__(self):
+        return f'{self.name}'
+
+    class Meta:
+        verbose_name = _('Brand')
+        verbose_name_plural = _('Brands')
+
+
+class ProductType(models.Model):
+    name = models.CharField(max_length=64)
+
+    def __str__(self):
+        return f'{self.name}'
+
+    class Meta:
+        verbose_name = _('Product Type')
+        verbose_name_plural = _('Product Types')
+
+
+class Product(models.Model):
     """An inventory item that can be inventoried"""
 
-    class ProductStatus(models.TextChoices):
-        """Product status choices
-        Stored: Product stored in Inventory
-        Deployed: Product deployed at customer location
-        Decommissioned: Product no longer in use and not in inventory
-        Picked Up: Product is currently with the employee. Not at any customer location or inventory.
-        """
-        STORED = 'STORED', _('Stored')
-        DEPLOYED = 'DEPLOYED', _('Deployed')
-        DECOMMISSIONED = 'DECOMMISSIONED', _('Decommissioned')
-        PICKED_UP = 'PICKED_UP', _('Picked Up')
-
     class Condition(models.TextChoices):
-        """Current condition of an inventory item.
-        New: Brand new inventory item that has not been used. When the inventory item is picked up it is automatically changed to working.
-        Working: Product is in good working condition
-        Damaged: Product is damaged and needs repair
-        Irreparable: Product is damaged beyond repair. This inventory item should be decommissioned
+        """Current condition of an inventory item. New: Brand new inventory item that has not been used. When the
+        inventory item is picked up it is automatically changed to working. Working: Product is in good working
+        condition Damaged: Product is damaged and needs repair Irreparable: Product is damaged beyond repair. This
+        inventory item should be decommissioned
         """
         NEW = 'NEW', _('New')
         WORKING = 'WORKING', _('Working')
         DAMAGED = 'DAMAGED', _('Damaged')
         IRREPARABLE = 'IRREPARABLE', _('Irreparable')
 
-    class ProductNotificationMessage:
-        """Possible class for selecting different kinds of inventory item based notification messages"""
-
-    name = models.CharField(max_length=150)
-    label = models.CharField(max_length=150, null=True, blank=True)
-    job = models.ForeignKey('Job', on_delete=models.SET_NULL, null=True, blank=True)
+    name = models.ForeignKey('GenericProduct', on_delete=models.PROTECT)
+    brand = models.ForeignKey('Brand', on_delete=models.CASCADE)
+    product_type = models.ForeignKey(ProductType, on_delete=models.CASCADE)
     status = models.CharField(max_length=16, choices=ProductStatus.choices, default=ProductStatus.STORED)
-    employee = models.ForeignKey(get_user_model(), related_name='product_employee', on_delete=models.SET_NULL, null=True, blank=True)
-    editor = CurrentUserField(related_name='product_editor', on_delete=models.SET_NULL, on_update=True)
-    creator = CurrentUserField(related_name='product_creator', on_delete=models.SET_NULL)
     condition = models.CharField(max_length=16, choices=Condition.choices, default=Condition.NEW)
-    inventory = models.ForeignKey('Inventory', on_delete=models.SET_NULL, blank=True, null=True)
-    location = models.ForeignKey('Location', on_delete=models.SET_NULL, blank=True, null=True)
-    product_type = models.ForeignKey('ProductType', on_delete=models.CASCADE)
+    inventory = models.ForeignKey('Stock', on_delete=models.SET_NULL, blank=True, null=True)
+    employee = models.ForeignKey(get_user_model(), related_name='product_employee', on_delete=models.SET_NULL,
+                                 null=True, blank=True)
+    job = models.ForeignKey('Job', on_delete=models.SET_NULL, null=True, blank=True)
     history = HistoricalRecords()
 
     def __str__(self):
         return f'{self.name}'
 
+    class Meta:
+        verbose_name = _('Product')
+        verbose_name_plural = _('Products')
+
     def get_absolute_url(self):
         return reverse_lazy('inventory:product_detail', kwargs={'pk': self.pk})
 
     def store(self, inventory_id: int = None) -> 'Product':
-        """Stores the inventory item at a inventory location. By default the inventory item is returned to it's original location.
-        If a inventory_id is supplied the inventory item is moved to a new inventory location with the given inventory_id"""
-        if self.status == self.ProductStatus.DECOMMISSIONED:
+        """Stores the inventory item at a inventory location. By default the inventory item is returned to it's
+        original location. If a inventory_id is supplied the inventory item is moved to a new inventory location with
+        the given inventory_id """
+        if self.status == ProductStatus.DECOMMISSIONED:
             raise ProductStatusError('decommissioned inventory item cannot be stored')
         if inventory_id is None and self.inventory_id is None:
-            raise InventoryLogicError('the current inventory item does not have a inventory associated with it. A inventory_id must '
-                                      'be passed')
-        if self.status == Product.ProductStatus.STORED and type(self.inventory_id) != type(None) and type(inventory_id) != type(None) and int(self.inventory_id) == int(inventory_id):
-            raise InventoryLogicError('cannot store inventory item in a location it is already stored in')
+            raise StockLogicError(
+                _('the current inventory item does not have a inventory associated with it. A inventory_id must be '
+                  'passed'))
+        if self.status == ProductStatus.STORED and self.inventory_id and inventory_id and int(self.inventory_id) == int(
+                inventory_id):
+            raise StockLogicError(_('cannot store inventory item in a location it is already stored in'))
         if inventory_id is not None:
             self.inventory_id = inventory_id
-        self.location_id = Inventory.objects.get(id=inventory_id).location_id
+        self.location_id = Stock.objects.get(id=inventory_id).location_id
         self.employee = None
-        self.status = self.ProductStatus.STORED
+        self.status = ProductStatus.STORED
         return self.save()
 
     def pickup(self, employee_id: int) -> 'Product':
-        """Product is picked up from a customer location or a inventory location. An employee is assigned to the inventory item."""
-        if self.status == self.ProductStatus.DECOMMISSIONED:
-            raise ProductStatusError('decommissioned inventory item cannot be picked up')
+        """Product is picked up from a customer location or a inventory location. An employee is assigned to the
+        inventory item. """
+        if self.status == ProductStatus.DECOMMISSIONED:
+            raise ProductStatusError(_('decommissioned inventory item cannot be picked up'))
         if self.condition == self.Condition.NEW:
             self.condition = self.Condition.WORKING
         if self.employee_id == employee_id:
-            raise InventoryLogicError('the same user cannot pick up an inventory item they are already holding')
+            raise StockLogicError(_('the same user cannot pick up an inventory item they are already holding'))
         self.location = None
         self.employee_id = employee_id
-        self.status = self.ProductStatus.PICKED_UP
+        self.status = ProductStatus.PICKED_UP
         return self.save()
 
     def deploy(self, location_id: int) -> 'Product':
         """Deploys the inventory item at a customer location"""
-        if self.status == self.ProductStatus.DECOMMISSIONED:
-            raise ProductStatusError('decommissioned inventory item cannot be deployed')
-        if self.status != self.ProductStatus.PICKED_UP:
-            raise ProductStatusError('item must be picked up before it can be deployed')
+        if self.status == ProductStatus.DECOMMISSIONED:
+            raise ProductStatusError(_('decommissioned inventory item cannot be deployed'))
+        if self.status != ProductStatus.PICKED_UP:
+            raise ProductStatusError(_('item must be picked up before it can be deployed'))
         if self.condition in self.Condition.DAMAGED or self.Condition.IRREPARABLE:
-            raise ProductConditionError('broken or irreparable item cannot be deployed')
+            raise ProductConditionError(_('broken or irreparable item cannot be deployed'))
         self.location_id = location_id
-        self.status = self.ProductStatus.DEPLOYED
+        self.status = ProductStatus.DEPLOYED
         return self.save()
 
     def decommission(self) -> 'Product':
@@ -150,7 +212,7 @@ class Product(CreatedUpdatedModel):
         self.location = None
         self.employee = None
         self.inventory = None
-        self.status = self.ProductStatus.DECOMMISSIONED
+        self.status = ProductStatus.DECOMMISSIONED
         return self.save()
 
     def save(self, *args, **kwargs):
@@ -159,7 +221,7 @@ class Product(CreatedUpdatedModel):
         return super().save(*args, **kwargs)
 
 
-class Location(CreatedUpdatedModel):
+class Location(models.Model):
     name = models.CharField(max_length=150, blank=True)
     street_number = models.CharField(max_length=20, blank=True)
     route = models.CharField(max_length=100, blank=True)
@@ -167,6 +229,7 @@ class Location(CreatedUpdatedModel):
     formatted = models.CharField(max_length=200, blank=True)
     latitude = models.FloatField(blank=True, null=True)
     longitude = models.FloatField(blank=True, null=True)
+    history = HistoricalRecords()
 
     def __str__(self):
         return f'{self.name}'
@@ -179,6 +242,8 @@ class Location(CreatedUpdatedModel):
         super().save(*args, **kwargs)
 
     class Meta:
+        verbose_name = _('Location')
+        verbose_name_plural = _('Locations')
         ordering = ('name',)
 
 
@@ -187,11 +252,11 @@ class CustomerLocation(models.Model):
     customer = models.ForeignKey('Customer', on_delete=models.CASCADE)
 
 
-class Inventory(CreatedUpdatedModel):
+class Stock(models.Model):
     """A holder for all inventory items"""
 
-    class InventoryStatus(models.TextChoices):
-        """Choices for setting the status of a inventory location
+    class StockStatus(models.TextChoices):
+        """Choices for setting the status of a stock location
         Active: Available for picking up and dropping off items
         Inactive: Not in use. Products cannot be picked up or dropped off from this location
         Full: The inventory location is currently full. No items can be dropped off.
@@ -202,25 +267,19 @@ class Inventory(CreatedUpdatedModel):
         FULL = 'FULL', _('Full')
 
     name = models.CharField(max_length=150, blank=True)
-    status = models.CharField(max_length=16, choices=InventoryStatus.choices, default=InventoryStatus.ACTIVE)
+    status = models.CharField(max_length=16, choices=StockStatus.choices, default=StockStatus.ACTIVE)
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
-    editor = CurrentUserField(get_user_model(), related_name='inventory_editor', on_delete=models.CASCADE)
-    creator = models.ForeignKey(get_user_model(), related_name='inventory_creator', on_delete=models.CASCADE)
     history = HistoricalRecords()
 
     def __str__(self):
         return f'{self.name}'
 
+    class Meta:
+        verbose_name = _('Stock')
+        verbose_name_plural = _('Stocks')
+
     def get_absolute_url(self):
-        return reverse_lazy('inventory:inventory_detail', kwargs={'pk': self.pk})
-
-
-class ProductType(models.Model):
-    name = models.CharField(max_length=150)
-    short_name = models.SlugField(unique=True)
-
-    def __str__(self):
-        return f'{self.name} ({self.short_name})'
+        return reverse_lazy('stock:stock_detail', kwargs={'pk': self.pk})
 
 
 class Notification(models.Model):
@@ -233,12 +292,7 @@ class NotificationPreference(models.Model):
     pass
 
 
-@receiver(post_save, sender=Product)
-def set_default_warehouse(sender, instance: Product, created, **kwargs):
-    instance.inventory_id = 1
-
-
-class Job(CreatedUpdatedModel):
+class Job(models.Model):
     """Model for scheduling jobs to allow easier assignment of inventory, services and products"""
 
     class JobStatus(models.TextChoices):
@@ -249,8 +303,6 @@ class Job(CreatedUpdatedModel):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     status = models.CharField(max_length=16, choices=JobStatus.choices, default=JobStatus.ACTIVE)
     employee = models.ManyToManyField(get_user_model(), related_name='job_employees')
-    editor = CurrentUserField(related_name='job_editor', on_delete=models.CASCADE, on_update=True)
-    creator = CurrentUserField(related_name='job_creator', on_delete=models.CASCADE)
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
     date = models.DateTimeField()
     history = HistoricalRecords()
@@ -261,9 +313,9 @@ class Job(CreatedUpdatedModel):
         # if self.status == self.JobStatus.ACTIVE:
         return super().save(**kwargs)
 
+    class Meta:
+        verbose_name = _('Job')
+        verbose_name_plural = _('Jobs')
+
     def __str__(self):
         return f'Job {self.id} for {self.customer} @ {self.date}'
-
-    @property
-    def employees(self):
-        return self.employee.all()

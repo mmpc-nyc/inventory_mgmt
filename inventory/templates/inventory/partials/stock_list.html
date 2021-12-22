@@ -1,11 +1,11 @@
-<ul class="inventory_list" id="inventory_list">
-    <li class="inventory_list_detail">
+<ul class="stock_list" id="stock_list">
+    <li class="stock_list_detail">
         <span class="item_list_heading">ID</span>
         <span class="item_list_heading">Name</span>
         <span class="item_list_heading">Status</span>
         <span class="item_list_heading">Location</span>
     </li>
-{% for inventory in inventory_list %}
-    {% include 'inventory/partials/inventory_list_detail.html' with inventory=inventory %}
+{% for stock in stock_list %}
+    {% include 'inventory/partials/stock_list_detail.html' with stock=stock %}
 {% endfor %}
 </ul>
