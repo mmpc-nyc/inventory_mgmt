@@ -2,7 +2,22 @@ from django.contrib.admin import register
 from simple_history.admin import SimpleHistoryAdmin
 
 from inventory.models import Product, Location, Stock, GenericProduct, Customer, Contact, Job, Category, ProductType, \
-    Brand
+    Brand, CustomerLocation, ContactEmail, ContactPhoneNumber
+
+
+@register(CustomerLocation)
+class CustomerLocationAdmin(SimpleHistoryAdmin):
+    ...
+
+
+@register(ContactEmail)
+class ContactEmailAdmin(SimpleHistoryAdmin):
+    ...
+
+
+@register(ContactPhoneNumber)
+class ContactPhoneNumberAdmin(SimpleHistoryAdmin):
+    ...
 
 
 @register(GenericProduct)

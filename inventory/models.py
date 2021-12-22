@@ -25,14 +25,31 @@ class Category(MPTTModel):
 
 
 class Email(models.Model):
+    #  TODO  Write Description
     email = models.EmailField(blank=True)
+
+    def __str__(self):
+        return f'{self.email}'
+
+    class Meta:
+        verbose_name = _('Email')
+        verbose_name_plural = _('Emails')
 
 
 class PhoneNumber(models.Model):
+    #  TODO  Write Description
     phone_number = PhoneNumberField(default='', blank=True)
+
+    def __str__(self):
+        return f'{self.phone_number}'
+
+    class Meta:
+        verbose_name = _('Phone Number')
+        verbose_name_plural = _('Phone Numbers')
 
 
 class Contact(models.Model):
+    #  TODO  Write Description
     first_name = models.CharField(max_length=150)
     last_name = models.CharField(max_length=150)
     emails = models.ManyToManyField('Email', through='ContactEmail', related_name='emails')
@@ -49,21 +66,46 @@ class Contact(models.Model):
 
 
 class ContactEmail(models.Model):
+    #  TODO  Write Description
     contact = models.ForeignKey('Contact', on_delete=models.CASCADE)
     email = models.ForeignKey('Email', on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f'{self.email}'
+
+    class Meta:
+        verbose_name = _('Category')
+        verbose_name_plural = _('Categories')
+
 
 class ContactPhoneNumber(models.Model):
+    #  TODO  Write Description
     contact = models.ForeignKey('Contact', on_delete=models.CASCADE)
     phone_number = models.ForeignKey('PhoneNumber', on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f'{self.contact} | {self.phone_number}'
+
+    class Meta:
+        verbose_name = _('Contact Phone Number')
+        verbose_name_plural = _('Contact Phone Numbers')
+
 
 class CustomerContact(models.Model):
+    #  TODO  Write Description
     customer = models.ForeignKey('Customer', on_delete=models.CASCADE)
     contact = models.ForeignKey('Contact', on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f'{self.customer} | {self.contact}'
+
+    class Meta:
+        verbose_name = _('Customer Contact')
+        verbose_name_plural = _('Customer Contacts')
+
 
 class Customer(MPTTModel):
+    #  TODO  Write Description
     first_name = models.CharField(max_length=150)
     last_name = models.CharField(max_length=150)
     company_name = models.CharField(max_length=150, blank=True, default='')
@@ -127,6 +169,7 @@ class GenericProduct(models.Model):
 
 
 class Brand(models.Model):
+    #  TODO  Write Description
     name = models.CharField(max_length=64)
 
     def __str__(self):
@@ -138,6 +181,7 @@ class Brand(models.Model):
 
 
 class ProductType(models.Model):
+    #  TODO  Write Description
     name = models.CharField(max_length=64)
 
     def __str__(self):
@@ -271,8 +315,16 @@ class Location(models.Model):
 
 
 class CustomerLocation(models.Model):
+    #  TODO  Write Description
     location = models.ForeignKey('Location', on_delete=models.CASCADE)
     customer = models.ForeignKey('Customer', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.location} | {self.customer}'
+
+    class Meta:
+        verbose_name = _('Customer Location')
+        verbose_name_plural = _('Customer Locations')
 
 
 class Stock(models.Model):
