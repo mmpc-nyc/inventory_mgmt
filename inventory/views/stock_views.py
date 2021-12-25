@@ -1,7 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.forms import inlineformset_factory
+
 from django.views.generic import DetailView, ListView, CreateView, DeleteView, UpdateView
-from inventory.models import Stock, Location
+from inventory.models import Stock
 
 
 class StockDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
@@ -19,13 +19,6 @@ class StockListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
 
 
 class StockCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
-    #  TODO  Fix this broken formset
-    form_class = inlineformset_factory(
-        Location,
-        Stock,
-        fk_name='location',
-        fields=('name', 'status', 'location', 'location__raw')
-    )
     model = Stock
     template_name_suffix = '_create'
     permission_required = {'any': ('inventory_create_inventory',)}
