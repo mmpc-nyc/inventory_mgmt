@@ -7,14 +7,14 @@ from inventory.models import Stock
 class StockDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     model = Stock
     template_name_suffix = '_detail'
-    extra_context = {'title': 'Inventory Detail'}
+    extra_context = {'title': 'Stock Detail'}
     permission_required = {'any': 'inventory_view_inventory'}
 
 
 class StockListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = Stock
     template_name_suffix = '_list'
-    extra_context = {'title': 'Inventory List'}
+    extra_context = {'title': 'Stock List'}
     permission_required = {'any': 'inventory_view_inventory'}
 
 

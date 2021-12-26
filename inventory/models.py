@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from phonenumber_field.modelfields import PhoneNumberField
 from simple_history.models import HistoricalRecords
-from inventory.exceptions import ProductStatusError, StockLogicError, ProductConditionError
+from inventory.exceptions import ProductStatusError, StockLogicError, ProductConditionError, ProductJobAssignmentError
 
 
 class Category(MPTTModel):
@@ -135,7 +135,7 @@ class Customer(MPTTModel):
 
 class ProductStatus(models.TextChoices):
     """Product status choices
-    Stored: Product stored in Inventory
+    Stored: Product stored in Stock
     Deployed: Product deployed at customer location
     Decommissioned: Product no longer in use and not in inventory
     Inactive: The product is no longer active but is still stored in the inventory
@@ -211,7 +211,7 @@ class Product(models.Model):
     product_type = models.ForeignKey(ProductType, on_delete=models.CASCADE)
     status = models.CharField(max_length=16, choices=ProductStatus.choices, default=ProductStatus.STORED)
     condition = models.CharField(max_length=16, choices=Condition.choices, default=Condition.NEW)
-    inventory = models.ForeignKey('Stock', on_delete=models.SET_NULL, blank=True, null=True)
+    stock = models.ForeignKey('Stock', on_delete=models.SET_NULL, blank=True, null=True)
     employee = models.ForeignKey(get_user_model(), related_name='product_employee', on_delete=models.SET_NULL,
                                  null=True, blank=True)
     job = models.ForeignKey('Job', on_delete=models.SET_NULL, null=True, blank=True)
@@ -227,22 +227,21 @@ class Product(models.Model):
     def get_absolute_url(self):
         return reverse_lazy('inventory:product_detail', kwargs={'pk': self.pk})
 
-    def store(self, inventory_id: int = None) -> 'Product':
+    def store(self, stock_id: int = None) -> 'Product':
         """Stores the inventory item at a inventory location. By default the inventory item is returned to it's
         original location. If a inventory_id is supplied the inventory item is moved to a new inventory location with
         the given inventory_id """
         if self.status == ProductStatus.DECOMMISSIONED:
             raise ProductStatusError('decommissioned inventory item cannot be stored')
-        if inventory_id is None and self.inventory_id is None:
+        if stock_id is None and self.stock_id is None:
             raise StockLogicError(
                 _('the current inventory item does not have a inventory associated with it. A inventory_id must be '
                   'passed'))
-        if self.status == ProductStatus.STORED and self.inventory_id and inventory_id and int(self.inventory_id) == int(
-                inventory_id):
-            raise StockLogicError(_('cannot store inventory item in a location it is already stored in'))
-        if inventory_id is not None:
-            self.inventory_id = inventory_id
-        self.location_id = Stock.objects.get(id=inventory_id).location_id
+        if self.status == ProductStatus.STORED and self.stock_id and stock_id and int(self.stock_id) == int(
+                stock_id):
+            raise StockLogicError(_('cannot store stock item in a location it is already stored in'))
+        if stock_id is not None:
+            self.stock_id = stock_id
         self.employee = None
         self.status = ProductStatus.STORED
         return self.save()
@@ -256,12 +255,13 @@ class Product(models.Model):
             self.condition = self.Condition.WORKING
         if self.employee_id == employee_id:
             raise StockLogicError(_('the same user cannot pick up an inventory item they are already holding'))
-        self.location = None
         self.employee_id = employee_id
         self.status = ProductStatus.PICKED_UP
         return self.save()
 
-    def deploy(self, location_id: int) -> 'Product':
+    def deploy(self, location_id: int, job_id: int = None) -> 'Product':
+        if not job_id and not self.job:
+            raise ProductJobAssignmentError(_('A job must be assigned to deploy the product'))
         """Deploys the inventory item at a customer location"""
         if self.status == ProductStatus.DECOMMISSIONED:
             raise ProductStatusError(_('decommissioned inventory item cannot be deployed'))
@@ -269,23 +269,16 @@ class Product(models.Model):
             raise ProductStatusError(_('item must be picked up before it can be deployed'))
         if self.condition in self.Condition.DAMAGED or self.Condition.IRREPARABLE:
             raise ProductConditionError(_('broken or irreparable item cannot be deployed'))
-        self.location_id = location_id
         self.status = ProductStatus.DEPLOYED
         return self.save()
 
     def decommission(self) -> 'Product':
         """Decommissions the item and removes all employee, inventory, and location associations"""
         notification_message: str = ''  # TODO  Add notification message for decommissioning an item.
-        self.location = None
         self.employee = None
-        self.inventory = None
+        self.stock = None
         self.status = ProductStatus.DECOMMISSIONED
         return self.save()
-
-    def save(self, *args, **kwargs):
-        if self.inventory and not self.location:
-            self.location_id = self.inventory.location_id
-        return super().save(*args, **kwargs)
 
 
 class Location(models.Model):

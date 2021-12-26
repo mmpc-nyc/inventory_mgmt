@@ -1,19 +1,16 @@
-<nav id="top_navbar">
-
-    <span class="navbar_context_switcher">{% include 'inventory/components/context_switcher.html' %}</span>
-    <span class="navbar_links">
-        {% if user_context == 'manager' %}
-            {% include 'inventory/components/navbar_links_for_manager.html' %}
-        {% elif user_context == 'editor' %}
-            {% include 'inventory/components/navbar_links_for_editor.html' %}
-        {% elif user_context == 'customer' %}
-            {% include 'inventory/components/navbar_links_for_customer.html' %}
-        {% else %}
-        {% endif %}
-    </span>
+<nav id="navbar">
+<ul class="navbar_links">
+    <li class="navbar_link"><a href="{% url 'inventory:home' %}">Home</a></li>
+    {% if request.user.is_authenticated %}
+    <li class="navbar_link"><a href="{% url 'inventory:product_list' %}">Products</a></li>
+    <li class="navbar_link"><a href="{% url 'inventory:job_list' %}">Jobs</a></li>
+    <li class="navbar_link"><a href="{% url 'inventory:customer_list' %}">Customers</a></li>
+    {% endif %}
+</ul>
     <span class="navbar_userinfo">
     {% if request.user.is_authenticated %}
         {{ request.user.username }}
+        {% include 'inventory/components/btn.html' with link='logout' text='Logout' %}
     {% else %}
         {% include 'inventory/components/btn.html' with link='login' text='Login' %}
     {% endif %}

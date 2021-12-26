@@ -14,3 +14,7 @@ class ProductConditionError(BaseError):
 class StockLogicError(BaseError):
     """An error of logic"""
     ...
+
+
+class ProductJobAssignmentError(BaseError):
+    """Product job assignment error"""

@@ -9,7 +9,7 @@ class ProductFilter(FilterSet):
 
     name = filters.CharFilter(field_name='name', lookup_expr='contains')
     status = filters.ChoiceFilter(choices= ProductStatus.choices)
-    inventory = filters.ModelChoiceFilter(queryset=Stock.objects.all())
+    stock = filters.ModelChoiceFilter(queryset=Stock.objects.all())
     employee = filters.ModelChoiceFilter(queryset=User.objects.all())
 
     class Meta:
@@ -17,7 +17,7 @@ class ProductFilter(FilterSet):
         fields = (
             'name',
             'status',
-            'inventory',
+            'stock',
             'job',
             'employee',
         )

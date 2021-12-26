@@ -46,13 +46,13 @@ class ProductAdmin(SimpleHistoryAdmin):
         'status',
         'employee',
         'condition',
-        'inventory',
+        'stock',
     )
     history_list_display = list_display
 
 
 @register(Stock)
-class InventoryAdmin(SimpleHistoryAdmin):
+class StockAdmin(SimpleHistoryAdmin):
     list_display = ('name', 'status', 'location', )
 
 

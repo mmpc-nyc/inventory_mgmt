@@ -1,5 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.views.generic import DetailView, ListView, CreateView, DeleteView, UpdateView
+from django.views.generic import CreateView, DeleteView, UpdateView
 
 from inventory.filters import ProductFilter
 from inventory.models import Product
@@ -37,3 +37,4 @@ class ProductUpdateView(PermissionRequiredMixin, CreateView, UpdateView):
     model = Product
     template_name_suffix = '_update'
     permission_required = {'any': ('inventory_update_product',)}
+    fields = ['name', 'job', 'status', 'employee', 'stock', 'product_type', ]

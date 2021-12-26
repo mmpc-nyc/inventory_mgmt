@@ -1,6 +1,5 @@
 from django.http import HttpResponse
-from django.views.generic import TemplateView, DetailView, ListView
-from django.views import View
+from django.views.generic import DetailView, ListView
 from django_filters.views import FilterView
 
 

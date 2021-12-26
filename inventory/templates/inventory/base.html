@@ -1,7 +1,6 @@
 {% load static %}
 {% load django_htmx %}
 {% django_htmx_script %}
-{% load qr_code %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,10 +15,9 @@
 {% if breadcrumbs %}
     {% include 'inventory/components/breadcrumbs.html' with breadcrumbs=breadcrumbs %}
 {% endif %}
-{% qr_from_text request.build_absolute_uri  size='T' %}
-
+<main>
 {% block main %}{% endblock %}
-
+</main>
 {% include 'inventory/components/footer.html' %}
 
 {% block javascript %}{% endblock %}
