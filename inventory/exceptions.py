@@ -16,5 +16,5 @@ class StockLogicError(BaseError):
     ...
 
 
-class ProductJobAssignmentError(BaseError):
-    """Product job assignment error"""
+class ProductOrderAssignmentError(BaseError):
+    """Product order assignment error"""

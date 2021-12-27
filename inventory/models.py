@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from phonenumber_field.modelfields import PhoneNumberField
 from simple_history.models import HistoricalRecords
-from inventory.exceptions import ProductStatusError, StockLogicError, ProductConditionError, ProductJobAssignmentError
+from inventory.exceptions import ProductStatusError, StockLogicError, ProductConditionError, ProductOrderAssignmentError
 
 
 class Category(MPTTModel):
@@ -133,30 +133,27 @@ class Customer(MPTTModel):
         ordering = ('company_name', 'first_name', 'last_name',)
 
 
-class ProductStatus(models.TextChoices):
-    """Product status choices
-    Stored: Product stored in Stock
-    Deployed: Product deployed at customer location
-    Decommissioned: Product no longer in use and not in inventory
-    Inactive: The product is no longer active but is still stored in the inventory
-    Recall: The product is inactive and should no longer be used.
-    Picked Up: Product is currently with the employee. Not at any customer location or inventory.
-    """
-    STORED = 'STORED', _('Stored')
-    DEPLOYED = 'DEPLOYED', _('Deployed')
-    DECOMMISSIONED = 'DECOMMISSIONED', _('Decommissioned')
-    INACTIVE = 'INACTIVE', _('Inactive')
-    RECALL = 'RECALL', _('Recall')
-    PICKED_UP = 'PICKED_UP', _('Picked Up')
-
-
 class GenericProduct(models.Model):
     """A generic product container that relates to different versions of the same product.
     For example: a product having different brands or different sizes or colors
     """
+
+    class GenericProductStatus(models.TextChoices):
+        """Product status choices
+        Stored: Product stored in Stock
+        Deployed: Product deployed at customer location
+        Decommissioned: Product no longer in use and not in inventory
+        Inactive: The product is no longer active but is still stored in the inventory
+        Recall: The product is inactive and should no longer be used.
+        Picked Up: Product is currently with the employee. Not at any customer location or inventory.
+        """
+        ACTIVE = 'ACTIVE', _('Active')
+        INACTIVE = 'INACTIVE', _('Inactive')
+        RECALL = 'RECALL', _('Recall')
+
     category = TreeForeignKey('Category', on_delete=models.SET_NULL, null=True, blank=True)
     name = models.CharField(max_length=150, unique=True)
-    status = models.CharField(max_length=16, choices=ProductStatus.choices, default=ProductStatus.STORED)
+    status = models.CharField(max_length=16, choices=GenericProductStatus.choices, default=GenericProductStatus.ACTIVE)
     history = HistoricalRecords()
 
     def __str__(self):
@@ -205,6 +202,23 @@ class Product(models.Model):
         DAMAGED = 'DAMAGED', _('Damaged')
         IRREPARABLE = 'IRREPARABLE', _('Irreparable')
 
+
+    class ProductStatus(models.TextChoices):
+        """Product status choices
+        Stored: Product stored in Stock
+        Deployed: Product deployed at customer location
+        Decommissioned: Product no longer in use and not in inventory
+        Inactive: The product is no longer active but is still stored in the inventory
+        Recall: The product is inactive and should no longer be used.
+        Picked Up: Product is currently with the employee. Not at any customer location or inventory.
+        """
+        STORED = 'STORED', _('Stored')
+        DEPLOYED = 'DEPLOYED', _('Deployed')
+        DECOMMISSIONED = 'DECOMMISSIONED', _('Decommissioned')
+        INACTIVE = 'INACTIVE', _('Inactive')
+        RECALL = 'RECALL', _('Recall')
+        PICKED_UP = 'PICKED_UP', _('Picked Up')
+
     name = models.CharField(max_length=150)
     generic_name = models.ForeignKey('GenericProduct', on_delete=models.PROTECT)
     brand = models.ForeignKey('Brand', on_delete=models.CASCADE)
@@ -214,7 +228,7 @@ class Product(models.Model):
     stock = models.ForeignKey('Stock', on_delete=models.SET_NULL, blank=True, null=True)
     employee = models.ForeignKey(get_user_model(), related_name='product_employee', on_delete=models.SET_NULL,
                                  null=True, blank=True)
-    job = models.ForeignKey('Job', on_delete=models.SET_NULL, null=True, blank=True)
+    order = models.ForeignKey('Order', on_delete=models.SET_NULL, null=True, blank=True)
     history = HistoricalRecords()
 
     def __str__(self):
@@ -259,9 +273,9 @@ class Product(models.Model):
         self.status = ProductStatus.PICKED_UP
         return self.save()
 
-    def deploy(self, location_id: int, job_id: int = None) -> 'Product':
-        if not job_id and not self.job:
-            raise ProductJobAssignmentError(_('A job must be assigned to deploy the product'))
+    def deploy(self, location_id: int, order_id: int = None) -> 'Product':
+        if not order_id and not self.order:
+            raise ProductOrderAssignmentError(_('A order must be assigned to deploy the product'))
         """Deploys the inventory item at a customer location"""
         if self.status == ProductStatus.DECOMMISSIONED:
             raise ProductStatusError(_('decommissioned inventory item cannot be deployed'))
@@ -360,28 +374,28 @@ class NotificationPreference(models.Model):
     pass
 
 
-class Job(models.Model):
-    """Model for scheduling jobs to allow easier assignment of inventory, services and products"""
+class Order(models.Model):
+    """Model for scheduling orders to allow easier assignment of inventory, services and products"""
 
-    class JobStatus(models.TextChoices):
+    class OrderStatus(models.TextChoices):
         ACTIVE = 'ACTIVE', _('Active')
         CANCELED = 'CANCELED', _('Canceled')
         COMPLETED = 'COMPLETED', _('Completed')
 
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    status = models.CharField(max_length=16, choices=JobStatus.choices, default=JobStatus.ACTIVE)
-    employee = models.ManyToManyField(get_user_model(), related_name='job_employees')
+    status = models.CharField(max_length=16, choices=OrderStatus.choices, default=OrderStatus.ACTIVE)
+    employee = models.ManyToManyField(get_user_model(), related_name='order_employees')
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
     date = models.DateTimeField()
     history = HistoricalRecords()
 
     def save(self, **kwargs):
-        # TODO Implement a method that only allows updates if the job is in active status.
+        # TODO Implement a method that only allows updates if the order is in active status.
         return super().save(**kwargs)
 
     class Meta:
-        verbose_name = _('Job')
-        verbose_name_plural = _('Jobs')
+        verbose_name = _('Order')
+        verbose_name_plural = _('Orders')
 
     def __str__(self):
-        return f'Job {self.id} for {self.customer} @ {self.date}'
+        return f'Order {self.id} for {self.customer} @ {self.date}'

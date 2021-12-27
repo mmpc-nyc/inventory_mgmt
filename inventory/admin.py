@@ -1,7 +1,7 @@
 from django.contrib.admin import register
 from simple_history.admin import SimpleHistoryAdmin
-
-from inventory.models import Product, Location, Stock, GenericProduct, Customer, Contact, Job, Category, ProductType, \
+from mptt.admin import MPTTModelAdmin
+from inventory.models import Product, Location, Stock, GenericProduct, Customer, Contact, Order, Category, ProductType, \
     Brand, CustomerLocation, ContactEmail, ContactPhoneNumber
 
 
@@ -23,6 +23,8 @@ class ContactPhoneNumberAdmin(SimpleHistoryAdmin):
 @register(GenericProduct)
 class GenericProductAdmin(SimpleHistoryAdmin):
     list_display = ('name',)
+    list_filter = ('name', 'category',)
+    search_fields = ('category__name',)
 
 
 @register(Customer)
@@ -42,7 +44,7 @@ class ProductAdmin(SimpleHistoryAdmin):
         'brand',
         'product_type',
         'generic_name',
-        'job',
+        'order',
         'status',
         'employee',
         'condition',
@@ -61,13 +63,13 @@ class LocationAdmin(SimpleHistoryAdmin):
     ...
 
 
-@register(Job)
-class JobAdmin(SimpleHistoryAdmin):
+@register(Order)
+class OrderAdmin(SimpleHistoryAdmin):
     ...
 
 
 @register(Category)
-class CategoryAdmin(SimpleHistoryAdmin):
+class CategoryAdmin(MPTTModelAdmin):
     ...
 
 

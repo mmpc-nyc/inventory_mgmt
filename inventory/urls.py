@@ -1,7 +1,7 @@
 from django.urls import path, include
 from inventory.views import customer_views
 from inventory.views import product_views
-from inventory.views import job_views
+from inventory.views import order_views
 from inventory.views import stock_views
 from inventory.views.dashboard_views import HomeView
 
@@ -21,12 +21,12 @@ urlpatterns = [
         path('<int:pk>/delete', product_views.ProductDeleteView.as_view(), name='product_delete'),
         path('<int:pk>/update', product_views.ProductUpdateView.as_view(), name='product_update'),
     ])),
-    path('jobs/', include([
-        path('', job_views.JobListView.as_view(), name='job_list'),
-        path('create', job_views.JobCreateView.as_view(), name='job_create'),
-        path('<int:pk>', job_views.JobDetailView.as_view(), name='job_detail'),
-        path('<int:pk>/delete', job_views.JobDeleteView.as_view(), name='job_delete'),
-        path('<int:pk>/update', job_views.JobUpdateView.as_view(), name='job_update'),
+    path('orders/', include([
+        path('', order_views.OrderListView.as_view(), name='order_list'),
+        path('create', order_views.OrderCreateView.as_view(), name='order_create'),
+        path('<int:pk>', order_views.OrderDetailView.as_view(), name='order_detail'),
+        path('<int:pk>/delete', order_views.OrderDeleteView.as_view(), name='order_delete'),
+        path('<int:pk>/update', order_views.OrderUpdateView.as_view(), name='order_update'),
     ])),
     path('customers/', include([
         path('', customer_views.CustomerListView.as_view(), name='customer_list'),

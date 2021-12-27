@@ -37,4 +37,4 @@ class ProductUpdateView(PermissionRequiredMixin, CreateView, UpdateView):
     model = Product
     template_name_suffix = '_update'
     permission_required = {'any': ('inventory_update_product',)}
-    fields = ['name', 'job', 'status', 'employee', 'stock', 'product_type', ]
+    fields = ['name', 'order', 'status', 'employee', 'stock', 'product_type', ]

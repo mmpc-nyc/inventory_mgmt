@@ -3,7 +3,7 @@
         <a href="{% url 'inventory:product_detail' pk=object.id %}">{{ object.name }}</a></span>
     <span class="product_generic_name" id="product_generic_name_{{ object.id }}">{{ object.generic_name.name }}</span>
     <span class="product_category" id="product_category_{{ object.id }}">{{ object.generic_name.category.name }}</span>
-    <span class="product_job" id="product_job_{{ object.id }}">{{ object.job.id }}</span>
+    <span class="product_order" id="product_order_{{ object.id }}">{{ object.order.id }}</span>
     <span class="product_status" id="product_status_{{ object.id }}">{{ object.status }}</span>
     <span class="product_employee" id="product_employee_{{ object.id }}">{{ object.employee }}</span>
     <span class="product_condition" id="product_condition_{{ object.id }}">{{ object.condition }}</span>

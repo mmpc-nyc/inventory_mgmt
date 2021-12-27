@@ -7,37 +7,37 @@
         <span class="tag">{{ object.generic_name.category }}</span>
         <ul class="properties">
             <li class="property">
-                <span class="property_name">Job</span>
-                <span class="property_value">{{ object.job.id }}</span>
+                <span class="property-name">Order</span>
+                <span class="property-value">{{ object.order.id }}</span>
             </li>
             <li class="property">
-                <span class="property_name">Status</span>
-                <span class="property_value">{{ object.status }}</span>
+                <span class="property-name">Status</span>
+                <span class="property-value">{{ object.status }}</span>
             </li>
             <li class="property">
-                <span class="property_name">Employee</span>
-                <span class="property_value">{{ object.employee }}</span>
+                <span class="property-name">Employee</span>
+                <span class="property-value">{{ object.employee }}</span>
             </li>
             <li class="property">
-                <span class="property_name">Condition</span>
-                <span class="property_value">{{ object.condition }}</span>
+                <span class="property-name">Condition</span>
+                <span class="property-value">{{ object.condition }}</span>
             </li>
             <li class="property">
-                <span class="property_name">Stock</span>
-                <span class="property_value">
+                <span class="property-name">Stock</span>
+                <span class="property-value">
                     {% if object.stock %}
                     <a href="{% url 'inventory:stock_detail' pk=object.stock.id %}">{{ object.stock }}</a>
                     {% endif %}
                 </span>
             </li>
             <li class="property">
-                <span class="property_name">Type</span>
-                <span class="property_value">{{ object.product_type }}</span>
+                <span class="property-name">Type</span>
+                <span class="property-value">{{ object.product_type }}</span>
             </li>
         </ul>
-        <ul class="card_actions">
-            <li class="card_action"><a href="{% url "inventory:product_update" pk=object.id %}">Edit</a></li>
-            <li class="card_action"><a href="{% url "inventory:product_delete" pk=object.id %}">Delete</a></li>
+        <ul class="card-actions">
+            <li class="card-action"><a href="{% url "inventory:product_update" pk=object.id %}">Edit</a></li>
+            <li class="card-action"><a href="{% url "inventory:product_delete" pk=object.id %}">Delete</a></li>
         </ul>
     </div>
 </main>

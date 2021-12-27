@@ -1,0 +1,7 @@
+<ul class="order_list" id="order_list">
+    <li class="order_detail">
+    </li>
+    {% for object in object_list %}
+        {% include 'inventory/partials/order_detail.html' with object=object %}
+    {% endfor %}
+</ul>

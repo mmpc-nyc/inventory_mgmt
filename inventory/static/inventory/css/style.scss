@@ -4,17 +4,5 @@
 @import "components";
 @import "general";
 @import "partials";
+@import "navbar";
 
-html {
-  font-family: "Roboto", "Lucida Grande", "DejaVu Sans", "Bitstream Vera Sans", Verdana, Arial, sans-serif;
-}
-
-body {
-  display: grid;
-  grid-template-areas:
-          '. header .'
-          '. main .'
-          '. footer .'
-;
-  grid-template-columns: auto minmax(700px, 1440px) auto;
-}

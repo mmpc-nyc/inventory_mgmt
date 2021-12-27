@@ -1,0 +1,23 @@
+.navbar {
+  display: grid;
+  grid-template-areas: 'navbar-logo navbar-links navbar-userinfo';
+  grid-template-columns: 1fr 1fr 1fr;
+
+  .navbar-logo {
+    grid-area: navbar-logo;
+  }
+
+  .navbar-links {
+    grid-area: navbar-links;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+
+  .navbar-userinfo {
+    grid-area: navbar-userinfo;
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+  }
+}

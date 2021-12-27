@@ -9,8 +9,8 @@ class BaseError(Exception):
         return f'{self.message}'
 
 
-class JobStatusError(BaseError):
-    """Error related to job status"""
+class OrderStatusError(BaseError):
+    """Error related to order status"""
     pass
 
 
