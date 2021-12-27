@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 
 from inventory.models import Brand
-from inventory.serializers import BrandSerializer
+from api.serializers import BrandSerializer
 
 
 class BrandViewSet(viewsets.ModelViewSet):

@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 
-from inventory.viewsets import BrandViewSet
+from api.viewsets import BrandViewSet
 from core import settings
 
 router = routers.DefaultRouter()
