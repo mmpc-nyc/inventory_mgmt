@@ -5,6 +5,7 @@ from rest_framework import routers
 
 from api.viewsets import BrandViewSet
 from core import settings
+from users.views import LoginView, LogoutView
 
 router = routers.DefaultRouter()
 router.register(r'brands', BrandViewSet)
@@ -16,6 +17,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('main/', include(('main.urls', 'main'), namespace='main')),
     path('', include(('inventory.urls', 'inventory'), namespace='inventory')),
+    path('users/', include(('users.urls', 'users'), namespace='users')),
+    path('login/', LoginView.as_view(), name='login'),
+    path('logout/', LogoutView.as_view(), name='logout'),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -1,7 +1,20 @@
+@import "colors";
+
 .navbar {
   display: grid;
   grid-template-areas: 'navbar-logo navbar-links navbar-userinfo';
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr minmax(700px, 1440px) 1fr;
+  align-content: center;
+  background-color: $color-dark-100;
+
+  a {
+    color: $color-light-100;
+    transition: color ease .25s;
+    padding:1rem;
+  }
+  a:hover {
+    color: $color-light-100;
+  }
 
   .navbar-logo {
     grid-area: navbar-logo;
@@ -11,7 +24,8 @@
     grid-area: navbar-links;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: center;
+    gap: 2em;
   }
 
   .navbar-userinfo {

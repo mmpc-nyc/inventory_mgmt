@@ -5,14 +5,20 @@ html {
 body {
   display: grid;
   grid-template-areas:
-          '. header .'
+          'header header header'
+          '. messages .'
           '. main .'
-          '. footer .';
-  grid-template-columns: auto minmax(700px, 1440px) auto;
+          'footer footer footer';
+  grid-template-columns: 1fr minmax(400px, 1024px) 1fr;
+  grid-template-rows: 2em 5em 1fr 2em
 }
 
 header {
   grid-area: header;
+}
+
+.messages {
+  grid-area: messages;
 }
 
 main {
@@ -41,3 +47,6 @@ ul {
   padding: 0;
 }
 
+a {
+  text-decoration: none;
+}

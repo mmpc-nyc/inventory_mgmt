@@ -11,13 +11,13 @@
 <body>
 <ul id="search-results"></ul>
 {% include 'inventory/components/header.html' %}
-
+{% include 'inventory/components/messages.html' %}
 {% if breadcrumbs %}
     {% include 'inventory/components/breadcrumbs.html' with breadcrumbs=breadcrumbs %}
 {% endif %}
-<main>
+
 {% block main %}{% endblock %}
-</main>
+
 {% include 'inventory/components/footer.html' %}
 
 {% block javascript %}{% endblock %}
