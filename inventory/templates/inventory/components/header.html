@@ -1,4 +1,7 @@
 <header>
-    {% include 'inventory/components/navbar.html' %}
     <h1 class="heading">{{ title }}</h1>
+
+    {% if breadcrumbs %}
+        {% include 'inventory/components/breadcrumbs.html' with breadcrumbs=breadcrumbs %}
+    {% endif %}
 </header>

@@ -14,9 +14,9 @@
 
 .product-detail {
   display: grid;
-  grid-template-columns: repeat(9, 1fr);
+  grid-template-columns: 2fr 2fr 2fr repeat(6, 1fr);
   justify-content: center;
-  grid-template-areas: 'name label order status employee condition stock type actions';
+  grid-template-areas: 'name label category status employee condition stock order actions';
   @media only screen and (max-width: 700px) {
     grid-template-columns: repeat(5, 1fr);
     grid-template-areas: 'name  condition stock type actions';
@@ -29,6 +29,6 @@
   .product-employee {grid-area:employee;}
   .product-condition {grid-area:condition;}
   .product-stock {grid-area:stock;}
-  .product-type {grid-area:type;}
   .product-actions {grid-area:actions;}
+  .product-category {grid-area:category;}
 }

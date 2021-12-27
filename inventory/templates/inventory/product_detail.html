@@ -1,6 +1,5 @@
 {% extends 'inventory/base.html' %}
 {% block main %}
-<main>
     <div class="card">
         <h2>{{ object.name }}</h2>
         <h3>{{ object.generic_name.name }}</h3>
@@ -26,7 +25,7 @@
                 <span class="property-name">Stock</span>
                 <span class="property-value">
                     {% if object.stock %}
-                    <a href="{% url 'inventory:stock_detail' pk=object.stock.id %}">{{ object.stock }}</a>
+                        <a href="{% url 'inventory:stock_detail' pk=object.stock.id %}">{{ object.stock }}</a>
                     {% endif %}
                 </span>
             </li>
@@ -40,5 +39,4 @@
             <li class="card-action"><a href="{% url "inventory:product_delete" pk=object.id %}">Delete</a></li>
         </ul>
     </div>
-</main>
 {% endblock %}

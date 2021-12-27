@@ -1,7 +1,5 @@
 {% extends 'inventory/base.html' %}
 
 {% block main %}
-    <main>
-        {% include 'inventory/partials/order_list.html' with object_list=object_list %}
-    </main>
+    {% include 'inventory/partials/order_list.html' with object_list=object_list %}
 {% endblock %}

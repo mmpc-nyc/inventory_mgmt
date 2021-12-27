@@ -1,15 +1,15 @@
 <nav class="navbar shadow-2">
-<ul class="navbar-links">
-    <li class="navbar-link"><a href="{% url 'inventory:home' %}">Home</a></li>
-    {% if request.user.is_authenticated %}
-    <li class="navbar-link"><a href="{% url 'inventory:product_list' %}">Products</a></li>
-    <li class="navbar-link"><a href="{% url 'inventory:order_list' %}">Orders</a></li>
-    <li class="navbar-link"><a href="{% url 'inventory:customer_list' %}">Customers</a></li>
-    {% endif %}
-</ul>
+    <ul class="navbar-links">
+        <li class="navbar-link"><a href="{% url 'inventory:home' %}">Home</a></li>
+        {% if request.user.is_authenticated %}
+            <li class="navbar-link"><a href="{% url 'inventory:product_list' %}">Products</a></li>
+            <li class="navbar-link"><a href="{% url 'inventory:order_list' %}">Orders</a></li>
+            <li class="navbar-link"><a href="{% url 'inventory:customer_list' %}">Customers</a></li>
+        {% endif %}
+    </ul>
     <span class="navbar-userinfo">
     {% if request.user.is_authenticated %}
-        {{ request.user.username }}
+        <span class="navbar-username">{{ request.user.username }}</span>
         {% include 'inventory/components/btn.html' with link='logout' text='Logout' %}
     {% else %}
         {% include 'inventory/components/btn.html' with link='login' text='Login' %}

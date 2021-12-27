@@ -1,7 +1,5 @@
 {% extends 'inventory/base.html' %}
 {% load static %}
 {% block main %}
-    <main>
-        {% include 'inventory/partials/stock_list.html' with stock_list=stock_list %}
-    </main>
+    {% include 'inventory/partials/stock_list.html' with stock_list=stock_list %}
 {% endblock %}

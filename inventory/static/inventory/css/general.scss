@@ -1,32 +1,55 @@
+@import 'colors';
+@import 'shadows';
+
+* {
+  box-sizing: border-box;
+}
+
 html {
   font-family: "Roboto", "Lucida Grande", "DejaVu Sans", "Bitstream Vera Sans", Verdana, Arial, sans-serif;
 }
 
 body {
   display: grid;
-  grid-template-areas:
-          'header header header'
+  grid-template-areas:'. . .'
           '. messages .'
+          '. header .'
           '. main .'
           'footer footer footer';
   grid-template-columns: 1fr minmax(400px, 1024px) 1fr;
-  grid-template-rows: 2em 5em 1fr 2em
-}
-
-header {
-  grid-area: header;
+  grid-template-rows: 3rem max-content max-content 1fr max-content;
+  background: $color-light-200;
 }
 
 .messages {
+  @include shadow-2;
+  z-index: 90;
   grid-area: messages;
+  background-color: $color-light-100;
 }
 
+header {
+  @include shadow-2;
+  grid-area: header;
+  background-color: $color-danger;
+  z-index: 80;
+
+}
+
+
 main {
+  @include shadow-2;
+  z-index: 70;
   grid-area: main;
+  background-color: $color-light-100;
+  padding: .5rem;
 }
 
 footer {
+  @include shadow-5;
+  z-index: 80;
   grid-area: footer;
+  background-color: $color-light-100;
 }
 
 h1 {

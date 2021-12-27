@@ -1,37 +1,47 @@
 @import "colors";
+@import "shadows";
 
 .navbar {
+  @include shadow-1;
   display: grid;
   grid-template-areas: 'navbar-logo navbar-links navbar-userinfo';
   grid-template-columns: 1fr minmax(700px, 1440px) 1fr;
   align-content: center;
-  background-color: $color-dark-100;
+  background-color: $color-light-100;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  height:3rem;
+  z-index: 100;
+}
 
-  a {
-    color: $color-light-100;
-    transition: color ease .25s;
-    padding:1rem;
-  }
-  a:hover {
-    color: $color-light-100;
-  }
+a {
+  color: $color-dark-100;
+  transition: color ease .25s;
+  padding: 1rem;
+}
 
-  .navbar-logo {
-    grid-area: navbar-logo;
-  }
+a:hover {
+  color: $color-dark-200;
+}
 
-  .navbar-links {
-    grid-area: navbar-links;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    gap: 2em;
-  }
+.navbar-logo {
+  grid-area: navbar-logo;
+}
 
-  .navbar-userinfo {
-    grid-area: navbar-userinfo;
-    display: flex;
-    flex-direction: row;
-    justify-content: end;
-  }
+.navbar-links {
+  grid-area: navbar-links;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 2em;
+}
+
+.navbar-userinfo {
+  grid-area: navbar-userinfo;
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  align-items: center;
 }
