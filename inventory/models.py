@@ -349,6 +349,7 @@ class Equipment(models.Model):
             self.name = slugify(f'{self.product.generic_name.name} {self.product.id} {self.product.counter}')
             self.counter = self.product.counter
             self.product.counter += 1
+            self.product.save()
         return super().save(force_insert, force_update, using, update_fields)
 
 
