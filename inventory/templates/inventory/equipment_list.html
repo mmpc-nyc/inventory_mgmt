@@ -7,7 +7,7 @@
             hx-get="{% url 'inventory:equipment_list' %}"
             hx-include="[name=name]"
             hx-trigger="keyup changed delay:500ms"
-            hx-target="#product-list"
+            hx-target="#equipment-list"
     >
     {% include 'inventory/partials/equipment_list.html' with object_list=object_list %}
 {% endblock %}

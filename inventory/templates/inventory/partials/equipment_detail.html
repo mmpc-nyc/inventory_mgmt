@@ -1,10 +1,11 @@
 <li id="equipment-{{ object.id }}" class="{% if counter|divisibleby:2 %}even{% else %}odd{% endif %}">
     <span class="equipment-name">
         <a href="{% url 'inventory:equipment_detail' pk=object.id %}">{{ object.name }}</a></span>
-    <span class="equipment-brand">{{ object.product.name }}</span>
-    <span class="equipment-genericname">{{ object.status }}</span>
-    <span class="equipment-category">{{ object.order.id }}</span>
-    <span class="equipment-status">{{ object.employee.username }}</span>
+    <span class="equipment-product">{{ object.product.name }}</span>
+    <span class="equipment-brand">{{ object.product.brand.name }}</span>
+    <span class="equipment-order">{{ object.order.id }}</span>
+    <span class="equipment-employee">{{ object.employee.username }}</span>
+    <span class="equipment-status">{{ object.status }}</span>
     <span class="equipment-actions">
         <a
             class="btn-danger"

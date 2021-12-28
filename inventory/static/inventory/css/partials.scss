@@ -76,8 +76,8 @@
 
 .equipment-list > li {
   @include h-list;
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-areas: 'name product status order employee actions';
+  grid-template-columns: 2fr 2fr repeat(5, 1fr);
+  grid-template-areas: 'name product brand status order employee actions';
 
   .equipment-name {
     grid-area: name;
@@ -85,10 +85,6 @@
 
   .equipment-product {
     grid-area: product;
-  }
-
-  .equipment-category {
-    grid-area: category
   }
 
   .equipment-status {
@@ -105,5 +101,9 @@
 
   .equipment-employee {
     grid-area: employee;
+  }
+
+  .equipment-brand {
+    grid-area: brand;
   }
 }

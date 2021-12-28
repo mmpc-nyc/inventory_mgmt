@@ -49,10 +49,7 @@ class ProductAdmin(SimpleHistoryAdmin):
         'deployed_count',
         'picked_up_count',
         'decommissioned_count',
-        'count'
-    )
-    readonly_fields = (
-        'counter',
+        'count',
     )
     history_list_display = list_display
 
