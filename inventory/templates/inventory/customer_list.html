@@ -1,0 +1,5 @@
+{% extends 'inventory/base.html' %}
+{% load static %}
+{% block main %}
+    {% include 'inventory/partials/customer_list.html' with customer_list=customer_list %}
+{% endblock %}
