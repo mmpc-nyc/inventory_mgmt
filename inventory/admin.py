@@ -1,4 +1,4 @@
-from django.contrib.admin import register
+from django.contrib.admin import register, ModelAdmin
 from simple_history.admin import SimpleHistoryAdmin
 from mptt.admin import MPTTModelAdmin
 from inventory.models import Product, Location, Stock, GenericProduct, Customer, Contact, Order, Category, ProductType, \
@@ -38,7 +38,7 @@ class ContactAdmin(SimpleHistoryAdmin):
 
 
 @register(Product)
-class ProductAdmin(SimpleHistoryAdmin):
+class ProductAdmin(ModelAdmin):
     list_display = (
         'name',
         'brand',

@@ -207,7 +207,6 @@ class Product(models.Model):
     brand = models.ForeignKey('Brand', on_delete=models.CASCADE)
     product_type = models.ForeignKey(ProductType, on_delete=models.CASCADE)
     status = models.CharField(max_length=16, choices=Status.choices, default=Status.ACTIVE)
-    history = HistoricalRecords()
     counter = models.IntegerField(default=0)
 
     @property
