@@ -1,614 +1,319 @@
-export default class QrScanner {
-    /* async */
+class f {
     static hasCamera() {
-        return QrScanner.listCameras(false)
-            .then(cameras => !!cameras.length)
-            .catch(() => false);
+        return f.listCameras(!1).then(a => !!a.length).catch(() => !1)
     }
 
-    /* async */
-    static listCameras(requestLabels = false) {
+    static listCameras(a = !1) {
         if (!navigator.mediaDevices) return Promise.resolve([]);
-
-        // Note that enumerateDevices can always be called and does not prompt the user for permission.
-        // However, enumerateDevices only includes device labels if served via https and an active media stream exists
-        // or permission to access the camera was given. Therefore, ask for camera permission by opening a stream, if
-        // labels were requested.
-        let openedStream = null;
-        return (requestLabels
-            ? navigator.mediaDevices.getUserMedia({ audio: false, video: true })
-                .then(stream => openedStream = stream)
-                // Fail gracefully, especially if the device has no camera or on mobile when the camera is already in
-                // use and some browsers disallow a second stream.
-                .catch(() => {})
-            : Promise.resolve()
-        )
-            .then(() => navigator.mediaDevices.enumerateDevices())
-            .then(devices => devices.filter(device => device.kind === 'videoinput').map((device, i) => ({
-                id: device.deviceId,
-                label: device.label || (i === 0 ? 'Default Camera' : `Camera ${i + 1}`),
-            })))
-            .finally(() => {
-                // close the stream we just opened for getting camera access for listing the device labels
-                if (!openedStream) return;
-                for (const track of openedStream.getTracks()) {
-                    track.stop();
-                    openedStream.removeTrack(track);
-                }
-            });
+        let b = null;
+        return (a ? navigator.mediaDevices.getUserMedia({audio: !1, video: !0}).then(a => b = a).catch(() => {
+        }) : Promise.resolve()).then(() => navigator.mediaDevices.enumerateDevices()).then(a => a.filter(a => "videoinput" === a.kind).map((a, b) => ({
+            id: a.deviceId,
+            label: a.label || (0 === b ? "Default Camera" : `Camera ${b + 1}`)
+        }))).finally(() => {
+            if (b) for (let a of b.getTracks()) a.stop(),
+                b.removeTrack(a)
+        })
     }
 
-    constructor(
-        video,
-        onDecode,
-        canvasSizeOrOnDecodeError = this._onDecodeError,
-        canvasSizeOrCalculateScanRegion = this._calculateScanRegion,
-        preferredCamera = 'environment'
-    ) {
-        this.$video = video;
-        this.$canvas = document.createElement('canvas');
-        this._onDecode = onDecode;
-        this._legacyCanvasSize = QrScanner.DEFAULT_CANVAS_SIZE;
-        this._preferredCamera = preferredCamera;
-        this._active = false;
-        this._paused = false;
-        this._flashOn = false;
-
-        if (typeof canvasSizeOrOnDecodeError === 'number') {
-            // legacy function signature where the third argument is the canvas size
-            this._legacyCanvasSize = canvasSizeOrOnDecodeError;
-            console.warn('You\'re using a deprecated version of the QrScanner constructor which will be removed in '
-                + 'the future');
-        } else {
-            this._onDecodeError = canvasSizeOrOnDecodeError;
-        }
-
-        if (typeof canvasSizeOrCalculateScanRegion === 'number') {
-            // legacy function signature where the fourth argument is the canvas size
-            this._legacyCanvasSize = canvasSizeOrCalculateScanRegion;
-            console.warn('You\'re using a deprecated version of the QrScanner constructor which will be removed in '
-                + 'the future');
-        } else {
-            this._calculateScanRegion = canvasSizeOrCalculateScanRegion;
-        }
-
-        this._scanRegion = this._calculateScanRegion(video);
-
+    constructor(a, b, c = this._onDecodeError, d = this._calculateScanRegion, g = "environment") {
+        this.$video = a;
+        this.$canvas = document.createElement("canvas");
+        this._onDecode = b;
+        this._legacyCanvasSize = f.DEFAULT_CANVAS_SIZE;
+        this._preferredCamera = g;
+        this._flashOn = this._paused = this._active = !1;
+        "number" === typeof c ? (this._legacyCanvasSize = c, console.warn("You're using a deprecated version of the QrScanner constructor which will be removed in the future")) : this._onDecodeError = c;
+        "number" === typeof d ? (this._legacyCanvasSize =
+            d, console.warn("You're using a deprecated version of the QrScanner constructor which will be removed in the future")) : this._calculateScanRegion = d;
+        this._scanRegion = this._calculateScanRegion(a);
         this._onPlay = this._onPlay.bind(this);
         this._onLoadedMetaData = this._onLoadedMetaData.bind(this);
         this._onVisibilityChange = this._onVisibilityChange.bind(this);
-
-        video.disablePictureInPicture = true;
-        // Allow inline playback on iPhone instead of requiring full screen playback,
-        // see https://webkit.org/blog/6784/new-video-policies-for-ios/
-        video.playsInline = true;
-        // Allow play() on iPhone without requiring a user gesture. Should not really be needed as camera stream
-        // includes no audio, but just to be safe.
-        video.muted = true;
-
-        // Avoid Safari stopping the video stream on a hidden video.
-        // See https://github.com/cozmo/jsQR/issues/185
-        let shouldHideVideo = false;
-        if (video.hidden) {
-            video.hidden = false;
-            shouldHideVideo = true;
-        }
-        if (!document.body.contains(video)) {
-            document.body.appendChild(video);
-            shouldHideVideo = true;
-        }
+        a.disablePictureInPicture = !0;
+        a.playsInline = !0;
+        a.muted = !0;
+        let h = !1;
+        a.hidden && (a.hidden = !1, h = !0);
+        document.body.contains(a) || (document.body.appendChild(a), h =
+            !0);
         requestAnimationFrame(() => {
-            // Checking in requestAnimationFrame which should avoid a potential additional re-flow for getComputedStyle.
-            const computedStyle = window.getComputedStyle(video);
-            if (computedStyle.display === 'none') {
-                video.style.setProperty('display', 'block', 'important');
-                shouldHideVideo = true;
-            }
-            if (computedStyle.visibility !== 'visible') {
-                video.style.setProperty('visibility', 'visible', 'important');
-                shouldHideVideo = true;
-            }
-            if (shouldHideVideo) {
-                // Hide the video in a way that doesn't cause Safari to stop the playback.
-                console.warn('QrScanner has overwritten the video hiding style to avoid Safari stopping the playback.');
-                video.style.opacity = 0;
-                video.style.width = 0;
-                video.style.height = 0;
-            }
+            let b = window.getComputedStyle(a);
+            "none" === b.display && (a.style.setProperty("display", "block", "important"), h = !0);
+            "visible" !== b.visibility && (a.style.setProperty("visibility", "visible", "important"), h = !0);
+            h && (console.warn("QrScanner has overwritten the video hiding style to avoid Safari stopping the playback."), a.style.opacity = 0, a.style.width = 0, a.style.height = 0)
         });
-
-        video.addEventListener('play', this._onPlay);
-        video.addEventListener('loadedmetadata', this._onLoadedMetaData);
-        document.addEventListener('visibilitychange', this._onVisibilityChange);
-
-        this._qrEnginePromise = QrScanner.createQrEngine();
+        a.addEventListener("play", this._onPlay);
+        a.addEventListener("loadedmetadata", this._onLoadedMetaData);
+        document.addEventListener("visibilitychange",
+            this._onVisibilityChange);
+        this._qrEnginePromise = f.createQrEngine()
     }
 
-    /* async */
     hasFlash() {
-        let openedStream = null;
-        return (this.$video.srcObject
-            ? Promise.resolve(this.$video.srcObject.getVideoTracks()[0])
-            : this._getCameraStream().then(({ stream }) => {
-                console.warn('Call hasFlash after successfully starting the scanner to avoid creating '
-                    + 'a temporary video stream');
-                openedStream = stream;
-                return stream.getVideoTracks()[0];
-            })
-        )
-            .then((track) => 'torch' in track.getSettings())
-            .catch(() => false)
-            .finally(() => {
-                // close the stream we just opened for detecting whether it supports flash
-                if (!openedStream) return;
-                for (const track of openedStream.getTracks()) {
-                    track.stop();
-                    openedStream.removeTrack(track);
-                }
-            });
+        let a = null;
+        return (this.$video.srcObject ? Promise.resolve(this.$video.srcObject.getVideoTracks()[0]) : this._getCameraStream().then(({stream: b}) => {
+            console.warn("Call hasFlash after successfully starting the scanner to avoid creating a temporary video stream");
+            a = b;
+            return b.getVideoTracks()[0]
+        })).then(a => "torch" in a.getSettings()).catch(() => !1).finally(() => {
+            if (a) for (let b of a.getTracks()) b.stop(), a.removeTrack(b)
+        })
     }
 
     isFlashOn() {
-      return this._flashOn;
+        return this._flashOn
     }
 
-    /* async */
     toggleFlash() {
-        if (this._flashOn) {
-            return this.turnFlashOff();
-        } else {
-            return this.turnFlashOn();
-        }
+        return this._flashOn ?
+            this.turnFlashOff() : this.turnFlashOn()
     }
 
-    /* async */
     turnFlashOn() {
         if (this._flashOn) return Promise.resolve();
-        this._flashOn = true;
-        if (!this._active || this._paused) return Promise.resolve(); // flash will be turned on later on .start()
-        return this.hasFlash().then((hasFlash) => {
-            if (!hasFlash) return Promise.reject('No flash available');
-            // Note that the video track is guaranteed to exist at this point
-            return this.$video.srcObject.getVideoTracks()[0].applyConstraints({
-                advanced: [{ torch: true }],
-            });
-        }).catch(() => {
-            this._flashOn = false;
+        this._flashOn = !0;
+        return !this._active || this._paused ? Promise.resolve() : this.hasFlash().then(a => a ? this.$video.srcObject.getVideoTracks()[0].applyConstraints({advanced: [{torch: !0}]}) : Promise.reject("No flash available")).catch(() => {
+            this._flashOn = !1;
             throw e;
-        });
+        })
     }
 
-    /* async */
     turnFlashOff() {
-        if (!this._flashOn) return;
-        // applyConstraints with torch: false does not work to turn the flashlight off, as a stream's torch stays
-        // continuously on, see https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraints#torch. Therefore,
-        // we have to stop the stream to turn the flashlight off.
-        this._flashOn = false;
-        return this._restartVideoStream();
+        if (this._flashOn) return this._flashOn = !1, this._restartVideoStream()
     }
 
     destroy() {
-        this.$video.removeEventListener('loadedmetadata', this._onLoadedMetaData);
-        this.$video.removeEventListener('play', this._onPlay);
-        document.removeEventListener('visibilitychange', this._onVisibilityChange);
-
+        this.$video.removeEventListener("loadedmetadata", this._onLoadedMetaData);
+        this.$video.removeEventListener("play", this._onPlay);
+        document.removeEventListener("visibilitychange", this._onVisibilityChange);
         this.stop();
-        QrScanner._postWorkerMessage(this._qrEnginePromise, 'close');
+        f._postWorkerMessage(this._qrEnginePromise, "close")
     }
 
-    /* async */
     start() {
-        if (this._active && !this._paused) {
-            return Promise.resolve();
-        }
-        if (window.location.protocol !== 'https:') {
-            // warn but try starting the camera anyways
-            console.warn('The camera stream is only accessible if the page is transferred via https.');
-        }
-        this._active = true;
-        if (document.hidden) {
-            // camera will be started as soon as tab is in foreground
-            return Promise.resolve();
-        }
-        this._paused = false;
-        if (this.$video.srcObject) {
-            // camera stream already/still set
+        if (this._active && !this._paused) return Promise.resolve();
+        "https:" !== window.location.protocol && console.warn("The camera stream is only accessible if the page is transferred via https.");
+        this._active = !0;
+        if (document.hidden) return Promise.resolve();
+        this._paused = !1;
+        return this.$video.srcObject ? (this.$video.play(),
+            Promise.resolve()) : this._getCameraStream().then(({stream: a, facingMode: b}) => {
+            this.$video.srcObject = a;
             this.$video.play();
-            return Promise.resolve();
-        }
-
-        return this._getCameraStream()
-            .then(({ stream, facingMode }) => {
-                this.$video.srcObject = stream;
-                this.$video.play();
-                this._setVideoMirror(facingMode);
-
-                // Restart the flash if it was previously on
-                if (this._flashOn) {
-                    this._flashOn = false; // force turnFlashOn to restart the flash
-                    this.turnFlashOn().catch(() => {});
-                }
-            })
-            .catch(e => {
-                this._active = false;
-                throw e;
-            });
+            this._setVideoMirror(b);
+            this._flashOn && (this._flashOn = !1, this.turnFlashOn().catch(() => {
+            }))
+        }).catch(a => {
+            this._active = !1;
+            throw a;
+        })
     }
 
     stop() {
         this.pause();
-        this._active = false;
+        this._active = !1
     }
 
-    /* async */
-    pause(stopStreamImmediately = false) {
-        this._paused = true;
-        if (!this._active) {
-            return Promise.resolve(true);
-        }
+    pause(a = !1) {
+        this._paused = !0;
+        if (!this._active) return Promise.resolve(!0);
         this.$video.pause();
-
-        const stopStream = () => {
-            const tracks = this.$video.srcObject ? this.$video.srcObject.getTracks() : [];
-            for (const track of tracks) {
-                track.stop(); //  note that this will also automatically turn the flashlight off
-                this.$video.srcObject.removeTrack(track);
-            }
-            this.$video.srcObject = null;
+        let b = () => {
+            const a = this.$video.srcObject ? this.$video.srcObject.getTracks() : [];
+            for (const b of a) b.stop(), this.$video.srcObject.removeTrack(b);
+            this.$video.srcObject = null
         };
-
-        if (stopStreamImmediately) {
-            stopStream();
-            return Promise.resolve(true);
-        }
-
-        return new Promise((resolve) => setTimeout(resolve, 300))
-            .then(() => {
-                if (!this._paused) return false;
-                stopStream();
-                return true;
-            });
+        return a ? (b(), Promise.resolve(!0)) : (new Promise(a => setTimeout(a, 300))).then(() => {
+            if (!this._paused) return !1;
+            b();
+            return !0
+        })
     }
 
-    /* async */
-    setCamera(facingModeOrDeviceId) {
-        if (facingModeOrDeviceId === this._preferredCamera) return Promise.resolve();
-        this._preferredCamera = facingModeOrDeviceId;
-        // Restart the scanner with the new camera which will also update the video mirror and the scan region.
-        return this._restartVideoStream();
+    setCamera(a) {
+        if (a === this._preferredCamera) return Promise.resolve();
+        this._preferredCamera = a;
+        return this._restartVideoStream()
     }
 
-    /* async */
-    static scanImage(imageOrFileOrUrl, scanRegion=null, qrEngine=null, canvas=null, disallowCanvasResizing=false,
-                     alsoTryWithoutScanRegion=false) {
-        const gotExternalWorker = qrEngine instanceof Worker;
-
-        let promise = Promise.all([
-            qrEngine || QrScanner.createQrEngine(),
-            QrScanner._loadImage(imageOrFileOrUrl),
-        ]).then(([engine, image]) => {
-            qrEngine = engine;
-            let canvasContext;
-            [canvas, canvasContext] = this._drawToCanvas(image, scanRegion, canvas, disallowCanvasResizing);
-
-            if (qrEngine instanceof Worker) {
-                if (!gotExternalWorker) {
-                    // Enable scanning of inverted color qr codes. Not using _postWorkerMessage as it's async
-                    qrEngine.postMessage({ type: 'inversionMode', data: 'both' });
-                }
-                return new Promise((resolve, reject) => {
-                    let timeout, onMessage, onError;
-                    onMessage = event => {
-                        if (event.data.type !== 'qrResult') {
-                            return;
-                        }
-                        qrEngine.removeEventListener('message', onMessage);
-                        qrEngine.removeEventListener('error', onError);
-                        clearTimeout(timeout);
-                        if (event.data.data !== null) {
-                            resolve(event.data.data);
-                        } else {
-                            reject(QrScanner.NO_QR_CODE_FOUND);
-                        }
-                    };
-                    onError = (e) => {
-                        qrEngine.removeEventListener('message', onMessage);
-                        qrEngine.removeEventListener('error', onError);
-                        clearTimeout(timeout);
-                        const errorMessage = !e ? 'Unknown Error' : (e.message || e);
-                        reject('Scanner error: ' + errorMessage);
-                    };
-                    qrEngine.addEventListener('message', onMessage);
-                    qrEngine.addEventListener('error', onError);
-                    timeout = setTimeout(() => onError('timeout'), 10000);
-                    const imageData = canvasContext.getImageData(0, 0, canvas.width, canvas.height);
-                    qrEngine.postMessage({
-                        type: 'decode',
-                        data: imageData
-                    }, [imageData.data.buffer]);
-                });
-            } else {
-                return new Promise((resolve, reject) => {
-                    const timeout = setTimeout(() => reject('Scanner error: timeout'), 10000);
-                    qrEngine.detect(canvas).then(scanResults => {
-                        if (!scanResults.length) {
-                            reject(QrScanner.NO_QR_CODE_FOUND);
-                        } else {
-                            resolve(scanResults[0].rawValue);
-                        }
-                    }).catch((e) => reject('Scanner error: ' + (e.message || e))).finally(() => clearTimeout(timeout));
-                });
-            }
+    static scanImage(a, b = null, c = null, d = null, g = !1, h = !1) {
+        let k = c instanceof Worker, l = Promise.all([c || f.createQrEngine(), f._loadImage(a)]).then(([a, h]) => {
+            c = a;
+            let l;
+            [d, l] = this._drawToCanvas(h, b, d, g);
+            return c instanceof Worker ? (k || c.postMessage({
+                type: "inversionMode",
+                data: "both"
+            }), new Promise((a, b) => {
+                let g, h, k;
+                h = d => {
+                    "qrResult" === d.data.type && (c.removeEventListener("message", h), c.removeEventListener("error", k), clearTimeout(g), null !== d.data.data ? a(d.data.data) : b(f.NO_QR_CODE_FOUND))
+                };
+                k = a => {
+                    c.removeEventListener("message", h);
+                    c.removeEventListener("error", k);
+                    clearTimeout(g);
+                    b("Scanner error: " + (a ? a.message || a : "Unknown Error"))
+                };
+                c.addEventListener("message", h);
+                c.addEventListener("error", k);
+                g = setTimeout(() => k("timeout"), 1E4);
+                let m = l.getImageData(0, 0, d.width, d.height);
+                c.postMessage({type: "decode", data: m}, [m.data.buffer])
+            })) : new Promise((a, b) => {
+                let g = setTimeout(() => b("Scanner error: timeout"), 1E4);
+                c.detect(d).then(c => {
+                    c.length ? a(c[0].rawValue) : b(f.NO_QR_CODE_FOUND)
+                }).catch(a => b("Scanner error: " + (a.message || a))).finally(() => clearTimeout(g))
+            })
         });
-
-        if (scanRegion && alsoTryWithoutScanRegion) {
-            promise = promise.catch(() =>
-                QrScanner.scanImage(imageOrFileOrUrl, null, qrEngine, canvas, disallowCanvasResizing));
-        }
-
-        promise = promise.finally(() => {
-            if (gotExternalWorker) return;
-            QrScanner._postWorkerMessage(qrEngine, 'close');
-        });
-
-        return promise;
+        b && h && (l = l.catch(() => f.scanImage(a, null, c, d, g)));
+        return l = l.finally(() => {
+            k || f._postWorkerMessage(c, "close")
+        })
     }
 
-    setGrayscaleWeights(red, green, blue, useIntegerApproximation = true) {
-        // Note that for the native BarcodeDecoder, this is a no-op. However, the native implementations work also
-        // well with colored qr codes.
-        QrScanner._postWorkerMessage(
-            this._qrEnginePromise,
-            'grayscaleWeights',
-            { red, green, blue, useIntegerApproximation }
-        );
+    setGrayscaleWeights(a, b, c, d = !0) {
+        f._postWorkerMessage(this._qrEnginePromise, "grayscaleWeights", {
+            red: a, green: b, blue: c,
+            useIntegerApproximation: d
+        })
     }
 
-    setInversionMode(inversionMode) {
-        // Note that for the native BarcodeDecoder, this is a no-op. However, the native implementations scan normal
-        // and inverted qr codes by default
-        QrScanner._postWorkerMessage(this._qrEnginePromise, 'inversionMode', inversionMode);
+    setInversionMode(a) {
+        f._postWorkerMessage(this._qrEnginePromise, "inversionMode", a)
     }
 
-    /* async */
-    static createQrEngine(workerPath = QrScanner.WORKER_PATH) {
-        return ('BarcodeDetector' in window && BarcodeDetector.getSupportedFormats
-            ? BarcodeDetector.getSupportedFormats()
-            : Promise.resolve([])
-        )
-            .then((supportedFormats) => supportedFormats.indexOf('qr_code') !== -1
-                ? new BarcodeDetector({ formats: ['qr_code'] })
-                : new Worker(workerPath)
-            );
+    static createQrEngine(a = f.WORKER_PATH) {
+        return ("BarcodeDetector" in window && BarcodeDetector.getSupportedFormats ? BarcodeDetector.getSupportedFormats() : Promise.resolve([])).then(b => -1 !== b.indexOf("qr_code") ? new BarcodeDetector({formats: ["qr_code"]}) : new Worker(a))
     }
 
     _onPlay() {
         this._scanRegion = this._calculateScanRegion(this.$video);
-        this._scanFrame();
+        this._scanFrame()
     }
 
     _onLoadedMetaData() {
-        this._scanRegion = this._calculateScanRegion(this.$video);
+        this._scanRegion = this._calculateScanRegion(this.$video)
     }
 
     _onVisibilityChange() {
-        if (document.hidden) {
-            this.pause();
-        } else if (this._active) {
-            this.start();
-        }
+        document.hidden ?
+            this.pause() : this._active && this.start()
     }
 
-    _calculateScanRegion(video) {
-        // Default scan region calculation. Note that this can be overwritten in the constructor.
-        const smallestDimension = Math.min(video.videoWidth, video.videoHeight);
-        const scanRegionSize = Math.round(2 / 3 * smallestDimension);
+    _calculateScanRegion(a) {
+        let b = Math.round(2 / 3 * Math.min(a.videoWidth, a.videoHeight));
         return {
-            x: Math.round((video.videoWidth - scanRegionSize) / 2),
-            y: Math.round((video.videoHeight - scanRegionSize) / 2),
-            width: scanRegionSize,
-            height: scanRegionSize,
+            x: Math.round((a.videoWidth - b) / 2),
+            y: Math.round((a.videoHeight - b) / 2),
+            width: b,
+            height: b,
             downScaledWidth: this._legacyCanvasSize,
-            downScaledHeight: this._legacyCanvasSize,
-        };
+            downScaledHeight: this._legacyCanvasSize
+        }
     }
 
     _scanFrame() {
-        if (!this._active || this.$video.paused || this.$video.ended) return false;
-        // using requestAnimationFrame to avoid scanning if tab is in background
+        if (!this._active || this.$video.paused || this.$video.ended) return !1;
         requestAnimationFrame(() => {
-            if (this.$video.readyState <= 1) {
-                // Skip scans until the video is ready as drawImage() only works correctly on a video with readyState
-                // > 1, see https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage#Notes.
-                // This also avoids false positives for videos paused after a successful scan which remains visible on
-                // the canvas until the video is started again and ready.
-                this._scanFrame();
-                return;
-            }
-            this._qrEnginePromise
-                .then((qrEngine) => QrScanner.scanImage(this.$video, this._scanRegion, qrEngine, this.$canvas))
-                .then(this._onDecode, (error) => {
-                    if (!this._active) return;
-                    const errorMessage = error.message || error;
-                    if (errorMessage.indexOf('service unavailable') !== -1) {
-                        // When the native BarcodeDetector crashed, create a new one
-                        this._qrEnginePromise = QrScanner.createQrEngine();
-                    }
-                    this._onDecodeError(error);
-                })
-                .then(() => this._scanFrame());
-        });
+            1 >= this.$video.readyState ? this._scanFrame() : this._qrEnginePromise.then(a => f.scanImage(this.$video, this._scanRegion,
+                a, this.$canvas)).then(this._onDecode, a => {
+                this._active && (-1 !== (a.message || a).indexOf("service unavailable") && (this._qrEnginePromise = f.createQrEngine()), this._onDecodeError(a))
+            }).then(() => this._scanFrame())
+        })
     }
 
-    _onDecodeError(error) {
-        // default error handler; can be overwritten in the constructor
-        if (error === QrScanner.NO_QR_CODE_FOUND) return;
-        console.log(error);
+    _onDecodeError(a) {
+        a !== f.NO_QR_CODE_FOUND && console.log(a)
     }
 
-    /* async */
     _getCameraStream() {
-        if (!navigator.mediaDevices) {
-            return Promise.reject('Camera not found.');
-        }
-
-        const preferenceType = this._preferredCamera === 'environment' || this._preferredCamera === 'user'
-            ? 'facingMode'
-            : 'deviceId';
-        const constraintsWithoutCamera = [{
-            width: { min: 1024 }
-        }, {
-            width: { min: 768 }
-        }, {}];
-        const constraintsWithCamera = constraintsWithoutCamera.map((constraint) => Object.assign({}, constraint, {
-            [preferenceType]: { exact: this._preferredCamera },
-        }));
-
-        // First try constraints with camera, then without camera. Using reduceRight as the Promise is build in a
-        // bottom up fashion.
-        return [...constraintsWithCamera, ...constraintsWithoutCamera].reduceRight((fallback, constraint) =>
-            () => navigator.mediaDevices.getUserMedia({ video: constraint, audio: false })
-                .then((stream) => ({
-                    stream,
-                    // Try to determine the facing mode from the stream, otherwise use a guess or 'environment' as
-                    // default. Note that the guess is not always accurate as Safari returns cameras of different facing
-                    // mode, even for exact facingMode constraints.
-                    facingMode: this._getFacingMode(stream)
-                        || (constraint.facingMode
-                            ? this._preferredCamera // _preferredCamera is a facing mode and we are able to fulfill it
-                            : (this._preferredCamera === 'environment'
-                                ? 'user' // switch as _preferredCamera was environment but we are not able to fulfill it
-                                : 'environment' // switch from unfulfilled user facingMode or default to environment
-                            )
-                        ),
-                }))
-                .catch(fallback),
-            () => Promise.reject('Camera not found.')
-        )();
+        if (!navigator.mediaDevices) return Promise.reject("Camera not found.");
+        let a = "environment" === this._preferredCamera || "user" === this._preferredCamera ? "facingMode" : "deviceId",
+            b = [{width: {min: 1024}}, {width: {min: 768}}, {}];
+        return [...b.map(b =>
+            Object.assign({}, b, {[a]: {exact: this._preferredCamera}})), ...b].reduceRight((a, b) => () => navigator.mediaDevices.getUserMedia({
+            video: b,
+            audio: !1
+        }).then(a => ({
+            stream: a,
+            facingMode: this._getFacingMode(a) || (b.facingMode ? this._preferredCamera : "environment" === this._preferredCamera ? "user" : "environment")
+        })).catch(a), () => Promise.reject("Camera not found."))()
     }
 
-    /* async */
     _restartVideoStream() {
-        // Note that we always pause the stream and not only if !this._paused as even if this._paused === true, the
-        // stream might still be running, as it's by default only stopped after a delay of 300ms.
-        const wasPaused = this._paused;
-        return this.pause(true).then((paused) => {
-            if (!paused || wasPaused || !this._active) return;
-            return this.start();
-        });
+        let a = this._paused;
+        return this.pause(!0).then(b => {
+            if (b && !a && this._active) return this.start()
+        })
     }
 
-    _setVideoMirror(facingMode) {
-        // in user facing mode mirror the video to make it easier for the user to position the QR code
-        const scaleFactor = facingMode==='user'? -1 : 1;
-        this.$video.style.transform = 'scaleX(' + scaleFactor + ')';
+    _setVideoMirror(a) {
+        this.$video.style.transform =
+            "scaleX(" + ("user" === a ? -1 : 1) + ")"
     }
 
-    _getFacingMode(videoStream) {
-        const videoTrack = videoStream.getVideoTracks()[0];
-        if (!videoTrack) return null; // unknown
-        // inspired by https://github.com/JodusNodus/react-qr-reader/blob/master/src/getDeviceId.js#L13
-        return /rear|back|environment/i.test(videoTrack.label)
-            ? 'environment'
-            : /front|user|face/i.test(videoTrack.label)
-                ? 'user'
-                : null; // unknown
+    _getFacingMode(a) {
+        return (a = a.getVideoTracks()[0]) ? /rear|back|environment/i.test(a.label) ? "environment" : /front|user|face/i.test(a.label) ? "user" : null : null
     }
 
-    static _drawToCanvas(image, scanRegion=null, canvas=null, disallowCanvasResizing=false) {
-        canvas = canvas || document.createElement('canvas');
-        const scanRegionX = scanRegion && scanRegion.x? scanRegion.x : 0;
-        const scanRegionY = scanRegion && scanRegion.y? scanRegion.y : 0;
-        const scanRegionWidth = scanRegion && scanRegion.width? scanRegion.width : image.width || image.videoWidth;
-        const scanRegionHeight = scanRegion && scanRegion.height? scanRegion.height : image.height || image.videoHeight;
+    static _drawToCanvas(a, b = null, c = null, d = !1) {
+        c = c || document.createElement("canvas");
+        let g = b && b.x ? b.x : 0, h = b && b.y ? b.y : 0, k = b && b.width ? b.width : a.width || a.videoWidth,
+            l = b && b.height ? b.height : a.height || a.videoHeight;
+        d || (d = b && b.downScaledWidth ? b.downScaledWidth : k, b = b && b.downScaledHeight ? b.downScaledHeight : l, c.width !== d && (c.width =
+            d), c.height !== b && (c.height = b));
+        b = c.getContext("2d", {alpha: !1});
+        b.imageSmoothingEnabled = !1;
+        b.drawImage(a, g, h, k, l, 0, 0, c.width, c.height);
+        return [c, b]
+    }
 
-        if (!disallowCanvasResizing) {
-            const canvasWidth = scanRegion && scanRegion.downScaledWidth
-                ? scanRegion.downScaledWidth
-                : scanRegionWidth;
-            const canvasHeight = scanRegion && scanRegion.downScaledHeight
-                ? scanRegion.downScaledHeight
-                : scanRegionHeight;
-            // Setting the canvas width or height clears the canvas, even if the values didn't change, therefore only
-            // set them if they actually changed.
-            if (canvas.width !== canvasWidth) {
-                canvas.width = canvasWidth;
-            }
-            if (canvas.height !== canvasHeight) {
-                canvas.height = canvasHeight;
-            }
+    static _loadImage(a) {
+        if (a instanceof HTMLCanvasElement || a instanceof HTMLVideoElement || window.ImageBitmap && a instanceof window.ImageBitmap || window.OffscreenCanvas && a instanceof window.OffscreenCanvas) return Promise.resolve(a);
+        if (a instanceof Image) return f._awaitImageLoad(a).then(() => a);
+        if (a instanceof File || a instanceof Blob || a instanceof URL || "string" ===
+            typeof a) {
+            let b = new Image;
+            b.src = a instanceof File || a instanceof Blob ? URL.createObjectURL(a) : a;
+            return f._awaitImageLoad(b).then(() => {
+                (a instanceof File || a instanceof Blob) && URL.revokeObjectURL(b.src);
+                return b
+            })
         }
-
-        const context = canvas.getContext('2d', { alpha: false });
-        context.imageSmoothingEnabled = false; // gives less blurry images
-        context.drawImage(
-            image,
-            scanRegionX, scanRegionY, scanRegionWidth, scanRegionHeight,
-            0, 0, canvas.width, canvas.height
-        );
-        return [canvas, context];
+        return Promise.reject("Unsupported image type.")
     }
 
-    /* async */
-    static _loadImage(imageOrFileOrBlobOrUrl) {
-        if (imageOrFileOrBlobOrUrl instanceof HTMLCanvasElement || imageOrFileOrBlobOrUrl instanceof HTMLVideoElement
-            || window.ImageBitmap && imageOrFileOrBlobOrUrl instanceof window.ImageBitmap
-            || window.OffscreenCanvas && imageOrFileOrBlobOrUrl instanceof window.OffscreenCanvas) {
-            return Promise.resolve(imageOrFileOrBlobOrUrl);
-        } else if (imageOrFileOrBlobOrUrl instanceof Image) {
-            return QrScanner._awaitImageLoad(imageOrFileOrBlobOrUrl).then(() => imageOrFileOrBlobOrUrl);
-        } else if (imageOrFileOrBlobOrUrl instanceof File || imageOrFileOrBlobOrUrl instanceof Blob
-            || imageOrFileOrBlobOrUrl instanceof URL || typeof(imageOrFileOrBlobOrUrl)==='string') {
-            const image = new Image();
-            if (imageOrFileOrBlobOrUrl instanceof File || imageOrFileOrBlobOrUrl instanceof Blob) {
-                image.src = URL.createObjectURL(imageOrFileOrBlobOrUrl);
-            } else {
-                image.src = imageOrFileOrBlobOrUrl;
-            }
-            return QrScanner._awaitImageLoad(image).then(() => {
-                if (imageOrFileOrBlobOrUrl instanceof File || imageOrFileOrBlobOrUrl instanceof Blob) {
-                    URL.revokeObjectURL(image.src);
-                }
-                return image;
-            });
-        } else {
-            return Promise.reject('Unsupported image type.');
-        }
-    }
-
-    /* async */
-    static _awaitImageLoad(image) {
-        return new Promise((resolve, reject) => {
-            if (image.complete && image.naturalWidth!==0) {
-                // already loaded
-                resolve();
-            } else {
-                let onLoad, onError;
-                onLoad = () => {
-                    image.removeEventListener('load', onLoad);
-                    image.removeEventListener('error', onError);
-                    resolve();
+    static _awaitImageLoad(a) {
+        return new Promise((b, c) => {
+            if (a.complete && 0 !== a.naturalWidth) b(); else {
+                let d, g;
+                d = () => {
+                    a.removeEventListener("load", d);
+                    a.removeEventListener("error", g);
+                    b()
                 };
-                onError = () => {
-                    image.removeEventListener('load', onLoad);
-                    image.removeEventListener('error', onError);
-                    reject('Image load error');
+                g = () => {
+                    a.removeEventListener("load", d);
+                    a.removeEventListener("error",
+                        g);
+                    c("Image load error")
                 };
-                image.addEventListener('load', onLoad);
-                image.addEventListener('error', onError);
+                a.addEventListener("load", d);
+                a.addEventListener("error", g)
             }
-        });
+        })
     }
 
-    /* async */
-    static _postWorkerMessage(qrEngineOrQrEnginePromise, type, data) {
-        return Promise.resolve(qrEngineOrQrEnginePromise).then((qrEngine) => {
-            if (!(qrEngine instanceof Worker)) return;
-            qrEngine.postMessage({ type, data });
-        });
+    static _postWorkerMessage(a, b, c) {
+        return Promise.resolve(a).then(a => {
+            a instanceof Worker && a.postMessage({type: b, data: c})
+        })
     }
 }
-QrScanner.DEFAULT_CANVAS_SIZE = 400;
-QrScanner.NO_QR_CODE_FOUND = 'No QR code found';
-QrScanner.WORKER_PATH = 'qr-scanner-worker.min.js';
+
+f.DEFAULT_CANVAS_SIZE = 400;
+f.NO_QR_CODE_FOUND = "No QR code found";
+f.WORKER_PATH = "/static/inventory/js/qr-scanner/worker.js";

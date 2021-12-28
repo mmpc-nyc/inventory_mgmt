@@ -5,7 +5,7 @@
   @include shadow-1;
   display: grid;
   grid-template-areas: 'navbar-logo navbar-links navbar-userinfo';
-  grid-template-columns: 1fr minmax(700px, 1440px) 1fr;
+  grid-template-columns: 1fr minmax(600px, 1440px) 1fr;
   align-content: center;
   background-color: $color-light-100;
   position: fixed;
@@ -13,6 +13,13 @@
   top: 0;
   height: 3rem;
   z-index: 100;
+
+  @media only screen and (max-width: 600px) {
+    grid-template-areas: 'navbar-logo navbar-userinfo'
+    'navbar-links navbar-links';
+    height:6rem;
+
+  }
 
   a {
     color: $color-dark-100;

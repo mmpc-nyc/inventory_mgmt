@@ -19,6 +19,17 @@ body {
   grid-template-columns: 1fr minmax(400px, 1024px) 1fr;
   grid-template-rows: 3rem max-content max-content 1fr max-content;
   background: $color-light-200;
+
+  @media only screen and (max-width: 600px){
+  grid-template-areas:'.'
+          'messages'
+          'header'
+          'main'
+          'footer';
+  grid-template-columns: 1fr;
+  grid-template-rows: 6rem max-content max-content 1fr 6rem;
+
+  }
 }
 
 .messages {

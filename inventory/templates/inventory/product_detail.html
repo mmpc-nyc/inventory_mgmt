@@ -1,5 +1,6 @@
 {% extends 'inventory/base.html' %}
 {% block main %}
+    <video id="scanner"></video>
     <div class="card">
         <h2>{{ object.name }}</h2>
         <h3>{{ object.generic_name.name }}</h3>
@@ -39,4 +40,8 @@
             <li class="card-action"><a href="{% url "inventory:product_delete" pk=object.id %}">Delete</a></li>
         </ul>
     </div>
+{% endblock %}
+{% block javascript %}
+<script>
+</script>
 {% endblock %}

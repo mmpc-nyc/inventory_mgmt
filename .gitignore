@@ -140,3 +140,4 @@ GitHub.sublime-settings
 
 inventory/**/*.css*
 /inventory/static/inventory/css/.sass-cache/
+/.keys/
