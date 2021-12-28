@@ -45,15 +45,22 @@ class ProductAdmin(SimpleHistoryAdmin):
         'product_type',
         'generic_name',
         'status',
-        'count',
         'stored_count',
+        'deployed_count',
+        'picked_up_count',
+        'decommissioned_count',
+        'count'
+    )
+    readonly_fields = (
+        'counter',
     )
     history_list_display = list_display
 
 
 @register(Equipment)
 class EquipmentAdmin(SimpleHistoryAdmin):
-    list_display = ('name', 'status', 'stock', 'employee', 'order', )
+    list_display = ('id', 'name', 'status', 'stock', 'employee', 'order', )
+    readonly_fields = ('counter', 'name',)
 
 
 @register(Stock)

@@ -214,8 +214,21 @@ class Product(models.Model):
     def count(self):
         return self.equipment_set.count()
 
+    @property
     def stored_count(self):
         return self.equipment_set.filter(status=Equipment.Status.STORED).count()
+
+    @property
+    def deployed_count(self):
+        return self.equipment_set.filter(status=Equipment.Status.DEPLOYED).count()
+
+    @property
+    def decommissioned_count(self):
+        return self.equipment_set.filter(status=Equipment.Status.DECOMMISSIONED).count()
+
+    @property
+    def picked_up_count(self):
+        return self.equipment_set.filter(status=Equipment.Status.PICKED_UP).count()
 
     def __str__(self):
         return f'{self.name} | {self.brand.name}'
@@ -254,8 +267,6 @@ class Equipment(models.Model):
         STORED = 'STORED', _('Stored')
         DEPLOYED = 'DEPLOYED', _('Deployed')
         DECOMMISSIONED = 'DECOMMISSIONED', _('Decommissioned')
-        INACTIVE = 'INACTIVE', _('Inactive')
-        RECALL = 'RECALL', _('Recall')
         PICKED_UP = 'PICKED_UP', _('Picked Up')
 
     name = models.CharField(max_length=150, blank=True, null=True)
@@ -268,7 +279,6 @@ class Equipment(models.Model):
     order = models.ForeignKey('Order', on_delete=models.SET_NULL, null=True, blank=True)
     counter = models.IntegerField(blank=True, null=True)
     history = HistoricalRecords()
-
 
     def store(self, stock_id: int = None) -> 'Equipment':
         """Stores the equipment at a stock location. By default the equipment is returned to it's
@@ -323,6 +333,9 @@ class Equipment(models.Model):
         self.status = self.Status.DECOMMISSIONED
         return self.save()
 
+    def __str__(self):
+        return f'{self.name}'
+
     class Meta:
         verbose_name = _('Equipment')
         verbose_name_plural = _('Equipment')
@@ -331,10 +344,11 @@ class Equipment(models.Model):
         return reverse_lazy('inventory:equipment_detail', kwargs={'pk': self.pk})
 
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
-        self.name = slugify(f'{self.product.name} {self.product.counter}')
-        self.counter = self.product.counter
-        self.product.counter += 1
-        self.product.save()
+        # TODO  Review This Method for uniqueness and usefulness
+        if not self.name:
+            self.name = slugify(f'{self.product.generic_name.name} {self.product.id} {self.product.counter}')
+            self.counter = self.product.counter
+            self.product.counter += 1
         return super().save(force_insert, force_update, using, update_fields)
 
 
