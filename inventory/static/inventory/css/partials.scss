@@ -1,7 +1,34 @@
+@import "colors";
+
 @mixin h-list {
   display: grid;
   justify-content: center;
 }
+
+@mixin v-list {
+  display: flex;
+  flex-direction: column;
+  li {
+    padding-left: 1ch;
+    padding-right: 1ch;
+    height: 2rem;
+    align-content: center;
+    border-bottom: 1px solid $color-light-300;
+  }
+
+  li:hover {
+    filter: brightness(95%);
+  }
+
+  .even {
+    background-color: $color-light-100;
+  }
+
+  .odd {
+    background-color: $color-light-200;
+  }
+}
+
 
 .list-header {
   font-weight: bold;
@@ -13,29 +40,37 @@
 
 }
 
-.product-list > li {
-  @include h-list;
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-areas: 'name label category status actions';
+.product-list {
+  @include v-list;
 
-  .product-name {
-    grid-area: name;
-  }
+  li {
+    @include h-list;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-areas: 'name brand genericname category status actions';
 
-  .product-label {
-    grid-area: label;
-  }
+    .product-name {
+      grid-area: name;
+    }
 
-  .product-status {
-    grid-area: status;
-  }
+    .product-genericname {
+      grid-area: genericname;
+    }
 
-  .product-actions {
-    grid-area: actions;
-  }
+    .product-brand {
+      grid-area: brand;
+    }
 
-  .product-category {
-    grid-area: category;
+    .product-status {
+      grid-area: status;
+    }
+
+    .product-actions {
+      grid-area: actions;
+    }
+
+    .product-category {
+      grid-area: category;
+    }
   }
 }
 

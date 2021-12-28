@@ -2,7 +2,7 @@ from django.contrib.admin import register
 from simple_history.admin import SimpleHistoryAdmin
 from mptt.admin import MPTTModelAdmin
 from inventory.models import Product, Location, Stock, GenericProduct, Customer, Contact, Order, Category, ProductType, \
-    Brand, CustomerLocation, ContactEmail, ContactPhoneNumber
+    Brand, CustomerLocation, ContactEmail, ContactPhoneNumber, Equipment
 
 
 @register(CustomerLocation)
@@ -45,8 +45,15 @@ class ProductAdmin(SimpleHistoryAdmin):
         'product_type',
         'generic_name',
         'status',
+        'count',
+        'stored_count',
     )
     history_list_display = list_display
+
+
+@register(Equipment)
+class EquipmentAdmin(SimpleHistoryAdmin):
+    list_display = ('name', 'status', 'stock', 'employee', 'order', )
 
 
 @register(Stock)

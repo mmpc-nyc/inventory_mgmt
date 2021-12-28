@@ -1,0 +1,12 @@
+<ul class="item-list genericproduct-list" id="genericproduct-list">
+    <li class="list-header">
+        <span class="genericproduct-name">Name</span>
+        <span class="genericproduct-generic-name">Generic Name</span>
+        <span class="genericproduct-category">Category</span>
+        <span class="genericproduct-status">Status</span>
+        <span class="genericproduct-actions">Actions</span>
+    </li>
+    {% for object in object_list %}
+        {% include 'inventory/partials/genericproduct_detail.html' with object=object %}
+    {% endfor %}
+</ul>

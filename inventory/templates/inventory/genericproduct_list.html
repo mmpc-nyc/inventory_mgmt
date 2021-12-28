@@ -1,0 +1,13 @@
+{% extends 'inventory/base.html' %}
+
+{% block main %}
+    <input
+            class="search-input"
+            name="name"
+            hx-get="{% url 'inventory:genericproduct_list' %}"
+            hx-include="[name=name]"
+            hx-trigger="keyup changed delay:500ms"
+            hx-target="#genericproduct-list"
+    >
+    {% include 'inventory/partials/genericproduct_list.html' with object_list=object_list %}
+{% endblock %}

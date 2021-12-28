@@ -8,6 +8,6 @@
         <span class="equipment-actions">Actions</span>
     </li>
     {% for object in object_list %}
-        {% include 'inventory/partials/equipment_detail.html' with object=object %}
+        {% include 'inventory/partials/equipment_detail.html' with object=object counter=forloop.counter %}
     {% endfor %}
 </ul>

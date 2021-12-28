@@ -1,12 +1,13 @@
 <ul class="item-list product-list" id="product-list">
     <li class="list-header">
         <span class="product-name">Name</span>
-        <span class="product-generic-name">Generic Name</span>
+        <span class="product-brand">Brand</span>
+        <span class="product-genericname">Generic Name</span>
         <span class="product-category">Category</span>
         <span class="product-status">Status</span>
         <span class="product-actions">Actions</span>
     </li>
     {% for object in object_list %}
-        {% include 'inventory/partials/product_detail.html' with object=object %}
+        {% include 'inventory/partials/product_detail.html' with object=object counter=forloop.counter %}
     {% endfor %}
 </ul>

@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.utils.text import slugify
 from mptt.models import MPTTModel, TreeForeignKey
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
@@ -207,9 +208,17 @@ class Product(models.Model):
     product_type = models.ForeignKey(ProductType, on_delete=models.CASCADE)
     status = models.CharField(max_length=16, choices=Status.choices, default=Status.ACTIVE)
     history = HistoricalRecords()
+    counter = models.IntegerField(default=0)
+
+    @property
+    def count(self):
+        return self.equipment_set.count()
+
+    def stored_count(self):
+        return self.equipment_set.filter(status=Equipment.Status.STORED).count()
 
     def __str__(self):
-        return f'{self.name}'
+        return f'{self.name} | {self.brand.name}'
 
     class Meta:
         verbose_name = _('Product')
@@ -249,6 +258,7 @@ class Equipment(models.Model):
         RECALL = 'RECALL', _('Recall')
         PICKED_UP = 'PICKED_UP', _('Picked Up')
 
+    name = models.CharField(max_length=150, blank=True, null=True)
     product = models.ForeignKey('Product', on_delete=models.CASCADE)
     status = models.CharField(max_length=16, choices=Status.choices, default=Status.STORED)
     condition = models.CharField(max_length=16, choices=Condition.choices, default=Condition.NEW)
@@ -256,6 +266,9 @@ class Equipment(models.Model):
     employee = models.ForeignKey(get_user_model(), related_name='product_employee', on_delete=models.SET_NULL,
                                  null=True, blank=True)
     order = models.ForeignKey('Order', on_delete=models.SET_NULL, null=True, blank=True)
+    counter = models.IntegerField(blank=True, null=True)
+    history = HistoricalRecords()
+
 
     def store(self, stock_id: int = None) -> 'Equipment':
         """Stores the equipment at a stock location. By default the equipment is returned to it's
@@ -316,6 +329,13 @@ class Equipment(models.Model):
 
     def get_absolute_url(self):
         return reverse_lazy('inventory:equipment_detail', kwargs={'pk': self.pk})
+
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        self.name = slugify(f'{self.product.name} {self.product.counter}')
+        self.counter = self.product.counter
+        self.product.counter += 1
+        self.product.save()
+        return super().save(force_insert, force_update, using, update_fields)
 
 
 class Location(models.Model):

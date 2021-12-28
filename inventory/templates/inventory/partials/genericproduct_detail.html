@@ -1,0 +1,15 @@
+<li id="genericproduct-{{ object.id }}">
+    <span class="genericproduct-name" id="genericproduct-name-{{ object.id }}">
+        <a href="{% url 'inventory:genericproduct_detail' pk=object.id %}">{{ object.name }}</a></span>
+    <span class="genericproduct-generic-name" id="genericproduct-generic-name-{{ object.id }}">{{ object.generic_name.name }}</span>
+    <span class="genericproduct-category" id="genericproduct-category-{{ object.id }}">{{ object.generic_name.category.name }}</span>
+    <span class="genericproduct-status" id="genericproduct-status-{{ object.id }}">{{ object.status }}</span>
+    <span class="genericproduct-actions" id="genericproduct-actions-{{ object_id }}">
+        <a
+            class="btn-danger"
+            hx-delete="{{ object.id }}"
+            hx-target="closest li"
+            hx-swap="outerHTML"
+    >Delete</a>
+    </span>
+</li>
