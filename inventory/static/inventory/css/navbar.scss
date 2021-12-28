@@ -11,18 +11,18 @@
   position: fixed;
   width: 100%;
   top: 0;
-  height:3rem;
+  height: 3rem;
   z-index: 100;
-}
 
-a {
-  color: $color-dark-100;
-  transition: color ease .25s;
-  padding: 1rem;
-}
+  a {
+    color: $color-dark-100;
+    transition: color ease .25s;
+    padding: 1rem;
 
-a:hover {
-  color: $color-dark-200;
+    a:hover {
+      color: $color-danger;
+    }
+  }
 }
 
 .navbar-logo {

@@ -1,0 +1,13 @@
+<ul class="item-list equipment-list" id="equipment-list">
+    <li class="list-header">
+        <span class="equipment-name">Name</span>
+        <span class="equipment-product">Product</span>
+        <span class="equipment-status">Status</span>
+        <span class="equipment-order">Order</span>
+        <span class="equipment-employee">Employee</span>
+        <span class="equipment-actions">Actions</span>
+    </li>
+    {% for object in object_list %}
+        {% include 'inventory/partials/equipment_detail.html' with object=object %}
+    {% endfor %}
+</ul>

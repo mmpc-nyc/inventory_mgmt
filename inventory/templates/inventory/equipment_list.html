@@ -4,10 +4,10 @@
     <input
             class="search-input"
             name="name"
-            hx-get="{% url 'inventory:product_list' %}"
+            hx-get="{% url 'inventory:equipment_list' %}"
             hx-include="[name=name]"
             hx-trigger="keyup changed delay:500ms"
             hx-target="#product-list"
     >
-    {% include 'inventory/partials/product_list.html' with object_list=object_list %}
+    {% include 'inventory/partials/equipment_list.html' with object_list=object_list %}
 {% endblock %}

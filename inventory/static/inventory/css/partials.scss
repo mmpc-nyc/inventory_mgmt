@@ -1,34 +1,74 @@
-.item-list {
+@mixin h-list {
   display: grid;
+  justify-content: center;
 }
 
-.item-list-heading {
+.list-header {
   font-weight: bold;
 }
 
-.stock-list-detail {
-  display: grid;
+.stock-list > li {
+  @include h-list;
   grid-template-columns: 1fr 3fr 1fr 5fr;
 
 }
 
-.product-detail {
-  display: grid;
-  grid-template-columns: 2fr 2fr 2fr repeat(6, 1fr);
-  justify-content: center;
-  grid-template-areas: 'name label category status employee condition stock order actions';
-  @media only screen and (max-width: 700px) {
-    grid-template-columns: repeat(5, 1fr);
-    grid-template-areas: 'name  condition stock type actions';
+.product-list > li {
+  @include h-list;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-areas: 'name label category status actions';
+
+  .product-name {
+    grid-area: name;
   }
 
-  .product-name {grid-area:name;}
-  .product-label {grid-area:label;}
-  .product-order {grid-area:order;}
-  .product-status {grid-area:status;}
-  .product-employee {grid-area:employee;}
-  .product-condition {grid-area:condition;}
-  .product-stock {grid-area:stock;}
-  .product-actions {grid-area:actions;}
-  .product-category {grid-area:category;}
+  .product-label {
+    grid-area: label;
+  }
+
+  .product-status {
+    grid-area: status;
+  }
+
+  .product-actions {
+    grid-area: actions;
+  }
+
+  .product-category {
+    grid-area: category;
+  }
+}
+
+.equipment-list > li {
+  @include h-list;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-areas: 'name product status order employee actions';
+
+  .equipment-name {
+    grid-area: name;
+  }
+
+  .equipment-product {
+    grid-area: product;
+  }
+
+  .equipment-category {
+    grid-area: category
+  }
+
+  .equipment-status {
+    grid-area: status;
+  }
+
+  .equipment-actions {
+    grid-area: actions;
+  }
+
+  .equipment-order {
+    grid-area: order;
+  }
+
+  .equipment-employee {
+    grid-area: employee;
+  }
 }

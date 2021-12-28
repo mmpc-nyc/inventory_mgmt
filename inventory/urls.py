@@ -1,5 +1,5 @@
 from django.urls import path, include
-from inventory.views import customer_views
+from inventory.views import customer_views, equipment_views
 from inventory.views import product_views
 from inventory.views import order_views
 from inventory.views import stock_views
@@ -20,6 +20,13 @@ urlpatterns = [
         path('<int:pk>', product_views.ProductDetailView.as_view(), name='product_detail'),
         path('<int:pk>/delete', product_views.ProductDeleteView.as_view(), name='product_delete'),
         path('<int:pk>/update', product_views.ProductUpdateView.as_view(), name='product_update'),
+    ])),
+    path('equipments/', include([
+        path('', equipment_views.EquipmentListView.as_view(), name='equipment_list'),
+        path('create', equipment_views.EquipmentCreateView.as_view(), name='equipment_create'),
+        path('<int:pk>', equipment_views.EquipmentDetailView.as_view(), name='equipment_detail'),
+        path('<int:pk>/delete', equipment_views.EquipmentDeleteView.as_view(), name='equipment_delete'),
+        path('<int:pk>/update', equipment_views.EquipmentUpdateView.as_view(), name='equipment_update'),
     ])),
     path('orders/', include([
         path('', order_views.OrderListView.as_view(), name='order_list'),

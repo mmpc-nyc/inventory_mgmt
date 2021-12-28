@@ -44,11 +44,7 @@ class ProductAdmin(SimpleHistoryAdmin):
         'brand',
         'product_type',
         'generic_name',
-        'order',
         'status',
-        'employee',
-        'condition',
-        'stock',
     )
     history_list_display = list_display
 
