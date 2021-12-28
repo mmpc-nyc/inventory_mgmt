@@ -1,0 +1,6 @@
+{% extends 'inventory/base.html' %}
+{% load qr_code %}
+
+{% block main %}
+    {% qr_from_text request.build_absolute_uri %}
+{% endblock %}

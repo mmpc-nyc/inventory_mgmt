@@ -1,0 +1,14 @@
+{% load static %}
+<video id="scanner"></video>
+{% block javascript %}
+
+    <script src="{% static 'inventory/js/qr-scanner/qr-scanner.js' %}"></script>
+    qrScanner.start()
+    <script>
+        let main = function main() {
+            let v = document.getElementById('scanner');
+            let qrScanner = new f(v, result => console.log('decoded qr code:', result));
+        };
+        main();
+    </script>
+{% endblock %}

@@ -22,7 +22,6 @@
 
 {% block javascript %}{% endblock %}
 <script src="https://unpkg.com/htmx.org@1.6.1"></script>
-<script src="{% static 'inventory/js/qr-scanner/qr-scanner.js' %}"></script>
 <script>
     document.body.addEventListener('htmx:configRequest', (event) => {
         event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
