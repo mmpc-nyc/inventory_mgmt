@@ -1,4 +1,4 @@
-<li id="equipment-{{ object.id }}" class="{% if counter|divisibleby:2 %}even{% else %}odd{% endif %}">
+<li id="equipment-{{ object.id }}" class="{% if counter and counter|divisibleby:2 %}even{% else %}odd{% endif %}">
     <span class="equipment-name">
         <a href="{% url 'inventory:equipment_detail' pk=object.id %}">{{ object.name }}</a></span>
     <span class="equipment-product">{{ object.product.name }}</span>

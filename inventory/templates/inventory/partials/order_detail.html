@@ -1,0 +1,17 @@
+<li id="order-{{ object.id }}" class="{% if counter|divisibleby:2 %}even{% else %}odd{% endif %}">
+    <span class="order-name">
+        <a href="{% url 'inventory:order_detail' pk=object.id %}">{{ object.id }}</a></span>
+    <span class="order-customer">{{ object.customer }}</span>
+    <span class="order-category">{{ object.location }}</span>
+    <span class="order-employee">{{ object.employee }}</span>
+    <span class="order-status">{{ object.status }}</span>
+    <span class="order-date">{{ object.date }}</span>
+    <span class="order-actions">
+        <a
+            class="btn-danger"
+            hx-delete="{{ object.id }}"
+            hx-target="closest li"
+            hx-swap="outerHTML"
+    >Delete</a>
+    </span>
+</li>

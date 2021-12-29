@@ -1,0 +1,27 @@
+{% load static %}
+<div id="reader" width="600px"></div>
+<ul class="item-list equipment-list" id="equipment-list">
+
+</ul>
+<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+<script>
+    let equipmentSet = new Map();
+
+    function onScanSuccess(decodedText, decodedResult) {
+        // handle the scanned code as you like, for example:
+        if (!equipmentSet.has(decodedText)){
+            equipmentSet.set(decodedText, 'x');
+            console.log(`Adding ${decodedText}`)
+            htmx.ajax('GET', decodedText, '#equipment-list')
+        }
+    }
+
+    function onScanFailure(error) {
+    }
+
+    let html5QrcodeScanner = new Html5QrcodeScanner(
+        "reader",
+        {fps: 30, qrbox: {width: 900, height: 900}},
+        /* verbose= */ false);
+    html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+</script>

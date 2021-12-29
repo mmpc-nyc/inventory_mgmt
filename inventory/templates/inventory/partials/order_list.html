@@ -2,6 +2,6 @@
     <li class="order_detail">
     </li>
     {% for object in object_list %}
-        {% include 'inventory/partials/order_detail.html' with object=object %}
+        {% include 'inventory/partials/order_detail.html' with object=object counter=forloop.counter %}
     {% endfor %}
 </ul>
