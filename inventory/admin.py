@@ -43,7 +43,7 @@ class ProductAdmin(ModelAdmin):
         'name',
         'brand',
         'product_type',
-        'generic_name',
+        'generic_product',
         'status',
         'stored_count',
         'deployed_count',

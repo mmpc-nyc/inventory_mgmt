@@ -203,7 +203,7 @@ class Product(models.Model):
         RECALL = 'RECALL', _('Recall')
 
     name = models.CharField(max_length=150)
-    generic_name = models.ForeignKey('GenericProduct', on_delete=models.PROTECT)
+    generic_product = models.ForeignKey('GenericProduct', on_delete=models.PROTECT)
     brand = models.ForeignKey('Brand', on_delete=models.CASCADE)
     product_type = models.ForeignKey(ProductType, on_delete=models.CASCADE)
     status = models.CharField(max_length=16, choices=Status.choices, default=Status.ACTIVE)
@@ -345,7 +345,7 @@ class Equipment(models.Model):
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         # TODO  Review This Method for uniqueness and usefulness
         if not self.name:
-            self.name = slugify(f'{self.product.generic_name.name} {self.product.id} {self.product.counter}')
+            self.name = slugify(f'{self.product.generic_product.name} {self.product.id} {self.product.counter}')
             self.counter = self.product.counter
             self.product.counter += 1
             self.product.save()
