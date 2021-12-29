@@ -1,8 +1,12 @@
-from django.contrib.admin import register, ModelAdmin
+from django.contrib.admin import register, ModelAdmin, TabularInline
 from simple_history.admin import SimpleHistoryAdmin
 from mptt.admin import MPTTModelAdmin
 from inventory.models import Product, Location, Stock, GenericProduct, Customer, Contact, Order, Category, ProductType, \
     Brand, CustomerLocation, ContactEmail, ContactPhoneNumber, Equipment, OrderGenericProduct
+
+
+class GenericProductInline(TabularInline):
+    model = OrderGenericProduct
 
 
 @register(CustomerLocation)
@@ -39,40 +43,20 @@ class ContactAdmin(SimpleHistoryAdmin):
 
 @register(Product)
 class ProductAdmin(ModelAdmin):
-    list_display = (
-        'name',
-        'brand',
-        'product_type',
-        'generic_product',
-        'status',
-        'stored_count',
-        'deployed_count',
-        'picked_up_count',
-        'decommissioned_count',
-        'count',
-    )
+    list_display = ('name', 'brand', 'product_type', 'generic_product', 'status', 'stored_count', 'deployed_count',
+                    'picked_up_count', 'decommissioned_count', 'count',)
     history_list_display = list_display
 
 
 @register(Equipment)
 class EquipmentAdmin(SimpleHistoryAdmin):
-    list_display = ('id', 'name', 'status', 'stock', 'employee', 'order', )
+    list_display = ('id', 'name', 'status', 'stock', 'employee', 'order',)
     readonly_fields = ('counter', 'name',)
 
 
 @register(Stock)
 class StockAdmin(SimpleHistoryAdmin):
-    list_display = ('name', 'status', 'location', )
-
-
-@register(Location)
-class LocationAdmin(SimpleHistoryAdmin):
-    ...
-
-
-@register(Order)
-class OrderAdmin(SimpleHistoryAdmin):
-    ...
+    list_display = ('name', 'status', 'location',)
 
 
 @register(Category)
@@ -82,13 +66,28 @@ class CategoryAdmin(MPTTModelAdmin):
 
 @register(ProductType)
 class ProductTypeAdmin(SimpleHistoryAdmin):
-    list_display = ('name', )
+    list_display = ('name',)
 
 
 @register(Brand)
 class BrandAdmin(SimpleHistoryAdmin):
-    list_display = ('name', )
+    list_display = ('name',)
+
 
 @register(OrderGenericProduct)
 class OrderGenericProductAdmin(ModelAdmin):
     ...
+
+
+@register(Location)
+class LocationAdmin(SimpleHistoryAdmin):
+    ...
+
+
+@register(Order)
+class OrderAdmin(SimpleHistoryAdmin):
+    list_display = ['id', 'customer', 'location', 'date', 'employee_names']
+    inlines = (GenericProductInline,)
+
+    def employee_names(self, obj: Order):
+        return ', '.join(employee.username for employee in obj.employees.all())

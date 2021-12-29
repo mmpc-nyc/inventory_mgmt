@@ -441,7 +441,7 @@ class Order(models.Model):
 
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     status = models.CharField(max_length=16, choices=OrderStatus.choices, default=OrderStatus.ACTIVE)
-    employee = models.ManyToManyField(get_user_model(), related_name='order_employees')
+    employees = models.ManyToManyField(get_user_model(), related_name='order_employees')
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
     date = models.DateTimeField()
     history = HistoricalRecords()
@@ -473,3 +473,4 @@ class OrderGenericProduct(models.Model):
     class Meta:
         verbose_name = _('Order Generic Product')
         verbose_name_plural = _('Order Generic Product')
+        unique_together = ('order', 'generic_product')
