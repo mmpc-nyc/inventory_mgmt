@@ -186,7 +186,7 @@ class Command(BaseCommand):
                     if primary_keys:
                         queryset = queryset.filter(pk__in=primary_keys)
                     if count_only:
-                        yield queryset.order_by().count()
+                        yield queryset.order_by().quantity()
                     else:
                         yield from queryset.iterator()
 

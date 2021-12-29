@@ -215,19 +215,19 @@ class Product(models.Model):
 
     @property
     def stored_count(self):
-        return self.equipment_set.filter(status=Equipment.Status.STORED).count()
+        return self.equipment_set.filter(status=Equipment.Status.STORED).quantity()
 
     @property
     def deployed_count(self):
-        return self.equipment_set.filter(status=Equipment.Status.DEPLOYED).count()
+        return self.equipment_set.filter(status=Equipment.Status.DEPLOYED).quantity()
 
     @property
     def decommissioned_count(self):
-        return self.equipment_set.filter(status=Equipment.Status.DECOMMISSIONED).count()
+        return self.equipment_set.filter(status=Equipment.Status.DECOMMISSIONED).quantity()
 
     @property
     def picked_up_count(self):
-        return self.equipment_set.filter(status=Equipment.Status.PICKED_UP).count()
+        return self.equipment_set.filter(status=Equipment.Status.PICKED_UP).quantity()
 
     def __str__(self):
         return f'{self.name} | {self.brand.name}'
@@ -445,6 +445,8 @@ class Order(models.Model):
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
     date = models.DateTimeField()
     history = HistoricalRecords()
+    generic_products = models.ManyToManyField('GenericProduct', through='OrderGenericProduct',
+                                              related_name='generic_products')
 
     def save(self, **kwargs):
         # TODO Implement a method that only allows updates if the order is in active status.
@@ -456,3 +458,18 @@ class Order(models.Model):
 
     def __str__(self):
         return f'Order {self.id} for {self.customer} @ {self.date}'
+
+
+class OrderGenericProduct(models.Model):
+    """A link table for managing the required/recommended generic products needed to fill an order"""
+
+    order = models.ForeignKey('Order', on_delete=models.CASCADE)
+    generic_product = models.ForeignKey('GenericProduct', on_delete=models.CASCADE)
+    quantity = models.IntegerField()
+
+    def __str__(self):
+        return f'{self.order} | {self.generic_product} | {self.quantity}'
+
+    class Meta:
+        verbose_name = _('Order Generic Product')
+        verbose_name_plural = _('Order Generic Product')
