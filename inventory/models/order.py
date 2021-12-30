@@ -46,7 +46,7 @@ class Order(models.Model):
         verbose_name_plural = _('Orders')
 
     def __str__(self):
-        return f'Order {self.id} for {self.customer} @ {self.date}'
+        return f'{self.id}'
 
 
 class OrderGenericProduct(models.Model):
