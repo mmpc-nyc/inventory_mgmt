@@ -1,10 +1,9 @@
 from django.db.models import Model
 from django.http import HttpResponse
 from django.views.generic import DetailView, ListView
-from django_filters.views import FilterView
 
 
-class HTMXDetailView(DetailView):
+class AxiosDetailView(DetailView):
     def get_template_names(self):
         names = super().get_template_names()
         if self.request.headers.get('X-Axios-Header'):
@@ -21,7 +20,7 @@ class HTMXDetailView(DetailView):
         return super().get(request, *args, **kwargs)
 
 
-class HTMXListView(FilterView, ListView):
+class AxiosListView(ListView):
     def get_template_names(self):
         names = super().get_template_names()
         if self.request.headers.get('X-Axios-Header'):
