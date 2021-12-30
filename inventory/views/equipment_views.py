@@ -1,7 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.views.generic import CreateView, DeleteView, UpdateView
 
-from inventory.models import Equipment
+from inventory.models.equipment import Equipment
 from inventory.views.mixins import HTMXDetailView, HTMXListView
 
 

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from inventory.models import Brand
+from inventory.models.product import Brand
 
 
 class BrandSerializer(serializers.HyperlinkedModelSerializer):

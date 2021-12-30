@@ -1,4 +1,5 @@
-from inventory.models import Stock, Product, ProductType
+from inventory.models.stock import Stock
+from inventory.models.product import Product, ProductType
 from django.contrib.auth import get_user_model
 
 User = get_user_model()

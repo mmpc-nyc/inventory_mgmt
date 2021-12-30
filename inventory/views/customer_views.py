@@ -1,6 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.views.generic import DetailView, ListView, CreateView, DeleteView, UpdateView
-from inventory.models import Customer
+from inventory.models.customer import Customer
 
 
 class CustomerDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):

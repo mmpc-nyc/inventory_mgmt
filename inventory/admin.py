@@ -1,8 +1,14 @@
 from django.contrib.admin import register, ModelAdmin, TabularInline
 from simple_history.admin import SimpleHistoryAdmin
 from mptt.admin import MPTTModelAdmin
-from inventory.models import Product, Location, Stock, GenericProduct, Customer, Contact, Order, Category, ProductType, \
-    Brand, CustomerLocation, ContactEmail, ContactPhoneNumber, Equipment, OrderGenericProduct
+from inventory.models.contact import Contact, ContactPhoneNumber, ContactEmail
+from inventory.models.order import Order, OrderGenericProduct
+from inventory.models.stock import Stock
+from inventory.models.location import Location
+from inventory.models.equipment import Equipment
+from inventory.models.product import Product, ProductType, Brand
+from inventory.models.generic_product import GenericProduct, Category
+from inventory.models.customer import Customer, CustomerLocation
 
 
 class GenericProductInline(TabularInline):
@@ -43,8 +49,9 @@ class ContactAdmin(SimpleHistoryAdmin):
 
 @register(Product)
 class ProductAdmin(ModelAdmin):
-    list_display = ('name', 'brand', 'product_type', 'generic_product', 'status', 'stored_count', 'deployed_count',
-                    'picked_up_count', 'decommissioned_count', 'count',)
+    list_display = (
+    'name', 'brand', 'product_type', 'generic_product', 'status', 'stored_count', 'deployed_count', 'picked_up_count',
+    'decommissioned_count', 'count',)
     history_list_display = list_display
 
 

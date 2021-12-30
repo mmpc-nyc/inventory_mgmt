@@ -1,6 +1,6 @@
 from rest_framework import viewsets
 
-from inventory.models import Brand
+from inventory.models.product import Brand
 from api.serializers import BrandSerializer
 
 
