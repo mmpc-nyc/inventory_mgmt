@@ -49,9 +49,7 @@ class ContactAdmin(SimpleHistoryAdmin):
 
 @register(Product)
 class ProductAdmin(ModelAdmin):
-    list_display = (
-    'name', 'brand', 'product_type', 'generic_product', 'status', 'stored_count', 'deployed_count', 'picked_up_count',
-    'decommissioned_count', 'count',)
+    list_display = ('name', 'brand', 'product_type', 'generic_product', 'status', 'count',)
     history_list_display = list_display
 
 

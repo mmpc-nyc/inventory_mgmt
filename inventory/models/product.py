@@ -10,13 +10,11 @@ class Product(models.Model):
 
     class Status(models.TextChoices):
         """Product status choices
-        Active: Can be used and allows purchasing of new equipment
-        Inactive: The product is no longer active but is still stored in the inventory
-        Recall: The product is inactive and should no longer be used.
+        TODO  Rethink this
         """
-        ACTIVE = 'ACTIVE', _('Active')
-        INACTIVE = 'INACTIVE', _('Inactive')
-        RECALL = 'RECALL', _('Recall')
+        ACTIVE = 'ACTIVE', _('Active')  # Can be used and allows purchasing of new equipment
+        INACTIVE = 'INACTIVE', _('Inactive')  # The product is no longer active but is still stored in the inventory
+        RECALL = 'RECALL', _('Recall')  # The product is inactive and should no longer be used.
 
     name = models.CharField(max_length=150)
     generic_product = models.ForeignKey('GenericProduct', on_delete=models.PROTECT)
@@ -36,10 +34,6 @@ class Product(models.Model):
     @property
     def deployed_count(self):
         return self.equipment_set.filter(status=Equipment.Status.DEPLOYED).quantity()
-
-    @property
-    def decommissioned_count(self):
-        return self.equipment_set.filter(status=Equipment.Status.DECOMMISSIONED).quantity()
 
     @property
     def picked_up_count(self):

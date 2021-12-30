@@ -1,7 +1,7 @@
 const ax = axios.create({
     baseURL: 'http://localhost:8000/',
     timeout: 1000,
-    headers: {'X-Axios-Header': 1}
+    headers: {'X-Axios-Header': 1, 'X-CSRFToken': csrfToken}
 });
 
 const target = document.getElementById('equipment-list')

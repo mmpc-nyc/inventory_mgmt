@@ -1014,6 +1014,32 @@
     }
 },
 {
+    "model": "admin.logentry",
+    "pk": 79,
+    "fields": {
+        "action_time": "2021-12-29T22:46:03.863Z",
+        "user": 1,
+        "content_type": 35,
+        "object_id": "1",
+        "object_repr": "Order 1 for Marek Schir @ 2021-12-28 16:42:06-05:00",
+        "action_flag": 2,
+        "change_message": "[{\"added\": {\"name\": \"Order Generic Product\", \"object\": \"Order 1 for Marek Schir @ 2021-12-28 16:42:06-05:00 | 18 Inch Fan | 1\"}}, {\"added\": {\"name\": \"Order Generic Product\", \"object\": \"Order 1 for Marek Schir @ 2021-12-28 16:42:06-05:00 | 18 Inch Fan | 1\"}}, {\"added\": {\"name\": \"Order Generic Product\", \"object\": \"Order 1 for Marek Schir @ 2021-12-28 16:42:06-05:00 | 18 Inch Fan | 1\"}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 80,
+    "fields": {
+        "action_time": "2021-12-29T22:47:10.931Z",
+        "user": 1,
+        "content_type": 35,
+        "object_id": "1",
+        "object_repr": "Order 1 for Marek Schir @ 2021-12-28 16:42:06-05:00",
+        "action_flag": 2,
+        "change_message": "[{\"deleted\": {\"name\": \"Order Generic Product\", \"object\": \"Order 1 for Marek Schir @ 2021-12-28 16:42:06-05:00 | 18 Inch Fan | 1\"}}, {\"deleted\": {\"name\": \"Order Generic Product\", \"object\": \"Order 1 for Marek Schir @ 2021-12-28 16:42:06-05:00 | 18 Inch Fan | 1\"}}, {\"deleted\": {\"name\": \"Order Generic Product\", \"object\": \"Order 1 for Marek Schir @ 2021-12-28 16:42:06-05:00 | 18 Inch Fan | 1\"}}]"
+    }
+},
+{
     "model": "sessions.session",
     "pk": "0udv4vgtvr43hk4plbj6p4fffqq28c2a",
     "fields": {
@@ -1118,32 +1144,6 @@
     }
 },
 {
-    "model": "inventory.category",
-    "pk": 1,
-    "fields": {
-        "name": "Fan",
-        "slug": "fan",
-        "parent": null,
-        "lft": 1,
-        "rght": 4,
-        "tree_id": 1,
-        "level": 0
-    }
-},
-{
-    "model": "inventory.category",
-    "pk": 2,
-    "fields": {
-        "name": "Industrial Fan",
-        "slug": "industrial-fan",
-        "parent": 1,
-        "lft": 2,
-        "rght": 3,
-        "tree_id": 1,
-        "level": 1
-    }
-},
-{
     "model": "inventory.customer",
     "pk": 1,
     "fields": {
@@ -1183,141 +1183,6 @@
         "rght": 6,
         "tree_id": 3,
         "level": 0
-    }
-},
-{
-    "model": "inventory.historicalgenericproduct",
-    "pk": 1,
-    "fields": {
-        "id": 1,
-        "name": "18 Inch Fan",
-        "status": "ACTIVE",
-        "category": 2,
-        "history_date": "2021-12-27T17:21:16.899Z",
-        "history_change_reason": null,
-        "history_type": "+",
-        "history_user": 1
-    }
-},
-{
-    "model": "inventory.historicalgenericproduct",
-    "pk": 2,
-    "fields": {
-        "id": 2,
-        "name": "16 Inch Fan",
-        "status": "ACTIVE",
-        "category": 2,
-        "history_date": "2021-12-27T17:27:09.294Z",
-        "history_change_reason": null,
-        "history_type": "+",
-        "history_user": 1
-    }
-},
-{
-    "model": "inventory.historicalgenericproduct",
-    "pk": 3,
-    "fields": {
-        "id": 3,
-        "name": "24 Inch Fan",
-        "status": "ACTIVE",
-        "category": 2,
-        "history_date": "2021-12-27T17:29:07.841Z",
-        "history_change_reason": null,
-        "history_type": "+",
-        "history_user": 1
-    }
-},
-{
-    "model": "inventory.genericproduct",
-    "pk": 1,
-    "fields": {
-        "category": 2,
-        "name": "18 Inch Fan",
-        "status": "ACTIVE"
-    }
-},
-{
-    "model": "inventory.genericproduct",
-    "pk": 2,
-    "fields": {
-        "category": 2,
-        "name": "16 Inch Fan",
-        "status": "ACTIVE"
-    }
-},
-{
-    "model": "inventory.genericproduct",
-    "pk": 3,
-    "fields": {
-        "category": 2,
-        "name": "24 Inch Fan",
-        "status": "ACTIVE"
-    }
-},
-{
-    "model": "inventory.brand",
-    "pk": 1,
-    "fields": {
-        "name": "BASF"
-    }
-},
-{
-    "model": "inventory.brand",
-    "pk": 2,
-    "fields": {
-        "name": "Commercial Electric"
-    }
-},
-{
-    "model": "inventory.brand",
-    "pk": 3,
-    "fields": {
-        "name": "DEWALT"
-    }
-},
-{
-    "model": "inventory.brand",
-    "pk": 4,
-    "fields": {
-        "name": "RYOBI"
-    }
-},
-{
-    "model": "inventory.brand",
-    "pk": 5,
-    "fields": {
-        "name": "XtremepowerUS"
-    }
-},
-{
-    "model": "inventory.producttype",
-    "pk": 1,
-    "fields": {
-        "name": "Equipment"
-    }
-},
-{
-    "model": "inventory.product",
-    "pk": 1,
-    "fields": {
-        "name": "18 Inch Fan",
-        "generic_product": 1,
-        "brand": 1,
-        "product_type": 1,
-        "status": "ACTIVE",
-        "counter": 100
-    }
-},
-{
-    "model": "inventory.product",
-    "pk": 2,
-    "fields": {
-        "name": "18 Inch Fan",
-        "generic_product": 1,
-        "brand": 2,
-        "product_type": 1,
-        "status": "ACTIVE",
-        "counter": 100
     }
 },
 {
@@ -8985,6 +8850,101 @@
     }
 },
 {
+    "model": "inventory.historicalgenericproduct",
+    "pk": 1,
+    "fields": {
+        "id": 1,
+        "name": "18 Inch Fan",
+        "status": "ACTIVE",
+        "category": 2,
+        "history_date": "2021-12-27T17:21:16.899Z",
+        "history_change_reason": null,
+        "history_type": "+",
+        "history_user": 1
+    }
+},
+{
+    "model": "inventory.historicalgenericproduct",
+    "pk": 2,
+    "fields": {
+        "id": 2,
+        "name": "16 Inch Fan",
+        "status": "ACTIVE",
+        "category": 2,
+        "history_date": "2021-12-27T17:27:09.294Z",
+        "history_change_reason": null,
+        "history_type": "+",
+        "history_user": 1
+    }
+},
+{
+    "model": "inventory.historicalgenericproduct",
+    "pk": 3,
+    "fields": {
+        "id": 3,
+        "name": "24 Inch Fan",
+        "status": "ACTIVE",
+        "category": 2,
+        "history_date": "2021-12-27T17:29:07.841Z",
+        "history_change_reason": null,
+        "history_type": "+",
+        "history_user": 1
+    }
+},
+{
+    "model": "inventory.genericproduct",
+    "pk": 1,
+    "fields": {
+        "category": 2,
+        "name": "18 Inch Fan",
+        "status": "ACTIVE"
+    }
+},
+{
+    "model": "inventory.genericproduct",
+    "pk": 2,
+    "fields": {
+        "category": 2,
+        "name": "16 Inch Fan",
+        "status": "ACTIVE"
+    }
+},
+{
+    "model": "inventory.genericproduct",
+    "pk": 3,
+    "fields": {
+        "category": 2,
+        "name": "24 Inch Fan",
+        "status": "ACTIVE"
+    }
+},
+{
+    "model": "inventory.category",
+    "pk": 1,
+    "fields": {
+        "name": "Fan",
+        "slug": "fan",
+        "parent": null,
+        "lft": 1,
+        "rght": 4,
+        "tree_id": 1,
+        "level": 0
+    }
+},
+{
+    "model": "inventory.category",
+    "pk": 2,
+    "fields": {
+        "name": "Industrial Fan",
+        "slug": "industrial-fan",
+        "parent": 1,
+        "lft": 2,
+        "rght": 3,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
     "model": "inventory.historicallocation",
     "pk": 1,
     "fields": {
@@ -9016,6 +8976,130 @@
     }
 },
 {
+    "model": "inventory.historicalorder",
+    "pk": 1,
+    "fields": {
+        "id": 1,
+        "status": "ACTIVE",
+        "date": "2021-12-28T21:42:06Z",
+        "customer": 2,
+        "location": 1,
+        "history_date": "2021-12-28T21:42:16.951Z",
+        "history_change_reason": null,
+        "history_type": "+",
+        "history_user": 1
+    }
+},
+{
+    "model": "inventory.historicalorder",
+    "pk": 2,
+    "fields": {
+        "id": 1,
+        "status": "ACTIVE",
+        "date": "2021-12-28T21:42:06Z",
+        "customer": 2,
+        "location": 1,
+        "history_date": "2021-12-29T22:46:03.858Z",
+        "history_change_reason": null,
+        "history_type": "~",
+        "history_user": 1
+    }
+},
+{
+    "model": "inventory.historicalorder",
+    "pk": 3,
+    "fields": {
+        "id": 1,
+        "status": "ACTIVE",
+        "date": "2021-12-28T21:42:06Z",
+        "customer": 2,
+        "location": 1,
+        "history_date": "2021-12-29T22:47:10.928Z",
+        "history_change_reason": null,
+        "history_type": "~",
+        "history_user": 1
+    }
+},
+{
+    "model": "inventory.order",
+    "pk": 1,
+    "fields": {
+        "customer": 2,
+        "status": "ACTIVE",
+        "location": 1,
+        "date": "2021-12-28T21:42:06Z",
+        "employees": [
+            1
+        ]
+    }
+},
+{
+    "model": "inventory.product",
+    "pk": 1,
+    "fields": {
+        "name": "18 Inch Fan",
+        "generic_product": 1,
+        "brand": 1,
+        "product_type": 1,
+        "status": "ACTIVE",
+        "counter": 100
+    }
+},
+{
+    "model": "inventory.product",
+    "pk": 2,
+    "fields": {
+        "name": "18 Inch Fan",
+        "generic_product": 1,
+        "brand": 2,
+        "product_type": 1,
+        "status": "ACTIVE",
+        "counter": 100
+    }
+},
+{
+    "model": "inventory.producttype",
+    "pk": 1,
+    "fields": {
+        "name": "Equipment"
+    }
+},
+{
+    "model": "inventory.brand",
+    "pk": 1,
+    "fields": {
+        "name": "BASF"
+    }
+},
+{
+    "model": "inventory.brand",
+    "pk": 2,
+    "fields": {
+        "name": "Commercial Electric"
+    }
+},
+{
+    "model": "inventory.brand",
+    "pk": 3,
+    "fields": {
+        "name": "DEWALT"
+    }
+},
+{
+    "model": "inventory.brand",
+    "pk": 4,
+    "fields": {
+        "name": "RYOBI"
+    }
+},
+{
+    "model": "inventory.brand",
+    "pk": 5,
+    "fields": {
+        "name": "XtremepowerUS"
+    }
+},
+{
     "model": "inventory.historicalstock",
     "pk": 1,
     "fields": {
@@ -9036,34 +9120,6 @@
         "name": "MMPC Office",
         "status": "ACTIVE",
         "location": 1
-    }
-},
-{
-    "model": "inventory.historicalorder",
-    "pk": 1,
-    "fields": {
-        "id": 1,
-        "status": "ACTIVE",
-        "date": "2021-12-28T21:42:06Z",
-        "customer": 2,
-        "location": 1,
-        "history_date": "2021-12-28T21:42:16.951Z",
-        "history_change_reason": null,
-        "history_type": "+",
-        "history_user": 1
-    }
-},
-{
-    "model": "inventory.order",
-    "pk": 1,
-    "fields": {
-        "customer": 2,
-        "status": "ACTIVE",
-        "location": 1,
-        "date": "2021-12-28T21:42:06Z",
-        "employee": [
-            1
-        ]
     }
 },
 {

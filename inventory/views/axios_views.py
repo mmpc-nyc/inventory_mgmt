@@ -1,3 +1,4 @@
+from django.db.models import Model
 from django.http import HttpResponse
 from django.views.generic import DetailView, ListView
 from django_filters.views import FilterView
@@ -8,20 +9,21 @@ class HTMXDetailView(DetailView):
         names = super().get_template_names()
         if self.request.headers.get('X-Axios-Header'):
             names = [name.replace('/', '/partials/') for name in names]
-            print(names)
         return names
 
     def delete(self, request, *args, **kwargs):
-        return HttpResponse("")
+        obj: Model = self.get_object()
+        response = HttpResponse(obj)
+        obj.delete()
+        return response
 
     def put(self, request, *args, **kwargs):
-        print('triggered updated')
         return super().get(request, *args, **kwargs)
 
 
 class HTMXListView(FilterView, ListView):
     def get_template_names(self):
         names = super().get_template_names()
-        if self.request.htmx:
+        if self.request.headers.get('X-Axios-Header'):
             names = [name.replace('/', '/partials/') for name in names]
         return names

@@ -18,8 +18,15 @@ class Equipment(models.Model):
         DAMAGED = 'DAMAGED', _('Damaged')  # Equipment is damaged and needs repair
         DECOMMISSIONED = 'DECOMMISSIONED', _('Decommissioned')  # Unusable equipment that cannot be repaired.
 
-        _usable_conditions: set = {WORKING, }
-        _storable_conditions: set = {WORKING, DAMAGED}
+        @classmethod
+        @property
+        def _usable_conditions(cls) -> set:
+            return {cls.WORKING, }
+
+        @classmethod
+        @property
+        def _storable_conditions(cls) -> set:
+            return {cls.WORKING, cls.DAMAGED}
 
         @classmethod
         def deployable(cls, condition: str) -> bool:
