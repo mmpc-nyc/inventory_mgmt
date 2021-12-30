@@ -1,14 +1,14 @@
-<ul class="item-list equipment-list" id="equipment-list">
+<ul class="{{ model_name }}-list" id="{{ model_name }}-list">
     <li class="list-header">
-        <span class="equipment-name">Name</span>
-        <span class="equipment-product">Product</span>
-        <span class="equipment-status">Status</span>
-        <span class="equipment-brand">Brand</span>
-        <span class="equipment-order">Order</span>
-        <span class="equipment-employee">Employee</span>
-        <span class="equipment-actions">Actions</span>
+        <span class="name">Name</span>
+        <span class="product">Product</span>
+        <span class="status">Status</span>
+        <span class="brand">Brand</span>
+        <span class="order">Order</span>
+        <span class="employee">Employee</span>
+        <span class="actions">Actions</span>
     </li>
     {% for object in object_list %}
-        {% include 'inventory/partials/equipment_detail.html' with object=object counter=forloop.counter %}
+        {% include partial_detail_template with object=object counter=forloop.counter %}
     {% endfor %}
 </ul>

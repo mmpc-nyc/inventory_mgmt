@@ -1,12 +1,12 @@
-<ul class="stock_list" id="stock_list">
-    <li class="stock_list_detail">
-        <span class="item_list_heading">ID</span>
-        <span class="item_list_heading">Name</span>
-        <span class="item_list_heading">Status</span>
-        <span class="item_list_heading">Location</span>
+<ul class="{{ model_name }}-list" id="{{ model_name }}-list">
+    <li class="list-header">
+        <span class="id">ID</span>
+        <span class="name">Name</span>
+        <span class="status">Status</span>
+        <span class="location">Location</span>
+        <span class="actions">Actions</span>
     </li>
 {% for stock in stock_list %}
-    {% include 'inventory/partials/stock_list_detail.html' with stock=stock %}
+    {% include partial_detail_template with stock=stock %}
 {% endfor %}
-    <a href="{% url 'inventory:stock_create' %}"><i class="material-icons">add</i></a>
 </ul>

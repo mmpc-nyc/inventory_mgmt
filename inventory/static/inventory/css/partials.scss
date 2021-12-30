@@ -9,9 +9,7 @@
   display: flex;
   flex-direction: column;
   li {
-    padding-left: 1ch;
-    padding-right: 1ch;
-    height: 2rem;
+    padding: 1ch;
     align-content: center;
     border-bottom: 1px solid $color-light-300;
   }
@@ -48,30 +46,34 @@
     grid-template-columns: repeat(5, 1fr);
     grid-template-areas: 'name brand genericname category status actions';
 
-    .product-name {
+    .name {
       grid-area: name;
     }
 
-    .product-genericname {
+    .genericname {
       grid-area: genericname;
     }
 
-    .product-brand {
+    .brand {
       grid-area: brand;
     }
 
-    .product-status {
+    .status {
       grid-area: status;
     }
 
-    .product-actions {
+    .actions {
       grid-area: actions;
     }
 
-    .product-category {
+    .category {
       grid-area: category;
     }
   }
+}
+
+.equipment-list {
+  @include v-list;
 }
 
 .equipment-list > li {
@@ -79,31 +81,125 @@
   grid-template-columns: 2fr 2fr repeat(5, 1fr);
   grid-template-areas: 'name product brand status order employee actions';
 
-  .equipment-name {
+  .name {
     grid-area: name;
   }
 
-  .equipment-product {
+  .product {
     grid-area: product;
   }
 
-  .equipment-status {
+  .status {
     grid-area: status;
   }
 
-  .equipment-actions {
+  .actions {
     grid-area: actions;
   }
 
-  .equipment-order {
+  .order {
     grid-area: order;
   }
 
-  .equipment-employee {
+  .employee {
     grid-area: employee;
   }
 
-  .equipment-brand {
+  .brand {
     grid-area: brand;
+  }
+}
+
+
+.genericproduct-list {
+  @include v-list;
+
+  li {
+    @include h-list;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-areas: 'name category status actions';
+
+    .name {
+      grid-area: name;
+    }
+
+    .category {
+      grid-area: category;
+    }
+
+    .status {
+      grid-area: status;
+    }
+
+    .actions {
+      grid-area: actions;
+    }
+  }
+}
+
+.customer-list {
+  @include v-list;
+
+  li {
+    @include h-list;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-areas: 'name category status actions';
+
+    .name {
+      grid-area: name;
+    }
+
+    .category {
+      grid-area: category;
+    }
+
+    .status {
+      grid-area: status;
+    }
+
+    .actions {
+      grid-area: actions;
+    }
+  }
+}
+
+.order-list {
+  @include v-list;
+
+  li {
+    @include h-list;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas: 'order-num customer status  date actions'
+    'location location employees employees actions'
+  ;
+
+    .order-num {
+      grid-area: order-num;
+    }
+
+    .customer {
+      grid-area: customer;
+    }
+
+    .employees {
+      grid-area: employees;
+    }
+
+    .location {
+      grid-area: location;
+    }
+
+    .status {
+      grid-area: status;
+    }
+
+    .date {
+      grid-area: date;
+    }
+
+    .actions {
+      grid-area: actions;
+    }
   }
 }

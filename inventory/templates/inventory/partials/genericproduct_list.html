@@ -1,12 +1,11 @@
-<ul class="item-list genericproduct-list" id="genericproduct-list">
+<ul class="{{ model_name }}-list" id="{{ model_name }}-list">
     <li class="list-header">
-        <span class="genericproduct-name">Name</span>
-        <span class="genericproduct-generic-name">Generic Name</span>
-        <span class="genericproduct-category">Category</span>
-        <span class="genericproduct-status">Status</span>
-        <span class="genericproduct-actions">Actions</span>
+        <span class="name">Name</span>
+        <span class="category">Category</span>
+        <span class="status">Status</span>
+        <span class="actions">Actions</span>
     </li>
     {% for object in object_list %}
-        {% include 'inventory/partials/genericproduct_detail.html' with object=object %}
+        {% include partial_detail_template with object=object counter=forloop.counter%}
     {% endfor %}
 </ul>

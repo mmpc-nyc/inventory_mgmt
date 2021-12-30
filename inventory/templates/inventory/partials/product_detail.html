@@ -1,16 +1,11 @@
-<li id="product-{{ object.id }}" class="{% if counter and counter|divisibleby:2 %}even{% else %}odd{% endif %}">
-    <span class="product-name">
+<li id="{{ model_name }}-{{ object.id }}" class="{% if counter and counter|divisibleby:2 %}even{% else %}odd{% endif %}">
+    <span class="name">
         <a href="{% url 'inventory:product_detail' pk=object.id %}">{{ object.name }}</a></span>
-    <span class="product-brand">{{ object.brand.name }}</span>
-    <span class="product-genericname">{{ object.generic_product.name }}</span>
-    <span class="product-category">{{ object.generic_product.category.name }}</span>
-    <span class="product-status">{{ object.status }}</span>
-    <span class="product-actions">
-        <a
-            class="btn-danger"
-            hx-delete="{{ object.id }}"
-            hx-target="closest li"
-            hx-swap="outerHTML"
-    >Delete</a>
+    <span class="brand">{{ object.brand.name }}</span>
+    <span class="genericname">{{ object.generic_product.name }}</span>
+    <span class="category">{{ object.generic_product.category.name }}</span>
+    <span class="status">{{ object.status }}</span>
+    <span class="actions">
+        PICKUP
     </span>
 </li>

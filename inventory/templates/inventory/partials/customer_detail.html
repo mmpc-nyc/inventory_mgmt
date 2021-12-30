@@ -1,0 +1,10 @@
+<li id="{{ model_name }}-{{ object.id }}" class="{% if counter|divisibleby:2 %}even{% else %}odd{% endif %}">
+    <span class="name" id="name-{{ object.id }}">
+        <a href="{% url 'inventory:customer_detail' pk=object.id %}">{{ object.name }}</a>
+    </span>
+    <span class="company_name">{{ object.company_name }}</span>
+    <span class="parent">{{ object.parent.name }}</span>
+    <span class="actions" id="actions-{{ object_id }}">
+        TODO
+    </span>
+</li>

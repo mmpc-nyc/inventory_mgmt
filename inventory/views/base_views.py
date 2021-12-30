@@ -52,10 +52,10 @@ class CustomMixin(PermissionRequiredMixin, ContextMixin):
         return self.partial_list_template
 
     def get_partial_detail_template(self):
-        if hasattr(self, 'partial_list_template'):
-            return self.partial_list_template
-        self.partial_list_template = f'{self.generate_partial_template()}_detail.html'
-        return self.partial_list_template
+        if hasattr(self, 'partial_detail_template'):
+            return self.partial_detail_template
+        self.partial_detail_template = f'{self.generate_partial_template()}_detail.html'
+        return self.partial_detail_template
 
 
 class CustomDetailView(CustomMixin, AxiosDetailView):
