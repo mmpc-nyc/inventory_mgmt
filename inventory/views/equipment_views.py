@@ -1,38 +1,23 @@
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.views.generic import CreateView, DeleteView, UpdateView
-
 from inventory.models.equipment import Equipment
-from inventory.views.axios_views import HTMXDetailView, HTMXListView
+from inventory.views.base_views import CustomDetailView, CustomListView, CustomCreateView, CustomDeleteView, \
+    CustomUpdateView
 
 
-class EquipmentDetailView(LoginRequiredMixin, PermissionRequiredMixin, HTMXDetailView):
+class EquipmentDetailView(CustomDetailView):
     model = Equipment
-    extra_context = {'title': 'Equipment Detail'}
-    permission_required = {'any': ('inventory_view_equipment',)}
 
 
-class EquipmentListView(LoginRequiredMixin, PermissionRequiredMixin, HTMXListView):
+class EquipmentListView(CustomListView):
     model = Equipment
-    paginate_by = 50
-    template_name_suffix = '_list'
-    extra_context = {'title': 'Equipment List'}
-    permission_required = {'any': ('inventory_view_equipment',)}
 
 
-class EquipmentCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+class EquipmentCreateView(CustomCreateView):
     model = Equipment
-    template_name_suffix = '_create'
-    permission_required = {'any': ('inventory_create_equipment',)}
 
 
-class EquipmentDeleteView(PermissionRequiredMixin, CreateView, DeleteView):
+class EquipmentDeleteView(CustomDeleteView):
     model = Equipment
-    template_name_suffix = '_delete'
-    permission_required = {'any': ('inventory_delete_equipment',)}
 
 
-class EquipmentUpdateView(PermissionRequiredMixin, CreateView, UpdateView):
+class EquipmentUpdateView(CustomUpdateView):
     model = Equipment
-    template_name_suffix = '_update'
-    permission_required = {'any': ('inventory_update_equipment',)}
-    fields = ['name', 'order', 'status', 'employee', 'stock']

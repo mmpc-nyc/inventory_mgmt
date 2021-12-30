@@ -1,37 +1,24 @@
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-
-from django.views.generic import DetailView, ListView, CreateView, DeleteView, UpdateView
 from inventory.models.stock import Stock
+from inventory.views.base_views import CustomDetailView, CustomListView, CustomCreateView, CustomDeleteView, \
+    CustomUpdateView
 
 
-class StockDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
+class StockDetailView(CustomDetailView):
     model = Stock
-    template_name_suffix = '_detail'
-    extra_context = {'title': 'Stock Detail'}
-    permission_required = {'any': 'inventory_view_inventory'}
 
 
-class StockListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
+class StockListView(CustomListView):
     model = Stock
-    template_name_suffix = '_list'
-    extra_context = {'title': 'Stock List'}
-    permission_required = {'any': 'inventory_view_inventory'}
 
 
-class StockCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+class StockCreateView(CustomCreateView):
     model = Stock
-    template_name_suffix = '_create'
-    permission_required = {'any': ('inventory_create_inventory',)}
 
 
-class StockDeleteView(PermissionRequiredMixin, CreateView, DeleteView):
+class StockDeleteView(CustomDeleteView):
     model = Stock
-    template_name_suffix = '_delete'
-    permission_required = {'any': ('inventory_delete_inventory',)}
 
 
-class StockUpdateView(PermissionRequiredMixin, CreateView, UpdateView):
+class StockUpdateView(CustomUpdateView):
     model = Stock
-    template_name_suffix = '_update'
-    permission_required = {'any': ('inventory_update_inventory',)}
 

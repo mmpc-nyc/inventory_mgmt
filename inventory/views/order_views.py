@@ -1,35 +1,23 @@
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.views.generic import DetailView, ListView, CreateView, DeleteView, UpdateView
 from inventory.models.order import Order
+from inventory.views.base_views import CustomDetailView, CustomListView, CustomCreateView, CustomDeleteView, \
+    CustomUpdateView
 
 
-class OrderDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
+class OrderDetailView(CustomDetailView):
     model = Order
-    template_name_suffix = '_detail'
-    extra_context = {'title': 'Order Detail'}
-    permission_required = {'any': ('inventory_view_order',)}
 
 
-class OrderListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
+class OrderListView(CustomListView):
     model = Order
-    template_name_suffix = '_list'
-    extra_context = {'title': 'Order List'}
-    permission_required = {'any': ('inventory_view_order',)}
 
 
-class OrderCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+class OrderCreateView(CustomCreateView):
     model = Order
-    template_name_suffix = '_create'
-    permission_required = {'any': ('inventory_create_order',)}
 
 
-class OrderDeleteView(PermissionRequiredMixin, CreateView, DeleteView):
+class OrderDeleteView(CustomDeleteView):
     model = Order
-    template_name_suffix = '_delete'
-    permission_required = {'any': ('inventory_delete_order',)}
 
 
-class OrderUpdateView(PermissionRequiredMixin, CreateView, UpdateView):
+class OrderUpdateView(CustomUpdateView):
     model = Order
-    template_name_suffix = '_update'
-    permission_required = {'any': ('inventory_update_order',)}

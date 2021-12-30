@@ -1,38 +1,23 @@
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.views.generic import CreateView, DeleteView, UpdateView
-
 from inventory.models.generic_product import GenericProduct
-from inventory.views.axios_views import HTMXDetailView, HTMXListView
+from inventory.views.base_views import CustomDetailView, CustomListView, CustomCreateView, CustomDeleteView, \
+    CustomUpdateView
 
 
-class GenericProductDetailView(LoginRequiredMixin, PermissionRequiredMixin, HTMXDetailView):
+class GenericProductDetailView(CustomDetailView):
     model = GenericProduct
-    extra_context = {'title': 'GenericProduct Detail'}
-    permission_required = {'any': ('inventory_view_genericproduct',)}
 
 
-class GenericProductListView(LoginRequiredMixin, PermissionRequiredMixin, HTMXListView):
+class GenericProductListView(CustomListView):
     model = GenericProduct
-    paginate_by = 50
-    template_name_suffix = '_list'
-    extra_context = {'title': 'GenericProduct List'}
-    permission_required = {'any': ('inventory_view_genericproduct',)}
 
 
-class GenericProductCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+class GenericProductCreateView(CustomCreateView):
     model = GenericProduct
-    template_name_suffix = '_create'
-    permission_required = {'any': ('inventory_create_genericproduct',)}
 
 
-class GenericProductDeleteView(PermissionRequiredMixin, CreateView, DeleteView):
+class GenericProductDeleteView(CustomDeleteView):
     model = GenericProduct
-    template_name_suffix = '_delete'
-    permission_required = {'any': ('inventory_delete_genericproduct',)}
 
 
-class GenericProductUpdateView(PermissionRequiredMixin, CreateView, UpdateView):
+class GenericProductUpdateView(CustomUpdateView):
     model = GenericProduct
-    template_name_suffix = '_update'
-    permission_required = {'any': ('inventory_update_genericproduct',)}
-    fields = ['name', 'order', 'status', 'employee', 'stock', 'genericproduct_type', ]

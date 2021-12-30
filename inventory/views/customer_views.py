@@ -1,35 +1,24 @@
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.views.generic import DetailView, ListView, CreateView, DeleteView, UpdateView
+from django.views.generic import ListView
 from inventory.models.customer import Customer
+from inventory.views.base_views import CustomDeleteView, CustomCreateView, CustomDetailView, CustomUpdateView, \
+    CustomListView
 
 
-class CustomerDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
+class CustomerDetailView(CustomDetailView):
     model = Customer
-    template_name_suffix = '_detail'
-    extra_context = {'title': 'Customer Detail'}
-    permission_required = {'any': ('inventory_view_customer',)}
 
 
-class CustomerListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
+class CustomerListView(CustomListView):
     model = Customer
-    template_name_suffix = '_list'
-    extra_context = {'title': 'Customer List'}
-    permission_required = {'any': ('inventory_view_customer',)}
 
 
-class CustomerCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+class CustomerCreateView(CustomCreateView):
     model = Customer
-    template_name_suffix = '_create'
-    permission_required = {'any': ('inventory_create_customer',)}
 
 
-class CustomerDeleteView(PermissionRequiredMixin, CreateView, DeleteView):
+class CustomerDeleteView(CustomDeleteView):
     model = Customer
-    template_name_suffix = '_delete'
-    permission_required = {'any': ('inventory_delete_customer',)}
 
 
-class CustomerUpdateView(PermissionRequiredMixin, CreateView, UpdateView):
+class CustomerUpdateView(CustomUpdateView):
     model = Customer
-    template_name_suffix = '_update'
-    permission_required = {'any': ('inventory_update_customer',)}
