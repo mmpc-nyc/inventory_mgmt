@@ -12,7 +12,6 @@
 ### Transaction
 
 ## Actions
-### Pickup
 ```
 Class Order:
 
