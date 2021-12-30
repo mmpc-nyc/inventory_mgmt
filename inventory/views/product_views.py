@@ -3,7 +3,7 @@ from django.views.generic import CreateView, DeleteView, UpdateView
 
 from inventory.filters import ProductFilter
 from inventory.models.product import Product
-from inventory.views.mixins import HTMXDetailView, HTMXListView
+from inventory.views.axios_views import HTMXDetailView, HTMXListView
 
 
 class ProductDetailView(LoginRequiredMixin, PermissionRequiredMixin, HTMXDetailView):

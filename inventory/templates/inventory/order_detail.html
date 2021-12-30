@@ -3,3 +3,7 @@
 {% block main %}
     {% include 'inventory/components/qr_scanner.html' %}
 {% endblock %}
+
+{% block javascript %}
+    <script src="{% static 'inventory/js/axios.js' %}" defer></script>
+{% endblock %}

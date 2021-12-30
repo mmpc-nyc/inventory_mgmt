@@ -1,4 +1,6 @@
-# Inventory Management
+#Inventory Management for tracking Equpment
+
+## Models
 
 ## Customer
 ## Order

@@ -47,6 +47,35 @@ class Equipment(models.Model):
     counter = models.IntegerField(blank=True, null=True)
     history = HistoricalRecords()
 
+    """
+
+    def pickup(User):
+        is_authenticated(User)
+        is_authorized(User)
+
+        check_product_status(Product)
+        check_generic_product_status(GenericProduct)
+
+        Equipment.User = User
+        Equipment.Status = PICKED_UP
+
+    def deploy():
+        is_authenticated(User)
+        is_authorized(User)
+        is_deployable(Equipment)
+
+        Equipment.Status = DEPLOYED
+
+    def store():
+        is_authenticated(User)
+        is_authorized(User)
+        is_storable(Equipment)
+
+        Equipment.User = None
+        Equipment.Status = STORED
+        
+    """
+
     def store(self, stock_id: int = None) -> 'Equipment':
         """Stores the equipment at a stock location. By default the equipment is returned to it's
         original location. If a stock_id is supplied the equipment is moved to a new equipment location with
@@ -89,7 +118,6 @@ class Equipment(models.Model):
 
     def decommission(self) -> 'Equipment':
         """Decommissions the item and removes all employee, inventory, and location associations"""
-        notification_message: str = ''  # TODO  Add notification message for decommissioning an item.
         self.employee = None
         self.stock = None
         self.status = self.Status.DECOMMISSIONED

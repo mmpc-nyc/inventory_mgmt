@@ -44,6 +44,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_htmx.middleware.HtmxMiddleware',
+    'inventory.middleware.AxiosMiddleware',
 ]
 
 ROOT_URLCONF = 'core.urls'

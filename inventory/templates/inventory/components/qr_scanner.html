@@ -4,7 +4,7 @@
 
 </ul>
 <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-<script>
+<script defer>
     let equipmentSet = new Map();
 
     function onScanSuccess(decodedText, decodedResult) {
@@ -12,7 +12,7 @@
         if (!equipmentSet.has(decodedText)){
             equipmentSet.set(decodedText, 'x');
             console.log(`Adding ${decodedText}`)
-            htmx.ajax('GET', decodedText, '#equipment-list')
+            appendChildEnd(decodedText)
         }
     }
 
