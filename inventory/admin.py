@@ -1,14 +1,15 @@
 from django.contrib.admin import register, ModelAdmin, TabularInline
-from simple_history.admin import SimpleHistoryAdmin
 from mptt.admin import MPTTModelAdmin
-from inventory.models.contact import Contact, ContactPhoneNumber, ContactEmail
-from inventory.models.order import Order, OrderGenericProduct
-from inventory.models.stock import Stock
-from inventory.models.location import Location
+from simple_history.admin import SimpleHistoryAdmin
+
+from inventory.models.contact import Contact, ContactPhoneNumber, ContactEmail, PhoneNumber
+from inventory.models.customer import Customer, CustomerLocation, CustomerContact
 from inventory.models.equipment import Equipment
-from inventory.models.product import Product, ProductType, Brand
 from inventory.models.generic_product import GenericProduct, Category
-from inventory.models.customer import Customer, CustomerLocation
+from inventory.models.location import Location
+from inventory.models.order import Order, OrderGenericProduct
+from inventory.models.product import Product, ProductType, Brand
+from inventory.models.stock import Stock
 
 
 class GenericProductInline(TabularInline):
@@ -55,7 +56,7 @@ class ProductAdmin(ModelAdmin):
 
 @register(Equipment)
 class EquipmentAdmin(SimpleHistoryAdmin):
-    list_display = ('id', 'name', 'status', 'stock', 'employee', 'order',)
+    list_display = ('id', 'name', 'status', 'stock', 'employee',)
     readonly_fields = ('counter', 'name',)
 
 
@@ -89,10 +90,20 @@ class LocationAdmin(SimpleHistoryAdmin):
     ...
 
 
+@register(PhoneNumber)
+class PhoneNumberAdmin(ModelAdmin):
+    ...
+
+
 @register(Order)
 class OrderAdmin(SimpleHistoryAdmin):
-    list_display = ['id', 'customer', 'location', 'date', 'employee_names']
+    list_display = ['id', 'customer', 'location', 'start_date', 'return_date', 'end_date', 'employee_names']
     inlines = (GenericProductInline,)
 
     def employee_names(self, obj: Order):
         return ', '.join(employee.username for employee in obj.employees.all())
+
+
+@register(CustomerContact)
+class CustomerContactAdmin(ModelAdmin):
+    ...
