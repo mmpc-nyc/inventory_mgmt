@@ -15,18 +15,17 @@ import EquipmentListItem from "@/views/EquipmentListItem";
 export default {
   components: {EquipmentListItem},
   data: function () {
-    return {
-      equipments: null
+    return {}
+  },
+  computed: {
+    equipments() {
+      return this.$store.state.equipments.equipments
     }
   },
-  async created() {
-    this.equipments = await this.getEquipmentList()
+  created() {
+    this.$store.dispatch("equipments/getList")
   },
   methods: {
-    async getEquipmentList() {
-      const response = await axios.get('http://localhost:8000/api/brands/')
-      return response.data;
-    },
     deleteEquipment(equipment) {
       axios.delete(`http://localhost:8000/api/brands/${equipment.id}`)
           .then((response) => {
