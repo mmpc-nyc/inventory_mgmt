@@ -1,6 +1,8 @@
-from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from inventory.models import Equipment, GenericProduct, Category, Contact, Customer, Location, Email, Order, Stock
+from rest_framework import serializers
+
+from inventory.models import Equipment, GenericProduct, Category, Contact, Customer, Location, Email, Order, Stock, \
+    CustomerLocation, CustomerContact, PhoneNumber
 from inventory.models.product import Brand, Product, ProductType
 
 User = get_user_model()
@@ -20,7 +22,7 @@ class LocationSerializer(serializers.HyperlinkedModelSerializer):
 
 class PhoneNumberSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = Location
+        model = PhoneNumber
         fields = ['id', 'url', 'phone_number']
 
 
@@ -31,21 +33,33 @@ class EmailSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ContactSerializer(serializers.HyperlinkedModelSerializer):
-    emails = EmailSerializer(many=True, )
-    phone_numbers = PhoneNumberSerializer(many=True, )
+    emails = EmailSerializer(many=True, read_only=True)
+    phone_numbers = PhoneNumberSerializer(many=True, read_only=True)
 
     class Meta:
         model = Contact
         fields = ['id', 'url', 'first_name', 'last_name', 'emails', 'phone_numbers']
 
 
+class CustomerLocationSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = CustomerLocation
+        fields = ['customer', 'location', ]
+
+
+class CustomerContactSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = CustomerContact
+        fields = ['customer', 'contact']
+
+
 class CustomerSerializer(serializers.HyperlinkedModelSerializer):
-    contacts = ContactSerializer(many=True, )
-    locations = LocationSerializer(many=True, )
+    contacts = ContactSerializer(many=True, read_only=True)
+    locations = LocationSerializer(many=True, read_only=True)
 
     class Meta:
         model = Customer
-        fields = ['id', 'url', 'first_name', 'last_name', 'company_name', 'contacts', 'parent', 'locations']
+        fields = ['id', 'url', 'first_name', 'last_name', 'company_name', 'parent', 'contacts', 'locations']
 
 
 class BrandSerializer(serializers.HyperlinkedModelSerializer):
@@ -102,9 +116,11 @@ class EquipmentSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class OrderSerializer(serializers.HyperlinkedModelSerializer):
-    customer = CustomerSerializer()
-    location = LocationSerializer()
+    location = LocationSerializer(read_only=True)
+    customer = CustomerSerializer(read_only=True)
+    equipments = EquipmentSerializer(many=True)
+    # generic_products = GenericProductSerializer(many=True)
 
     class Meta:
         model = Order
-        fields = ['id', 'url', 'customer', 'status', 'location', 'date']
+        fields = ['id', 'url', 'status','customer', 'location', 'start_date', 'return_date', 'end_date']
