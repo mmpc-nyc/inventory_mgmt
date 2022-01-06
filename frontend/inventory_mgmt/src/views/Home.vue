@@ -5,7 +5,7 @@
 module.exports = {
   data: function (){
     return {
-      text: 'Hellow World'
+      text: 'Hello World'
     }
   }
 }

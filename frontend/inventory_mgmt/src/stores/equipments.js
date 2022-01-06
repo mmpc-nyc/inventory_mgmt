@@ -1,39 +1,85 @@
 import axios from "axios";
 
+
+const BASE_URL = 'http://localhost:8000/api/equipments'
+const instance = axios.create({
+    timeout: 1000,
+    headers: {'Content-Type': 'application/json'}
+})
+
 const equipments = {
     state() {
-        return {}
+        return {
+            equipments: new Map,
+            equipment: null,
+        }
+
     },
     namespaced: true,
     actions: {
 
         getList({commit}) {
-            axios.get('http://localhost:8000/api/equipments/').then(
+            instance.get('http://localhost:8000/api/equipments/').then(
                 response => {
-                    commit('GET_ALL', response.data)
+                    commit('getList', response.data)
                 }
             ).catch(
-                () => {
-                    return 'Failed to connect to API'
+                (response) => {
+                    return response
                 }
             )
         },
+        get({commit}, equipmentId) {
+            instance.get(`${BASE_URL}/${equipmentId}`).then(
+                response => {
+                    commit('get', response.data)
+                }
+            ).catch(
+                (response) => {
+                    return response
+                }
+            )
+        },
+        checkIn({state, commit}, equipmentId) {
+            if (state.equipments.has(equipmentId)) {
+                return
+            }
+            instance.get(`${BASE_URL}/${equipmentId}`).then(
+                response => {
+                    commit('checkIn', response.data)
+                }
+            ).catch(
+                (response) => {
+                    return response
+                }
+            )
+
+
+        },
         deleteEquipment(equipment, {commit}) {
-            axios.delete(`http://localhost:8000/api/brands/${equipment.id}`)
+            instance.delete(`http://localhost:8000/api/equipments/${equipment.id}`)
                 .then(() => {
-                    commit('DELETE_ONE', equipment)
+                    commit('delete', equipment)
                 })
         }
     },
     mutations: {
-        GET_ALL(state, equipments) {
+        getList(state, equipments) {
             state.equipments = equipments
         },
-        DELETE_ONE(state, equipment) {
+        get(state, equipment) {
+            state.equipment = equipment
+        },
+        delete(state, equipment) {
             state.equipments = equipments.filter(eq => {
                 return eq === equipment
             })
+        },
+        checkIn(state, equipment) {
+            console.log(state.equipments)
+            state.equipments.set(equipment.id, equipment)
         }
+
     }
 }
 

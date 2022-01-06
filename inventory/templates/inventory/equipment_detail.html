@@ -2,5 +2,5 @@
 {% load qr_code %}
 
 {% block main %}
-    {% qr_from_text request.path %}
+    {% qr_from_text equipment.id %}
 {% endblock %}
