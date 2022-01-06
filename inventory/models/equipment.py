@@ -17,6 +17,7 @@ class Equipment(models.Model):
         WORKING = 'WORKING', _('Working')  # Equipment is in good working condition
         DAMAGED = 'DAMAGED', _('Damaged')  # Equipment is damaged and needs repair
         DECOMMISSIONED = 'DECOMMISSIONED', _('Decommissioned')  # Unusable equipment that cannot be repaired.
+        LOST = 'LOST', _('Lost')  # Equipment cannot be found. Lost equipment can be picked up.
 
         @classmethod
         @property
@@ -42,6 +43,7 @@ class Equipment(models.Model):
         STORED = 'STORED', _('Stocked')  # Equipment stored in Stock
         DEPLOYED = 'DEPLOYED', _('Deployed')  # Equipment is currently deployed a order location
         PICKED_UP = 'PICKED_UP', _('Picked Up')  # Equipment is with the employee
+        MISSING = 'MISSING', _('Missing')  # Equipment cannot be fucked.
 
     name = models.CharField(max_length=150, blank=True, null=True)
     product = models.ForeignKey('Product', on_delete=models.CASCADE)
