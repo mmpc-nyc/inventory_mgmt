@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const users = {
+const userStore = {
     state() {
         return {}
     },
@@ -28,4 +28,4 @@ const users = {
     }
 }
 
-export default users
+export default userStore
