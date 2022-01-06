@@ -50,9 +50,8 @@ class Equipment(models.Model):
     status = models.CharField(max_length=16, choices=Status.choices, default=Status.STORED)
     condition = models.CharField(max_length=48, choices=Condition.choices, default=Condition.WORKING)
     stock = models.ForeignKey('Stock', on_delete=models.SET_NULL, blank=True, null=True)
-    employee = models.ForeignKey(get_user_model(), related_name='product_employee', on_delete=models.SET_NULL,
+    employee = models.ForeignKey(get_user_model(), related_name='equipment_employee', on_delete=models.SET_NULL,
                                  null=True, blank=True)
-    order = models.ForeignKey('Order', on_delete=models.SET_NULL, null=True, blank=True)
     counter = models.IntegerField(blank=True, null=True)
     history = HistoricalRecords()
 
