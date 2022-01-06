@@ -1,9 +1,10 @@
 <template>
   <ul>
     <EquipmentListItem
-        v-for="equipment in equipments"
+        v-for="[id, equipment] in equipments"
         :key="equipment.id"
         :equipment="equipment"
+        :id="id"
     ></EquipmentListItem>
   </ul>
 </template>
@@ -11,6 +12,7 @@
 import EquipmentListItem from "@/components/EquipmentListItem";
 
 export default {
+  name: 'EquipmentList',
   components: {EquipmentListItem},
   props: ["equipments"],
 }
