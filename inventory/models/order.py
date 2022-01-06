@@ -14,6 +14,7 @@ class Order(models.Model):
         NEW = 'NEW', _('New')
         ASSIGNED = 'ASSIGNED', _('Assigned')
         ACTIVE = 'ACTIVE', _('Active')
+        DEPLOYED = 'DEPLOYED', _('Deployed')
         COMPLETED = 'COMPLETED', _('Completed')
         CANCELED = 'CANCELED', _('Canceled')
 
@@ -21,13 +22,17 @@ class Order(models.Model):
     status = models.CharField(max_length=16, choices=Status.choices, default=Status.NEW)
     employees = models.ManyToManyField(get_user_model(), related_name='order_employees')
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
-    date = models.DateTimeField()
-    history = HistoricalRecords()
+    start_date = models.DateTimeField()
+    return_date = models.DateTimeField(blank=True, null=True)
+    end_date = models.DateTimeField()
+
+    equipments = models.ManyToManyField('Equipment', through='OrderEquipment', related_name='equipments')
     generic_products = models.ManyToManyField('GenericProduct', through='OrderGenericProduct',
                                               related_name='generic_products')
+    history = HistoricalRecords()
 
     def get_deployed_equipment(self):
-        return self.equipment_set.filter(status=Equipment.Status.DEPLOYED)
+        return self.equipments.filter(status=Equipment.Status.DEPLOYED)
 
     def missing_equipment_check(self, mark_deployed_as_missing):
         """If there is any equipment that is still deployed the completion will fail unless the
@@ -54,6 +59,7 @@ class Order(models.Model):
 
     def save(self, **kwargs):
         # TODO Implement a method that only allows updates if the order is in active status.
+        self.return_date = self.return_date or self.end_date
         if self.status:
             ...
         return super().save(**kwargs)
@@ -80,3 +86,19 @@ class OrderGenericProduct(models.Model):
         verbose_name = _('Order Generic Product')
         verbose_name_plural = _('Order Generic Product')
         unique_together = ('order', 'generic_product')
+
+
+class OrderEquipment(models.Model):
+    """A link table for mapping the equipment associated with the order"""
+
+    order = models.ForeignKey('Order', on_delete=models.CASCADE)
+    equipment = models.ForeignKey('Equipment', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.order} | {self.equipment}'
+
+    class Meta:
+        verbose_name = _('Order Equipment')
+        verbose_name_plural = _('Order Equipment')
+        unique_together = ('order', 'equipment')
+
