@@ -7,7 +7,7 @@ const instance = axios.create({
     headers: {'Content-Type': 'application/json'}
 })
 
-const equipments = {
+const equipmentStore = {
     state() {
         return {
             equipments: new Map,
@@ -71,16 +71,14 @@ const equipments = {
             state.equipment = equipment
         },
         delete(state, equipment) {
-            state.equipments = equipments.filter(eq => {
-                return eq === equipment
-            })
+            state.equipments.delete(equipment.id)
         },
         checkIn(state, equipment) {
             console.log(state.equipments)
             state.equipments.set(equipment.id, equipment)
-        }
+        },
 
     }
 }
 
-export default equipments
+export default equipmentStore
