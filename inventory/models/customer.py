@@ -11,8 +11,8 @@ class Customer(MPTTModel):
     first_name = models.CharField(max_length=150)
     last_name = models.CharField(max_length=150)
     company_name = models.CharField(max_length=150, blank=True, default='')
-    contact = models.ManyToManyField('Contact', through='CustomerContact', related_name='contact')
-    location = models.ManyToManyField('Location', through='CustomerLocation', related_name='location')
+    contacts = models.ManyToManyField('Contact', through='CustomerContact', related_name='contact')
+    locations = models.ManyToManyField('Location', through='CustomerLocation', related_name='location')
     parent = TreeForeignKey('self', on_delete=models.PROTECT, blank=True, null=True)
 
     def get_absolute_url(self):
