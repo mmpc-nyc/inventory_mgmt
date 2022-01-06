@@ -2,7 +2,7 @@
   <TheHeader>
   <div id="nav">
     <router-link to="/">Home</router-link> |
-    <router-link :to="{name: 'equipments'}">Equipments</router-link>
+    <router-link :to="{name: 'my_equipment'}">Equipments</router-link>
   </div>
     </TheHeader>
   <router-view/>
