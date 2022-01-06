@@ -18,3 +18,7 @@ class StockLogicError(BaseError):
 
 class ProductOrderAssignmentError(BaseError):
     """Product order assignment error"""
+
+
+class OrderCompletionError(BaseError):
+    """A error occurred during the order completion process"""
