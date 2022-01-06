@@ -3,7 +3,8 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from simple_history.models import HistoricalRecords
 
-from inventory.models import Customer, Location
+from inventory.exceptions import OrderCompletionError
+from inventory.models import Customer, Location, Equipment
 
 
 class Order(models.Model):
@@ -25,15 +26,31 @@ class Order(models.Model):
     generic_products = models.ManyToManyField('GenericProduct', through='OrderGenericProduct',
                                               related_name='generic_products')
 
-    def complete(self):
-        """Completes the order"""
-        #  TODO  Implement this function
-        ...
+    def get_deployed_equipment(self):
+        return self.equipment_set.filter(status=Equipment.Status.DEPLOYED)
 
-    def cancel(self):
+    def missing_equipment_check(self, mark_deployed_as_missing):
+        """If there is any equipment that is still deployed the completion will fail unless the
+        "mark_deployed_as_missing" is true then the status of the remaining deployed equipment will
+        be set to MISSING"""
+
+        deployed_equipment = self.get_deployed_equipment()
+        if deployed_equipment:
+            if not mark_deployed_as_missing:
+                raise OrderCompletionError('Not all equipment has been picked up')
+            deployed_equipment.update(status=Equipment.Status.MISSING)
+
+    def complete(self, mark_deployed_as_missing: bool = False):
+        """Completes the order"""
+        self.missing_equipment_check(mark_deployed_as_missing=mark_deployed_as_missing)
+        self.status = self.Status.COMPLETED
+        self.save()
+
+    def cancel(self, mark_deployed_as_missing: bool = False):
         """Cancels the order"""
-        #  TODO  Implement this function
-        ...
+        self.missing_equipment_check(mark_deployed_as_missing=mark_deployed_as_missing)
+        self.status = self.Status.CANCELED
+        self.save()
 
     def save(self, **kwargs):
         # TODO Implement a method that only allows updates if the order is in active status.
