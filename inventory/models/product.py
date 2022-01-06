@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse_lazy
+from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 
 from inventory.models.equipment import Equipment
@@ -23,19 +24,19 @@ class Product(models.Model):
     status = models.CharField(max_length=16, choices=Status.choices, default=Status.ACTIVE)
     counter = models.IntegerField(default=0)
 
-    @property
+    @cached_property
     def count(self):
         return self.equipment_set.count()
 
-    @property
+    @cached_property
     def stored_count(self):
         return self.equipment_set.filter(status=Equipment.Status.STORED).quantity()
 
-    @property
+    @cached_property
     def deployed_count(self):
         return self.equipment_set.filter(status=Equipment.Status.DEPLOYED).quantity()
 
-    @property
+    @cached_property
     def picked_up_count(self):
         return self.equipment_set.filter(status=Equipment.Status.PICKED_UP).quantity()
 
