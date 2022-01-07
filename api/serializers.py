@@ -119,8 +119,9 @@ class OrderSerializer(serializers.HyperlinkedModelSerializer):
     location = LocationSerializer(read_only=True)
     customer = CustomerSerializer(read_only=True)
     equipments = EquipmentSerializer(many=True)
-    # generic_products = GenericProductSerializer(many=True)
+    generic_products = GenericProductSerializer(many=True)
 
     class Meta:
         model = Order
-        fields = ['id', 'url', 'status','customer', 'location', 'start_date', 'return_date', 'end_date']
+        fields = ['id', 'url', 'status', 'customer', 'location', 'start_date', 'return_date', 'end_date', 'equipments',
+                  'generic_products']
