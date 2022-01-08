@@ -20,7 +20,7 @@ class Order(models.Model):
     class Status(models.TextChoices):
         NEW = 'New', _('New')
         ASSIGNED = 'Assigned', _('Assigned')
-        ACTIVE = 'Active', _('Active')
+        IN_PROGRESS = 'In Progress', _('In Progress')
         COMPLETED = 'Completed', _('Completed')
         CANCELED = 'Canceled', _('Canceled')
 
@@ -53,6 +53,14 @@ class Order(models.Model):
 
     def complete(self, ignore_issues: bool = False):
         """Completes the order"""
+        if self.status in {self.Status.COMPLETED, self.Status.CANCELED}:
+            raise OrderCompletionError(f'Cannot complete order with status of {self.status}')
+        if self.activity == self.Activity.DEPLOY:
+            self._complete_deploy_activity(ignore_issues=ignore_issues)
+        elif self.activity == self.Activity.PICKUP:
+            self._complete_pickup_activity(ignore_issues=ignore_issues)
+        elif self.activity == self.Activity.INSPECT:
+            self._complete_inspection_activity(ignore_issues=ignore_issues)
         self.status = self.Status.COMPLETED
         self.save()
 
