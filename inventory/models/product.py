@@ -13,9 +13,9 @@ class Product(models.Model):
         """Product status choices
         TODO  Rethink this
         """
-        ACTIVE = 'ACTIVE', _('Active')  # Can be used and allows purchasing of new equipment
-        INACTIVE = 'INACTIVE', _('Inactive')  # The product is no longer active but is still stored in the inventory
-        RECALL = 'RECALL', _('Recall')  # The product is inactive and should no longer be used.
+        ACTIVE = 'Active', _('Active')  # Can be used and allows purchasing of new equipment
+        INACTIVE = 'Inactive', _('Inactive')  # The product is no longer active but is still stored in the inventory
+        RECALL = 'Recall', _('Recall')  # The product is inactive and should no longer be used.
 
     name = models.CharField(max_length=150)
     generic_product = models.ForeignKey('GenericProduct', on_delete=models.PROTECT)

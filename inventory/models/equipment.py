@@ -14,10 +14,10 @@ class Equipment(models.Model):
     class Condition(models.TextChoices):
         """Physical condition of the product that determines if it can be used"""
 
-        WORKING = 'WORKING', _('Working')  # Equipment is in good working condition
-        DAMAGED = 'DAMAGED', _('Damaged')  # Equipment is damaged and needs repair
-        DECOMMISSIONED = 'DECOMMISSIONED', _('Decommissioned')  # Unusable equipment that cannot be repaired.
-        LOST = 'LOST', _('Lost')  # Equipment cannot be found. Lost equipment can be picked up.
+        WORKING = 'Working', _('Working')  # Equipment is in good working condition
+        DAMAGED = 'Damaged', _('Damaged')  # Equipment is damaged and needs repair
+        DECOMMISSIONED = 'Decommissioned', _('Decommissioned')  # Unusable equipment that cannot be repaired.
+        LOST = 'Lost', _('Lost')  # Equipment cannot be found. Lost equipment can be picked up.
 
         @classmethod
         @property

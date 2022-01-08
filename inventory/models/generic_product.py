@@ -19,9 +19,9 @@ class GenericProduct(models.Model):
         Recall: The product is inactive and should no longer be used.
         Picked Up: Product is currently with the employee. Not at any customer location or inventory.
         """
-        ACTIVE = 'ACTIVE', _('Active')
-        INACTIVE = 'INACTIVE', _('Inactive')
-        RECALL = 'RECALL', _('Recall')
+        ACTIVE = 'Active', _('Active')
+        INACTIVE = 'Inactive', _('Inactive')
+        RECALL = 'Recall', _('Recall')
 
     category = TreeForeignKey('Category', on_delete=models.SET_NULL, null=True, blank=True)
     name = models.CharField(max_length=150, unique=True)

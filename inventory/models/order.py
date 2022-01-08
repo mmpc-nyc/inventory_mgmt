@@ -10,13 +10,18 @@ from inventory.models import Customer, Location, Equipment
 class Order(models.Model):
     """Model for scheduling orders to allow easier assignment of inventory, services and products"""
 
+    class OrderType(models.TextChoices):
+        DEPLOY = 'Deploy', _('Deploy')
+        PICKUP = 'Pickup', _('Pickup')
+        INSPECT = 'Inspect', _('Inspect')
+
     class Status(models.TextChoices):
-        NEW = 'NEW', _('New')
-        ASSIGNED = 'ASSIGNED', _('Assigned')
-        ACTIVE = 'ACTIVE', _('Active')
-        DEPLOYED = 'DEPLOYED', _('Deployed')
-        COMPLETED = 'COMPLETED', _('Completed')
-        CANCELED = 'CANCELED', _('Canceled')
+        NEW = 'New', _('New')
+        ASSIGNED = 'Assigned', _('Assigned')
+        ACTIVE = 'Active', _('Active')
+        DEPLOYED = 'Deployed', _('Deployed')
+        COMPLETED = 'Completed', _('Completed')
+        CANCELED = 'Canceled', _('Canceled')
 
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     status = models.CharField(max_length=16, choices=Status.choices, default=Status.NEW)
@@ -25,7 +30,6 @@ class Order(models.Model):
     start_date = models.DateTimeField()
     return_date = models.DateTimeField(blank=True, null=True)
     end_date = models.DateTimeField()
-
     equipments = models.ManyToManyField('Equipment', through='OrderEquipment', related_name='equipments')
     generic_products = models.ManyToManyField('GenericProduct', through='OrderGenericProduct',
                                               related_name='generic_products')
@@ -101,4 +105,3 @@ class OrderEquipment(models.Model):
         verbose_name = _('Order Equipment')
         verbose_name_plural = _('Order Equipment')
         unique_together = ('order', 'equipment')
-

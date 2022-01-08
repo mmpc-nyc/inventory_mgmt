@@ -16,9 +16,9 @@ class Stock(models.Model):
         Full: The inventory location is currently full. No items can be dropped off.
         """
 
-        ACTIVE = 'ACTIVE', _('Active')
-        INACTIVE = 'INACTIVE', _('Inactive')
-        FULL = 'FULL', _('Full')
+        ACTIVE = 'Active', _('Active')
+        INACTIVE = 'Inactive', _('Inactive')
+        FULL = 'Full', _('Full')
 
     name = models.CharField(max_length=150, blank=True)
     status = models.CharField(max_length=16, choices=StockStatus.choices, default=StockStatus.ACTIVE)
