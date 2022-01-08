@@ -97,7 +97,7 @@ class PhoneNumberAdmin(ModelAdmin):
 
 @register(Order)
 class OrderAdmin(SimpleHistoryAdmin):
-    list_display = ['id', 'customer', 'location', 'start_date', 'return_date', 'end_date', 'employee_names']
+    list_display = ['id', 'activity', 'customer', 'location', 'date', 'employee_names', 'status']
     inlines = (GenericProductInline,)
 
     def employee_names(self, obj: Order):

@@ -123,5 +123,4 @@ class OrderSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Order
-        fields = ['id', 'url', 'status', 'customer', 'location', 'start_date', 'return_date', 'end_date', 'equipments',
-                  'generic_products']
+        fields = ['id', 'url', 'status', 'customer', 'location', 'date', 'equipments', 'generic_products']

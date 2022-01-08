@@ -10,7 +10,7 @@ from inventory.models import Customer, Location, Equipment
 class Order(models.Model):
     """Model for scheduling orders to allow easier assignment of inventory, services and products"""
 
-    class OrderType(models.TextChoices):
+    class Activity(models.TextChoices):
         DEPLOY = 'Deploy', _('Deploy')
         PICKUP = 'Pickup', _('Pickup')
         INSPECT = 'Inspect', _('Inspect')
@@ -19,20 +19,20 @@ class Order(models.Model):
         NEW = 'New', _('New')
         ASSIGNED = 'Assigned', _('Assigned')
         ACTIVE = 'Active', _('Active')
-        DEPLOYED = 'Deployed', _('Deployed')
         COMPLETED = 'Completed', _('Completed')
         CANCELED = 'Canceled', _('Canceled')
 
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    status = models.CharField(max_length=16, choices=Status.choices, default=Status.NEW)
-    employees = models.ManyToManyField(get_user_model(), related_name='order_employees')
-    location = models.ForeignKey(Location, on_delete=models.CASCADE)
-    start_date = models.DateTimeField()
-    return_date = models.DateTimeField(blank=True, null=True)
-    end_date = models.DateTimeField()
-    equipments = models.ManyToManyField('Equipment', through='OrderEquipment', related_name='equipments')
-    generic_products = models.ManyToManyField('GenericProduct', through='OrderGenericProduct',
-                                              related_name='generic_products')
+    customer = models.ForeignKey(Customer, verbose_name=_('customer'), on_delete=models.CASCADE)
+    activity = models.CharField(verbose_name=_('activity'), max_length=32, choices=Activity.choices,
+                                default=Activity.DEPLOY, editable=False)
+    status = models.CharField(max_length=16, verbose_name=_('status'), choices=Status.choices, default=Status.NEW)
+    employees = models.ManyToManyField(get_user_model(), verbose_name=_('employees'), related_name='order_employees')
+    location = models.ForeignKey(Location, verbose_name=_('location'), on_delete=models.CASCADE)
+    date = models.DateTimeField()
+    equipments = models.ManyToManyField('Equipment', verbose_name=_('equipments'), through='OrderEquipment',
+                                        related_name='equipments')
+    generic_products = models.ManyToManyField('GenericProduct', verbose_name=_('generic products'),
+                                              through='OrderGenericProduct', related_name='generic_products')
     history = HistoricalRecords()
 
     def get_deployed_equipment(self):
@@ -63,7 +63,6 @@ class Order(models.Model):
 
     def save(self, **kwargs):
         # TODO Implement a method that only allows updates if the order is in active status.
-        self.return_date = self.return_date or self.end_date
         if self.status:
             ...
         return super().save(**kwargs)
