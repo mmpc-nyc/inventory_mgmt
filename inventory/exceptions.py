@@ -1,24 +1,24 @@
-from main.exceptions import BaseError
+from django.core.exceptions import ValidationError
 
 
-class ProductStatusError(BaseError):
+class ProductStatusError(ValidationError):
     """Exceptions related to Product Status"""
     ...
 
 
-class ProductConditionError(BaseError):
+class ProductConditionError(ValidationError):
     """Exceptions related to Product Condition"""
     ...
 
 
-class StockLogicError(BaseError):
+class StockLogicError(ValidationError):
     """An error of logic"""
     ...
 
 
-class ProductOrderAssignmentError(BaseError):
+class ProductOrderAssignmentError(ValidationError):
     """Product order assignment error"""
 
 
-class OrderCompletionError(BaseError):
+class OrderCompletionError(ValidationError):
     """A error occurred during the order completion process"""

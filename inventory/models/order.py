@@ -1,3 +1,5 @@
+from collections import defaultdict
+from django.db.models import fields
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -38,35 +40,52 @@ class Order(models.Model):
     def get_deployed_equipment(self):
         return self.equipments.filter(status=Equipment.Status.DEPLOYED)
 
-    def missing_equipment_check(self, mark_deployed_as_missing):
+    def missing_equipment_validator(self, ignore_issues: True):
         """If there is any equipment that is still deployed the completion will fail unless the
-        "mark_deployed_as_missing" is true then the status of the remaining deployed equipment will
+        "ignore_issues" is true then the status of the remaining deployed equipment will
         be set to MISSING"""
 
         deployed_equipment = self.get_deployed_equipment()
         if deployed_equipment:
-            if not mark_deployed_as_missing:
+            if not ignore_issues:
                 raise OrderCompletionError('Not all equipment has been picked up')
             deployed_equipment.update(status=Equipment.Status.MISSING)
 
-    def complete(self, mark_deployed_as_missing: bool = False):
+    def complete(self, ignore_issues: bool = False):
         """Completes the order"""
-        self.missing_equipment_check(mark_deployed_as_missing=mark_deployed_as_missing)
         self.status = self.Status.COMPLETED
         self.save()
 
-    def _complete_deploy_order(self):
+    def _complete_deploy_activity(self, ignore_issues: bool):
+        if self.activity != self.Activity.DEPLOY:
+            return
+        if ignore_issues:
+            return
+
+        generic_product_dict = defaultdict(int)
+        for order_generic_product in self.ordergenericproduct_set.all():
+            generic_product_dict[order_generic_product.pk] = order_generic_product.quantity
+        for order_equipment in self.orderequipment_set.all():
+            related_id = order_equipment.equipment.product.generic_product.id
+            if related_id not in generic_product_dict:
+                raise OrderCompletionError(
+                    'Equipment that is not part of the order cannot be deployed unless ignore checks is enabled')
+            generic_product_dict[related_id] -= 1
+        for generic_product_id, quantity in generic_product_dict.items():
+            if quantity != 0:
+                raise OrderCompletionError(
+                    'A quantity mismatch was found between requested equipment and deployed equipment. '
+                    'To bypass this error ignore checks should be enabled')
+
+    def _complete_pickup_activity(self, ignore_issues: bool):
+        self.missing_equipment_validator(ignore_issues)
+
+    def _complete_inspection_activity(self, ignore_issues: bool):
         ...
 
-    def _complete_pickup_order(self):
-        ...
-
-    def _complete_inspection_order(self):
-        ...
-
-    def cancel(self, mark_deployed_as_missing: bool = False):
+    def cancel(self, ignore_issues: bool = False):
         """Cancels the order"""
-        self.missing_equipment_check(mark_deployed_as_missing=mark_deployed_as_missing)
+        self.missing_equipment_validator(ignore_issues=ignore_issues)
         self.status = self.Status.CANCELED
         self.save()
 
