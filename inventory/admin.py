@@ -100,7 +100,8 @@ class OrderAdmin(SimpleHistoryAdmin):
     list_display = ['id', 'activity', 'customer', 'location', 'date', 'employee_names', 'status']
     inlines = (GenericProductInline,)
 
-    def employee_names(self, obj: Order):
+    @staticmethod
+    def employee_names(obj: Order):
         return ', '.join(employee.username for employee in obj.employees.all())
 
 

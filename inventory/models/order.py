@@ -24,7 +24,7 @@ class Order(models.Model):
 
     customer = models.ForeignKey(Customer, verbose_name=_('customer'), on_delete=models.CASCADE)
     activity = models.CharField(verbose_name=_('activity'), max_length=32, choices=Activity.choices,
-                                default=Activity.DEPLOY, editable=False)
+                                default=Activity.DEPLOY)
     status = models.CharField(max_length=16, verbose_name=_('status'), choices=Status.choices, default=Status.NEW)
     employees = models.ManyToManyField(get_user_model(), verbose_name=_('employees'), related_name='order_employees')
     location = models.ForeignKey(Location, verbose_name=_('location'), on_delete=models.CASCADE)
@@ -54,6 +54,15 @@ class Order(models.Model):
         self.missing_equipment_check(mark_deployed_as_missing=mark_deployed_as_missing)
         self.status = self.Status.COMPLETED
         self.save()
+
+    def _complete_deploy_order(self):
+        ...
+
+    def _complete_pickup_order(self):
+        ...
+
+    def _complete_inspection_order(self):
+        ...
 
     def cancel(self, mark_deployed_as_missing: bool = False):
         """Cancels the order"""
