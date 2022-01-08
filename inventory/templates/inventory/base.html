@@ -21,15 +21,15 @@
 {% include 'inventory/components/footer.html' %}
 
 {% block javascript %}{% endblock %}
-
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="https://unpkg.com/htmx.org@1.6.1"></script>
-<script>let csrfToken = '{{ csrf_token }}'</script>
+<script defer>let csrfToken = '{{ csrf_token }}'</script>
 <script>
     document.body.addEventListener('htmx:configRequest', (event) => {
         event.detail.headers['X-CSRFToken'] = csrfToken;
     })
 
 </script>
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
 </body>
 </html>
