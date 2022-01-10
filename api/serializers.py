@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
 from inventory.models import Equipment, GenericProduct, Category, Contact, Customer, Location, Email, Order, Stock, \
-    CustomerLocation, CustomerContact, PhoneNumber
+    CustomerLocation, CustomerContact, PhoneNumber, Condition
 from inventory.models.product import Brand, Product, ProductType
 
 User = get_user_model()
@@ -106,9 +106,16 @@ class StockSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['id', 'url', 'name', 'status', 'location']
 
 
+class ConditionSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Condition
+        fields = ['name', 'description', 'is_deployable', 'is_storable']
+
+
 class EquipmentSerializer(serializers.HyperlinkedModelSerializer):
     product = ProductSerializer()
     stock = StockSerializer()
+    condition = ConditionSerializer(many=False)
 
     class Meta:
         model = Equipment

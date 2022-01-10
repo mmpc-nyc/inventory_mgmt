@@ -3,7 +3,6 @@ from django.db import models
 from django.urls import reverse_lazy
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
-from simple_history.models import HistoricalRecords
 
 from inventory.exceptions import ProductConditionError, StockLogicError, ProductOrderAssignmentError, \
     ProductStatusError, TransactionError
@@ -12,11 +11,12 @@ User = get_user_model()
 
 
 class Equipment(models.Model):
-    # TODO  Write Description
+    """A product that is can be stored, deployed, and picked up. """
+
     class Status(models.TextChoices):
         """Current status of the product"""
 
-        STORED = 'STORED', _('Stocked')  # Equipment stored in Stock
+        STORED = 'STORED', _('Stored')  # Equipment stored in Stock
         DEPLOYED = 'DEPLOYED', _('Deployed')  # Equipment is currently deployed at order location
         PICKED_UP = 'PICKED_UP', _('Picked Up')  # Equipment is with the employee
         MISSING = 'MISSING', _('Missing')  # Equipment cannot be found.
@@ -29,7 +29,6 @@ class Equipment(models.Model):
     employee = models.ForeignKey(User, related_name='equipment_employee', on_delete=models.SET_NULL, null=True,
                                  blank=True)
     counter = models.IntegerField(blank=True, null=True)
-    history = HistoricalRecords()
 
     def store(self, stock_id: int = None, condition_id: int = None) -> 'Equipment':
         """Stores the equipment at a stock location. By default the equipment is returned to it's
@@ -57,6 +56,12 @@ class Equipment(models.Model):
             self.condition = Condition.objects.get(pk=condition_id)
         self.employee.id = employee_id
         self.status = self.Status.PICKED_UP
+        EquipmentTransaction.objects.create(
+            equipment=self,
+            transaction_type=EquipmentTransaction.TransactionType.PICK_UP,
+            condition=self.condition,
+            employee=self.employee
+        )
         return self.save()
 
     def deploy(self, order_id: int = None, condition_id: int = None) -> 'Equipment':
@@ -71,6 +76,12 @@ class Equipment(models.Model):
         if not self.condition.is_deployable:
             raise ProductConditionError(_(f'{self.condition} item cannot be deployed'))
         self.status = self.Status.DEPLOYED
+        EquipmentTransaction.objects.create(
+            equipment=self,
+            transaction_type=EquipmentTransaction.TransactionType.DEPLOY,
+            condition=self.condition,
+            employee=self.employee
+        )
         return self.save()
 
     def transfer(self, employee_id: int, condition_id: int = None) -> 'Equipment':
@@ -80,6 +91,12 @@ class Equipment(models.Model):
         if employee_id == self.employee.id:
             raise TransactionError("Cannot transfer equipment to the current equipment holder")
         self.employee.id = employee_id
+        EquipmentTransaction.objects.create(
+            equipment=self,
+            transaction_type=EquipmentTransaction.TransactionType.TRANSFER,
+            condition=self.condition,
+            employee=self.employee
+        )
         return self.save()
 
     def decommission(self) -> 'Equipment':
@@ -87,6 +104,12 @@ class Equipment(models.Model):
         self.employee = None
         self.stock = None
         self.status = self.Status.DECOMMISSIONED
+        EquipmentTransaction.objects.create(
+            equipment=self,
+            transaction_type=EquipmentTransaction.TransactionType.DECOMMISSION,
+            condition=self.condition,
+            employee=self.employee
+        )
         return self.save()
 
     def __str__(self):
@@ -102,7 +125,7 @@ class Equipment(models.Model):
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         # TODO  Review This Method for uniqueness and usefulness
         if not self.name:
-            self.name = slugify(f'{self.product.generic_product.name} {self.product.id} {self.product.counter}')
+            self.name = self.name or slugify(f'{self.product.generic_product.name} {self.product.id} {self.product.counter}')
             self.counter = self.product.counter
             self.product.counter += 1
             self.product.save()
@@ -122,3 +145,25 @@ class Condition(models.Model):
     class Meta:
         verbose_name = _('Condition')
         verbose_name_plural = _('Conditions')
+
+
+class EquipmentTransaction(models.Model):
+    class TransactionType(models.TextChoices):
+        STORE = _('Store')
+        PICK_UP = _('Pick Up')
+        DEPLOY = _('Deploy')
+        TRANSFER = _('Transfer')
+        DECOMMISSION = _('Decommission')
+
+    equipment = models.ForeignKey('Equipment', verbose_name=_('equipment'), on_delete=models.PROTECT)
+    transaction_type = models.CharField(verbose_name=_('type'), max_length=32, choices=TransactionType.choices)
+    employee = models.ForeignKey(User, verbose_name=_('employee'), on_delete=models.PROTECT)
+    condition = models.ForeignKey('Condition', verbose_name=_('condition'), on_delete=models.PROTECT)
+    timestamp = models.DateTimeField( verbose_name=_('timestamp'),auto_created=True)
+
+    def __str__(self):
+        return f'{self.transaction_type} {self.equipment} at {self.timestamp} by {self.employee}'
+
+    class Meta:
+        verbose_name = _('Equipment Transaction')
+        verbose_name_plural = _('Equipment Transactions')
