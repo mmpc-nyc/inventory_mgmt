@@ -25,7 +25,7 @@ class Equipment(models.Model):
     product = models.ForeignKey('Product', on_delete=models.CASCADE)
     status = models.CharField(max_length=32, choices=Status.choices, default=Status.STORED)
     stock = models.ForeignKey('Stock', on_delete=models.SET_NULL, blank=True, null=True)
-    condition = models.ForeignKey('Condition', on_delete=models.PROTECT, blank=True, null=True)
+    condition = models.ForeignKey('Condition', on_delete=models.PROTECT)
     employee = models.ForeignKey(User, related_name='equipment_employee', on_delete=models.SET_NULL, null=True,
                                  blank=True)
     counter = models.IntegerField(blank=True, null=True)
