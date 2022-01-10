@@ -5,38 +5,14 @@ from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 from simple_history.models import HistoricalRecords
 
-from inventory.exceptions import ProductConditionError, StockLogicError, ProductOrderAssignmentError, ProductStatusError
+from inventory.exceptions import ProductConditionError, StockLogicError, ProductOrderAssignmentError, \
+    ProductStatusError, TransactionError
+
+User = get_user_model()
 
 
 class Equipment(models.Model):
     # TODO  Write Description
-
-    class Condition(models.TextChoices):
-        """Physical condition of the product that determines if it can be used"""
-
-        WORKING = 'Working', _('Working')  # Equipment is in good working condition
-        DAMAGED = 'Damaged', _('Damaged')  # Equipment is damaged and needs repair
-        DECOMMISSIONED = 'Decommissioned', _('Decommissioned')  # Unusable equipment that cannot be repaired.
-        LOST = 'Lost', _('Lost')  # Equipment cannot be found. Lost equipment can be picked up.
-
-        @classmethod
-        @property
-        def _usable_conditions(cls) -> set:
-            return {cls.WORKING, }
-
-        @classmethod
-        @property
-        def _storable_conditions(cls) -> set:
-            return {cls.WORKING, cls.DAMAGED}
-
-        @classmethod
-        def deployable(cls, condition: str) -> bool:
-            return condition in cls._usable_conditions
-
-        @classmethod
-        def storable(cls, condition: str) -> bool:
-            return condition in cls._storable_conditions
-
     class Status(models.TextChoices):
         """Current status of the product"""
 
@@ -48,19 +24,20 @@ class Equipment(models.Model):
     name = models.CharField(max_length=150, blank=True, null=True)
     product = models.ForeignKey('Product', on_delete=models.CASCADE)
     status = models.CharField(max_length=32, choices=Status.choices, default=Status.STORED)
-    condition = models.CharField(max_length=32, choices=Condition.choices, default=Condition.WORKING)
     stock = models.ForeignKey('Stock', on_delete=models.SET_NULL, blank=True, null=True)
-    employee = models.ForeignKey(get_user_model(), related_name='equipment_employee', on_delete=models.SET_NULL,
-                                 null=True, blank=True)
+    condition = models.ForeignKey('Condition', on_delete=models.PROTECT, blank=True, null=True)
+    employee = models.ForeignKey(User, related_name='equipment_employee', on_delete=models.SET_NULL, null=True,
+                                 blank=True)
     counter = models.IntegerField(blank=True, null=True)
     history = HistoricalRecords()
 
-    def store(self, stock_id: int = None, condition: Condition = None) -> 'Equipment':
+    def store(self, stock_id: int = None, condition_id: int = None) -> 'Equipment':
         """Stores the equipment at a stock location. By default the equipment is returned to it's
         original location. If a stock_id is supplied the equipment is moved to a new equipment location with
         the given stock_id """
-        self.condition = condition or self.condition
-        if not self.Condition.storable(self.condition):
+        if condition_id:
+            self.condition = Condition.objects.get(pk=condition_id)
+        if not self.condition.is_storable:
             raise ProductConditionError(_(f'This equipment in condition {self.condition} cannot be stored'))
         if not stock_id and not self.stock_id:
             raise StockLogicError(
@@ -73,27 +50,36 @@ class Equipment(models.Model):
         self.status = self.Status.STORED
         return self.save()
 
-    def pickup(self, employee_id: int, condition: Condition = None) -> 'Equipment':
+    def pickup(self, employee_id: int, condition_id: int = None) -> 'Equipment':
         """Product is picked up from a customer location or a inventory location. An employee is assigned to the
         equipment. """
-        self.condition = condition or self.condition
-        self.employee_id = employee_id
+        if condition_id:
+            self.condition = Condition.objects.get(pk=condition_id)
+        self.employee.id = employee_id
         self.status = self.Status.PICKED_UP
         return self.save()
 
-    def deploy(self, order_id: int = None, condition: Condition = None) -> 'Equipment':
-        self.condition = condition or self.condition
+    def deploy(self, order_id: int = None, condition_id: int = None) -> 'Equipment':
+        """Deploys the equipment at a customer location"""
+        if condition_id:
+            self.condition = Condition.objects.get(pk=condition_id)
         if not order_id and not self.order:
             raise ProductOrderAssignmentError(_('A order must be assigned to deploy the product'))
         self.order = order_id or self.order
-        """Deploys the equipment at a customer location"""
-        if self.status == self.Condition.deployable(self.condition):
-            raise ProductStatusError(_('decommissioned equipment cannot be deployed'))
         if self.status != self.Status.PICKED_UP:
             raise ProductStatusError(_('item must be picked up before it can be deployed'))
-        if self.condition in self.Condition.DAMAGED or self.Condition.DECOMMISSIONED:
-            raise ProductConditionError(_('broken or irreparable item cannot be deployed'))
+        if not self.condition.is_deployable:
+            raise ProductConditionError(_(f'{self.condition} item cannot be deployed'))
         self.status = self.Status.DEPLOYED
+        return self.save()
+
+    def transfer(self, employee_id: int, condition_id: int = None) -> 'Equipment':
+        """Transfers equipment from one employee to another"""
+        if condition_id:
+            self.condition = Condition.objects.get(pk=condition_id)
+        if employee_id == self.employee.id:
+            raise TransactionError("Cannot transfer equipment to the current equipment holder")
+        self.employee.id = employee_id
         return self.save()
 
     def decommission(self) -> 'Equipment':
@@ -121,3 +107,23 @@ class Equipment(models.Model):
             self.product.counter += 1
             self.product.save()
         return super().save(force_insert, force_update, using, update_fields)
+
+
+class Condition(models.Model):
+    """Physical condition of the product that determines if it can be used"""
+    name = models.CharField(verbose_name=_('name'), max_length=32)
+    description = models.TextField(verbose_name=_('description'))
+    is_deployable = models.BooleanField(verbose_name=_('is deployable'), default=False)
+    is_storable = models.BooleanField(verbose_name=_('is storable'), default=False)
+
+    # WORKING = 'Working', _('Working')  # Equipment is in good working condition
+    # DAMAGED = 'Damaged', _('Damaged')  # Equipment is damaged and needs repair
+    # DECOMMISSIONED = 'Decommissioned', _('Decommissioned')  # Unusable equipment that cannot be repaired.
+    # LOST = 'Lost', _('Lost')  # Equipment cannot be found. Lost equipment can be picked up.
+
+    def __str__(self):
+        return f'{self.name}'
+
+    class Meta:
+        verbose_name = _('Condition')
+        verbose_name_plural = _('Conditions')
