@@ -22,3 +22,7 @@ class ProductOrderAssignmentError(ValidationError):
 
 class OrderCompletionError(ValidationError):
     """A error occurred during the order completion process"""
+
+
+class TransactionError(ValidationError):
+    """An error occurred during a transaction process"""
