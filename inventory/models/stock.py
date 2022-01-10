@@ -21,7 +21,7 @@ class Stock(models.Model):
         FULL = 'Full', _('Full')
 
     name = models.CharField(max_length=150, blank=True)
-    status = models.CharField(max_length=16, choices=StockStatus.choices, default=StockStatus.ACTIVE)
+    status = models.CharField(max_length=32, choices=StockStatus.choices, default=StockStatus.ACTIVE)
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
     history = HistoricalRecords()
 
