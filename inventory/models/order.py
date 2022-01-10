@@ -1,12 +1,11 @@
 from collections import defaultdict
-from django.db.models import fields
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from simple_history.models import HistoricalRecords
 
 from inventory.exceptions import OrderCompletionError
-from inventory.models import Customer, Location, Equipment
+from inventory.models import Customer, Location, Equipment, Condition
 
 
 class Order(models.Model):
@@ -132,8 +131,6 @@ class OrderEquipment(models.Model):
 
     order = models.ForeignKey('Order', on_delete=models.CASCADE)
     equipment = models.ForeignKey('Equipment', on_delete=models.CASCADE)
-    deploy_condition = models.CharField(max_length=32, choices=equipment.Condition.choices)
-    pick_up_condition = models.CharField(max_length=32, choices=equipment.Condition.choices)
     deployed = models.DateTimeField()
     picked_up = models.DateTimeField(blank=True, null=True)
 
