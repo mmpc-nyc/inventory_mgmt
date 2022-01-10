@@ -1,4 +1,4 @@
-#Inventory Management for tracking Equpment
+# Inventory Management for tracking Equipment
 
 ## Models
 
@@ -7,6 +7,7 @@
 <p align="center">
 <img src="images/Order%20Process.png"/>
 </p>
+
 ## Location
 ## Stock
 ## Generic Product
