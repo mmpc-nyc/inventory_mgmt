@@ -4,7 +4,7 @@ from simple_history.admin import SimpleHistoryAdmin
 
 from inventory.models.contact import Contact, ContactPhoneNumber, ContactEmail, PhoneNumber
 from inventory.models.customer import Customer, CustomerLocation, CustomerContact
-from inventory.models.equipment import Equipment
+from inventory.models.equipment import Equipment, Condition
 from inventory.models.generic_product import GenericProduct, Category
 from inventory.models.location import Location
 from inventory.models.order import Order, OrderGenericProduct
@@ -108,3 +108,8 @@ class OrderAdmin(SimpleHistoryAdmin):
 @register(CustomerContact)
 class CustomerContactAdmin(ModelAdmin):
     ...
+
+
+@register(Condition)
+class ConditionAdmin(ModelAdmin):
+    list_display = ['name', 'description', 'is_deployable', 'is_storable']
