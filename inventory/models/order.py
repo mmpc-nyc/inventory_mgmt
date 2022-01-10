@@ -132,6 +132,10 @@ class OrderEquipment(models.Model):
 
     order = models.ForeignKey('Order', on_delete=models.CASCADE)
     equipment = models.ForeignKey('Equipment', on_delete=models.CASCADE)
+    deploy_condition = models.CharField(max_length=32, choices=equipment.Condition.choices)
+    pick_up_condition = models.CharField(max_length=32, choices=equipment.Condition.choices)
+    deployed = models.DateTimeField()
+    picked_up = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
         return f'{self.order} | {self.equipment}'
