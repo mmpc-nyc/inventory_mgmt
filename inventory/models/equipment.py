@@ -47,47 +47,19 @@ class Equipment(models.Model):
 
     name = models.CharField(max_length=150, blank=True, null=True)
     product = models.ForeignKey('Product', on_delete=models.CASCADE)
-    status = models.CharField(max_length=16, choices=Status.choices, default=Status.STORED)
-    condition = models.CharField(max_length=48, choices=Condition.choices, default=Condition.WORKING)
+    status = models.CharField(max_length=32, choices=Status.choices, default=Status.STORED)
+    condition = models.CharField(max_length=32, choices=Condition.choices, default=Condition.WORKING)
     stock = models.ForeignKey('Stock', on_delete=models.SET_NULL, blank=True, null=True)
     employee = models.ForeignKey(get_user_model(), related_name='equipment_employee', on_delete=models.SET_NULL,
                                  null=True, blank=True)
     counter = models.IntegerField(blank=True, null=True)
     history = HistoricalRecords()
 
-    """
-
-    def pickup(User):
-        is_authenticated(User)
-        is_authorized(User)
-
-        check_product_status(Product)
-        check_generic_product_status(GenericProduct)
-
-        Equipment.User = User
-        Equipment.Status = PICKED_UP
-
-    def deploy():
-        is_authenticated(User)
-        is_authorized(User)
-        is_deployable(Equipment)
-
-        Equipment.Status = DEPLOYED
-
-    def store():
-        is_authenticated(User)
-        is_authorized(User)
-        is_storable(Equipment)
-
-        Equipment.User = None
-        Equipment.Status = STORED
-        
-    """
-
-    def store(self, stock_id: int = None) -> 'Equipment':
+    def store(self, stock_id: int = None, condition: Condition = None) -> 'Equipment':
         """Stores the equipment at a stock location. By default the equipment is returned to it's
         original location. If a stock_id is supplied the equipment is moved to a new equipment location with
         the given stock_id """
+        self.condition = condition or self.condition
         if not self.Condition.storable(self.condition):
             raise ProductConditionError(_(f'This equipment in condition {self.condition} cannot be stored'))
         if not stock_id and not self.stock_id:
@@ -101,16 +73,16 @@ class Equipment(models.Model):
         self.status = self.Status.STORED
         return self.save()
 
-    def pickup(self, employee_id: int) -> 'Equipment':
+    def pickup(self, employee_id: int, condition: Condition = None) -> 'Equipment':
         """Product is picked up from a customer location or a inventory location. An employee is assigned to the
         equipment. """
-        if self.employee_id == employee_id:
-            raise StockLogicError(_('the same user cannot pick up an equipment they are already holding'))
+        self.condition = condition or self.condition
         self.employee_id = employee_id
         self.status = self.Status.PICKED_UP
         return self.save()
 
-    def deploy(self, order_id: int = None) -> 'Equipment':
+    def deploy(self, order_id: int = None, condition: Condition = None) -> 'Equipment':
+        self.condition = condition or self.condition
         if not order_id and not self.order:
             raise ProductOrderAssignmentError(_('A order must be assigned to deploy the product'))
         self.order = order_id or self.order
