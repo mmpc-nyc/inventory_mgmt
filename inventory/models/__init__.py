@@ -1,6 +1,5 @@
 from .contact import *
 from .customer import *
-from .equipment import *
 from .generic_product import *
 from .location import *
 from .notification import *

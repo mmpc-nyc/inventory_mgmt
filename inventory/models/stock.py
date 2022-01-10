@@ -3,7 +3,7 @@ from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from simple_history.models import HistoricalRecords
 
-from inventory.models import Location
+from inventory.models.location import Location
 
 
 class Stock(models.Model):

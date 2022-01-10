@@ -3,7 +3,7 @@ from django.urls import reverse_lazy
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 
-from inventory.models.equipment import Equipment
+from inventory.models.order import Equipment
 
 
 class Product(models.Model):

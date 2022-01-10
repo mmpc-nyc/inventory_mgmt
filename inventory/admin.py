@@ -4,10 +4,9 @@ from simple_history.admin import SimpleHistoryAdmin
 
 from inventory.models.contact import Contact, ContactPhoneNumber, ContactEmail, PhoneNumber
 from inventory.models.customer import Customer, CustomerLocation, CustomerContact
-from inventory.models.equipment import Equipment, Condition
 from inventory.models.generic_product import GenericProduct, Category
 from inventory.models.location import Location
-from inventory.models.order import Order, OrderGenericProduct
+from inventory.models.order import Order, OrderGenericProduct, Equipment, Condition
 from inventory.models.product import Product, ProductType, Brand
 from inventory.models.stock import Stock
 
