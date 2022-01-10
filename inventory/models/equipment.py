@@ -17,9 +17,9 @@ class Equipment(models.Model):
         """Current status of the product"""
 
         STORED = 'STORED', _('Stocked')  # Equipment stored in Stock
-        DEPLOYED = 'DEPLOYED', _('Deployed')  # Equipment is currently deployed a order location
+        DEPLOYED = 'DEPLOYED', _('Deployed')  # Equipment is currently deployed at order location
         PICKED_UP = 'PICKED_UP', _('Picked Up')  # Equipment is with the employee
-        MISSING = 'MISSING', _('Missing')  # Equipment cannot be fucked.
+        MISSING = 'MISSING', _('Missing')  # Equipment cannot be found.
 
     name = models.CharField(max_length=150, blank=True, null=True)
     product = models.ForeignKey('Product', on_delete=models.CASCADE)
@@ -115,11 +115,6 @@ class Condition(models.Model):
     description = models.TextField(verbose_name=_('description'))
     is_deployable = models.BooleanField(verbose_name=_('is deployable'), default=False)
     is_storable = models.BooleanField(verbose_name=_('is storable'), default=False)
-
-    # WORKING = 'Working', _('Working')  # Equipment is in good working condition
-    # DAMAGED = 'Damaged', _('Damaged')  # Equipment is damaged and needs repair
-    # DECOMMISSIONED = 'Decommissioned', _('Decommissioned')  # Unusable equipment that cannot be repaired.
-    # LOST = 'Lost', _('Lost')  # Equipment cannot be found. Lost equipment can be picked up.
 
     def __str__(self):
         return f'{self.name}'

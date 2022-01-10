@@ -4,6 +4,9 @@
 
 ## Customer
 ## Order
+<p align="center">
+<img src="images/Order%20Process.png"/>
+</p>
 ## Location
 ## Stock
 ## Generic Product
@@ -14,3 +17,4 @@
 #### Deploy
 #### Store
 ## Transaction
+
