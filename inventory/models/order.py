@@ -170,6 +170,7 @@ class Equipment(models.Model):
     condition = models.ForeignKey('Condition', on_delete=models.PROTECT)
     employee = models.ForeignKey(User, related_name='equipment_employee', on_delete=models.SET_NULL, null=True,
                                  blank=True)
+    location = models.ForeignKey('Location', on_delete=models.SET_NULL, null=True)
     counter = models.IntegerField(blank=True, null=True)
 
     def store(self, stock_id: int = None, condition_id: int = None) -> 'Equipment':
@@ -191,21 +192,23 @@ class Equipment(models.Model):
         self.status = self.Status.STORED
         return self.save()
 
-    def pickup(self, employee_id: int, condition_id: int = None) -> 'Equipment':
+    def pickup(self, employee_id: int, condition_id: int = None) -> 'EquipmentTransaction':
         """Product is picked up from a customer location or a inventory location. An employee is assigned to the
         equipment. """
         if condition_id:
             self.condition = Condition.objects.get(pk=condition_id)
         self.employee.id = employee_id
         self.status = self.Status.PICKED_UP
-        EquipmentTransaction.objects.create(
-            equipment=self,
-            transaction_type=EquipmentTransaction.TransactionType.PICK_UP,
-            condition=self.condition, employee=self.employee
-        )
+        equipment_transaction = EquipmentTransaction(equipment=self,
+            transaction_type=EquipmentTransaction.TransactionType.PICK_UP, condition=self.condition,
+            employee=self.employee)
+        with transaction.atomic():
+            #order_equipment.save()
+            equipment_transaction.save()
+            self.save()
         return self.save()
 
-    def deploy(self, order_id: int, condition_id: int = None) -> 'Equipment':
+    def deploy(self, order_id: int, condition_id: int = None) -> 'EquipmentTransaction':
         """Deploys the equipment at a customer location"""
         if self.status != self.Status.PICKED_UP:
             raise ProductStatusError(_('item must be picked up before it can be deployed'))
@@ -215,15 +218,14 @@ class Equipment(models.Model):
             raise ProductConditionError(_(f'{self.condition} item cannot be deployed'))
         self.status = self.Status.DEPLOYED
         order_equipment = OrderEquipment(equipment=self, order_id=order_id, deployed=timezone.now(), )
-        equipment_transaction = EquipmentTransaction.objects.create(
-            equipment=self,
-            transaction_type=EquipmentTransaction.TransactionType.DEPLOY,
-            condition=self.condition, employee=self.employee)
+        equipment_transaction = EquipmentTransaction.objects.create(equipment=self,
+            transaction_type=EquipmentTransaction.TransactionType.DEPLOY, condition=self.condition,
+            employee=self.employee)
         with transaction.atomic():
             order_equipment.save()
             equipment_transaction.save()
             self.save()
-        return self
+        return equipment_transaction
 
     def transfer(self, employee_id: int, condition_id: int = None) -> 'Equipment':
         """Transfers equipment from one employee to another"""
@@ -285,10 +287,11 @@ class Condition(models.Model):
 
 class EquipmentTransaction(models.Model):
     class TransactionType(models.TextChoices):
-        STORE = _('Store')
-        PICK_UP = _('Pick Up')
+        STORE = 'Store', _('Store')
+        PICK_UP = 'Pick_Up', _('Pick Up')
         DEPLOY = _('Deploy')
         TRANSFER = _('Transfer')
+        WITHDRAW = _('Withdraw')
         DECOMMISSION = _('Decommission')
 
     equipment = models.ForeignKey('Equipment', verbose_name=_('equipment'), on_delete=models.PROTECT)

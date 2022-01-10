@@ -1,13 +1,17 @@
-from unittest import TestCase
+from django.test import TestCase
 
+from django.contrib.auth import get_user_model
 from django.db import IntegrityError
 
 from inventory.exceptions import ProductStatusError, ProductConditionError
 from inventory.models import Equipment
 
+User = get_user_model()
+
 
 class TestEquipment(TestCase):
-    fixtures = ['test.json', ]
+    user: User
+    fixtures = ['fixtures/test.json', ]
 
     def setUp(self) -> None:
         super().setUp()
