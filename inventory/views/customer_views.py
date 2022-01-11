@@ -1,5 +1,4 @@
-from django.views.generic import ListView
-from inventory.models.customer import Customer
+from inventory.models import Customer
 from inventory.views.base_views import CustomDeleteView, CustomCreateView, CustomDetailView, CustomUpdateView, \
     CustomListView
 

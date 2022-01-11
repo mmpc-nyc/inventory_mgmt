@@ -1,8 +1,6 @@
 from django.contrib.auth import get_user_model
 
-from inventory.models import Condition, Equipment
-from inventory.models.product import Product
-from inventory.models.stock import Stock
+from inventory.models import Equipment, Condition, Product, Stock
 
 User = get_user_model()
 users = [None]
@@ -15,13 +13,13 @@ product = Product.objects.all()[0]
 def main():
     for condition in Condition.objects.all():
         for status, status_name in Equipment.Status.choices:
-            for employee in users:
+            for user in users:
                 Equipment.objects.create(
                     condition=condition,
                     status=status,
-                    employee=employee,
+                    user=user,
                     product=product,
-                    name=f'{product.name} {condition} {status_name} {employee or "No Employee"}')
+                    name=f'{product.name} {condition} {status_name} {user or "No Employee"}')
 
 
 if __name__ == '__main__':

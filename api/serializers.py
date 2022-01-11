@@ -1,9 +1,9 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
-from inventory.models import Equipment, GenericProduct, Category, Contact, Customer, Location, Email, Order, Stock, \
-    CustomerLocation, CustomerContact, PhoneNumber, Condition
-from inventory.models.product import Brand, Product, ProductType
+from inventory.models import Contact, Email, PhoneNumber, Location, Customer, CustomerLocation, CustomerContact, \
+    Equipment, Condition, GenericProduct, Category, Product, ProductType, Brand, Stock
+from inventory.models import Order
 
 User = get_user_model()
 
@@ -119,7 +119,7 @@ class EquipmentSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Equipment
-        fields = ['id', 'url', 'name', 'product', 'status', 'condition', 'stock', 'employee', ]
+        fields = ['id', 'url', 'name', 'product', 'status', 'condition', 'stock', 'user', ]
 
 
 class OrderSerializer(serializers.HyperlinkedModelSerializer):

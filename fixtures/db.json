@@ -1381,6 +1381,37 @@
     }
 },
 {
+    "model": "inventory.historicallocation",
+    "pk": 1,
+    "fields": {
+        "id": 1,
+        "name": "3927 29th Street, Long Island City, NY 11106",
+        "street_number": "",
+        "route": "",
+        "raw": "3927 29th Street, Long Island City, NY 11106",
+        "formatted": "",
+        "latitude": null,
+        "longitude": null,
+        "history_date": "2021-12-27T23:06:11.332Z",
+        "history_change_reason": null,
+        "history_type": "+",
+        "history_user": 1
+    }
+},
+{
+    "model": "inventory.location",
+    "pk": 1,
+    "fields": {
+        "name": "3927 29th Street, Long Island City, NY 11106",
+        "street_number": "",
+        "route": "",
+        "raw": "3927 29th Street, Long Island City, NY 11106",
+        "formatted": "",
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
     "model": "inventory.customer",
     "pk": 1,
     "fields": {
@@ -1431,7 +1462,8 @@
         "status": "STORED",
         "stock": null,
         "condition": 1,
-        "employee": null,
+        "user": null,
+        "location": null,
         "counter": null
     }
 },
@@ -1444,7 +1476,8 @@
         "status": "STORED",
         "stock": null,
         "condition": 1,
-        "employee": 1,
+        "user": 1,
+        "location": null,
         "counter": null
     }
 },
@@ -1457,7 +1490,8 @@
         "status": "STORED",
         "stock": null,
         "condition": 1,
-        "employee": 2,
+        "user": 2,
+        "location": null,
         "counter": null
     }
 },
@@ -1470,7 +1504,8 @@
         "status": "DEPLOYED",
         "stock": null,
         "condition": 1,
-        "employee": null,
+        "user": null,
+        "location": null,
         "counter": null
     }
 },
@@ -1483,7 +1518,8 @@
         "status": "DEPLOYED",
         "stock": null,
         "condition": 1,
-        "employee": 1,
+        "user": 1,
+        "location": null,
         "counter": null
     }
 },
@@ -1496,7 +1532,8 @@
         "status": "DEPLOYED",
         "stock": null,
         "condition": 1,
-        "employee": 2,
+        "user": 2,
+        "location": null,
         "counter": null
     }
 },
@@ -1509,7 +1546,8 @@
         "status": "PICKED_UP",
         "stock": null,
         "condition": 1,
-        "employee": null,
+        "user": null,
+        "location": null,
         "counter": null
     }
 },
@@ -1519,10 +1557,11 @@
     "fields": {
         "name": "18 Inch Fan Working Picked Up schir2",
         "product": 2,
-        "status": "PICKED_UP",
+        "status": "DEPLOYED",
         "stock": null,
         "condition": 1,
-        "employee": 1,
+        "user": 1,
+        "location": null,
         "counter": null
     }
 },
@@ -1532,10 +1571,11 @@
     "fields": {
         "name": "18 Inch Fan Working Picked Up mareks",
         "product": 2,
-        "status": "PICKED_UP",
+        "status": "DEPLOYED",
         "stock": null,
         "condition": 1,
-        "employee": 2,
+        "user": 2,
+        "location": null,
         "counter": null
     }
 },
@@ -1548,7 +1588,8 @@
         "status": "MISSING",
         "stock": null,
         "condition": 1,
-        "employee": null,
+        "user": null,
+        "location": null,
         "counter": null
     }
 },
@@ -1561,7 +1602,8 @@
         "status": "MISSING",
         "stock": null,
         "condition": 1,
-        "employee": 1,
+        "user": 1,
+        "location": null,
         "counter": null
     }
 },
@@ -1574,7 +1616,8 @@
         "status": "MISSING",
         "stock": null,
         "condition": 1,
-        "employee": 2,
+        "user": 2,
+        "location": null,
         "counter": null
     }
 },
@@ -1587,7 +1630,8 @@
         "status": "STORED",
         "stock": null,
         "condition": 2,
-        "employee": null,
+        "user": null,
+        "location": null,
         "counter": null
     }
 },
@@ -1600,7 +1644,8 @@
         "status": "STORED",
         "stock": null,
         "condition": 2,
-        "employee": 1,
+        "user": 1,
+        "location": null,
         "counter": null
     }
 },
@@ -1613,7 +1658,8 @@
         "status": "STORED",
         "stock": null,
         "condition": 2,
-        "employee": 2,
+        "user": 2,
+        "location": null,
         "counter": null
     }
 },
@@ -1626,7 +1672,8 @@
         "status": "DEPLOYED",
         "stock": null,
         "condition": 2,
-        "employee": null,
+        "user": null,
+        "location": null,
         "counter": null
     }
 },
@@ -1639,7 +1686,8 @@
         "status": "DEPLOYED",
         "stock": null,
         "condition": 2,
-        "employee": 1,
+        "user": 1,
+        "location": null,
         "counter": null
     }
 },
@@ -1652,7 +1700,8 @@
         "status": "DEPLOYED",
         "stock": null,
         "condition": 2,
-        "employee": 2,
+        "user": 2,
+        "location": null,
         "counter": null
     }
 },
@@ -1665,7 +1714,8 @@
         "status": "PICKED_UP",
         "stock": null,
         "condition": 2,
-        "employee": null,
+        "user": null,
+        "location": null,
         "counter": null
     }
 },
@@ -1678,7 +1728,8 @@
         "status": "PICKED_UP",
         "stock": null,
         "condition": 2,
-        "employee": 1,
+        "user": 1,
+        "location": null,
         "counter": null
     }
 },
@@ -1691,7 +1742,8 @@
         "status": "PICKED_UP",
         "stock": null,
         "condition": 2,
-        "employee": 2,
+        "user": 2,
+        "location": null,
         "counter": null
     }
 },
@@ -1704,7 +1756,8 @@
         "status": "MISSING",
         "stock": null,
         "condition": 2,
-        "employee": null,
+        "user": null,
+        "location": null,
         "counter": null
     }
 },
@@ -1717,7 +1770,8 @@
         "status": "MISSING",
         "stock": null,
         "condition": 2,
-        "employee": 1,
+        "user": 1,
+        "location": null,
         "counter": null
     }
 },
@@ -1730,7 +1784,8 @@
         "status": "MISSING",
         "stock": null,
         "condition": 2,
-        "employee": 2,
+        "user": 2,
+        "location": null,
         "counter": null
     }
 },
@@ -1743,7 +1798,8 @@
         "status": "STORED",
         "stock": null,
         "condition": 3,
-        "employee": null,
+        "user": null,
+        "location": null,
         "counter": null
     }
 },
@@ -1756,7 +1812,8 @@
         "status": "STORED",
         "stock": null,
         "condition": 3,
-        "employee": 1,
+        "user": 1,
+        "location": null,
         "counter": null
     }
 },
@@ -1769,7 +1826,8 @@
         "status": "STORED",
         "stock": null,
         "condition": 3,
-        "employee": 2,
+        "user": 2,
+        "location": null,
         "counter": null
     }
 },
@@ -1782,7 +1840,8 @@
         "status": "DEPLOYED",
         "stock": null,
         "condition": 3,
-        "employee": null,
+        "user": null,
+        "location": null,
         "counter": null
     }
 },
@@ -1795,7 +1854,8 @@
         "status": "DEPLOYED",
         "stock": null,
         "condition": 3,
-        "employee": 1,
+        "user": 1,
+        "location": null,
         "counter": null
     }
 },
@@ -1808,7 +1868,8 @@
         "status": "DEPLOYED",
         "stock": null,
         "condition": 3,
-        "employee": 2,
+        "user": 2,
+        "location": null,
         "counter": null
     }
 },
@@ -1821,7 +1882,8 @@
         "status": "PICKED_UP",
         "stock": null,
         "condition": 3,
-        "employee": null,
+        "user": null,
+        "location": null,
         "counter": null
     }
 },
@@ -1834,7 +1896,8 @@
         "status": "PICKED_UP",
         "stock": null,
         "condition": 3,
-        "employee": 1,
+        "user": 1,
+        "location": null,
         "counter": null
     }
 },
@@ -1847,7 +1910,8 @@
         "status": "PICKED_UP",
         "stock": null,
         "condition": 3,
-        "employee": 2,
+        "user": 2,
+        "location": null,
         "counter": null
     }
 },
@@ -1860,7 +1924,8 @@
         "status": "MISSING",
         "stock": null,
         "condition": 3,
-        "employee": null,
+        "user": null,
+        "location": null,
         "counter": null
     }
 },
@@ -1873,7 +1938,8 @@
         "status": "MISSING",
         "stock": null,
         "condition": 3,
-        "employee": 1,
+        "user": 1,
+        "location": null,
         "counter": null
     }
 },
@@ -1886,7 +1952,8 @@
         "status": "MISSING",
         "stock": null,
         "condition": 3,
-        "employee": 2,
+        "user": 2,
+        "location": null,
         "counter": null
     }
 },
@@ -1899,7 +1966,8 @@
         "status": "STORED",
         "stock": null,
         "condition": 4,
-        "employee": null,
+        "user": null,
+        "location": null,
         "counter": null
     }
 },
@@ -1912,7 +1980,8 @@
         "status": "STORED",
         "stock": null,
         "condition": 4,
-        "employee": 1,
+        "user": 1,
+        "location": null,
         "counter": null
     }
 },
@@ -1925,7 +1994,8 @@
         "status": "STORED",
         "stock": null,
         "condition": 4,
-        "employee": 2,
+        "user": 2,
+        "location": null,
         "counter": null
     }
 },
@@ -1938,7 +2008,8 @@
         "status": "DEPLOYED",
         "stock": null,
         "condition": 4,
-        "employee": null,
+        "user": null,
+        "location": null,
         "counter": null
     }
 },
@@ -1951,7 +2022,8 @@
         "status": "DEPLOYED",
         "stock": null,
         "condition": 4,
-        "employee": 1,
+        "user": 1,
+        "location": null,
         "counter": null
     }
 },
@@ -1964,7 +2036,8 @@
         "status": "DEPLOYED",
         "stock": null,
         "condition": 4,
-        "employee": 2,
+        "user": 2,
+        "location": null,
         "counter": null
     }
 },
@@ -1977,7 +2050,8 @@
         "status": "PICKED_UP",
         "stock": null,
         "condition": 4,
-        "employee": null,
+        "user": null,
+        "location": null,
         "counter": null
     }
 },
@@ -1990,7 +2064,8 @@
         "status": "PICKED_UP",
         "stock": null,
         "condition": 4,
-        "employee": 1,
+        "user": 1,
+        "location": null,
         "counter": null
     }
 },
@@ -2003,7 +2078,8 @@
         "status": "PICKED_UP",
         "stock": null,
         "condition": 4,
-        "employee": 2,
+        "user": 2,
+        "location": null,
         "counter": null
     }
 },
@@ -2016,7 +2092,8 @@
         "status": "MISSING",
         "stock": null,
         "condition": 4,
-        "employee": null,
+        "user": null,
+        "location": null,
         "counter": null
     }
 },
@@ -2029,7 +2106,8 @@
         "status": "MISSING",
         "stock": null,
         "condition": 4,
-        "employee": 1,
+        "user": 1,
+        "location": null,
         "counter": null
     }
 },
@@ -2042,7 +2120,8 @@
         "status": "MISSING",
         "stock": null,
         "condition": 4,
-        "employee": 2,
+        "user": 2,
+        "location": null,
         "counter": null
     }
 },
@@ -2052,8 +2131,7 @@
     "fields": {
         "name": "Working",
         "description": "Equipment is in good working condition",
-        "is_deployable": true,
-        "is_storable": true
+        "actions": []
     }
 },
 {
@@ -2062,8 +2140,7 @@
     "fields": {
         "name": "Damaged",
         "description": "Equipment is damaged and needs repair",
-        "is_deployable": false,
-        "is_storable": true
+        "actions": []
     }
 },
 {
@@ -2072,8 +2149,7 @@
     "fields": {
         "name": "Decommissioned",
         "description": "Unusable equipment that cannot be repaired.",
-        "is_deployable": false,
-        "is_storable": false
+        "actions": []
     }
 },
 {
@@ -2082,8 +2158,7 @@
     "fields": {
         "name": "Lost",
         "description": "Equipment cannot be found. Lost equipment can be picked up.",
-        "is_deployable": false,
-        "is_storable": true
+        "actions": []
     }
 },
 {
@@ -2210,34 +2285,80 @@
     }
 },
 {
-    "model": "inventory.historicallocation",
+    "model": "inventory.product",
+    "pk": 2,
+    "fields": {
+        "name": "18 Inch Fan",
+        "generic_product": 1,
+        "brand": 2,
+        "product_type": 1,
+        "status": "ACTIVE",
+        "counter": 100
+    }
+},
+{
+    "model": "inventory.producttype",
+    "pk": 1,
+    "fields": {
+        "name": "Equipment"
+    }
+},
+{
+    "model": "inventory.brand",
+    "pk": 1,
+    "fields": {
+        "name": "BASF"
+    }
+},
+{
+    "model": "inventory.brand",
+    "pk": 2,
+    "fields": {
+        "name": "Commercial Electric"
+    }
+},
+{
+    "model": "inventory.brand",
+    "pk": 3,
+    "fields": {
+        "name": "DEWALT"
+    }
+},
+{
+    "model": "inventory.brand",
+    "pk": 4,
+    "fields": {
+        "name": "RYOBI"
+    }
+},
+{
+    "model": "inventory.brand",
+    "pk": 5,
+    "fields": {
+        "name": "XtremepowerUS"
+    }
+},
+{
+    "model": "inventory.historicalstock",
     "pk": 1,
     "fields": {
         "id": 1,
-        "name": "3927 29th Street, Long Island City, NY 11106",
-        "street_number": "",
-        "route": "",
-        "raw": "3927 29th Street, Long Island City, NY 11106",
-        "formatted": "",
-        "latitude": null,
-        "longitude": null,
-        "history_date": "2021-12-27T23:06:11.332Z",
+        "name": "MMPC Office",
+        "status": "ACTIVE",
+        "location": 1,
+        "history_date": "2021-12-27T23:06:16.973Z",
         "history_change_reason": null,
         "history_type": "+",
         "history_user": 1
     }
 },
 {
-    "model": "inventory.location",
+    "model": "inventory.stock",
     "pk": 1,
     "fields": {
-        "name": "3927 29th Street, Long Island City, NY 11106",
-        "street_number": "",
-        "route": "",
-        "raw": "3927 29th Street, Long Island City, NY 11106",
-        "formatted": "",
-        "latitude": null,
-        "longitude": null
+        "name": "MMPC Office",
+        "status": "ACTIVE",
+        "location": 1
     }
 },
 {
@@ -2617,84 +2738,27 @@
         "status": "Completed",
         "location": 1,
         "date": "2021-12-28T21:42:06Z",
-        "employees": []
+        "users": []
     }
 },
 {
-    "model": "inventory.product",
+    "model": "inventory.orderequipment",
+    "pk": 1,
+    "fields": {
+        "order": 1,
+        "equipment": 8,
+        "deployed": "2022-01-10T09:16:09.039Z",
+        "picked_up": null
+    }
+},
+{
+    "model": "inventory.orderequipment",
     "pk": 2,
     "fields": {
-        "name": "18 Inch Fan",
-        "generic_product": 1,
-        "brand": 2,
-        "product_type": 1,
-        "status": "ACTIVE",
-        "counter": 100
-    }
-},
-{
-    "model": "inventory.producttype",
-    "pk": 1,
-    "fields": {
-        "name": "Equipment"
-    }
-},
-{
-    "model": "inventory.brand",
-    "pk": 1,
-    "fields": {
-        "name": "BASF"
-    }
-},
-{
-    "model": "inventory.brand",
-    "pk": 2,
-    "fields": {
-        "name": "Commercial Electric"
-    }
-},
-{
-    "model": "inventory.brand",
-    "pk": 3,
-    "fields": {
-        "name": "DEWALT"
-    }
-},
-{
-    "model": "inventory.brand",
-    "pk": 4,
-    "fields": {
-        "name": "RYOBI"
-    }
-},
-{
-    "model": "inventory.brand",
-    "pk": 5,
-    "fields": {
-        "name": "XtremepowerUS"
-    }
-},
-{
-    "model": "inventory.historicalstock",
-    "pk": 1,
-    "fields": {
-        "id": 1,
-        "name": "MMPC Office",
-        "status": "ACTIVE",
-        "location": 1,
-        "history_date": "2021-12-27T23:06:16.973Z",
-        "history_change_reason": null,
-        "history_type": "+",
-        "history_user": 1
-    }
-},
-{
-    "model": "inventory.stock",
-    "pk": 1,
-    "fields": {
-        "name": "MMPC Office",
-        "status": "ACTIVE",
-        "location": 1
+        "order": 1,
+        "equipment": 9,
+        "deployed": "2022-01-10T09:16:09.054Z",
+        "picked_up": null
     }
 },
 {

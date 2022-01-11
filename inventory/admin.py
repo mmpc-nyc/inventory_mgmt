@@ -2,13 +2,10 @@ from django.contrib.admin import register, ModelAdmin, TabularInline
 from mptt.admin import MPTTModelAdmin
 from simple_history.admin import SimpleHistoryAdmin
 
-from inventory.models.contact import Contact, ContactPhoneNumber, ContactEmail, PhoneNumber
-from inventory.models.customer import Customer, CustomerLocation, CustomerContact
-from inventory.models.generic_product import GenericProduct, Category
-from inventory.models.location import Location
-from inventory.models.order import Order, OrderGenericProduct, Equipment, Condition
-from inventory.models.product import Product, ProductType, Brand
-from inventory.models.stock import Stock
+from inventory.models import Contact, ContactPhoneNumber, ContactEmail, PhoneNumber, Location, Customer, \
+    CustomerLocation, CustomerContact, Equipment, Condition, GenericProduct, Category, Product, ProductType, Brand, \
+    Stock
+from inventory.models import Order, OrderGenericProduct
 
 
 class GenericProductInline(TabularInline):
@@ -55,7 +52,7 @@ class ProductAdmin(ModelAdmin):
 
 @register(Equipment)
 class EquipmentAdmin(SimpleHistoryAdmin):
-    list_display = ('id', 'name', 'status', 'condition', 'stock', 'employee',)
+    list_display = ('id', 'name', 'status', 'condition', 'stock', 'user',)
     readonly_fields = ('counter',)
 
 
@@ -96,12 +93,12 @@ class PhoneNumberAdmin(ModelAdmin):
 
 @register(Order)
 class OrderAdmin(SimpleHistoryAdmin):
-    list_display = ['id', 'activity', 'customer', 'location', 'date', 'employee_names', 'status']
+    list_display = ['id', 'activity', 'customer', 'location', 'date', 'user_names', 'status']
     inlines = (GenericProductInline,)
 
     @staticmethod
-    def employee_names(obj: Order):
-        return ', '.join(employee.username for employee in obj.employees.all())
+    def user_names(obj: Order):
+        return ', '.join(user.username for user in obj.users.all())
 
 
 @register(CustomerContact)
@@ -111,4 +108,4 @@ class CustomerContactAdmin(ModelAdmin):
 
 @register(Condition)
 class ConditionAdmin(ModelAdmin):
-    list_display = ['name', 'description', 'is_deployable', 'is_storable']
+    list_display = ['name', 'description']

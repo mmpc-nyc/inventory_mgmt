@@ -26,3 +26,7 @@ class OrderCompletionError(ValidationError):
 
 class TransactionError(ValidationError):
     """An error occurred during a transaction process"""
+
+
+class UserAuthorizationError(ValidationError):
+    """An error when a user is not authorized"""

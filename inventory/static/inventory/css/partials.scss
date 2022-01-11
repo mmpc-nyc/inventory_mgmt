@@ -79,7 +79,7 @@
 .equipment-list > li {
   @include h-list;
   grid-template-columns: 2fr 2fr repeat(5, 1fr);
-  grid-template-areas: 'name product brand status order employee actions';
+  grid-template-areas: 'name product brand status order user actions';
 
   .name {
     grid-area: name;
@@ -101,8 +101,8 @@
     grid-area: order;
   }
 
-  .employee {
-    grid-area: employee;
+  .user {
+    grid-area: user;
   }
 
   .brand {
@@ -171,7 +171,7 @@
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: 1fr 1fr;
     grid-template-areas: 'order-num customer status  date actions'
-    'location location employees employees actions'
+    'location location users users actions'
   ;
 
     .order-num {
@@ -182,8 +182,8 @@
       grid-area: customer;
     }
 
-    .employees {
-      grid-area: employees;
+    .users {
+      grid-area: users;
     }
 
     .location {
