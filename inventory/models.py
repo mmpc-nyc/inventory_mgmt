@@ -367,17 +367,12 @@ class Stock(models.Model):
 
 
 class EquipmentTransaction(models.Model):
-    class TransactionType(models.TextChoices):
-        STORE = 'Store', _('Store')
-        PICK_UP = 'Pick_Up', _('Pick Up')
-        DEPLOY = _('Deploy')
-        TRANSFER = _('Transfer')
-        WITHDRAW = _('Withdraw')
-        DECOMMISSION = _('Decommission')
-
+    action = models.ForeignKey('EquipmentTransactionAction', verbose_name='equipment transaction action', on_delete=models.PROTECT)
     equipment = models.ForeignKey(Equipment, verbose_name=_('equipment'), on_delete=models.PROTECT)
-    action = models.CharField(verbose_name=_('type'), max_length=32, choices=TransactionType.choices)
     user = models.ForeignKey(get_user_model(), verbose_name=_('user'), on_delete=models.PROTECT)
+    recipient = models.ForeignKey(get_user_model(), verbose_name=_('recipient'), related_name='recipient',
+                                  on_delete=models.PROTECT, blank=True, null=True)
+    stock = models.ForeignKey('Stock', verbose_name=_('stock'), on_delete=models.PROTECT)
     condition = models.ForeignKey(Condition, verbose_name=_('condition'), on_delete=models.PROTECT)
     timestamp = models.DateTimeField(verbose_name=_('timestamp'), auto_now=True)
 
@@ -392,6 +387,9 @@ class EquipmentTransaction(models.Model):
 class EquipmentTransactionAction(models.Model):
     name = models.CharField(verbose_name=_('name'), max_length=32, unique=True)
     description = models.TextField(verbose_name=_('description'))
+
+    def __str__(self):
+        return f'{self.name}'
 
 
 class Order(models.Model):

@@ -1,5 +1,3 @@
-from dataclasses import dataclass
-
 from django.contrib.auth import get_user_model
 from django.db import transaction
 from django.utils.translation import gettext_lazy as _
@@ -10,7 +8,6 @@ from inventory.models import EquipmentTransaction, EquipmentTransactionAction, L
 User = get_user_model()
 
 
-@dataclass
 class Action:
     name: str
     description: str
@@ -20,12 +17,18 @@ class Action:
     stock: Stock = None
     condition: Condition = None
     recipient: User = None
+    location: Location = None
     equipment_transaction: EquipmentTransaction = None
 
-    def __init__(self, *args, **kwargs):
-        self.condition = self.condition or self.equipment.condition
+    def __init__(self, equipment: Equipment, user: User, condition: condition = None, stock: Stock = None,
+                 recipient: User = None):
+        self.equipment = equipment
+        self.equipment.condition = condition or equipment.condition
+        self.condition = self.equipment.condition
+        self.stock = stock
+        self.user = user or equipment.user
+        self.recipient = recipient
         self.validate()
-        super(Action, self).__init__(*args, **kwargs)
 
     def is_authorized(self):
         # TODO Implement user authorization
@@ -37,18 +40,21 @@ class Action:
         if not self.is_authorized():
             raise UserAuthorizationError(
                 _(f'User {self.user} is not authorized to perform action {self.equipment_transaction_action}'))
-        if self.equipment_transaction_action not in self.condition.actions:
+        if not self.condition.actions.filter(id=self.get_equipment_transaction_action().id).exists():
             raise ProductConditionError(_(
                 f'This equipment in condition {self.condition} cannot use action {self.equipment_transaction_action}'))
 
     def get_equipment_transaction(self) -> EquipmentTransaction:
-        equipment_transaction = EquipmentTransaction(equipment=self.equipment, action=self.equipment_transaction_action,
-            user=self.user, stock=self.stock, condition=self.condition, recipient=self.recipient, )
+        equipment_transaction = EquipmentTransaction(equipment=self.equipment,
+                                                     action=self.get_equipment_transaction_action(), user=self.user,
+                                                     condition=self.condition, stock=self.stock,
+                                                     recipient=self.recipient, )
         return equipment_transaction
 
     def get_equipment_transaction_action(self) -> EquipmentTransactionAction:
-        return EquipmentTransactionAction.objects.get_or_create(name=self.name,
-            defaults={'name': self.name, 'description': self.description})
+        self.equipment_transaction_action = EquipmentTransactionAction.objects.get(name=self.name)
+        print(self.equipment_transaction_action)
+        return self.equipment_transaction_action
 
     def execute(self):
         with transaction.atomic():
@@ -71,8 +77,8 @@ class StoreAction(Action):
         self.equipment.stock = self.stock or self.equipment.stock
         self.equipment.user = None
         self.equipment.status = self.equipment.Status.STORED
-        self.equipment.condition = self.condition
         self.equipment.location = self.stock.location
+        self.location = self.stock.location
 
         return super().execute()
 
@@ -85,7 +91,6 @@ class PickUpAction(Action):
         self.equipment.stock = self.stock or self.equipment.stock
         self.equipment.user = self.user
         self.equipment.status = self.equipment.Status.PICKED_UP
-        self.equipment.condition = self.condition
         self.equipment.location = self.stock.location
 
         return super().execute()
@@ -99,7 +104,6 @@ class DeployAction(Action):
 
     def execute(self) -> EquipmentTransaction:
         self.equipment.status = self.equipment.Status.DEPLOYED
-        self.equipment.condition = self.condition
         self.equipment.location = self.location
 
         return super().execute()
@@ -120,7 +124,6 @@ class TransferAction(Action):
 
         self.equipment.user = self.recipient
         self.equipment.status = self.equipment.Status.PICKED_UP
-        self.equipment.condition = self.condition
         self.equipment.location = self.recipient.location
         return super().execute()
 
