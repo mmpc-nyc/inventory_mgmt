@@ -16,6 +16,7 @@
 <p align="center">
 <img alt="Equipment Actions" src="images/equipment_actions.png"/>
 </p>
+
 ### Actions
 #### Pick Up
 #### Deploy
