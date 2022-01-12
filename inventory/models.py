@@ -15,7 +15,7 @@ from inventory.exceptions import OrderCompletionError
 
 
 class Contact(models.Model):
-    #  TODO  Write Description
+    """Model for managing contacts that attach to customers and employees"""
     first_name = models.CharField(max_length=150)
     last_name = models.CharField(max_length=150)
     emails = models.ManyToManyField('Email', through='ContactEmail', related_name='emails')

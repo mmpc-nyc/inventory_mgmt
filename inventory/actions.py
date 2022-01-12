@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import transaction
+from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 
 from inventory.exceptions import TransactionError, ProductConditionError, UserAuthorizationError
@@ -28,21 +29,27 @@ class Action:
         self.stock = stock
         self.user = user or equipment.user
         self.recipient = recipient
+        self.authorize(user=User)
         self.validate()
 
-    def is_authorized(self):
+    @cached_property
+    def is_authorized(self) -> bool:
+        return False
+
+    def authorize(self, user: User):
+        """Checks if the user is authorized to perform this action"""
         # TODO Implement user authorization
-        return True
+        # TODO Implement settings based authorization
+        if not self.is_authorized:
+            raise UserAuthorizationError(
+                _(f'User {user} is not authorized to perform action {self.equipment_transaction_action}'))
 
     def validate(self):
         if len(self.name) > 32:
             raise ValueError(f'The transaction action name cannot be longer than 32 characters.')
-        if not self.is_authorized():
-            raise UserAuthorizationError(
-                _(f'User {self.user} is not authorized to perform action {self.equipment_transaction_action}'))
         if not self.condition.actions.filter(id=self.get_equipment_transaction_action().id).exists():
-            raise ProductConditionError(_(
-                f'This equipment in condition {self.condition} cannot use action {self.equipment_transaction_action}'))
+            raise ProductConditionError(
+                _(f'This equipment in condition {self.condition} cannot use action {self.equipment_transaction_action}'))
 
     def get_equipment_transaction(self) -> EquipmentTransaction:
         equipment_transaction = EquipmentTransaction(equipment=self.equipment,
@@ -53,7 +60,6 @@ class Action:
 
     def get_equipment_transaction_action(self) -> EquipmentTransactionAction:
         self.equipment_transaction_action = EquipmentTransactionAction.objects.get(name=self.name)
-        print(self.equipment_transaction_action)
         return self.equipment_transaction_action
 
     def execute(self):

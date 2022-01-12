@@ -5,7 +5,7 @@
 ## Customer
 ## Order
 <p align="center">
-<img src="images/Order%20Process.png"/>
+<img alt="Order Process" src="images/Order%20Process.png"/>
 </p>
 
 ## Location
@@ -13,6 +13,9 @@
 ## Generic Product
 ## Product
 ## Equipment
+<p align="center">
+<img alt="Equipment Actions" src="images/equipment_actions.png"/>
+</p>
 ### Actions
 #### Pick Up
 #### Deploy
