@@ -222,7 +222,7 @@ class Condition(models.Model):
         return f'{self.name}'
 
     def has_action(self, action_name: str) -> bool:
-        formatted_action_name = f'action_{action_name.lower}'
+        formatted_action_name = f'action_{action_name.lower()}'
         if hasattr(self, formatted_action_name):
             return getattr(self, formatted_action_name)
         return False
