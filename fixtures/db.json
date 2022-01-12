@@ -1,117 +1,5 @@
 [
 {
-    "model": "sessions.session",
-    "pk": "0udv4vgtvr43hk4plbj6p4fffqq28c2a",
-    "fields": {
-        "session_data": ".eJxVjEEOwiAQRe_C2hAGkIBL956BDMwgVUOT0q6Md5cmXej2_ff-W0Tc1hq3zkucSFwEiNMvS5if3PaBHtjus8xzW5cpyV2Rx9rlbSZ-XQ_376Bir6NWAMV4JjDWWZ00psBOWZO0L_YcGIMbkFVRoXgT0MAI0BFordBlEp8vzQc3hg:1n21xJ:i0KTMbH2WN3BrZTP2TUDVFQR9gY765xCgPqA0_F9IKM",
-        "expire_date": "2022-01-11T02:11:13.756Z"
-    }
-},
-{
-    "model": "sessions.session",
-    "pk": "413z4ujddkp2opjv7lcvtigrbhckjut1",
-    "fields": {
-        "session_data": ".eJxVjEEOwiAQRe_C2hAGkIBL956BDMwgVUOT0q6Md5cmXej2_ff-W0Tc1hq3zkucSFwEiNMvS5if3PaBHtjus8xzW5cpyV2Rx9rlbSZ-XQ_376Bir6NWAMV4JjDWWZ00psBOWZO0L_YcGIMbkFVRoXgT0MAI0BFordBlEp8vzQc3hg:1n2Kqs:CF2FR4NuBR_2GeNtfqb2UdUvC1yYfg4SG6jIQ3BfelM",
-        "expire_date": "2022-01-11T22:21:50.557Z"
-    }
-},
-{
-    "model": "sessions.session",
-    "pk": "78ocrmyy2v22ktq6lfv2s2iwwaq64391",
-    "fields": {
-        "session_data": ".eJxVjEEOwiAQRe_C2pDCWEZcuvcMZGAYqRpISrsy3l2bdKHb_977LxVoXUpYe57DxOqsjDr8bpHSI9cN8J3qrenU6jJPUW-K3mnX18b5edndv4NCvXzrPOQTYDLR0MgCjmAcHHqBIfpkANC7HEWsAFJyoxdEsIzM4pM7olXvD-Q3N-o:1n1t0c:iNUaSQGf1NBN-S3nvNvo1MXvlTN8Pw6bDyo-oOx9sKU",
-        "expire_date": "2022-01-10T16:38:02.780Z"
-    }
-},
-{
-    "model": "sessions.session",
-    "pk": "94euwdaqovs0560kdws0z9l6ufutmnpn",
-    "fields": {
-        "session_data": ".eJxVjEEOwiAQRe_C2hAGkIBL956BDMwgVUOT0q6Md5cmXej2_ff-W0Tc1hq3zkucSFwEiNMvS5if3PaBHtjus8xzW5cpyV2Rx9rlbSZ-XQ_376Bir6NWAMV4JjDWWZ00psBOWZO0L_YcGIMbkFVRoXgT0MAI0BFordBlEp8vzQc3hg:1n1uaZ:ry5CFbOZPGIC-YNmdpGaFVp0xi-YSYqeGZVds2ZJ6Vo",
-        "expire_date": "2022-01-10T18:19:15.668Z"
-    }
-},
-{
-    "model": "sessions.session",
-    "pk": "ckwo5z41u5zoo6bsdb4ob4vk1mq0v3zb",
-    "fields": {
-        "session_data": ".eJxVjEEOwiAQRe_C2hAGkIBL956BDMwgVUOT0q6Md5cmXej2_ff-W0Tc1hq3zkucSFwEiNMvS5if3PaBHtjus8xzW5cpyV2Rx9rlbSZ-XQ_376Bir6NWAMV4JjDWWZ00psBOWZO0L_YcGIMbkFVRoXgT0MAI0BFordBlEp8vzQc3hg:1n1ykp:_DXQyoQrouNg3TlAhbuVZi3tzQ0WU3lAK6j3lJq53a8",
-        "expire_date": "2022-01-10T22:46:07.338Z"
-    }
-},
-{
-    "model": "sessions.session",
-    "pk": "itcq2wb3qbawseticvfbd4wqhpqur7uy",
-    "fields": {
-        "session_data": ".eJxVjEEOwiAQRe_C2hAGkIBL956BDMwgVUOT0q6Md5cmXej2_ff-W0Tc1hq3zkucSFwEiNMvS5if3PaBHtjus8xzW5cpyV2Rx9rlbSZ-XQ_376Bir6NWAMV4JjDWWZ00psBOWZO0L_YcGIMbkFVRoXgT0MAI0BFordBlEp8vzQc3hg:1n2r6N:QFeOMg9vCCePGyBqmdCioF450ZRusq0pWFf2phIYEFA",
-        "expire_date": "2022-01-13T08:47:59.522Z"
-    }
-},
-{
-    "model": "sessions.session",
-    "pk": "kdc7p6asqtx8v4yyeq05dz162639mdhc",
-    "fields": {
-        "session_data": ".eJxVjEEOwiAQRe_C2hAGkIBL956BDMwgVUOT0q6Md5cmXej2_ff-W0Tc1hq3zkucSFwEiNMvS5if3PaBHtjus8xzW5cpyV2Rx9rlbSZ-XQ_376Bir6NWAMV4JjDWWZ00psBOWZO0L_YcGIMbkFVRoXgT0MAI0BFordBlEp8vzQc3hg:1n2JOz:83BnW6RR7IV6NpjnXud8jun84krG5favNGMU9otuj7Q",
-        "expire_date": "2022-01-11T20:48:57.823Z"
-    }
-},
-{
-    "model": "sessions.session",
-    "pk": "meigz2xgn3v7v2c1n01w8ybvo2mvq547",
-    "fields": {
-        "session_data": ".eJxVjEEOwiAQRe_C2hAGkIBL956BDMwgVUOT0q6Md5cmXej2_ff-W0Tc1hq3zkucSFwEiNMvS5if3PaBHtjus8xzW5cpyV2Rx9rlbSZ-XQ_376Bir6NWAMV4JjDWWZ00psBOWZO0L_YcGIMbkFVRoXgT0MAI0BFordBlEp8vzQc3hg:1n6nvt:bggPLqW9ib0h6dkfAk7xNWDO5zhHs4cdk9xnlnIP0yw",
-        "expire_date": "2022-01-24T06:13:29.634Z"
-    }
-},
-{
-    "model": "sessions.session",
-    "pk": "ok87phe0uxq94695941duc2yldwhm4jm",
-    "fields": {
-        "session_data": "e30:1n1vgQ:e6LpAoR1xb67nHaNCxdnVDs5xWtzEpOYJeZbQOjsK_w",
-        "expire_date": "2022-01-10T19:29:22.986Z"
-    }
-},
-{
-    "model": "sessions.session",
-    "pk": "rmee7x2oay00gdbn6vb7lrv3dngdeis2",
-    "fields": {
-        "session_data": ".eJxVjEEOwiAQRe_C2hAGkIBL956BDMwgVUOT0q6Md5cmXej2_ff-W0Tc1hq3zkucSFwEiNMvS5if3PaBHtjus8xzW5cpyV2Rx9rlbSZ-XQ_376Bir6NWAMV4JjDWWZ00psBOWZO0L_YcGIMbkFVRoXgT0MAI0BFordBlEp8vzQc3hg:1n1vzG:-xG28lqscKNUzCzyLUMXuXaKihRjfybjhOnGLBZD7rw",
-        "expire_date": "2022-01-10T19:48:50.282Z"
-    }
-},
-{
-    "model": "sessions.session",
-    "pk": "uxxbqe51mact6sgpcm6ge7n9qmrovust",
-    "fields": {
-        "session_data": ".eJxVjEEOwiAQRe_C2hAGkIBL956BDMwgVUOT0q6Md5cmXej2_ff-W0Tc1hq3zkucSFwEiNMvS5if3PaBHtjus8xzW5cpyV2Rx9rlbSZ-XQ_376Bir6NWAMV4JjDWWZ00psBOWZO0L_YcGIMbkFVRoXgT0MAI0BFordBlEp8vzQc3hg:1n2KTJ:tFZDz6iYwrXAc7P0kpXJKOZ2ApgWnw_1bg7Q255rJ-U",
-        "expire_date": "2022-01-11T21:57:29.328Z"
-    }
-},
-{
-    "model": "sessions.session",
-    "pk": "vkknvhvxdiaz87jo2pcep9mdehfglyxw",
-    "fields": {
-        "session_data": ".eJxVjEEOwiAQRe_C2hAGkIBL956BDMwgVUOT0q6Md5cmXej2_ff-W0Tc1hq3zkucSFwEiNMvS5if3PaBHtjus8xzW5cpyV2Rx9rlbSZ-XQ_376Bir6NWAMV4JjDWWZ00psBOWZO0L_YcGIMbkFVRoXgT0MAI0BFordBlEp8vzQc3hg:1n21x7:X6cqlnbTDdakeB0rkl3rMEGrQx5xSLBOcX9l7Tz5hLo",
-        "expire_date": "2022-01-11T02:11:01.074Z"
-    }
-},
-{
-    "model": "sessions.session",
-    "pk": "w7v6o441lwerperqzszjxsclyhwtllaq",
-    "fields": {
-        "session_data": ".eJxVjEEOwiAQRe_C2hAGkIBL956BDMwgVUOT0q6Md5cmXej2_ff-W0Tc1hq3zkucSFwEiNMvS5if3PaBHtjus8xzW5cpyV2Rx9rlbSZ-XQ_376Bir6NWAMV4JjDWWZ00psBOWZO0L_YcGIMbkFVRoXgT0MAI0BFordBlEp8vzQc3hg:1n2Jbj:SINj4BnmyATPICSXkoMDmIsUMGucgY4vz2zpABssans",
-        "expire_date": "2022-01-11T21:02:07.213Z"
-    }
-},
-{
-    "model": "sessions.session",
-    "pk": "xp21afjsw9q9uzuhd1a3zk5op68xpgz7",
-    "fields": {
-        "session_data": ".eJxVjEEOwiAQRe_C2hAGkIBL956BDMwgVUOT0q6Md5cmXej2_ff-W0Tc1hq3zkucSFwEiNMvS5if3PaBHtjus8xzW5cpyV2Rx9rlbSZ-XQ_376Bir6NWAMV4JjDWWZ00psBOWZO0L_YcGIMbkFVRoXgT0MAI0BFordBlEp8vzQc3hg:1n2Jah:6WnARLf0T92uENCoVUMK-nysRxcGT4jim52VEIvfSdE",
-        "expire_date": "2022-01-11T21:01:03.778Z"
-    }
-},
-{
     "model": "sites.site",
     "pk": 1,
     "fields": {
@@ -870,14 +758,12 @@
     "fields": {
         "name": "Working",
         "description": "Equipment is in good working condition",
-        "actions": [
-            1,
-            2,
-            3,
-            4,
-            5,
-            6
-        ]
+        "action_collect": false,
+        "action_decommission": false,
+        "action_deploy": false,
+        "action_store": false,
+        "action_transfer": false,
+        "action_withdraw": false
     }
 },
 {
@@ -886,13 +772,12 @@
     "fields": {
         "name": "Damaged",
         "description": "Equipment is damaged and needs repair",
-        "actions": [
-            1,
-            2,
-            4,
-            5,
-            6
-        ]
+        "action_collect": false,
+        "action_decommission": false,
+        "action_deploy": false,
+        "action_store": false,
+        "action_transfer": false,
+        "action_withdraw": false
     }
 },
 {
@@ -901,7 +786,12 @@
     "fields": {
         "name": "Decommissioned",
         "description": "Unusable equipment that cannot be repaired.",
-        "actions": []
+        "action_collect": false,
+        "action_decommission": false,
+        "action_deploy": false,
+        "action_store": false,
+        "action_transfer": false,
+        "action_withdraw": false
     }
 },
 {
@@ -910,10 +800,12 @@
     "fields": {
         "name": "Lost",
         "description": "Equipment cannot be found. Lost equipment can be picked up.",
-        "actions": [
-            2,
-            4
-        ]
+        "action_collect": false,
+        "action_decommission": false,
+        "action_deploy": false,
+        "action_store": false,
+        "action_transfer": false,
+        "action_withdraw": false
     }
 },
 {

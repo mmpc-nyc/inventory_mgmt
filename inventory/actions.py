@@ -47,20 +47,16 @@ class Action:
     def validate(self):
         if len(self.name) > 32:
             raise ValueError(f'The transaction action name cannot be longer than 32 characters.')
-        if not self.condition.actions.filter(id=self.get_equipment_transaction_action().id).exists():
+        if not self.condition.has_action(self.name):
             raise ProductConditionError(
                 _(f'This equipment in condition {self.condition} cannot use action {self.equipment_transaction_action}'))
 
     def get_equipment_transaction(self) -> EquipmentTransaction:
         equipment_transaction = EquipmentTransaction(equipment=self.equipment,
-                                                     action=self.get_equipment_transaction_action(), user=self.user,
+                                                     action=self.name, user=self.user,
                                                      condition=self.condition, stock=self.stock,
                                                      recipient=self.recipient, )
         return equipment_transaction
-
-    def get_equipment_transaction_action(self) -> EquipmentTransactionAction:
-        self.equipment_transaction_action = EquipmentTransactionAction.objects.get(name=self.name)
-        return self.equipment_transaction_action
 
     def execute(self):
         with transaction.atomic():
@@ -71,7 +67,7 @@ class Action:
 
 
 class StoreAction(Action):
-    name = 'Store'
+    name = EquipmentTransaction.Action.STORE
     description = 'Stores equipment at stock location'
 
     def validate(self):
@@ -89,9 +85,9 @@ class StoreAction(Action):
         return super().execute()
 
 
-class PickUpAction(Action):
-    name = 'Pick Up'
-    description = 'Pick Up equipment from customer location'
+class CollectAction(Action):
+    name = EquipmentTransaction.Action.COLLECT
+    description = 'Collect equipment from customer location'
 
     def execute(self) -> EquipmentTransaction:
         self.equipment.stock = self.stock or self.equipment.stock
@@ -103,7 +99,7 @@ class PickUpAction(Action):
 
 
 class DeployAction(Action):
-    name = 'Deploy'
+    name = EquipmentTransaction.Action.DEPLOY
     description = 'Deploy equipment at customer location'
 
     location: Location
@@ -116,7 +112,7 @@ class DeployAction(Action):
 
 
 class TransferAction(Action):
-    name = 'Transfer'
+    name = EquipmentTransaction.Action.TRANSFER
     description = 'Transfer equipment from one user to another'
 
     def validate(self):
@@ -135,7 +131,7 @@ class TransferAction(Action):
 
 
 class Decommission(Action):
-    name = 'Decommission'
+    name = EquipmentTransaction.Action.DECOMMISSION
     description = 'Decommission equipment. It cannot be used or repaired'
 
     def execute(self) -> EquipmentTransaction:
@@ -146,7 +142,7 @@ class Decommission(Action):
 
 
 class Withdraw(Action):
-    name = 'Withdraw'
+    name = EquipmentTransaction.Action.WITHDRAW
     description = 'Withdraw equipment from stock location'
 
     def execute(self):

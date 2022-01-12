@@ -19,7 +19,7 @@
 <img alt="Equipment Actions" src="images/equipment_actions.png"/>
 </p>
 
-#### Pick Up
+#### Collect
 #### Deploy
 #### Store
 ## Transaction

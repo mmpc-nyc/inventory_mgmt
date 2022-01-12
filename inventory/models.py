@@ -175,6 +175,7 @@ class Equipment(models.Model):
         DEPLOYED = 'DEPLOYED', _('Deployed')  # Equipment is currently deployed at order location
         PICKED_UP = 'PICKED_UP', _('Picked Up')  # Equipment is with the employee
         MISSING = 'MISSING', _('Missing')  # Equipment cannot be found.
+        DECOMMISSIONED = 'DECOMMISSIONED', _('Decommissioned')
 
     name = models.CharField(max_length=150, blank=True, null=True)
     product = models.ForeignKey('Product', on_delete=models.CASCADE)
@@ -210,10 +211,21 @@ class Condition(models.Model):
     """Physical condition of the product that determines if it can be used"""
     name = models.CharField(verbose_name=_('name'), max_length=32)
     description = models.TextField(verbose_name=_('description'))
-    actions = models.ManyToManyField('EquipmentTransactionAction')
+    action_collect = models.BooleanField(verbose_name=_('collect'), default=False)
+    action_decommission = models.BooleanField(verbose_name=_('decommission'), default=False)
+    action_deploy = models.BooleanField(verbose_name=_('deploy'), default=False)
+    action_store = models.BooleanField(verbose_name=_('store'), default=False)
+    action_transfer = models.BooleanField(verbose_name=_('transfer'), default=False)
+    action_withdraw = models.BooleanField(verbose_name=_('withdraw'), default=False)
 
     def __str__(self):
         return f'{self.name}'
+
+    def has_action(self, action_name: str) -> bool:
+        formatted_action_name = f'action_{action_name.lower}'
+        if hasattr(self, formatted_action_name):
+            return getattr(self, formatted_action_name)
+        return False
 
     class Meta:
         verbose_name = _('Condition')
@@ -367,7 +379,15 @@ class Stock(models.Model):
 
 
 class EquipmentTransaction(models.Model):
-    action = models.ForeignKey('EquipmentTransactionAction', verbose_name='equipment transaction action', on_delete=models.PROTECT)
+    class Action(models.TextChoices):
+        COLLECT = 'Collect', _('Collect')
+        DECOMMISSION = 'Decommission', _('Decommission')
+        DEPLOY = 'Deploy', _('Deploy')
+        STORE = 'Store', _('Store')
+        TRANSFER = 'Transfer', _('Transfer')
+        WITHDRAW = 'Withdraw', _('Withdraw')
+
+    action = models.CharField(max_length=32, choices=Action.choices)
     equipment = models.ForeignKey(Equipment, verbose_name=_('equipment'), on_delete=models.PROTECT)
     user = models.ForeignKey(get_user_model(), verbose_name=_('user'), on_delete=models.PROTECT)
     recipient = models.ForeignKey(get_user_model(), verbose_name=_('recipient'), related_name='recipient',
@@ -375,6 +395,9 @@ class EquipmentTransaction(models.Model):
     stock = models.ForeignKey('Stock', verbose_name=_('stock'), on_delete=models.PROTECT)
     condition = models.ForeignKey(Condition, verbose_name=_('condition'), on_delete=models.PROTECT)
     timestamp = models.DateTimeField(verbose_name=_('timestamp'), auto_now=True)
+
+    def clean(self):
+        super().clean()
 
     def __str__(self):
         return f'{self.action} {self.equipment} at {self.timestamp} by {self.user}'
@@ -397,7 +420,7 @@ class Order(models.Model):
 
     class Activity(models.TextChoices):
         DEPLOY = 'Deploy', _('Deploy')
-        PICKUP = 'Pickup', _('Pickup')
+        COLLECT = 'Collect', _('Collect')
         INSPECT = 'Inspect', _('Inspect')
 
     class Status(models.TextChoices):
