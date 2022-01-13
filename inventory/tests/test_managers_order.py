@@ -1,27 +1,28 @@
 from test_base import AbstractTest
 
 
-class TestInspectOrderManager(AbstractTest):
-    def test_create(self):
-        self.fail()
+class AbstractTestHolder:
+    class AbstractOrderManager(AbstractTest):
+        def test_create(self):
+            self.fail()
+
+        def test_all(self):
+            self.fail()
 
 
-class TestDeployOrderManager(AbstractTest):
-    def test_create(self):
-        self.fail()
-
-
-class TestOrderManager(AbstractTest):
+class TestInspectOrderManager(AbstractTestHolder.AbstractOrderManager):
     ...
 
 
-class TestCollectOrderManager(AbstractTest):
+class TestDeployOrderManager(AbstractTestHolder.AbstractOrderManager):
+    ...
 
-    def test_all(self):
-        self.fail()
 
-    def test_create(self):
-        self.fail()
+class TestOrderManager(AbstractTestHolder.AbstractOrderManager):
+    ...
+
+
+class TestCollectOrderManager(AbstractTestHolder.AbstractOrderManager):
 
     def test_create_from_one_order(self):
         self.fail()
