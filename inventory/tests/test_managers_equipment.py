@@ -78,14 +78,3 @@ class TestEquipmentTransactionManager(AbstractTest):
         with self.subTest(): self.assertEqual(transaction.condition, transaction.equipment.condition)
         with self.subTest(): self.assertEqual(transaction.stock, transaction.equipment.stock)
 
-
-class TestCollectOrderManager(AbstractTest):
-    pass
-
-
-class TestDeployOrderManager(AbstractTest):
-    pass
-
-
-class TestInspectOrderManager(AbstractTest):
-    pass
