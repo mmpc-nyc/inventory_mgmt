@@ -1,6 +1,5 @@
 from collections import defaultdict
 
-import mptt.models
 from django.contrib.auth import get_user_model
 from django.db import models, transaction
 from django.db.models import Manager
@@ -11,7 +10,6 @@ from django.utils.translation import gettext_lazy as _
 from mptt.fields import TreeForeignKey
 from mptt.models import MPTTModel
 from phonenumber_field.modelfields import PhoneNumberField
-from simple_history.models import HistoricalRecords
 
 from inventory.exceptions import OrderCompletionError, ProductConditionError
 
@@ -22,7 +20,6 @@ class Contact(models.Model):
     last_name = models.CharField(max_length=150)
     emails = models.ManyToManyField('Email', through='ContactEmail', related_name='emails')
     phone_numbers = models.ManyToManyField('PhoneNumber', through='ContactPhoneNumber', related_name='phone_numbers')
-    history = HistoricalRecords()
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
@@ -91,7 +88,6 @@ class Location(models.Model):
     formatted = models.CharField(max_length=200, blank=True)
     latitude = models.FloatField(blank=True, null=True)
     longitude = models.FloatField(blank=True, null=True)
-    history = HistoricalRecords()
 
     def __str__(self):
         return f'{self.name}'
@@ -111,7 +107,6 @@ class Location(models.Model):
 
 class Customer(MPTTModel):
     #  TODO  Write Description
-    #  TODO  Fix bug with history model
     first_name = models.CharField(max_length=150)
     last_name = models.CharField(max_length=150)
     company_name = models.CharField(max_length=150, blank=True, default='')
@@ -255,7 +250,6 @@ class GenericProduct(models.Model):
     category = TreeForeignKey('Category', on_delete=models.SET_NULL, null=True, blank=True)
     name = models.CharField(max_length=150, unique=True)
     status = models.CharField(max_length=16, choices=Status.choices, default=Status.ACTIVE)
-    history = HistoricalRecords()
 
     def __str__(self):
         return f'{self.name}'
@@ -367,7 +361,6 @@ class Stock(models.Model):
     name = models.CharField(max_length=150, blank=True)
     status = models.CharField(max_length=32, choices=StockStatus.choices, default=StockStatus.ACTIVE)
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
-    history = HistoricalRecords()
 
     def __str__(self):
         return f'{self.name}'
@@ -492,11 +485,12 @@ class CollectOrderManager(models.Manager):
 class DeployOrderManager(models.Manager):
     ...
 
+
 class InspectOrderManager(models.Manager):
     ...
 
 
-class Order(MPTTModel):
+class Order(models.Model):
     """Model for scheduling orders to allow easier assignment of inventory, services and products"""
 
     class Activity(models.TextChoices):
@@ -511,7 +505,7 @@ class Order(MPTTModel):
         COMPLETED = 'Completed', _('Completed')
         CANCELED = 'Canceled', _('Canceled')
 
-    parent = TreeForeignKey('self', on_delete=models.CASCADE, blank=True, null=True)
+    parent = models.ManyToManyField('self', related_name='children', symmetrical=False)
     customer = models.ForeignKey(Customer, verbose_name=_('customer'), on_delete=models.CASCADE)
     activity = models.CharField(verbose_name=_('activity'), max_length=32, choices=Activity.choices,
                                 default=Activity.DEPLOY)
@@ -523,9 +517,9 @@ class Order(MPTTModel):
                                         related_name='equipments')
     generic_products = models.ManyToManyField('GenericProduct', verbose_name=_('generic products'),
                                               through='OrderGenericProduct', related_name='generic_products')
-    history = HistoricalRecords()
 
     objects = Manager()
+
     collect = CollectOrderManager()
     deploy = DeployOrderManager()
     inspect = InspectOrderManager()
