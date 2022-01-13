@@ -1,6 +1,5 @@
 from django.contrib.admin import register, ModelAdmin, TabularInline
 from mptt.admin import MPTTModelAdmin
-from simple_history.admin import SimpleHistoryAdmin
 
 from inventory.models import Contact, ContactPhoneNumber, ContactEmail, PhoneNumber, Location, Customer, \
     CustomerLocation, CustomerContact, Equipment, Condition, GenericProduct, Category, Product, ProductType, Brand, \
@@ -12,34 +11,34 @@ class GenericProductInline(TabularInline):
 
 
 @register(CustomerLocation)
-class CustomerLocationAdmin(SimpleHistoryAdmin):
+class CustomerLocationAdmin(ModelAdmin):
     list_display = ('customer', 'location')
 
 
 @register(ContactEmail)
-class ContactEmailAdmin(SimpleHistoryAdmin):
+class ContactEmailAdmin(ModelAdmin):
     list_display = ('contact', 'email',)
 
 
 @register(ContactPhoneNumber)
-class ContactPhoneNumberAdmin(SimpleHistoryAdmin):
+class ContactPhoneNumberAdmin(ModelAdmin):
     list_display = ('contact', 'phone_number',)
 
 
 @register(GenericProduct)
-class GenericProductAdmin(SimpleHistoryAdmin):
+class GenericProductAdmin(ModelAdmin):
     list_display = ('name',)
     list_filter = ('name', 'category',)
     search_fields = ('category__name',)
 
 
 @register(Customer)
-class CustomerAdmin(SimpleHistoryAdmin):
+class CustomerAdmin(MPTTModelAdmin):
     list_display = ('first_name', 'last_name', 'company_name', 'parent')
 
 
 @register(Contact)
-class ContactAdmin(SimpleHistoryAdmin):
+class ContactAdmin(ModelAdmin):
     list_display = ('first_name', 'last_name',)
 
 
@@ -50,13 +49,13 @@ class ProductAdmin(ModelAdmin):
 
 
 @register(Equipment)
-class EquipmentAdmin(SimpleHistoryAdmin):
+class EquipmentAdmin(ModelAdmin):
     list_display = ('id', 'name', 'status', 'condition', 'stock', 'location', 'user',)
     readonly_fields = ('counter',)
 
 
 @register(Stock)
-class StockAdmin(SimpleHistoryAdmin):
+class StockAdmin(ModelAdmin):
     list_display = ('name', 'status', 'location',)
 
 
@@ -66,12 +65,12 @@ class CategoryAdmin(MPTTModelAdmin):
 
 
 @register(ProductType)
-class ProductTypeAdmin(SimpleHistoryAdmin):
+class ProductTypeAdmin(ModelAdmin):
     list_display = ('name',)
 
 
 @register(Brand)
-class BrandAdmin(SimpleHistoryAdmin):
+class BrandAdmin(ModelAdmin):
     list_display = ('name',)
 
 
@@ -81,7 +80,7 @@ class OrderGenericProductAdmin(ModelAdmin):
 
 
 @register(Location)
-class LocationAdmin(SimpleHistoryAdmin):
+class LocationAdmin(ModelAdmin):
     ...
 
 
@@ -91,7 +90,7 @@ class PhoneNumberAdmin(ModelAdmin):
 
 
 @register(Order)
-class OrderAdmin(SimpleHistoryAdmin):
+class OrderAdmin(ModelAdmin):
     list_display = ['id', 'activity', 'customer', 'location', 'date', 'user_names', 'status']
     inlines = (GenericProductInline,)
 

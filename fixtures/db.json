@@ -8,42 +8,6 @@
     }
 },
 {
-    "model": "inventory.historicallocation",
-    "pk": 1,
-    "fields": {
-        "id": 1,
-        "name": "3927 29th Street, Long Island City, NY 11106",
-        "street_number": "",
-        "route": "",
-        "raw": "3927 29th Street, Long Island City, NY 11106",
-        "formatted": "",
-        "latitude": null,
-        "longitude": null,
-        "history_date": "2021-12-27T23:06:11.332Z",
-        "history_change_reason": null,
-        "history_type": "+",
-        "history_user": 1
-    }
-},
-{
-    "model": "inventory.historicallocation",
-    "pk": 2,
-    "fields": {
-        "id": 2,
-        "name": "Test Customer Location 1",
-        "street_number": "",
-        "route": "",
-        "raw": "Test Customer Location 1",
-        "formatted": "",
-        "latitude": null,
-        "longitude": null,
-        "history_date": "2022-01-13T03:59:08.593Z",
-        "history_change_reason": null,
-        "history_type": "+",
-        "history_user": 1
-    }
-},
-{
     "model": "inventory.location",
     "pk": 1,
     "fields": {
@@ -274,76 +238,6 @@
     }
 },
 {
-    "model": "inventory.historicalgenericproduct",
-    "pk": 1,
-    "fields": {
-        "id": 1,
-        "name": "18 Inch Fan",
-        "status": "ACTIVE",
-        "category": 2,
-        "history_date": "2021-12-27T17:21:16.899Z",
-        "history_change_reason": null,
-        "history_type": "+",
-        "history_user": 1
-    }
-},
-{
-    "model": "inventory.historicalgenericproduct",
-    "pk": 2,
-    "fields": {
-        "id": 2,
-        "name": "16 Inch Fan",
-        "status": "ACTIVE",
-        "category": 2,
-        "history_date": "2021-12-27T17:27:09.294Z",
-        "history_change_reason": null,
-        "history_type": "+",
-        "history_user": 1
-    }
-},
-{
-    "model": "inventory.historicalgenericproduct",
-    "pk": 3,
-    "fields": {
-        "id": 3,
-        "name": "24 Inch Fan",
-        "status": "ACTIVE",
-        "category": 2,
-        "history_date": "2021-12-27T17:29:07.841Z",
-        "history_change_reason": null,
-        "history_type": "+",
-        "history_user": 1
-    }
-},
-{
-    "model": "inventory.historicalgenericproduct",
-    "pk": 4,
-    "fields": {
-        "id": 2,
-        "name": "16 Inch Fan",
-        "status": "ACTIVE",
-        "category": 2,
-        "history_date": "2021-12-30T08:28:49.165Z",
-        "history_change_reason": null,
-        "history_type": "-",
-        "history_user": null
-    }
-},
-{
-    "model": "inventory.historicalgenericproduct",
-    "pk": 5,
-    "fields": {
-        "id": 3,
-        "name": "24 Inch Fan",
-        "status": "ACTIVE",
-        "category": 2,
-        "history_date": "2021-12-30T08:29:01.587Z",
-        "history_change_reason": null,
-        "history_type": "-",
-        "history_user": null
-    }
-},
-{
     "model": "inventory.genericproduct",
     "pk": 1,
     "fields": {
@@ -451,20 +345,6 @@
     }
 },
 {
-    "model": "inventory.historicalstock",
-    "pk": 1,
-    "fields": {
-        "id": 1,
-        "name": "MMPC Office",
-        "status": "ACTIVE",
-        "location": 1,
-        "history_date": "2021-12-27T23:06:16.973Z",
-        "history_change_reason": null,
-        "history_type": "+",
-        "history_user": 1
-    }
-},
-{
     "model": "inventory.stock",
     "pk": 1,
     "fields": {
@@ -474,383 +354,25 @@
     }
 },
 {
-    "model": "inventory.historicalorder",
-    "pk": 1,
-    "fields": {
-        "id": 1,
-        "activity": "Deploy",
-        "status": "ACTIVE",
-        "date": "2021-12-28T21:42:06Z",
-        "customer": 2,
-        "location": 1,
-        "history_date": "2021-12-28T21:42:16.951Z",
-        "history_change_reason": null,
-        "history_type": "+",
-        "history_user": 1
-    }
-},
-{
-    "model": "inventory.historicalorder",
-    "pk": 2,
-    "fields": {
-        "id": 1,
-        "activity": "Deploy",
-        "status": "ACTIVE",
-        "date": "2021-12-28T21:42:06Z",
-        "customer": 2,
-        "location": 1,
-        "history_date": "2021-12-29T22:46:03.858Z",
-        "history_change_reason": null,
-        "history_type": "~",
-        "history_user": 1
-    }
-},
-{
-    "model": "inventory.historicalorder",
-    "pk": 3,
-    "fields": {
-        "id": 1,
-        "activity": "Deploy",
-        "status": "ACTIVE",
-        "date": "2021-12-28T21:42:06Z",
-        "customer": 2,
-        "location": 1,
-        "history_date": "2021-12-29T22:47:10.928Z",
-        "history_change_reason": null,
-        "history_type": "~",
-        "history_user": 1
-    }
-},
-{
-    "model": "inventory.historicalorder",
-    "pk": 4,
-    "fields": {
-        "id": 1,
-        "activity": "Deploy",
-        "status": "ACTIVE",
-        "date": "2021-12-28T21:42:06Z",
-        "customer": 2,
-        "location": 1,
-        "history_date": "2021-12-30T10:52:33.008Z",
-        "history_change_reason": null,
-        "history_type": "-",
-        "history_user": null
-    }
-},
-{
-    "model": "inventory.historicalorder",
-    "pk": 5,
-    "fields": {
-        "id": 1,
-        "activity": "Deploy",
-        "status": "Completed",
-        "date": "2021-12-28T21:42:06Z",
-        "customer": 2,
-        "location": 1,
-        "history_date": "2022-01-08T07:18:42.295Z",
-        "history_change_reason": null,
-        "history_type": "~",
-        "history_user": null
-    }
-},
-{
-    "model": "inventory.historicalorder",
-    "pk": 6,
-    "fields": {
-        "id": 1,
-        "activity": "Deploy",
-        "status": "Completed",
-        "date": "2021-12-28T21:42:06Z",
-        "customer": 2,
-        "location": 1,
-        "history_date": "2022-01-08T07:19:34.695Z",
-        "history_change_reason": null,
-        "history_type": "~",
-        "history_user": null
-    }
-},
-{
-    "model": "inventory.historicalorder",
-    "pk": 7,
-    "fields": {
-        "id": 1,
-        "activity": "Deploy",
-        "status": "Completed",
-        "date": "2021-12-28T21:42:06Z",
-        "customer": 2,
-        "location": 1,
-        "history_date": "2022-01-08T07:23:10.330Z",
-        "history_change_reason": null,
-        "history_type": "~",
-        "history_user": null
-    }
-},
-{
-    "model": "inventory.historicalorder",
-    "pk": 8,
-    "fields": {
-        "id": 1,
-        "activity": "Deploy",
-        "status": "Completed",
-        "date": "2021-12-28T21:42:06Z",
-        "customer": 2,
-        "location": 1,
-        "history_date": "2022-01-08T07:23:30.127Z",
-        "history_change_reason": null,
-        "history_type": "~",
-        "history_user": null
-    }
-},
-{
-    "model": "inventory.historicalorder",
-    "pk": 9,
-    "fields": {
-        "id": 1,
-        "activity": "Deploy",
-        "status": "Completed",
-        "date": "2021-12-28T21:42:06Z",
-        "customer": 2,
-        "location": 1,
-        "history_date": "2022-01-08T07:23:31.129Z",
-        "history_change_reason": null,
-        "history_type": "~",
-        "history_user": null
-    }
-},
-{
-    "model": "inventory.historicalorder",
-    "pk": 10,
-    "fields": {
-        "id": 1,
-        "activity": "Deploy",
-        "status": "Completed",
-        "date": "2021-12-28T21:42:06Z",
-        "customer": 2,
-        "location": 1,
-        "history_date": "2022-01-08T07:23:32.054Z",
-        "history_change_reason": null,
-        "history_type": "~",
-        "history_user": null
-    }
-},
-{
-    "model": "inventory.historicalorder",
-    "pk": 11,
-    "fields": {
-        "id": 1,
-        "activity": "Deploy",
-        "status": "Completed",
-        "date": "2021-12-28T21:42:06Z",
-        "customer": 2,
-        "location": 1,
-        "history_date": "2022-01-08T07:23:33.045Z",
-        "history_change_reason": null,
-        "history_type": "~",
-        "history_user": null
-    }
-},
-{
-    "model": "inventory.historicalorder",
-    "pk": 12,
-    "fields": {
-        "id": 1,
-        "activity": "Deploy",
-        "status": "Completed",
-        "date": "2021-12-28T21:42:06Z",
-        "customer": 2,
-        "location": 1,
-        "history_date": "2022-01-08T07:24:13.552Z",
-        "history_change_reason": null,
-        "history_type": "~",
-        "history_user": null
-    }
-},
-{
-    "model": "inventory.historicalorder",
-    "pk": 13,
-    "fields": {
-        "id": 1,
-        "activity": "Deploy",
-        "status": "Completed",
-        "date": "2021-12-28T21:42:06Z",
-        "customer": 2,
-        "location": 1,
-        "history_date": "2022-01-08T07:26:27.507Z",
-        "history_change_reason": null,
-        "history_type": "~",
-        "history_user": null
-    }
-},
-{
-    "model": "inventory.historicalorder",
-    "pk": 14,
-    "fields": {
-        "id": 1,
-        "activity": "Deploy",
-        "status": "Completed",
-        "date": "2021-12-28T21:42:06Z",
-        "customer": 2,
-        "location": 1,
-        "history_date": "2022-01-08T07:26:53.858Z",
-        "history_change_reason": null,
-        "history_type": "~",
-        "history_user": null
-    }
-},
-{
-    "model": "inventory.historicalorder",
-    "pk": 15,
-    "fields": {
-        "id": 1,
-        "activity": "Deploy",
-        "status": "Completed",
-        "date": "2021-12-28T21:42:06Z",
-        "customer": 2,
-        "location": 1,
-        "history_date": "2022-01-08T07:26:55.334Z",
-        "history_change_reason": null,
-        "history_type": "~",
-        "history_user": null
-    }
-},
-{
-    "model": "inventory.historicalorder",
-    "pk": 16,
-    "fields": {
-        "id": 1,
-        "activity": "Deploy",
-        "status": "Completed",
-        "date": "2021-12-28T21:42:06Z",
-        "customer": 2,
-        "location": 1,
-        "history_date": "2022-01-08T07:27:22.479Z",
-        "history_change_reason": null,
-        "history_type": "~",
-        "history_user": null
-    }
-},
-{
-    "model": "inventory.historicalorder",
-    "pk": 17,
-    "fields": {
-        "id": 1,
-        "activity": "Deploy",
-        "status": "Completed",
-        "date": "2021-12-28T21:42:06Z",
-        "customer": 2,
-        "location": 1,
-        "history_date": "2022-01-08T07:27:24.125Z",
-        "history_change_reason": null,
-        "history_type": "~",
-        "history_user": null
-    }
-},
-{
-    "model": "inventory.historicalorder",
-    "pk": 18,
-    "fields": {
-        "id": 1,
-        "activity": "Deploy",
-        "status": "Completed",
-        "date": "2021-12-28T21:42:06Z",
-        "customer": 2,
-        "location": 1,
-        "history_date": "2022-01-08T07:27:53.898Z",
-        "history_change_reason": null,
-        "history_type": "~",
-        "history_user": null
-    }
-},
-{
-    "model": "inventory.historicalorder",
-    "pk": 19,
-    "fields": {
-        "id": 1,
-        "activity": "Deploy",
-        "status": "Completed",
-        "date": "2021-12-28T21:42:06Z",
-        "customer": 2,
-        "location": 1,
-        "history_date": "2022-01-08T07:28:02.336Z",
-        "history_change_reason": null,
-        "history_type": "~",
-        "history_user": null
-    }
-},
-{
-    "model": "inventory.historicalorder",
-    "pk": 20,
-    "fields": {
-        "id": 1,
-        "activity": "Deploy",
-        "status": "Completed",
-        "date": "2021-12-28T21:42:06Z",
-        "customer": 2,
-        "location": 1,
-        "history_date": "2022-01-08T07:28:03.878Z",
-        "history_change_reason": null,
-        "history_type": "~",
-        "history_user": null
-    }
-},
-{
-    "model": "inventory.historicalorder",
-    "pk": 21,
-    "fields": {
-        "id": 1,
-        "activity": "Deploy",
-        "status": "Completed",
-        "date": "2021-12-28T21:42:06Z",
-        "customer": 2,
-        "location": 1,
-        "history_date": "2022-01-08T07:28:04.554Z",
-        "history_change_reason": null,
-        "history_type": "~",
-        "history_user": null
-    }
-},
-{
-    "model": "inventory.historicalorder",
-    "pk": 22,
-    "fields": {
-        "id": 1,
-        "activity": "Deploy",
-        "status": "Completed",
-        "date": "2021-12-28T21:42:06Z",
-        "customer": 2,
-        "location": 1,
-        "history_date": "2022-01-08T07:28:05.123Z",
-        "history_change_reason": null,
-        "history_type": "~",
-        "history_user": null
-    }
-},
-{
-    "model": "inventory.historicalorder",
-    "pk": 23,
-    "fields": {
-        "id": 1,
-        "activity": "Deploy",
-        "status": "Completed",
-        "date": "2021-12-28T21:42:06Z",
-        "customer": 2,
-        "location": 1,
-        "history_date": "2022-01-08T07:28:05.477Z",
-        "history_change_reason": null,
-        "history_type": "~",
-        "history_user": null
-    }
-},
-{
     "model": "inventory.order",
     "pk": 1,
     "fields": {
-        "customer": 2,
+        "customer": 4,
         "activity": "Deploy",
-        "status": "Completed",
-        "location": 1,
-        "date": "2021-12-28T21:42:06Z",
+        "status": "New",
+        "location": 2,
+        "date": "2022-01-13T18:46:16Z",
+        "parent": [],
         "users": []
+    }
+},
+{
+    "model": "inventory.ordergenericproduct",
+    "pk": 1,
+    "fields": {
+        "order": 1,
+        "generic_product": 1,
+        "quantity": 10
     }
 },
 {
@@ -1400,11 +922,32 @@
     }
 },
 {
+    "model": "users.historicaluser",
+    "pk": 27,
+    "fields": {
+        "id": 1,
+        "password": "pbkdf2_sha256$320000$0PzFEaWM6jtbYUl43BZiE3$pK2s/FlKJ0PHVEMcTgjkb9FEvdLkkwcI+WxB6qmM7dI=",
+        "last_login": "2022-01-13T18:38:38.135Z",
+        "is_superuser": true,
+        "username": "schir2",
+        "first_name": "",
+        "last_name": "",
+        "email": "schir2@gmail.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2021-12-27T18:18:40.764Z",
+        "history_date": "2022-01-13T18:38:38.152Z",
+        "history_change_reason": null,
+        "history_type": "~",
+        "history_user": null
+    }
+},
+{
     "model": "users.user",
     "pk": 1,
     "fields": {
         "password": "pbkdf2_sha256$320000$0PzFEaWM6jtbYUl43BZiE3$pK2s/FlKJ0PHVEMcTgjkb9FEvdLkkwcI+WxB6qmM7dI=",
-        "last_login": "2022-01-13T02:08:58.017Z",
+        "last_login": "2022-01-13T18:38:38.135Z",
         "is_superuser": true,
         "username": "schir2",
         "first_name": "",
