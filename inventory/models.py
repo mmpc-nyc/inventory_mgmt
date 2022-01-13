@@ -1,7 +1,8 @@
 from collections import defaultdict
 
 from django.contrib.auth import get_user_model
-from django.db import models
+from django.db import models, transaction
+from django.db.models import Manager
 from django.urls import reverse_lazy
 from django.utils.functional import cached_property
 from django.utils.text import slugify
@@ -183,7 +184,7 @@ class Equipment(models.Model):
     stock = models.ForeignKey('Stock', on_delete=models.SET_NULL, blank=True, null=True)
     condition = models.ForeignKey('Condition', on_delete=models.PROTECT)
     user = models.ForeignKey(User, related_name='equipment_employee', on_delete=models.SET_NULL, null=True, blank=True)
-    location = models.ForeignKey('Location', on_delete=models.SET_NULL, null=True)
+    location = models.ForeignKey('Location', on_delete=models.SET_NULL, null=True, blank=True)
     counter = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
@@ -378,41 +379,104 @@ class Stock(models.Model):
         return reverse_lazy('stock:stock_detail', kwargs={'pk': self.pk})
 
 
-class EquipmentTransaction(models.Model):
-    class Action(models.TextChoices):
-        COLLECT = 'Collect', _('Collect')
-        DECOMMISSION = 'Decommission', _('Decommission')
-        DEPLOY = 'Deploy', _('Deploy')
-        STORE = 'Store', _('Store')
-        TRANSFER = 'Transfer', _('Transfer')
-        WITHDRAW = 'Withdraw', _('Withdraw')
+class EquipmentAction(models.TextChoices):
+    COLLECT = 'Collect', _('Collect')
+    DECOMMISSION = 'Decommission', _('Decommission')
+    DEPLOY = 'Deploy', _('Deploy')
+    STORE = 'Store', _('Store')
+    TRANSFER = 'Transfer', _('Transfer')
+    WITHDRAW = 'Withdraw', _('Withdraw')
 
-    action = models.CharField(max_length=32, choices=Action.choices)
+
+class EquipmentTransactionManager(Manager):
+
+    def execute(self, action: EquipmentAction, equipment: Equipment, user: User, condition: Condition = None,
+                stock: Stock = None, recipient: User = None):
+        with transaction.atomic():
+            equipment.save()
+            stock = stock or equipment.stock
+            condition = condition or equipment.condition
+            return self.create(action=action, equipment=equipment, user=user, condition=condition, stock=stock,
+                               recipient=recipient)
+
+    def collect(self, equipment: Equipment, user: User, condition: Condition = None):
+        action = EquipmentAction.COLLECT
+
+        equipment.user = user
+        equipment.status = equipment.Status.PICKED_UP
+        return self.execute(action=action, equipment=equipment, user=user, condition=condition)
+
+    def decommission(self, user: User, equipment: Equipment):
+        action = EquipmentAction.DECOMMISSION
+        condition = Condition.objects.get(name='Decommissioned')
+
+        equipment.user = None
+        equipment.status = equipment.Status.DECOMMISSIONED
+        equipment.location = None
+        equipment.stock = None
+        equipment.condition = condition
+
+        return self.execute(action=action, equipment=equipment, user=user, condition=condition)
+
+    def deploy(self, user: User, equipment: Equipment, location: Location, condition: Condition = None):
+        action = EquipmentAction.DEPLOY
+
+        equipment.status = equipment.Status.DEPLOYED
+        equipment.location = location
+
+        return self.execute(action=action, equipment=equipment, user=user, condition=condition)
+
+    def store(self, equipment: Equipment, user: User, stock: Stock = None, condition: Condition = None):
+        action = EquipmentAction.STORE
+        stock = stock or equipment.stock
+
+        equipment.user = None
+        equipment.location = stock.location
+        equipment.status = equipment.Status.STORED
+        equipment.location = None
+
+        return self.execute(action=action, equipment=equipment, user=user, condition=condition)
+
+    def transfer(self, equipment: Equipment, recipient: User, condition: Condition = None):
+        action = EquipmentAction.TRANSFER
+        user = equipment.user
+        print(user)
+        equipment.user = recipient
+
+        return self.execute(action=action, equipment=equipment, user=user, recipient=recipient, condition=condition)
+
+    def withdraw(self, equipment: Equipment, user: User, condition: Condition = None):
+        action = EquipmentAction.WITHDRAW
+
+        equipment.user = user
+        equipment.status = equipment.Status.PICKED_UP
+        equipment.location = None
+
+        return self.execute(action=action, equipment=equipment, user=user, condition=condition)
+
+
+class EquipmentTransaction(models.Model):
+    action = models.CharField(max_length=32, choices=EquipmentAction.choices)
     equipment = models.ForeignKey(Equipment, verbose_name=_('equipment'), on_delete=models.PROTECT)
     user = models.ForeignKey(get_user_model(), verbose_name=_('user'), on_delete=models.PROTECT)
     recipient = models.ForeignKey(get_user_model(), verbose_name=_('recipient'), related_name='recipient',
                                   on_delete=models.PROTECT, blank=True, null=True)
-    stock = models.ForeignKey('Stock', verbose_name=_('stock'), on_delete=models.PROTECT)
+    stock = models.ForeignKey('Stock', verbose_name=_('stock'), on_delete=models.PROTECT, blank=True, null=True)
     condition = models.ForeignKey(Condition, verbose_name=_('condition'), on_delete=models.PROTECT)
     timestamp = models.DateTimeField(verbose_name=_('timestamp'), auto_now=True)
+    location = models.ForeignKey('Location', verbose_name=_('Location'), blank=True, null=True,
+                                 on_delete=models.PROTECT)
+    actions = EquipmentTransactionManager()
 
     def clean(self):
         super().clean()
 
     def __str__(self):
-        return f'{self.action} {self.equipment} at {self.timestamp} by {self.user}'
+        return f'{self.id}'
 
     class Meta:
         verbose_name = _('Equipment Transaction')
         verbose_name_plural = _('Equipment Transactions')
-
-
-class EquipmentTransactionAction(models.Model):
-    name = models.CharField(verbose_name=_('name'), max_length=32, unique=True)
-    description = models.TextField(verbose_name=_('description'))
-
-    def __str__(self):
-        return f'{self.name}'
 
 
 class Order(models.Model):

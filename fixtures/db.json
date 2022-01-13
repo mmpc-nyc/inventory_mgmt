@@ -87,10 +87,10 @@
         "name": "18 Inch Fan Working Stored No Employee",
         "product": 2,
         "status": "STORED",
-        "stock": null,
+        "stock": 1,
         "condition": 1,
         "user": null,
-        "location": null,
+        "location": 1,
         "counter": null
     }
 },
@@ -1009,54 +1009,6 @@
     }
 },
 {
-    "model": "inventory.equipmenttransactionaction",
-    "pk": 1,
-    "fields": {
-        "name": "Store",
-        "description": "Stores equipment at stock location"
-    }
-},
-{
-    "model": "inventory.equipmenttransactionaction",
-    "pk": 2,
-    "fields": {
-        "name": "Pick Up",
-        "description": "Pick Up equipment from customer location"
-    }
-},
-{
-    "model": "inventory.equipmenttransactionaction",
-    "pk": 3,
-    "fields": {
-        "name": "Deploy",
-        "description": "Deploy equipment at customer location"
-    }
-},
-{
-    "model": "inventory.equipmenttransactionaction",
-    "pk": 4,
-    "fields": {
-        "name": "Transfer",
-        "description": "Transfer equipment from one user to another"
-    }
-},
-{
-    "model": "inventory.equipmenttransactionaction",
-    "pk": 5,
-    "fields": {
-        "name": "Decommission",
-        "description": "Decommission equipment. It cannot be used or repaired"
-    }
-},
-{
-    "model": "inventory.equipmenttransactionaction",
-    "pk": 6,
-    "fields": {
-        "name": "Withdraw",
-        "description": "Withdraw equipment from stock location"
-    }
-},
-{
     "model": "inventory.historicalorder",
     "pk": 1,
     "fields": {
@@ -1919,11 +1871,95 @@
     }
 },
 {
+    "model": "users.historicaluser",
+    "pk": 23,
+    "fields": {
+        "id": 1,
+        "password": "pbkdf2_sha256$320000$0PzFEaWM6jtbYUl43BZiE3$pK2s/FlKJ0PHVEMcTgjkb9FEvdLkkwcI+WxB6qmM7dI=",
+        "last_login": "2022-01-13T02:08:58.017Z",
+        "is_superuser": true,
+        "username": "schir2",
+        "first_name": "",
+        "last_name": "",
+        "email": "schir2@gmail.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2021-12-27T18:18:40.764Z",
+        "history_date": "2022-01-13T02:08:58.022Z",
+        "history_change_reason": null,
+        "history_type": "~",
+        "history_user": null
+    }
+},
+{
+    "model": "users.historicaluser",
+    "pk": 24,
+    "fields": {
+        "id": 3,
+        "password": "pbkdf2_sha256$320000$H1ZSDrCvhBcLUFB7a4Mhh0$Z0GllEDfcXJ/xC+BUzGkTXhwMhJzWGGw03riZ/5UsUU=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "test_user1",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2022-01-13T03:40:01.124Z",
+        "history_date": "2022-01-13T03:40:01.311Z",
+        "history_change_reason": null,
+        "history_type": "+",
+        "history_user": 1
+    }
+},
+{
+    "model": "users.historicaluser",
+    "pk": 25,
+    "fields": {
+        "id": 4,
+        "password": "pbkdf2_sha256$320000$8XJFnvuGTLocNk6Z4gvE7r$uNxpQfQqirvcnfmoUNhfHOM6cxfLTCYT1LYbDNZWP/M=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "test_user2",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2022-01-13T03:40:14.106Z",
+        "history_date": "2022-01-13T03:40:14.305Z",
+        "history_change_reason": null,
+        "history_type": "+",
+        "history_user": 1
+    }
+},
+{
+    "model": "users.historicaluser",
+    "pk": 26,
+    "fields": {
+        "id": 4,
+        "password": "pbkdf2_sha256$320000$8XJFnvuGTLocNk6Z4gvE7r$uNxpQfQqirvcnfmoUNhfHOM6cxfLTCYT1LYbDNZWP/M=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "test_user2",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2022-01-13T03:40:14Z",
+        "history_date": "2022-01-13T03:40:18.645Z",
+        "history_change_reason": null,
+        "history_type": "~",
+        "history_user": 1
+    }
+},
+{
     "model": "users.user",
     "pk": 1,
     "fields": {
         "password": "pbkdf2_sha256$320000$0PzFEaWM6jtbYUl43BZiE3$pK2s/FlKJ0PHVEMcTgjkb9FEvdLkkwcI+WxB6qmM7dI=",
-        "last_login": "2022-01-10T06:13:29.622Z",
+        "last_login": "2022-01-13T02:08:58.017Z",
         "is_superuser": true,
         "username": "schir2",
         "first_name": "",
@@ -1950,6 +1986,42 @@
         "is_staff": false,
         "is_active": true,
         "date_joined": "2022-01-10T08:03:08.511Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "users.user",
+    "pk": 3,
+    "fields": {
+        "password": "pbkdf2_sha256$320000$H1ZSDrCvhBcLUFB7a4Mhh0$Z0GllEDfcXJ/xC+BUzGkTXhwMhJzWGGw03riZ/5UsUU=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "test_user1",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2022-01-13T03:40:01.124Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "users.user",
+    "pk": 4,
+    "fields": {
+        "password": "pbkdf2_sha256$320000$8XJFnvuGTLocNk6Z4gvE7r$uNxpQfQqirvcnfmoUNhfHOM6cxfLTCYT1LYbDNZWP/M=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "test_user2",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2022-01-13T03:40:14Z",
         "groups": [],
         "user_permissions": []
     }

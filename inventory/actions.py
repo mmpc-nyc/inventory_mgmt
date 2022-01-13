@@ -93,7 +93,7 @@ class CollectAction(Action):
         self.equipment.stock = self.stock or self.equipment.stock
         self.equipment.user = self.user
         self.equipment.status = self.equipment.Status.PICKED_UP
-        self.equipment.location = self.stock.location
+        self.equipment.location = self.user.location
 
         return super().execute()
 

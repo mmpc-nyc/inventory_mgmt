@@ -4,7 +4,7 @@ from simple_history.admin import SimpleHistoryAdmin
 
 from inventory.models import Contact, ContactPhoneNumber, ContactEmail, PhoneNumber, Location, Customer, \
     CustomerLocation, CustomerContact, Equipment, Condition, GenericProduct, Category, Product, ProductType, Brand, \
-    Stock, Order, OrderGenericProduct, EquipmentTransaction, EquipmentTransactionAction
+    Stock, Order, OrderGenericProduct, EquipmentTransaction
 
 
 class GenericProductInline(TabularInline):
@@ -112,9 +112,4 @@ class ConditionAdmin(ModelAdmin):
 
 @register(EquipmentTransaction)
 class EquipmentTransactionAdmin(ModelAdmin):
-    ...
-
-
-@register(EquipmentTransactionAction)
-class EquipmentTransactionAction(ModelAdmin):
     ...
