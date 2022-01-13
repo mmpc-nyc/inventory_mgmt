@@ -51,7 +51,7 @@ class ProductAdmin(ModelAdmin):
 
 @register(Equipment)
 class EquipmentAdmin(SimpleHistoryAdmin):
-    list_display = ('id', 'name', 'status', 'condition', 'stock', 'user',)
+    list_display = ('id', 'name', 'status', 'condition', 'stock', 'location', 'user',)
     readonly_fields = ('counter',)
 
 

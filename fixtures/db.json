@@ -26,6 +26,24 @@
     }
 },
 {
+    "model": "inventory.historicallocation",
+    "pk": 2,
+    "fields": {
+        "id": 2,
+        "name": "Test Customer Location 1",
+        "street_number": "",
+        "route": "",
+        "raw": "Test Customer Location 1",
+        "formatted": "",
+        "latitude": null,
+        "longitude": null,
+        "history_date": "2022-01-13T03:59:08.593Z",
+        "history_change_reason": null,
+        "history_type": "+",
+        "history_user": 1
+    }
+},
+{
     "model": "inventory.location",
     "pk": 1,
     "fields": {
@@ -33,6 +51,19 @@
         "street_number": "",
         "route": "",
         "raw": "3927 29th Street, Long Island City, NY 11106",
+        "formatted": "",
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "model": "inventory.location",
+    "pk": 2,
+    "fields": {
+        "name": "Test Customer Location 1",
+        "street_number": "",
+        "route": "",
+        "raw": "Test Customer Location 1",
         "formatted": "",
         "latitude": null,
         "longitude": null
@@ -81,55 +112,35 @@
     }
 },
 {
-    "model": "inventory.equipment",
-    "pk": 1,
-    "fields": {
-        "name": "18 Inch Fan Working Stored No Employee",
-        "product": 2,
-        "status": "STORED",
-        "stock": 1,
-        "condition": 1,
-        "user": null,
-        "location": 1,
-        "counter": null
-    }
-},
-{
-    "model": "inventory.equipment",
-    "pk": 2,
-    "fields": {
-        "name": "18 Inch Fan Working Stored schir2",
-        "product": 2,
-        "status": "STORED",
-        "stock": null,
-        "condition": 1,
-        "user": 1,
-        "location": null,
-        "counter": null
-    }
-},
-{
-    "model": "inventory.equipment",
-    "pk": 3,
-    "fields": {
-        "name": "18 Inch Fan Working Stored mareks",
-        "product": 2,
-        "status": "STORED",
-        "stock": null,
-        "condition": 1,
-        "user": 2,
-        "location": null,
-        "counter": null
-    }
-},
-{
-    "model": "inventory.equipment",
+    "model": "inventory.customer",
     "pk": 4,
     "fields": {
-        "name": "18 Inch Fan Working Deployed No Employee",
+        "first_name": "Test",
+        "last_name": "Customer",
+        "company_name": "Test Company",
+        "parent": null,
+        "lft": 1,
+        "rght": 2,
+        "tree_id": 4,
+        "level": 0
+    }
+},
+{
+    "model": "inventory.customerlocation",
+    "pk": 1,
+    "fields": {
+        "location": 2,
+        "customer": 4
+    }
+},
+{
+    "model": "inventory.equipment",
+    "pk": 49,
+    "fields": {
+        "name": "stored_working",
         "product": 2,
-        "status": "DEPLOYED",
-        "stock": null,
+        "status": "STORED",
+        "stock": 1,
         "condition": 1,
         "user": null,
         "location": null,
@@ -138,617 +149,85 @@
 },
 {
     "model": "inventory.equipment",
-    "pk": 5,
+    "pk": 50,
     "fields": {
-        "name": "18 Inch Fan Working Deployed schir2",
+        "name": "stored_damaged",
         "product": 2,
-        "status": "DEPLOYED",
-        "stock": null,
-        "condition": 1,
-        "user": 1,
+        "status": "STORED",
+        "stock": 1,
+        "condition": 2,
+        "user": null,
         "location": null,
         "counter": null
     }
 },
 {
     "model": "inventory.equipment",
-    "pk": 6,
+    "pk": 51,
     "fields": {
-        "name": "18 Inch Fan Working Deployed mareks",
+        "name": "decommissioned",
         "product": 2,
-        "status": "DEPLOYED",
+        "status": "DECOMMISSIONED",
         "stock": null,
-        "condition": 1,
-        "user": 2,
+        "condition": 3,
+        "user": null,
         "location": null,
         "counter": null
     }
 },
 {
     "model": "inventory.equipment",
-    "pk": 7,
+    "pk": 52,
     "fields": {
-        "name": "18 Inch Fan Working Picked Up No Employee",
+        "name": "deployed_working",
+        "product": 2,
+        "status": "DEPLOYED",
+        "stock": 1,
+        "condition": 1,
+        "user": 3,
+        "location": 2,
+        "counter": 100
+    }
+},
+{
+    "model": "inventory.equipment",
+    "pk": 53,
+    "fields": {
+        "name": "picked_up_working",
         "product": 2,
         "status": "PICKED_UP",
         "stock": 1,
         "condition": 1,
-        "user": 2,
-        "location": 1,
-        "counter": null
-    }
-},
-{
-    "model": "inventory.equipment",
-    "pk": 8,
-    "fields": {
-        "name": "18 Inch Fan Working Picked Up schir2",
-        "product": 2,
-        "status": "DEPLOYED",
-        "stock": null,
-        "condition": 1,
-        "user": 1,
+        "user": 3,
         "location": null,
         "counter": null
     }
 },
 {
     "model": "inventory.equipment",
-    "pk": 9,
+    "pk": 54,
     "fields": {
-        "name": "18 Inch Fan Working Picked Up mareks",
-        "product": 2,
-        "status": "DEPLOYED",
-        "stock": null,
-        "condition": 1,
-        "user": 2,
-        "location": null,
-        "counter": null
-    }
-},
-{
-    "model": "inventory.equipment",
-    "pk": 10,
-    "fields": {
-        "name": "18 Inch Fan Working Missing No Employee",
-        "product": 2,
-        "status": "MISSING",
-        "stock": null,
-        "condition": 1,
-        "user": null,
-        "location": null,
-        "counter": null
-    }
-},
-{
-    "model": "inventory.equipment",
-    "pk": 11,
-    "fields": {
-        "name": "18 Inch Fan Working Missing schir2",
-        "product": 2,
-        "status": "MISSING",
-        "stock": null,
-        "condition": 1,
-        "user": 1,
-        "location": null,
-        "counter": null
-    }
-},
-{
-    "model": "inventory.equipment",
-    "pk": 12,
-    "fields": {
-        "name": "18 Inch Fan Working Missing mareks",
-        "product": 2,
-        "status": "MISSING",
-        "stock": null,
-        "condition": 1,
-        "user": 2,
-        "location": null,
-        "counter": null
-    }
-},
-{
-    "model": "inventory.equipment",
-    "pk": 13,
-    "fields": {
-        "name": "18 Inch Fan Damaged Stored No Employee",
-        "product": 2,
-        "status": "STORED",
-        "stock": null,
-        "condition": 2,
-        "user": null,
-        "location": null,
-        "counter": null
-    }
-},
-{
-    "model": "inventory.equipment",
-    "pk": 14,
-    "fields": {
-        "name": "18 Inch Fan Damaged Stored schir2",
-        "product": 2,
-        "status": "STORED",
-        "stock": null,
-        "condition": 2,
-        "user": 1,
-        "location": null,
-        "counter": null
-    }
-},
-{
-    "model": "inventory.equipment",
-    "pk": 15,
-    "fields": {
-        "name": "18 Inch Fan Damaged Stored mareks",
-        "product": 2,
-        "status": "STORED",
-        "stock": null,
-        "condition": 2,
-        "user": 2,
-        "location": null,
-        "counter": null
-    }
-},
-{
-    "model": "inventory.equipment",
-    "pk": 16,
-    "fields": {
-        "name": "18 Inch Fan Damaged Deployed No Employee",
-        "product": 2,
-        "status": "DEPLOYED",
-        "stock": null,
-        "condition": 2,
-        "user": null,
-        "location": null,
-        "counter": null
-    }
-},
-{
-    "model": "inventory.equipment",
-    "pk": 17,
-    "fields": {
-        "name": "18 Inch Fan Damaged Deployed schir2",
-        "product": 2,
-        "status": "DEPLOYED",
-        "stock": null,
-        "condition": 2,
-        "user": 1,
-        "location": null,
-        "counter": null
-    }
-},
-{
-    "model": "inventory.equipment",
-    "pk": 18,
-    "fields": {
-        "name": "18 Inch Fan Damaged Deployed mareks",
-        "product": 2,
-        "status": "DEPLOYED",
-        "stock": null,
-        "condition": 2,
-        "user": 2,
-        "location": null,
-        "counter": null
-    }
-},
-{
-    "model": "inventory.equipment",
-    "pk": 19,
-    "fields": {
-        "name": "18 Inch Fan Damaged Picked Up No Employee",
+        "name": "picked_up_damaged",
         "product": 2,
         "status": "PICKED_UP",
-        "stock": null,
+        "stock": 1,
         "condition": 2,
-        "user": null,
+        "user": 3,
         "location": null,
         "counter": null
     }
 },
 {
     "model": "inventory.equipment",
-    "pk": 20,
+    "pk": 55,
     "fields": {
-        "name": "18 Inch Fan Damaged Picked Up schir2",
-        "product": 2,
-        "status": "PICKED_UP",
-        "stock": null,
-        "condition": 2,
-        "user": 1,
-        "location": null,
-        "counter": null
-    }
-},
-{
-    "model": "inventory.equipment",
-    "pk": 21,
-    "fields": {
-        "name": "18 Inch Fan Damaged Picked Up mareks",
-        "product": 2,
-        "status": "PICKED_UP",
-        "stock": null,
-        "condition": 2,
-        "user": 2,
-        "location": null,
-        "counter": null
-    }
-},
-{
-    "model": "inventory.equipment",
-    "pk": 22,
-    "fields": {
-        "name": "18 Inch Fan Damaged Missing No Employee",
-        "product": 2,
-        "status": "MISSING",
-        "stock": null,
-        "condition": 2,
-        "user": null,
-        "location": null,
-        "counter": null
-    }
-},
-{
-    "model": "inventory.equipment",
-    "pk": 23,
-    "fields": {
-        "name": "18 Inch Fan Damaged Missing schir2",
-        "product": 2,
-        "status": "MISSING",
-        "stock": null,
-        "condition": 2,
-        "user": 1,
-        "location": null,
-        "counter": null
-    }
-},
-{
-    "model": "inventory.equipment",
-    "pk": 24,
-    "fields": {
-        "name": "18 Inch Fan Damaged Missing mareks",
-        "product": 2,
-        "status": "MISSING",
-        "stock": null,
-        "condition": 2,
-        "user": 2,
-        "location": null,
-        "counter": null
-    }
-},
-{
-    "model": "inventory.equipment",
-    "pk": 25,
-    "fields": {
-        "name": "18 Inch Fan Decommissioned Stored No Employee",
-        "product": 2,
-        "status": "STORED",
-        "stock": null,
-        "condition": 3,
-        "user": null,
-        "location": null,
-        "counter": null
-    }
-},
-{
-    "model": "inventory.equipment",
-    "pk": 26,
-    "fields": {
-        "name": "18 Inch Fan Decommissioned Stored schir2",
-        "product": 2,
-        "status": "STORED",
-        "stock": null,
-        "condition": 3,
-        "user": 1,
-        "location": null,
-        "counter": null
-    }
-},
-{
-    "model": "inventory.equipment",
-    "pk": 27,
-    "fields": {
-        "name": "18 Inch Fan Decommissioned Stored mareks",
-        "product": 2,
-        "status": "STORED",
-        "stock": null,
-        "condition": 3,
-        "user": 2,
-        "location": null,
-        "counter": null
-    }
-},
-{
-    "model": "inventory.equipment",
-    "pk": 28,
-    "fields": {
-        "name": "18 Inch Fan Decommissioned Deployed No Employee",
+        "name": "deployed_damaged",
         "product": 2,
         "status": "DEPLOYED",
-        "stock": null,
-        "condition": 3,
-        "user": null,
-        "location": null,
-        "counter": null
-    }
-},
-{
-    "model": "inventory.equipment",
-    "pk": 29,
-    "fields": {
-        "name": "18 Inch Fan Decommissioned Deployed schir2",
-        "product": 2,
-        "status": "DEPLOYED",
-        "stock": null,
-        "condition": 3,
-        "user": 1,
-        "location": null,
-        "counter": null
-    }
-},
-{
-    "model": "inventory.equipment",
-    "pk": 30,
-    "fields": {
-        "name": "18 Inch Fan Decommissioned Deployed mareks",
-        "product": 2,
-        "status": "DEPLOYED",
-        "stock": null,
-        "condition": 3,
-        "user": 2,
-        "location": null,
-        "counter": null
-    }
-},
-{
-    "model": "inventory.equipment",
-    "pk": 31,
-    "fields": {
-        "name": "18 Inch Fan Decommissioned Picked Up No Employee",
-        "product": 2,
-        "status": "PICKED_UP",
-        "stock": null,
-        "condition": 3,
-        "user": null,
-        "location": null,
-        "counter": null
-    }
-},
-{
-    "model": "inventory.equipment",
-    "pk": 32,
-    "fields": {
-        "name": "18 Inch Fan Decommissioned Picked Up schir2",
-        "product": 2,
-        "status": "PICKED_UP",
-        "stock": null,
-        "condition": 3,
-        "user": 1,
-        "location": null,
-        "counter": null
-    }
-},
-{
-    "model": "inventory.equipment",
-    "pk": 33,
-    "fields": {
-        "name": "18 Inch Fan Decommissioned Picked Up mareks",
-        "product": 2,
-        "status": "PICKED_UP",
-        "stock": null,
-        "condition": 3,
-        "user": 2,
-        "location": null,
-        "counter": null
-    }
-},
-{
-    "model": "inventory.equipment",
-    "pk": 34,
-    "fields": {
-        "name": "18 Inch Fan Decommissioned Missing No Employee",
-        "product": 2,
-        "status": "MISSING",
-        "stock": null,
-        "condition": 3,
-        "user": null,
-        "location": null,
-        "counter": null
-    }
-},
-{
-    "model": "inventory.equipment",
-    "pk": 35,
-    "fields": {
-        "name": "18 Inch Fan Decommissioned Missing schir2",
-        "product": 2,
-        "status": "MISSING",
-        "stock": null,
-        "condition": 3,
-        "user": 1,
-        "location": null,
-        "counter": null
-    }
-},
-{
-    "model": "inventory.equipment",
-    "pk": 36,
-    "fields": {
-        "name": "18 Inch Fan Decommissioned Missing mareks",
-        "product": 2,
-        "status": "MISSING",
-        "stock": null,
-        "condition": 3,
-        "user": 2,
-        "location": null,
-        "counter": null
-    }
-},
-{
-    "model": "inventory.equipment",
-    "pk": 37,
-    "fields": {
-        "name": "18 Inch Fan Lost Stored No Employee",
-        "product": 2,
-        "status": "STORED",
-        "stock": null,
-        "condition": 4,
-        "user": null,
-        "location": null,
-        "counter": null
-    }
-},
-{
-    "model": "inventory.equipment",
-    "pk": 38,
-    "fields": {
-        "name": "18 Inch Fan Lost Stored schir2",
-        "product": 2,
-        "status": "STORED",
-        "stock": null,
-        "condition": 4,
-        "user": 1,
-        "location": null,
-        "counter": null
-    }
-},
-{
-    "model": "inventory.equipment",
-    "pk": 39,
-    "fields": {
-        "name": "18 Inch Fan Lost Stored mareks",
-        "product": 2,
-        "status": "STORED",
-        "stock": null,
-        "condition": 4,
-        "user": 2,
-        "location": null,
-        "counter": null
-    }
-},
-{
-    "model": "inventory.equipment",
-    "pk": 40,
-    "fields": {
-        "name": "18 Inch Fan Lost Deployed No Employee",
-        "product": 2,
-        "status": "DEPLOYED",
-        "stock": null,
-        "condition": 4,
-        "user": null,
-        "location": null,
-        "counter": null
-    }
-},
-{
-    "model": "inventory.equipment",
-    "pk": 41,
-    "fields": {
-        "name": "18 Inch Fan Lost Deployed schir2",
-        "product": 2,
-        "status": "DEPLOYED",
-        "stock": null,
-        "condition": 4,
-        "user": 1,
-        "location": null,
-        "counter": null
-    }
-},
-{
-    "model": "inventory.equipment",
-    "pk": 42,
-    "fields": {
-        "name": "18 Inch Fan Lost Deployed mareks",
-        "product": 2,
-        "status": "DEPLOYED",
-        "stock": null,
-        "condition": 4,
-        "user": 2,
-        "location": null,
-        "counter": null
-    }
-},
-{
-    "model": "inventory.equipment",
-    "pk": 43,
-    "fields": {
-        "name": "18 Inch Fan Lost Picked Up No Employee",
-        "product": 2,
-        "status": "PICKED_UP",
-        "stock": null,
-        "condition": 4,
-        "user": null,
-        "location": null,
-        "counter": null
-    }
-},
-{
-    "model": "inventory.equipment",
-    "pk": 44,
-    "fields": {
-        "name": "18 Inch Fan Lost Picked Up schir2",
-        "product": 2,
-        "status": "PICKED_UP",
-        "stock": null,
-        "condition": 4,
-        "user": 1,
-        "location": null,
-        "counter": null
-    }
-},
-{
-    "model": "inventory.equipment",
-    "pk": 45,
-    "fields": {
-        "name": "18 Inch Fan Lost Picked Up mareks",
-        "product": 2,
-        "status": "PICKED_UP",
-        "stock": null,
-        "condition": 4,
-        "user": 2,
-        "location": null,
-        "counter": null
-    }
-},
-{
-    "model": "inventory.equipment",
-    "pk": 46,
-    "fields": {
-        "name": "18 Inch Fan Lost Missing No Employee",
-        "product": 2,
-        "status": "MISSING",
-        "stock": null,
-        "condition": 4,
-        "user": null,
-        "location": null,
-        "counter": null
-    }
-},
-{
-    "model": "inventory.equipment",
-    "pk": 47,
-    "fields": {
-        "name": "18 Inch Fan Lost Missing schir2",
-        "product": 2,
-        "status": "MISSING",
-        "stock": null,
-        "condition": 4,
-        "user": 1,
-        "location": null,
-        "counter": null
-    }
-},
-{
-    "model": "inventory.equipment",
-    "pk": 48,
-    "fields": {
-        "name": "18 Inch Fan Lost Missing mareks",
-        "product": 2,
-        "status": "MISSING",
-        "stock": null,
-        "condition": 4,
-        "user": 2,
-        "location": null,
+        "stock": 1,
+        "condition": 2,
+        "user": 3,
+        "location": 2,
         "counter": null
     }
 },
@@ -758,12 +237,12 @@
     "fields": {
         "name": "Working",
         "description": "Equipment is in good working condition",
-        "action_collect": false,
-        "action_decommission": false,
-        "action_deploy": false,
-        "action_store": false,
-        "action_transfer": false,
-        "action_withdraw": false
+        "action_collect": true,
+        "action_decommission": true,
+        "action_deploy": true,
+        "action_store": true,
+        "action_transfer": true,
+        "action_withdraw": true
     }
 },
 {
@@ -772,12 +251,12 @@
     "fields": {
         "name": "Damaged",
         "description": "Equipment is damaged and needs repair",
-        "action_collect": false,
-        "action_decommission": false,
+        "action_collect": true,
+        "action_decommission": true,
         "action_deploy": false,
-        "action_store": false,
-        "action_transfer": false,
-        "action_withdraw": false
+        "action_store": true,
+        "action_transfer": true,
+        "action_withdraw": true
     }
 },
 {
@@ -787,21 +266,7 @@
         "name": "Decommissioned",
         "description": "Unusable equipment that cannot be repaired.",
         "action_collect": false,
-        "action_decommission": false,
-        "action_deploy": false,
-        "action_store": false,
-        "action_transfer": false,
-        "action_withdraw": false
-    }
-},
-{
-    "model": "inventory.condition",
-    "pk": 4,
-    "fields": {
-        "name": "Lost",
-        "description": "Equipment cannot be found. Lost equipment can be picked up.",
-        "action_collect": false,
-        "action_decommission": false,
+        "action_decommission": true,
         "action_deploy": false,
         "action_store": false,
         "action_transfer": false,
@@ -940,7 +405,7 @@
         "brand": 2,
         "product_type": 1,
         "status": "ACTIVE",
-        "counter": 100
+        "counter": 101
     }
 },
 {
@@ -1386,26 +851,6 @@
         "location": 1,
         "date": "2021-12-28T21:42:06Z",
         "users": []
-    }
-},
-{
-    "model": "inventory.orderequipment",
-    "pk": 1,
-    "fields": {
-        "order": 1,
-        "equipment": 8,
-        "deployed": "2022-01-10T09:16:09.039Z",
-        "picked_up": null
-    }
-},
-{
-    "model": "inventory.orderequipment",
-    "pk": 2,
-    "fields": {
-        "order": 1,
-        "equipment": 9,
-        "deployed": "2022-01-10T09:16:09.054Z",
-        "picked_up": null
     }
 },
 {

@@ -12,7 +12,7 @@ from mptt.models import MPTTModel
 from phonenumber_field.modelfields import PhoneNumberField
 from simple_history.models import HistoricalRecords
 
-from inventory.exceptions import OrderCompletionError
+from inventory.exceptions import OrderCompletionError, ProductConditionError
 
 
 class Contact(models.Model):
@@ -116,7 +116,7 @@ class Customer(MPTTModel):
     company_name = models.CharField(max_length=150, blank=True, default='')
     contacts = models.ManyToManyField('Contact', through='CustomerContact', related_name='contact')
     locations = models.ManyToManyField('Location', through='CustomerLocation', related_name='location')
-    parent = TreeForeignKey('self', on_delete=models.PROTECT, blank=True, null=True)
+    parent = TreeForeignKey('self', on_delete=models.CASCADE, blank=True, null=True)
 
     def get_absolute_url(self):
         return reverse_lazy('inventory:customer_detail', kwargs={'pk': self.pk})
@@ -182,7 +182,7 @@ class Equipment(models.Model):
     product = models.ForeignKey('Product', on_delete=models.CASCADE)
     status = models.CharField(max_length=32, choices=Status.choices, default=Status.STORED)
     stock = models.ForeignKey('Stock', on_delete=models.SET_NULL, blank=True, null=True)
-    condition = models.ForeignKey('Condition', on_delete=models.PROTECT)
+    condition = models.ForeignKey('Condition', on_delete=models.CASCADE)
     user = models.ForeignKey(User, related_name='equipment_employee', on_delete=models.SET_NULL, null=True, blank=True)
     location = models.ForeignKey('Location', on_delete=models.SET_NULL, null=True, blank=True)
     counter = models.IntegerField(blank=True, null=True)
@@ -292,7 +292,7 @@ class Product(models.Model):
         RECALL = 'Recall', _('Recall')  # The product is inactive and should no longer be used.
 
     name = models.CharField(max_length=150)
-    generic_product = models.ForeignKey('GenericProduct', on_delete=models.PROTECT)
+    generic_product = models.ForeignKey('GenericProduct', on_delete=models.CASCADE)
     brand = models.ForeignKey('Brand', on_delete=models.CASCADE)
     product_type = models.ForeignKey('ProductType', on_delete=models.CASCADE)
     status = models.CharField(max_length=16, choices=Status.choices, default=Status.ACTIVE)
@@ -392,6 +392,10 @@ class EquipmentTransactionManager(Manager):
 
     def execute(self, action: EquipmentAction, equipment: Equipment, user: User, condition: Condition = None,
                 stock: Stock = None, recipient: User = None):
+        if not equipment.condition.has_action(action.name):
+            raise ProductConditionError(
+                _(f'This equipment in condition {equipment.condition} cannot use action {action}'))
+
         with transaction.atomic():
             equipment.save()
             stock = stock or equipment.stock
@@ -440,7 +444,6 @@ class EquipmentTransactionManager(Manager):
     def transfer(self, equipment: Equipment, recipient: User, condition: Condition = None):
         action = EquipmentAction.TRANSFER
         user = equipment.user
-        print(user)
         equipment.user = recipient
 
         return self.execute(action=action, equipment=equipment, user=user, recipient=recipient, condition=condition)
@@ -457,15 +460,15 @@ class EquipmentTransactionManager(Manager):
 
 class EquipmentTransaction(models.Model):
     action = models.CharField(max_length=32, choices=EquipmentAction.choices)
-    equipment = models.ForeignKey(Equipment, verbose_name=_('equipment'), on_delete=models.PROTECT)
-    user = models.ForeignKey(get_user_model(), verbose_name=_('user'), on_delete=models.PROTECT)
+    equipment = models.ForeignKey(Equipment, verbose_name=_('equipment'), on_delete=models.CASCADE)
+    user = models.ForeignKey(get_user_model(), verbose_name=_('user'), on_delete=models.CASCADE)
     recipient = models.ForeignKey(get_user_model(), verbose_name=_('recipient'), related_name='recipient',
-                                  on_delete=models.PROTECT, blank=True, null=True)
-    stock = models.ForeignKey('Stock', verbose_name=_('stock'), on_delete=models.PROTECT, blank=True, null=True)
-    condition = models.ForeignKey(Condition, verbose_name=_('condition'), on_delete=models.PROTECT)
+                                  on_delete=models.CASCADE, blank=True, null=True)
+    stock = models.ForeignKey('Stock', verbose_name=_('stock'), on_delete=models.CASCADE, blank=True, null=True)
+    condition = models.ForeignKey(Condition, verbose_name=_('condition'), on_delete=models.CASCADE)
     timestamp = models.DateTimeField(verbose_name=_('timestamp'), auto_now=True)
     location = models.ForeignKey('Location', verbose_name=_('Location'), blank=True, null=True,
-                                 on_delete=models.PROTECT)
+                                 on_delete=models.CASCADE)
     actions = EquipmentTransactionManager()
 
     def clean(self):
