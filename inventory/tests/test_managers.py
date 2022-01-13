@@ -21,7 +21,7 @@ class TestEquipmentTransactionManager(TestCase):
         self.order = Order.objects.get(id=1)
 
     def test_collect(self):
-        transaction = EquipmentTransaction.actions.collect(
+        transaction = EquipmentTransaction.objects.collect(
             user=self.user,
             equipment=self.equipment_stored_working,
             condition=None,
@@ -35,7 +35,7 @@ class TestEquipmentTransactionManager(TestCase):
         with self.subTest(): self.assertEqual(transaction.stock, transaction.equipment.stock)
 
     def test_decommission(self):
-        transaction = EquipmentTransaction.actions.decommission(
+        transaction = EquipmentTransaction.objects.decommission(
             user=self.user,
             equipment=self.equipment_picked_up_working,
         )
@@ -50,7 +50,7 @@ class TestEquipmentTransactionManager(TestCase):
         with self.subTest(): self.assertEqual(transaction.condition, transaction.equipment.condition)
 
     def test_deploy(self):
-        transaction = EquipmentTransaction.actions.deploy(
+        transaction = EquipmentTransaction.objects.deploy(
             user=self.user,
             equipment=self.equipment_picked_up_working,
             location= self.location,
@@ -64,7 +64,7 @@ class TestEquipmentTransactionManager(TestCase):
         with self.subTest(): self.assertEqual(transaction.stock, transaction.equipment.stock)
 
     def test_store(self):
-        transaction = EquipmentTransaction.actions.store(
+        transaction = EquipmentTransaction.objects.store(
             user=self.user,
             equipment=self.equipment_picked_up_working,
             stock=self.stock,
@@ -80,7 +80,7 @@ class TestEquipmentTransactionManager(TestCase):
         with self.subTest(): self.assertEqual(transaction.stock, self.stock)
 
     def test_transfer(self):
-        transaction = EquipmentTransaction.actions.transfer(
+        transaction = EquipmentTransaction.objects.transfer(
             recipient=self.recipient,
             equipment=self.equipment_picked_up_working,
             condition=None,
@@ -95,7 +95,7 @@ class TestEquipmentTransactionManager(TestCase):
         with self.subTest(): self.assertEqual(transaction.stock, transaction.equipment.stock)
 
     def test_withdraw(self):
-        transaction = EquipmentTransaction.actions.withdraw(
+        transaction = EquipmentTransaction.objects.withdraw(
             user=self.user,
             equipment=self.equipment_stored_working,
             condition=None,

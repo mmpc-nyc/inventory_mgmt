@@ -388,7 +388,7 @@ class EquipmentTransactionAction(models.TextChoices):
     WITHDRAW = 'Withdraw', _('Withdraw')
 
 
-class EquipmentTransactionManager(Manager):
+class EquipmentTransactionManager(models.Manager):
 
     def execute(self, action: EquipmentTransactionAction, equipment: Equipment, user: User, condition: Condition = None,
                 stock: Stock = None, recipient: User = None):
@@ -459,6 +459,7 @@ class EquipmentTransactionManager(Manager):
 
 
 class EquipmentTransaction(models.Model):
+    """A model for managing equipment transactions. Mainly used for logging and auditing"""
     action = models.CharField(max_length=32, choices=EquipmentTransactionAction.choices)
     equipment = models.ForeignKey(Equipment, verbose_name=_('equipment'), on_delete=models.CASCADE)
     user = models.ForeignKey(get_user_model(), verbose_name=_('user'), on_delete=models.CASCADE)
@@ -469,7 +470,8 @@ class EquipmentTransaction(models.Model):
     timestamp = models.DateTimeField(verbose_name=_('timestamp'), auto_now=True)
     location = models.ForeignKey('Location', verbose_name=_('Location'), blank=True, null=True,
                                  on_delete=models.CASCADE)
-    actions = EquipmentTransactionManager()
+
+    objects = EquipmentTransactionManager()
 
     def clean(self):
         super().clean()
@@ -480,6 +482,18 @@ class EquipmentTransaction(models.Model):
     class Meta:
         verbose_name = _('Equipment Transaction')
         verbose_name_plural = _('Equipment Transactions')
+
+
+class CollectOrderManager(models.Manager):
+    ...
+
+
+class DeployOrderManager(models.Manager):
+    ...
+
+
+class InspectOrderManager(models.Manager):
+    ...
 
 
 class Order(models.Model):
@@ -510,6 +524,11 @@ class Order(models.Model):
                                               through='OrderGenericProduct', related_name='generic_products')
     history = HistoricalRecords()
 
+    objects = Manager()
+    collect = CollectOrderManager()
+    deploy = DeployOrderManager()
+    inspect = InspectOrderManager()
+
     def get_deployed_equipment(self):
         return self.equipments.filter(status=Equipment.Status.DEPLOYED)
 
@@ -531,7 +550,7 @@ class Order(models.Model):
         if self.activity == self.Activity.DEPLOY:
             self._complete_deploy_activity(ignore_issues=ignore_issues)
         elif self.activity == self.Activity.PICKUP:
-            self._complete_pickup_activity(ignore_issues=ignore_issues)
+            self._complete_collect_activity(ignore_issues=ignore_issues)
         elif self.activity == self.Activity.INSPECT:
             self._complete_inspection_activity(ignore_issues=ignore_issues)
         self.status = self.Status.COMPLETED
@@ -558,7 +577,7 @@ class Order(models.Model):
                     'A quantity mismatch was found between requested equipment and deployed equipment. '
                     'To bypass this error ignore checks should be enabled')
 
-    def _complete_pickup_activity(self, ignore_issues: bool):
+    def _complete_collect_activity(self, ignore_issues: bool):
         self.missing_equipment_validator(ignore_issues)
 
     def _complete_inspection_activity(self, ignore_issues: bool):
