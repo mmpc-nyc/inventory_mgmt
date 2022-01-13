@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 
-from inventory.models import Equipment, Stock, Condition, Location, EquipmentTransaction, EquipmentAction, Order
+from inventory.models import Equipment, Stock, Condition, Location, EquipmentTransaction, EquipmentTransactionAction, Order
 
 User = get_user_model()
 
@@ -26,7 +26,7 @@ class TestEquipmentTransactionManager(TestCase):
             equipment=self.equipment_stored_working,
             condition=None,
         )
-        with self.subTest(): self.assertEqual(transaction.action, EquipmentAction.COLLECT)
+        with self.subTest(): self.assertEqual(transaction.action, EquipmentTransactionAction.COLLECT)
         with self.subTest(): self.assertEqual(transaction.equipment.status, self.equipment_stored_working.Status.PICKED_UP)
 
         with self.subTest(): self.assertEqual(transaction.user, self.user)
@@ -39,7 +39,7 @@ class TestEquipmentTransactionManager(TestCase):
             user=self.user,
             equipment=self.equipment_picked_up_working,
         )
-        with self.subTest(): self.assertEqual(transaction.action, EquipmentAction.DECOMMISSION)
+        with self.subTest(): self.assertEqual(transaction.action, EquipmentTransactionAction.DECOMMISSION)
         with self.subTest(): self.assertEqual(transaction.equipment.status, self.equipment_stored_working.Status.DECOMMISSIONED)
 
         with self.subTest(): self.assertIsNone(transaction.recipient)
@@ -56,7 +56,7 @@ class TestEquipmentTransactionManager(TestCase):
             location= self.location,
             condition=None,
         )
-        with self.subTest(): self.assertEqual(transaction.action, EquipmentAction.DEPLOY)
+        with self.subTest(): self.assertEqual(transaction.action, EquipmentTransactionAction.DEPLOY)
         with self.subTest(): self.assertEqual(transaction.equipment.status, self.equipment_stored_working.Status.DEPLOYED)
         with self.subTest(): self.assertEqual(transaction.user, self.user)
         with self.subTest(): self.assertIsNone(transaction.recipient)
@@ -70,7 +70,7 @@ class TestEquipmentTransactionManager(TestCase):
             stock=self.stock,
             condition=None,
         )
-        with self.subTest(): self.assertEqual(transaction.action, EquipmentAction.STORE)
+        with self.subTest(): self.assertEqual(transaction.action, EquipmentTransactionAction.STORE)
         with self.subTest(): self.assertEqual(transaction.equipment.status, self.equipment_stored_working.Status.STORED)
         with self.subTest(): self.assertIsNone(transaction.equipment.user)
         with self.subTest(): self.assertEqual(transaction.user, self.user)
@@ -85,7 +85,7 @@ class TestEquipmentTransactionManager(TestCase):
             equipment=self.equipment_picked_up_working,
             condition=None,
         )
-        with self.subTest(): self.assertEqual(transaction.action, EquipmentAction.TRANSFER)
+        with self.subTest(): self.assertEqual(transaction.action, EquipmentTransactionAction.TRANSFER)
         with self.subTest(): self.assertEqual(transaction.equipment.status, self.equipment_stored_working.Status.PICKED_UP)
         with self.subTest(): self.assertEqual(transaction.user, self.user)
         with self.subTest(): self.assertEqual(transaction.recipient, self.recipient)
@@ -100,7 +100,7 @@ class TestEquipmentTransactionManager(TestCase):
             equipment=self.equipment_stored_working,
             condition=None,
         )
-        with self.subTest(): self.assertEqual(transaction.action, EquipmentAction.WITHDRAW)
+        with self.subTest(): self.assertEqual(transaction.action, EquipmentTransactionAction.WITHDRAW)
         with self.subTest(): self.assertEqual(transaction.equipment.status, self.equipment_stored_working.Status.PICKED_UP)
         with self.subTest(): self.assertEqual(transaction.user, self.user)
         with self.subTest(): self.assertIsNone(transaction.recipient)

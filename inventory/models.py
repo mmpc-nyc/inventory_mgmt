@@ -379,7 +379,7 @@ class Stock(models.Model):
         return reverse_lazy('stock:stock_detail', kwargs={'pk': self.pk})
 
 
-class EquipmentAction(models.TextChoices):
+class EquipmentTransactionAction(models.TextChoices):
     COLLECT = 'Collect', _('Collect')
     DECOMMISSION = 'Decommission', _('Decommission')
     DEPLOY = 'Deploy', _('Deploy')
@@ -390,7 +390,7 @@ class EquipmentAction(models.TextChoices):
 
 class EquipmentTransactionManager(Manager):
 
-    def execute(self, action: EquipmentAction, equipment: Equipment, user: User, condition: Condition = None,
+    def execute(self, action: EquipmentTransactionAction, equipment: Equipment, user: User, condition: Condition = None,
                 stock: Stock = None, recipient: User = None):
         if not equipment.condition.has_action(action.name):
             raise ProductConditionError(
@@ -404,14 +404,14 @@ class EquipmentTransactionManager(Manager):
                                recipient=recipient)
 
     def collect(self, equipment: Equipment, user: User, condition: Condition = None):
-        action = EquipmentAction.COLLECT
+        action = EquipmentTransactionAction.COLLECT
 
         equipment.user = user
         equipment.status = equipment.Status.PICKED_UP
         return self.execute(action=action, equipment=equipment, user=user, condition=condition)
 
     def decommission(self, user: User, equipment: Equipment):
-        action = EquipmentAction.DECOMMISSION
+        action = EquipmentTransactionAction.DECOMMISSION
         condition = Condition.objects.get(name='Decommissioned')
 
         equipment.user = None
@@ -423,7 +423,7 @@ class EquipmentTransactionManager(Manager):
         return self.execute(action=action, equipment=equipment, user=user, condition=condition)
 
     def deploy(self, user: User, equipment: Equipment, location: Location, condition: Condition = None):
-        action = EquipmentAction.DEPLOY
+        action = EquipmentTransactionAction.DEPLOY
 
         equipment.status = equipment.Status.DEPLOYED
         equipment.location = location
@@ -431,7 +431,7 @@ class EquipmentTransactionManager(Manager):
         return self.execute(action=action, equipment=equipment, user=user, condition=condition)
 
     def store(self, equipment: Equipment, user: User, stock: Stock = None, condition: Condition = None):
-        action = EquipmentAction.STORE
+        action = EquipmentTransactionAction.STORE
         stock = stock or equipment.stock
 
         equipment.user = None
@@ -442,14 +442,14 @@ class EquipmentTransactionManager(Manager):
         return self.execute(action=action, equipment=equipment, user=user, condition=condition)
 
     def transfer(self, equipment: Equipment, recipient: User, condition: Condition = None):
-        action = EquipmentAction.TRANSFER
+        action = EquipmentTransactionAction.TRANSFER
         user = equipment.user
         equipment.user = recipient
 
         return self.execute(action=action, equipment=equipment, user=user, recipient=recipient, condition=condition)
 
     def withdraw(self, equipment: Equipment, user: User, condition: Condition = None):
-        action = EquipmentAction.WITHDRAW
+        action = EquipmentTransactionAction.WITHDRAW
 
         equipment.user = user
         equipment.status = equipment.Status.PICKED_UP
@@ -459,7 +459,7 @@ class EquipmentTransactionManager(Manager):
 
 
 class EquipmentTransaction(models.Model):
-    action = models.CharField(max_length=32, choices=EquipmentAction.choices)
+    action = models.CharField(max_length=32, choices=EquipmentTransactionAction.choices)
     equipment = models.ForeignKey(Equipment, verbose_name=_('equipment'), on_delete=models.CASCADE)
     user = models.ForeignKey(get_user_model(), verbose_name=_('user'), on_delete=models.CASCADE)
     recipient = models.ForeignKey(get_user_model(), verbose_name=_('recipient'), related_name='recipient',
