@@ -1,5 +1,6 @@
 from collections import defaultdict
 
+import mptt.models
 from django.contrib.auth import get_user_model
 from django.db import models, transaction
 from django.db.models import Manager
@@ -491,12 +492,11 @@ class CollectOrderManager(models.Manager):
 class DeployOrderManager(models.Manager):
     ...
 
-
 class InspectOrderManager(models.Manager):
     ...
 
 
-class Order(models.Model):
+class Order(MPTTModel):
     """Model for scheduling orders to allow easier assignment of inventory, services and products"""
 
     class Activity(models.TextChoices):
@@ -511,6 +511,7 @@ class Order(models.Model):
         COMPLETED = 'Completed', _('Completed')
         CANCELED = 'Canceled', _('Canceled')
 
+    parent = TreeForeignKey('self', on_delete=models.CASCADE, blank=True, null=True)
     customer = models.ForeignKey(Customer, verbose_name=_('customer'), on_delete=models.CASCADE)
     activity = models.CharField(verbose_name=_('activity'), max_length=32, choices=Activity.choices,
                                 default=Activity.DEPLOY)
