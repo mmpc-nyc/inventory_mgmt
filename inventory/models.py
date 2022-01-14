@@ -2,7 +2,6 @@ from collections import defaultdict
 
 from django.contrib.auth import get_user_model
 from django.db import models, transaction
-from django.db.models import Manager
 from django.urls import reverse_lazy
 from django.utils.functional import cached_property
 from django.utils.text import slugify
@@ -478,15 +477,19 @@ class EquipmentTransaction(models.Model):
         verbose_name_plural = _('Equipment Transactions')
 
 
-class CollectOrderManager(models.Manager):
+class OrderManager(models.Manager):
     ...
 
 
-class DeployOrderManager(models.Manager):
+class CollectOrderManager(OrderManager):
     ...
 
 
-class InspectOrderManager(models.Manager):
+class DeployOrderManager(OrderManager):
+    ...
+
+
+class InspectOrderManager(OrderManager):
     ...
 
 
@@ -518,8 +521,7 @@ class Order(models.Model):
     generic_products = models.ManyToManyField('GenericProduct', verbose_name=_('generic products'),
                                               through='OrderGenericProduct', related_name='generic_products')
 
-    objects = Manager()
-
+    objects = OrderManager()
     collect = CollectOrderManager()
     deploy = DeployOrderManager()
     inspect = InspectOrderManager()
@@ -527,36 +529,16 @@ class Order(models.Model):
     def get_deployed_equipment(self):
         return self.equipments.filter(status=Equipment.Status.DEPLOYED)
 
-    def missing_equipment_validator(self, ignore_issues: True):
-        """If there is any equipment that is still deployed the completion will fail unless the
-        "ignore_issues" is true then the status of the remaining deployed equipment will
-        be set to MISSING"""
-
+    def _complete_collect(self, ignore_issues: bool = False) -> None:
         deployed_equipment = self.get_deployed_equipment()
         if deployed_equipment:
             if not ignore_issues:
                 raise OrderCompletionError('Not all equipment has been picked up')
-            deployed_equipment.update(status=Equipment.Status.MISSING)
+        deployed_equipment.update(status=Equipment.Status.MISSING)
 
-    def complete(self, ignore_issues: bool = False):
-        """Completes the order"""
-        if self.status in {self.Status.COMPLETED, self.Status.CANCELED}:
-            raise OrderCompletionError(f'Cannot complete order with status of {self.status}')
-        if self.activity == self.Activity.DEPLOY:
-            self._complete_deploy_activity(ignore_issues=ignore_issues)
-        elif self.activity == self.Activity.PICKUP:
-            self._complete_collect_activity(ignore_issues=ignore_issues)
-        elif self.activity == self.Activity.INSPECT:
-            self._complete_inspection_activity(ignore_issues=ignore_issues)
-        self.status = self.Status.COMPLETED
-        self.save()
-
-    def _complete_deploy_activity(self, ignore_issues: bool):
-        if self.activity != self.Activity.DEPLOY:
-            return
+    def _complete_deploy(self, ignore_issues: bool = False) -> None:
         if ignore_issues:
             return
-
         generic_product_dict = defaultdict(int)
         for order_generic_product in self.ordergenericproduct_set.all():
             generic_product_dict[order_generic_product.pk] = order_generic_product.quantity
@@ -572,16 +554,18 @@ class Order(models.Model):
                     'A quantity mismatch was found between requested equipment and deployed equipment. '
                     'To bypass this error ignore checks should be enabled')
 
-    def _complete_collect_activity(self, ignore_issues: bool):
-        self.missing_equipment_validator(ignore_issues)
-
-    def _complete_inspection_activity(self, ignore_issues: bool):
+    def _complete_inspect(self, ignore_issues: bool = False) -> None:
         ...
 
+    def complete(self, ignore_issues: bool = False) -> None:
+        if self.activity == self.Activity.COLLECT: self._complete_collect(ignore_issues)
+        elif self.activity == self.Activity.DEPLOY: self._complete_deploy(ignore_issues)
+        elif self.activity == self.Activity.INSPECT: self._complete_inspect(ignore_issues)
+        self.status = Order.Status.COMPLETED
+        self.save()
+
     def cancel(self, ignore_issues: bool = False):
-        """Cancels the order"""
-        self.missing_equipment_validator(ignore_issues=ignore_issues)
-        self.status = self.Status.CANCELED
+        self.status = Order.Status.COMPLETED
         self.save()
 
     def save(self, **kwargs):
@@ -616,11 +600,10 @@ class OrderGenericProduct(models.Model):
 
 class OrderEquipment(models.Model):
     """A link table for mapping the equipment associated with the order"""
+    # TODO Create order transactions that keep track of when equipment was picked up.
 
     order = models.ForeignKey('Order', on_delete=models.CASCADE)
     equipment = models.ForeignKey('Equipment', on_delete=models.CASCADE)
-    deployed = models.DateTimeField()
-    picked_up = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
         return f'{self.order} | {self.equipment}'
