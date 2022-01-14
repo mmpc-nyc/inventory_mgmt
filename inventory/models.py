@@ -234,17 +234,12 @@ class GenericProduct(models.Model):
     """
 
     class Status(models.TextChoices):
-        """Product status choices
-        Stored: Product stored in Stock
-        Deployed: Product deployed at customer location
-        Decommissioned: Product no longer in use and not in inventory
-        Inactive: The product is no longer active but is still stored in the inventory
-        Recall: The product is inactive and should no longer be used.
-        Picked Up: Product is currently with the user. Not at any customer location or inventory.
+        """Generic Product status choices
+        Active: The generic product is available for all actions
+        Inactive: The generic product is no longer active but is still stored in the inventory
         """
         ACTIVE = 'Active', _('Active')
         INACTIVE = 'Inactive', _('Inactive')
-        RECALL = 'Recall', _('Recall')
 
     category = TreeForeignKey('Category', on_delete=models.SET_NULL, null=True, blank=True)
     name = models.CharField(max_length=150, unique=True)
@@ -275,7 +270,7 @@ class Category(MPTTModel):
 
 
 class Product(models.Model):
-    """TODO  Write Description"""
+    """A unique identifier for a product consisting of name, brand, product type, and generic product"""
 
     class Status(models.TextChoices):
         """Product status choices
@@ -383,8 +378,8 @@ class EquipmentTransactionAction(models.TextChoices):
 
 class EquipmentTransactionManager(models.Manager):
 
-    def execute(self, action: EquipmentTransactionAction, equipment: Equipment, user: User, condition: Condition = None,
-                stock: Stock = None, recipient: User = None):
+    def execute(self, action: EquipmentTransactionAction, equipment: Equipment, user: User, order: 'Order' = None,
+                condition: Condition = None, stock: Stock = None, recipient: User = None):
         if not equipment.condition.has_action(action.name):
             raise ProductConditionError(
                 _(f'This equipment in condition {equipment.condition} cannot use action {action}'))
@@ -394,14 +389,7 @@ class EquipmentTransactionManager(models.Manager):
             stock = stock or equipment.stock
             condition = condition or equipment.condition
             return self.create(action=action, equipment=equipment, user=user, condition=condition, stock=stock,
-                               recipient=recipient)
-
-    def collect(self, equipment: Equipment, user: User, condition: Condition = None):
-        action = EquipmentTransactionAction.COLLECT
-
-        equipment.user = user
-        equipment.status = equipment.Status.PICKED_UP
-        return self.execute(action=action, equipment=equipment, user=user, condition=condition)
+                               order=order, recipient=recipient)
 
     def decommission(self, user: User, equipment: Equipment):
         action = EquipmentTransactionAction.DECOMMISSION
@@ -415,13 +403,20 @@ class EquipmentTransactionManager(models.Manager):
 
         return self.execute(action=action, equipment=equipment, user=user, condition=condition)
 
-    def deploy(self, user: User, equipment: Equipment, location: Location, condition: Condition = None):
+    def collect(self, equipment: Equipment, user: User, order: 'Order', condition: Condition = None):
+        action = EquipmentTransactionAction.COLLECT
+
+        equipment.user = user
+        equipment.status = equipment.Status.PICKED_UP
+        return self.execute(action=action, equipment=equipment, user=user, order=order, condition=condition)
+
+    def deploy(self, user: User, equipment: Equipment, order: 'Order', condition: Condition = None):
         action = EquipmentTransactionAction.DEPLOY
 
         equipment.status = equipment.Status.DEPLOYED
-        equipment.location = location
+        equipment.location = order.location
 
-        return self.execute(action=action, equipment=equipment, user=user, condition=condition)
+        return self.execute(action=action, equipment=equipment, user=user, order=order, condition=condition)
 
     def store(self, equipment: Equipment, user: User, stock: Stock = None, condition: Condition = None):
         action = EquipmentTransactionAction.STORE
@@ -463,6 +458,7 @@ class EquipmentTransaction(models.Model):
     timestamp = models.DateTimeField(verbose_name=_('timestamp'), auto_now=True)
     location = models.ForeignKey('Location', verbose_name=_('Location'), blank=True, null=True,
                                  on_delete=models.CASCADE)
+    order = models.ForeignKey('Order', verbose_name=_('Order'), blank=True, null=True, on_delete=models.CASCADE)
 
     objects = EquipmentTransactionManager()
 
@@ -526,15 +522,10 @@ class Order(models.Model):
     deploy = DeployOrderManager()
     inspect = InspectOrderManager()
 
-    def get_deployed_equipment(self):
-        return self.equipments.filter(status=Equipment.Status.DEPLOYED)
-
     def _complete_collect(self, ignore_issues: bool = False) -> None:
-        deployed_equipment = self.get_deployed_equipment()
-        if deployed_equipment:
-            if not ignore_issues:
-                raise OrderCompletionError('Not all equipment has been picked up')
-        deployed_equipment.update(status=Equipment.Status.MISSING)
+        equipment_dict = defaultdict(dict)
+        for equipment_transaction in self.equipmenttransaction_set.all():
+            pass  # if self.equipments.count() != order_equipment_transactions  # if deployed_equipment:  #     if not ignore_issues:  #         raise OrderCompletionError('Not all equipment has been picked up')  # deployed_equipment.update(equipment__status=Equipment.Status.MISSING)
 
     def _complete_deploy(self, ignore_issues: bool = False) -> None:
         if ignore_issues:
@@ -558,9 +549,12 @@ class Order(models.Model):
         ...
 
     def complete(self, ignore_issues: bool = False) -> None:
-        if self.activity == self.Activity.COLLECT: self._complete_collect(ignore_issues)
-        elif self.activity == self.Activity.DEPLOY: self._complete_deploy(ignore_issues)
-        elif self.activity == self.Activity.INSPECT: self._complete_inspect(ignore_issues)
+        if self.activity == self.Activity.COLLECT:
+            self._complete_collect(ignore_issues)
+        elif self.activity == self.Activity.DEPLOY:
+            self._complete_deploy(ignore_issues)
+        elif self.activity == self.Activity.INSPECT:
+            self._complete_inspect(ignore_issues)
         self.status = Order.Status.COMPLETED
         self.save()
 

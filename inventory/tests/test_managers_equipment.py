@@ -6,7 +6,7 @@ class TestEquipmentTransactionManager(AbstractTest):
 
     def test_collect(self):
         transaction = EquipmentTransaction.objects.collect(user=self.user, equipment=self.equipment_stored_working,
-                                                           condition=None, )
+                                                           order=self.order_collect_complete, condition=None, )
         with self.subTest(): self.assertEqual(transaction.action, EquipmentTransactionAction.COLLECT)
         with self.subTest(): self.assertEqual(transaction.equipment.status,
                                               self.equipment_stored_working.Status.PICKED_UP)
@@ -32,7 +32,7 @@ class TestEquipmentTransactionManager(AbstractTest):
 
     def test_deploy(self):
         transaction = EquipmentTransaction.objects.deploy(user=self.user, equipment=self.equipment_picked_up_working_1,
-                                                          location=self.location_customer_1, condition=None, )
+                                                          order=self.order_deploy_complete, condition=None)
         with self.subTest(): self.assertEqual(transaction.action, EquipmentTransactionAction.DEPLOY)
         with self.subTest(): self.assertEqual(transaction.equipment.status,
                                               self.equipment_stored_working.Status.DEPLOYED)
@@ -77,4 +77,3 @@ class TestEquipmentTransactionManager(AbstractTest):
         with self.subTest(): self.assertIsNone(transaction.recipient)
         with self.subTest(): self.assertEqual(transaction.condition, transaction.equipment.condition)
         with self.subTest(): self.assertEqual(transaction.stock, transaction.equipment.stock)
-
