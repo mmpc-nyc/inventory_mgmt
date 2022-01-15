@@ -1,7 +1,10 @@
 from collections import defaultdict
+from typing import Union
 
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
 from django.db import models, transaction
+from django.db.models import QuerySet
 from django.urls import reverse_lazy
 from django.utils.functional import cached_property
 from django.utils.text import slugify
@@ -189,8 +192,16 @@ class Equipment(models.Model):
         verbose_name = _('Equipment')
         verbose_name_plural = _('Equipment')
 
+    def _check_for_repeat_action(self, order: 'Order', action: 'EquipmentTransactionAction'):
+        last_order_transaction_for_this_equipment: 'EquipmentTransaction' = order.equipmenttransaction_set.filter(
+            self).last()
+        if last_order_transaction_for_this_equipment:
+            if last_order_transaction_for_this_equipment.action == action:
+                raise ValidationError('Cannot Perform the same action as the last action')
+
     def _execute(self, action: 'EquipmentTransactionAction', user: User, order: 'Order' = None,
-                 condition: 'Condition' = None, stock: 'Stock' = None, recipient: User = None) -> 'EquipmentTransaction':
+                 condition: 'Condition' = None, stock: 'Stock' = None,
+                 recipient: User = None) -> 'EquipmentTransaction':
         if not self.condition.has_action(action.name):
             raise ProductConditionError(_(f'This equipment in condition {self.condition} cannot use action {action}'))
 
@@ -218,8 +229,7 @@ class Equipment(models.Model):
 
         self.user = user
         self.status = self.Status.PICKED_UP
-        return self._execute(action=action, user=user, order=order,
-                                            condition=condition)
+        return self._execute(action=action, user=user, order=order, condition=condition)
 
     def deploy(self, user: User, order: 'Order', condition: 'Condition' = None):
         action = EquipmentTransactionAction.DEPLOY
@@ -227,8 +237,7 @@ class Equipment(models.Model):
         self.status = self.Status.DEPLOYED
         self.location = order.location
 
-        return self._execute(action=action, user=user, order=order,
-                                            condition=condition)
+        return self._execute(action=action, user=user, order=order, condition=condition)
 
     def store(self, user: User, stock: 'Stock' = None, condition: 'Condition' = None):
         action = EquipmentTransactionAction.STORE
@@ -246,8 +255,7 @@ class Equipment(models.Model):
         user = self.user
         self.user = recipient
 
-        return self._execute(action=action, user=user, recipient=recipient,
-                                            condition=condition)
+        return self._execute(action=action, user=user, recipient=recipient, condition=condition)
 
     def withdraw(self, user: User, condition: 'Condition' = None):
         action = EquipmentTransactionAction.WITHDRAW
@@ -476,29 +484,43 @@ class EquipmentTransaction(models.Model):
         verbose_name_plural = _('Equipment Transactions')
 
 
+class OrderActivity(models.TextChoices):
+    DEPLOY = 'Deploy', _('Deploy')
+    COLLECT = 'Collect', _('Collect')
+    INSPECT = 'Inspect', _('Inspect')
+
+
 class OrderManager(models.Manager):
-    ...
+    activity: OrderActivity
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        if hasattr(self, 'activity'):
+            return qs.filter(activity=self.activity)
+        return qs
+
+    def create(self, **kwargs):
+        if hasattr(self, 'activity'):
+            kwargs.update({'activity': self.activity})
+        return super().create(**kwargs)
 
 
 class CollectOrderManager(OrderManager):
-    ...
+    activity = OrderActivity.COLLECT
 
 
 class DeployOrderManager(OrderManager):
-    ...
+    activity = OrderActivity.DEPLOY
 
 
 class InspectOrderManager(OrderManager):
-    ...
+    activity = OrderActivity.INSPECT
 
 
 class Order(models.Model):
     """Model for scheduling orders to allow easier assignment of inventory, services and products"""
 
-    class Activity(models.TextChoices):
-        DEPLOY = 'Deploy', _('Deploy')
-        COLLECT = 'Collect', _('Collect')
-        INSPECT = 'Inspect', _('Inspect')
+    Activity: OrderActivity = OrderActivity
 
     class Status(models.TextChoices):
         NEW = 'New', _('New')
@@ -584,6 +606,38 @@ class Order(models.Model):
 
     def __str__(self):
         return f'{self.id}'
+
+
+class OrderFactory:
+    activity: OrderActivity
+
+    def create_from_orders(self, date, orders: Union[Order, list[Order], tuple[Order], QuerySet]) -> Order:
+        if isinstance(orders, Order):
+            orders = [orders]
+        equipments = set()
+        for order in orders:
+            for equipment in order.equipments.all():
+                equipments.add(equipment)  # TODO Think about broken / decommissioned equipment
+        with transaction.atomic():
+            order = Order(activity=self.activity, date=date, status=Order.Status.NEW, customer=orders[0].customer,
+                          location=orders[0].location)
+            for equipment in equipments:
+                order.equipmenttransaction_set.add(equipment)
+            order.save()
+            return order
+
+    def create_from_equipment(self, date, customer, location, equipments: Union[
+        Equipment, list[Equipment], tuple[Equipment], set[Equipment], QuerySet] = None) -> Order:
+        if equipments:
+            if isinstance(equipments, Equipment):
+                equipments = [equipments]
+        with transaction.atomic():
+            order = Order(activity=self.activity, date=date, status=Order.Status.NEW, customer=customer,
+                          location=location)
+            for equipment in equipments:
+                order.equipmenttransaction_set.add(equipment)
+            order.save()
+            return order
 
 
 class OrderGenericProduct(models.Model):
