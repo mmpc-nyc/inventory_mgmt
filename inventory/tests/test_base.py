@@ -91,21 +91,21 @@ class AbstractTest(TestCase):
         OrderEquipment.objects.create(order=self.order_deploy_complete, equipment= self.equipment_deployed_working_2)
 
         self.order_collect_initial = Order.objects.create(
-            activity= Order.Activity.COLLECT,
-            customer= self.customer_1,
-            location= self.customer_1_location_1.location,
+            activity=Order.Activity.COLLECT,
+            customer=self.customer_1,
+            location=self.customer_1_location_1.location,
             date=timezone.now()
         )
         self.order_collect_partial = Order.objects.create(
-            activity= Order.Activity.COLLECT,
-            customer= self.customer_1,
-            location= self.customer_1_location_1.location,
+            activity=Order.Activity.COLLECT,
+            customer=self.customer_1,
+            location=self.customer_1_location_1.location,
             date=timezone.now()
         )
         self.order_collect_complete = Order.objects.create(
-            activity= Order.Activity.COLLECT,
-            customer= self.customer_1,
-            location= self.customer_1_location_1.location,
+            activity=Order.Activity.COLLECT,
+            customer=self.customer_1,
+            location=self.customer_1_location_1.location,
             date=timezone.now()
         )
         OrderEquipment.objects.create(order=self.order_collect_initial, equipment= self.equipment_deployed_working_1)

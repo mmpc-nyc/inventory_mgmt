@@ -1,12 +1,12 @@
-from inventory.models import EquipmentTransaction, EquipmentTransactionAction
+from inventory.models import EquipmentTransactionAction
 from test_base import AbstractTest
 
 
 class TestEquipmentTransactionManager(AbstractTest):
 
     def test_collect(self):
-        transaction = EquipmentTransaction.objects.collect(user=self.user, equipment=self.equipment_stored_working,
-                                                           order=self.order_collect_complete, condition=None, )
+        transaction = self.equipment_stored_working.collect(user=self.user, order=self.order_collect_complete,
+                                                            condition=None)
         with self.subTest(): self.assertEqual(transaction.action, EquipmentTransactionAction.COLLECT)
         with self.subTest(): self.assertEqual(transaction.equipment.status,
                                               self.equipment_stored_working.Status.PICKED_UP)
@@ -17,8 +17,7 @@ class TestEquipmentTransactionManager(AbstractTest):
         with self.subTest(): self.assertEqual(transaction.stock, transaction.equipment.stock)
 
     def test_decommission(self):
-        transaction = EquipmentTransaction.objects.decommission(user=self.user,
-                                                                equipment=self.equipment_picked_up_working_1, )
+        transaction = self.equipment_picked_up_working_1.decommission(user=self.user, )
         with self.subTest(): self.assertEqual(transaction.action, EquipmentTransactionAction.DECOMMISSION)
         with self.subTest(): self.assertEqual(transaction.equipment.status,
                                               self.equipment_stored_working.Status.DECOMMISSIONED)
@@ -31,8 +30,8 @@ class TestEquipmentTransactionManager(AbstractTest):
         with self.subTest(): self.assertEqual(transaction.condition, transaction.equipment.condition)
 
     def test_deploy(self):
-        transaction = EquipmentTransaction.objects.deploy(user=self.user, equipment=self.equipment_picked_up_working_1,
-                                                          order=self.order_deploy_complete, condition=None)
+        transaction = self.equipment_picked_up_working_1.deploy(user=self.user, order=self.order_deploy_complete,
+                                                                condition=None)
         with self.subTest(): self.assertEqual(transaction.action, EquipmentTransactionAction.DEPLOY)
         with self.subTest(): self.assertEqual(transaction.equipment.status,
                                               self.equipment_stored_working.Status.DEPLOYED)
@@ -42,8 +41,7 @@ class TestEquipmentTransactionManager(AbstractTest):
         with self.subTest(): self.assertEqual(transaction.stock, transaction.equipment.stock)
 
     def test_store(self):
-        transaction = EquipmentTransaction.objects.store(user=self.user, equipment=self.equipment_picked_up_working_1,
-                                                         stock=self.stock, condition=None, )
+        transaction = self.equipment_picked_up_working_1.store(user=self.user, stock=self.stock, condition=None, )
         with self.subTest(): self.assertEqual(transaction.action, EquipmentTransactionAction.STORE)
         with self.subTest(): self.assertEqual(transaction.equipment.status, self.equipment_stored_working.Status.STORED)
         with self.subTest(): self.assertIsNone(transaction.equipment.user)
@@ -54,9 +52,7 @@ class TestEquipmentTransactionManager(AbstractTest):
         with self.subTest(): self.assertEqual(transaction.stock, self.stock)
 
     def test_transfer(self):
-        transaction = EquipmentTransaction.objects.transfer(recipient=self.recipient,
-                                                            equipment=self.equipment_picked_up_working_1,
-                                                            condition=None, )
+        transaction = self.equipment_picked_up_working_1.transfer(recipient=self.recipient, condition=None, )
         with self.subTest(): self.assertEqual(transaction.action, EquipmentTransactionAction.TRANSFER)
         with self.subTest(): self.assertEqual(transaction.equipment.status,
                                               self.equipment_stored_working.Status.PICKED_UP)
@@ -68,8 +64,7 @@ class TestEquipmentTransactionManager(AbstractTest):
         with self.subTest(): self.assertEqual(transaction.stock, transaction.equipment.stock)
 
     def test_withdraw(self):
-        transaction = EquipmentTransaction.objects.withdraw(user=self.user, equipment=self.equipment_stored_working,
-                                                            condition=None, )
+        transaction = self.equipment_stored_working.withdraw(user=self.user, condition=None, )
         with self.subTest(): self.assertEqual(transaction.action, EquipmentTransactionAction.WITHDRAW)
         with self.subTest(): self.assertEqual(transaction.equipment.status,
                                               self.equipment_stored_working.Status.PICKED_UP)

@@ -189,6 +189,75 @@ class Equipment(models.Model):
         verbose_name = _('Equipment')
         verbose_name_plural = _('Equipment')
 
+    def _execute(self, action: 'EquipmentTransactionAction', user: User, order: 'Order' = None,
+                 condition: 'Condition' = None, stock: 'Stock' = None, recipient: User = None) -> 'EquipmentTransaction':
+        if not self.condition.has_action(action.name):
+            raise ProductConditionError(_(f'This equipment in condition {self.condition} cannot use action {action}'))
+
+        with transaction.atomic():
+            self.save()
+            stock = stock or self.stock
+            condition = condition or self.condition
+            return EquipmentTransaction.objects.create(action=action, equipment=self, user=user, condition=condition,
+                                                       stock=stock, order=order, recipient=recipient)
+
+    def decommission(self, user: User):
+        action = EquipmentTransactionAction.DECOMMISSION
+        condition = Condition.objects.get(name='Decommissioned')
+
+        self.user = None
+        self.status = self.Status.DECOMMISSIONED
+        self.location = None
+        self.stock = None
+        self.condition = condition
+
+        return self._execute(action=action, user=user, condition=condition)
+
+    def collect(self, user: User, order: 'Order', condition: 'Condition' = None):
+        action = EquipmentTransactionAction.COLLECT
+
+        self.user = user
+        self.status = self.Status.PICKED_UP
+        return self._execute(action=action, user=user, order=order,
+                                            condition=condition)
+
+    def deploy(self, user: User, order: 'Order', condition: 'Condition' = None):
+        action = EquipmentTransactionAction.DEPLOY
+
+        self.status = self.Status.DEPLOYED
+        self.location = order.location
+
+        return self._execute(action=action, user=user, order=order,
+                                            condition=condition)
+
+    def store(self, user: User, stock: 'Stock' = None, condition: 'Condition' = None):
+        action = EquipmentTransactionAction.STORE
+        stock = stock or self.stock
+
+        self.user = None
+        self.location = stock.location
+        self.status = self.Status.STORED
+        self.location = None
+
+        return self._execute(action=action, user=user, condition=condition)
+
+    def transfer(self, recipient: User, condition: 'Condition' = None):
+        action = EquipmentTransactionAction.TRANSFER
+        user = self.user
+        self.user = recipient
+
+        return self._execute(action=action, user=user, recipient=recipient,
+                                            condition=condition)
+
+    def withdraw(self, user: User, condition: 'Condition' = None):
+        action = EquipmentTransactionAction.WITHDRAW
+
+        self.user = user
+        self.status = self.Status.PICKED_UP
+        self.location = None
+
+        return self._execute(action=action, user=user, condition=condition)
+
     def get_absolute_url(self):
         return reverse_lazy('inventory:equipment_detail', kwargs={'pk': self.pk})
 
@@ -377,73 +446,7 @@ class EquipmentTransactionAction(models.TextChoices):
 
 
 class EquipmentTransactionManager(models.Manager):
-
-    def execute(self, action: EquipmentTransactionAction, equipment: Equipment, user: User, order: 'Order' = None,
-                condition: Condition = None, stock: Stock = None, recipient: User = None):
-        if not equipment.condition.has_action(action.name):
-            raise ProductConditionError(
-                _(f'This equipment in condition {equipment.condition} cannot use action {action}'))
-
-        with transaction.atomic():
-            equipment.save()
-            stock = stock or equipment.stock
-            condition = condition or equipment.condition
-            return self.create(action=action, equipment=equipment, user=user, condition=condition, stock=stock,
-                               order=order, recipient=recipient)
-
-    def decommission(self, user: User, equipment: Equipment):
-        action = EquipmentTransactionAction.DECOMMISSION
-        condition = Condition.objects.get(name='Decommissioned')
-
-        equipment.user = None
-        equipment.status = equipment.Status.DECOMMISSIONED
-        equipment.location = None
-        equipment.stock = None
-        equipment.condition = condition
-
-        return self.execute(action=action, equipment=equipment, user=user, condition=condition)
-
-    def collect(self, equipment: Equipment, user: User, order: 'Order', condition: Condition = None):
-        action = EquipmentTransactionAction.COLLECT
-
-        equipment.user = user
-        equipment.status = equipment.Status.PICKED_UP
-        return self.execute(action=action, equipment=equipment, user=user, order=order, condition=condition)
-
-    def deploy(self, user: User, equipment: Equipment, order: 'Order', condition: Condition = None):
-        action = EquipmentTransactionAction.DEPLOY
-
-        equipment.status = equipment.Status.DEPLOYED
-        equipment.location = order.location
-
-        return self.execute(action=action, equipment=equipment, user=user, order=order, condition=condition)
-
-    def store(self, equipment: Equipment, user: User, stock: Stock = None, condition: Condition = None):
-        action = EquipmentTransactionAction.STORE
-        stock = stock or equipment.stock
-
-        equipment.user = None
-        equipment.location = stock.location
-        equipment.status = equipment.Status.STORED
-        equipment.location = None
-
-        return self.execute(action=action, equipment=equipment, user=user, condition=condition)
-
-    def transfer(self, equipment: Equipment, recipient: User, condition: Condition = None):
-        action = EquipmentTransactionAction.TRANSFER
-        user = equipment.user
-        equipment.user = recipient
-
-        return self.execute(action=action, equipment=equipment, user=user, recipient=recipient, condition=condition)
-
-    def withdraw(self, equipment: Equipment, user: User, condition: Condition = None):
-        action = EquipmentTransactionAction.WITHDRAW
-
-        equipment.user = user
-        equipment.status = equipment.Status.PICKED_UP
-        equipment.location = None
-
-        return self.execute(action=action, equipment=equipment, user=user, condition=condition)
+    ...
 
 
 class EquipmentTransaction(models.Model):
@@ -523,9 +526,14 @@ class Order(models.Model):
     inspect = InspectOrderManager()
 
     def _complete_collect(self, ignore_issues: bool = False) -> None:
-        equipment_dict = defaultdict(dict)
-        for equipment_transaction in self.equipmenttransaction_set.all():
-            pass  # if self.equipments.count() != order_equipment_transactions  # if deployed_equipment:  #     if not ignore_issues:  #         raise OrderCompletionError('Not all equipment has been picked up')  # deployed_equipment.update(equipment__status=Equipment.Status.MISSING)
+        # equipment_dict = defaultdict(dict)
+        # for equipment_transaction in self.equipmenttransaction_set.all():
+        #     if self.equipments.count() != order_equipment_transactions
+        #         if deployed_equipment:
+        #             if not ignore_issues:
+        #                 raise OrderCompletionError('Not all equipment has been picked up')
+        # deployed_equipment.update(equipment__status=Equipment.Status.MISSING)
+        ...
 
     def _complete_deploy(self, ignore_issues: bool = False) -> None:
         if ignore_issues:
@@ -551,8 +559,10 @@ class Order(models.Model):
     def complete(self, ignore_issues: bool = False) -> None:
         if self.activity == self.Activity.COLLECT:
             self._complete_collect(ignore_issues)
+
         elif self.activity == self.Activity.DEPLOY:
             self._complete_deploy(ignore_issues)
+
         elif self.activity == self.Activity.INSPECT:
             self._complete_inspect(ignore_issues)
         self.status = Order.Status.COMPLETED
