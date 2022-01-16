@@ -1,6 +1,6 @@
 from django.utils import timezone
 
-from inventory.models.modelsimport Order, CollectOrder, DeployOrder, InspectOrder
+from inventory.models.order import Order, CollectOrder, DeployOrder, InspectOrder
 from test_base import AbstractTest
 
 

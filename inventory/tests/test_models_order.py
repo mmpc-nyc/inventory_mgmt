@@ -1,5 +1,5 @@
 from inventory.exceptions import OrderCompletionError
-from inventory.models.modelsimport Order
+from inventory.models.order import Order
 from test_base import AbstractTest
 
 

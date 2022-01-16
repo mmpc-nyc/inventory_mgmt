@@ -1,4 +1,4 @@
-from inventory.models.modelsimport EquipmentTransactionAction
+from inventory.models.equipment import EquipmentTransactionAction
 from test_base import AbstractTest
 
 
