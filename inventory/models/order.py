@@ -1,48 +1,15 @@
 from collections import defaultdict
-from typing import Union
 
 from django.contrib.auth import get_user_model
-from django.db import models, transaction
-from django.db.models import QuerySet
+from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from inventory.enums import OrderActivity
 from inventory.exceptions import OrderCompletionError
+from inventory.managers.order import OrderManager, DeployOrderManager, InspectOrderManager
+from inventory.models.equipment import Equipment
 from inventory.models.location import Location
 from inventory.models.customer import Customer
-from inventory.models.equipment import Equipment
-
-
-class OrderActivity(models.TextChoices):
-    DEPLOY = 'Deploy', _('Deploy')
-    COLLECT = 'Collect', _('Collect')
-    INSPECT = 'Inspect', _('Inspect')
-
-
-class OrderManager(models.Manager):
-    activity: OrderActivity
-
-    def get_queryset(self):
-        qs = super().get_queryset()
-        if hasattr(self, 'activity'):
-            return qs.filter(activity=self.activity)
-        return qs
-
-    def create(self, **kwargs):
-        if hasattr(self, 'activity'):
-            kwargs.update({'activity': self.activity})
-        return super().create(**kwargs)
-
-
-class CollectOrderManager(OrderManager):
-    activity = OrderActivity.COLLECT
-
-
-class DeployOrderManager(OrderManager):
-    activity = OrderActivity.DEPLOY
-
-
-class InspectOrderManager(OrderManager):
-    activity = OrderActivity.INSPECT
 
 
 class Order(models.Model):
@@ -71,6 +38,9 @@ class Order(models.Model):
 
     objects = OrderManager()
 
+    def perform_equipment_activity(self, user:get_user_model(), equipment: Equipment):
+        ...
+
     def complete(self, ignore_issues: bool = False) -> None:
         self.status = Order.Status.COMPLETED
         self.save()
@@ -94,10 +64,15 @@ class Order(models.Model):
 class CollectOrder(Order):
     activity = OrderActivity.COLLECT
 
+    def perform_equipment_activity(self, user: get_user_model(), equipment: Equipment):
+        equipment.collect(user, equipment)
+        super().perform_equipment_activity(user, equipment)
+
     def complete(self, ignore_issues: bool = False) -> None:
-        # equipment_dict = defaultdict(dict)
-        # for equipment_transaction in self.equipmenttransaction_set.all():
-        #     if self.equipments.count() != order_equipment_transactions
+        equipment_dict = defaultdict(dict)
+        print(self.equipmenttransaction_set.filter(equipment__in=self.equipmenttransaction_set.all()))
+        for equipment_transaction in self.equipmenttransaction_set.all():
+            print(equipment_transaction)
         #         if deployed_equipment:
         #             if not ignore_issues:
         #                 raise OrderCompletionError('Not all equipment has been picked up')
@@ -111,6 +86,10 @@ class CollectOrder(Order):
 
 class DeployOrder(Order):
     objects = DeployOrderManager()
+
+    def perform_equipment_activity(self, user: get_user_model(), equipment: Equipment):
+        equipment.deploy(user, equipment)
+        super().perform_equipment_activity(user, equipment)
 
     def complete(self, ignore_issues: bool = False) -> None:
         if ignore_issues:
@@ -139,40 +118,12 @@ class DeployOrder(Order):
 class InspectOrder(Order):
     objects = InspectOrderManager()
 
+    def perform_equipment_activity(self, user: get_user_model(), equipment: Equipment):
+        equipment.inspect(user, equipment)
+        super().perform_equipment_activity(user, equipment)
+
     class Meta:
         proxy = True
-
-
-class OrderFactory:
-    activity: OrderActivity
-
-    def create_from_orders(self, date, orders: Union[Order, list[Order], tuple[Order], QuerySet]) -> Order:
-        if isinstance(orders, Order):
-            orders = [orders]
-        equipments = set()
-        for order in orders:
-            for equipment in order.equipments.all():
-                equipments.add(equipment)  # TODO Think about broken / decommissioned equipment
-        with transaction.atomic():
-            order = Order(activity=self.activity, date=date, status=Order.Status.NEW, customer=orders[0].customer,
-                          location=orders[0].location)
-            for equipment in equipments:
-                order.equipmenttransaction_set.add(equipment)
-            order.save()
-            return order
-
-    def create_from_equipment(self, date, customer, location, equipments: Union[
-        Equipment, list[Equipment], tuple[Equipment], set[Equipment], QuerySet] = None) -> Order:
-        if equipments:
-            if isinstance(equipments, Equipment):
-                equipments = [equipments]
-        with transaction.atomic():
-            order = Order(activity=self.activity, date=date, status=Order.Status.NEW, customer=customer,
-                          location=location)
-            for equipment in equipments:
-                order.equipmenttransaction_set.add(equipment)
-            order.save()
-            return order
 
 
 class OrderGenericProduct(models.Model):
