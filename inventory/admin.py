@@ -1,9 +1,13 @@
 from django.contrib.admin import register, ModelAdmin, TabularInline
 from mptt.admin import MPTTModelAdmin
 
-from inventory.models import Contact, ContactPhoneNumber, ContactEmail, PhoneNumber, Location, Customer, \
-    CustomerLocation, CustomerContact, Equipment, Condition, GenericProduct, Category, Product, ProductType, Brand, \
-    Stock, Order, OrderGenericProduct, EquipmentTransaction
+from inventory.models.location import Location
+from inventory.models.stock import Stock
+from inventory.models.contact import Contact, ContactPhoneNumber, ContactEmail, PhoneNumber
+from inventory.models.customer import Customer, CustomerLocation, CustomerContact
+from inventory.models.equipment import Equipment, Condition, EquipmentTransaction
+from inventory.models.product import Product, ProductType, Brand, GenericProduct, Category
+from inventory.models.order import Order, OrderGenericProduct
 
 
 class GenericProductInline(TabularInline):

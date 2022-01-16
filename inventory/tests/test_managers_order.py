@@ -1,6 +1,6 @@
 from django.utils import timezone
 
-from inventory.models import Order
+from inventory.models.modelsimport Order, CollectOrder, DeployOrder, InspectOrder
 from test_base import AbstractTest
 
 
@@ -8,11 +8,11 @@ class TestOrderManager(AbstractTest):
     manager = Order.objects
 
     def test_create(self):
-        order = self.manager.create(customer=self.customer_1, location=self.customer_1_location_1.location,
-                                    date=timezone.now())
+        manager = self.manager.create(customer=self.customer_1, location=self.customer_1_location_1.location,
+                                      date=timezone.now())
 
         if hasattr(self.manager, 'activity'):
-            with self.subTest(): self.assertEqual(order.activity, self.manager.activity)
+            with self.subTest(): self.assertEqual(manager.activity, self.manager.activity)
 
     def test_all(self):
         orders = self.manager.all()
@@ -23,12 +23,12 @@ class TestOrderManager(AbstractTest):
 
 
 class TestCollectOrderManager(TestOrderManager):
-    manager = Order.collect
+    manager = CollectOrder.objects
 
 
 class TestDeployOrderManager(TestOrderManager):
-    manager = Order.deploy
+    manager = DeployOrder.objects
 
 
 class TestInspectOrderManager(TestOrderManager):
-    manager = Order.inspect
+    manager = InspectOrder.objects

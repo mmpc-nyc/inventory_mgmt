@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 
-from inventory.models import Equipment, Condition, Product, Stock
+from inventory.models.modelsimport Equipment, Condition, Product, Stock
 
 User = get_user_model()
 users = [None]

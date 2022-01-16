@@ -1,9 +1,13 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
-from inventory.models import Contact, Email, PhoneNumber, Location, Customer, CustomerLocation, CustomerContact, \
-    Equipment, Condition, GenericProduct, Category, Product, ProductType, Brand, Stock
-from inventory.models import Order
+from inventory.models.location import Location
+from inventory.models.stock import Stock
+from inventory.models.contact import Contact, Email, PhoneNumber
+from inventory.models.customer import Customer, CustomerLocation, CustomerContact
+from inventory.models.equipment import Equipment, Condition
+from inventory.models.product import Product, ProductType, Brand, GenericProduct, Category
+from inventory.models.order import Order
 
 User = get_user_model()
 

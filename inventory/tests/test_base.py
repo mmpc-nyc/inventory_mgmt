@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.utils import timezone
 
-from inventory.models import Location, Stock, Customer, CustomerLocation, Brand, ProductType, GenericProduct, Product, \
+from inventory.models.modelsimport Location, Stock, Customer, CustomerLocation, Brand, ProductType, GenericProduct, Product, \
     Condition, Equipment, Order, OrderGenericProduct, OrderEquipment
 
 User = get_user_model()
