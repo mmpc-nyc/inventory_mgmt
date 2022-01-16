@@ -531,8 +531,7 @@ class Order(models.Model):
 
     parent = models.ManyToManyField('self', related_name='children', symmetrical=False)
     customer = models.ForeignKey(Customer, verbose_name=_('customer'), on_delete=models.CASCADE)
-    activity = models.CharField(verbose_name=_('activity'), max_length=32, choices=Activity.choices,
-                                default=Activity.DEPLOY)
+    activity = models.CharField(verbose_name=_('activity'), max_length=32, choices=Activity.choices)
     status = models.CharField(max_length=16, verbose_name=_('status'), choices=Status.choices, default=Status.NEW)
     users = models.ManyToManyField(get_user_model(), verbose_name=_('users'), related_name='order_users')
     location = models.ForeignKey(Location, verbose_name=_('location'), on_delete=models.CASCADE)
@@ -543,11 +542,31 @@ class Order(models.Model):
                                               through='OrderGenericProduct', related_name='generic_products')
 
     objects = OrderManager()
-    collect = CollectOrderManager()
-    deploy = DeployOrderManager()
-    inspect = InspectOrderManager()
 
-    def _complete_collect(self, ignore_issues: bool = False) -> None:
+    def complete(self, ignore_issues: bool = False) -> None:
+        self.status = Order.Status.COMPLETED
+        self.save()
+
+    def cancel(self, ignore_issues: bool = False):
+        self.status = Order.Status.COMPLETED
+        self.save()
+
+    def save(self, **kwargs):
+        # TODO Implement a method that only allows updates if the order is in active status.
+        return super().save(**kwargs)
+
+    class Meta:
+        verbose_name = _('Order')
+        verbose_name_plural = _('Orders')
+
+    def __str__(self):
+        return f'{self.id}'
+
+
+class CollectOrder(Order):
+    objects = CollectOrderManager()
+
+    def complete(self, ignore_issues: bool = False) -> None:
         # equipment_dict = defaultdict(dict)
         # for equipment_transaction in self.equipmenttransaction_set.all():
         #     if self.equipments.count() != order_equipment_transactions
@@ -555,9 +574,17 @@ class Order(models.Model):
         #             if not ignore_issues:
         #                 raise OrderCompletionError('Not all equipment has been picked up')
         # deployed_equipment.update(equipment__status=Equipment.Status.MISSING)
-        ...
 
-    def _complete_deploy(self, ignore_issues: bool = False) -> None:
+        super().complete(ignore_issues=ignore_issues)
+
+    class Meta:
+        proxy = True
+
+
+class DeployOrder(Order):
+    objects = DeployOrderManager()
+
+    def complete(self, ignore_issues: bool = False) -> None:
         if ignore_issues:
             return
         generic_product_dict = defaultdict(int)
@@ -575,37 +602,17 @@ class Order(models.Model):
                     'A quantity mismatch was found between requested equipment and deployed equipment. '
                     'To bypass this error ignore checks should be enabled')
 
-    def _complete_inspect(self, ignore_issues: bool = False) -> None:
-        ...
-
-    def complete(self, ignore_issues: bool = False) -> None:
-        if self.activity == self.Activity.COLLECT:
-            self._complete_collect(ignore_issues)
-
-        elif self.activity == self.Activity.DEPLOY:
-            self._complete_deploy(ignore_issues)
-
-        elif self.activity == self.Activity.INSPECT:
-            self._complete_inspect(ignore_issues)
-        self.status = Order.Status.COMPLETED
-        self.save()
-
-    def cancel(self, ignore_issues: bool = False):
-        self.status = Order.Status.COMPLETED
-        self.save()
-
-    def save(self, **kwargs):
-        # TODO Implement a method that only allows updates if the order is in active status.
-        if self.status:
-            ...
-        return super().save(**kwargs)
+        super().complete(ignore_issues=ignore_issues)
 
     class Meta:
-        verbose_name = _('Order')
-        verbose_name_plural = _('Orders')
+        proxy = True
 
-    def __str__(self):
-        return f'{self.id}'
+
+class InspectOrder(Order):
+    objects = InspectOrderManager()
+
+    class Meta:
+        proxy = True
 
 
 class OrderFactory:
