@@ -6,8 +6,8 @@ from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 
 from inventory.exceptions import ProductConditionError
-from inventory.models.stock import Stock
 from inventory.models.product import Product
+from inventory.models.stock import Stock
 
 
 class Equipment(models.Model):
@@ -27,7 +27,8 @@ class Equipment(models.Model):
     status = models.CharField(max_length=32, choices=Status.choices, default=Status.STORED)
     stock = models.ForeignKey('Stock', on_delete=models.SET_NULL, blank=True, null=True)
     condition = models.ForeignKey('Condition', on_delete=models.CASCADE)
-    user = models.ForeignKey(get_user_model(), related_name='equipment_employee', on_delete=models.SET_NULL, null=True, blank=True)
+    user = models.ForeignKey(get_user_model(), related_name='equipment_employee', on_delete=models.SET_NULL, null=True,
+                             blank=True)
     location = models.ForeignKey('Location', on_delete=models.SET_NULL, null=True, blank=True)
     counter = models.IntegerField(blank=True, null=True)
 
@@ -75,6 +76,7 @@ class Equipment(models.Model):
 
         self.user = user
         self.status = self.Status.PICKED_UP
+        
         return self._execute(action=action, user=user, order=order, condition=condition)
 
     def deploy(self, user: get_user_model(), order: 'Order', condition: 'Condition' = None):
@@ -82,6 +84,11 @@ class Equipment(models.Model):
 
         self.status = self.Status.DEPLOYED
         self.location = order.location
+        
+        return self._execute(action=action, user=user, order=order, condition=condition)
+
+    def inspect(self, user: get_user_model(), order: 'Order', condition: 'Condition' = None):
+        action = EquipmentTransactionAction.INSPECT
 
         return self._execute(action=action, user=user, order=order, condition=condition)
 
@@ -152,6 +159,7 @@ class Condition(models.Model):
 
 
 class EquipmentTransactionAction(models.TextChoices):
+    INSPECT = 'Inspect', _('Inspect')
     COLLECT = 'Collect', _('Collect')
     DECOMMISSION = 'Decommission', _('Decommission')
     DEPLOY = 'Deploy', _('Deploy')
