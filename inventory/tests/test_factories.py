@@ -9,6 +9,7 @@ class TestCollectOrderFactory(AbstractTest):
     factories = [collect_order_factory, deploy_order_factory, inspect_order_factory]
 
     def test_create_from_orders(self):
+        # TODO Add validation and integrity checks
         for factory in self.factories:
             with self.subTest(factory):
                 input_order = self.order_deploy_complete
@@ -28,12 +29,15 @@ class TestCollectOrderFactory(AbstractTest):
                     self.assertEqual(input_equipment_set, output_equipment_set)
 
     def test_create_from_equipment(self):
+        # TODO Add validation and integrity checks
         for factory in self.factories:
             with self.subTest(factory):
                 input_equipment = self.equipment_deployed_working_1
-                equipment_collections = [input_equipment, [input_equipment, ], (input_equipment, ), {input_equipment, }, Equipment.objects.all()]
+                equipment_collections = [input_equipment, [input_equipment, ], (input_equipment,), {input_equipment, },
+                                         Equipment.objects.all()]
                 for input_equipments in equipment_collections:
-                    input_equipments = [input_equipments] if issubclass(type(input_equipments), Equipment) else input_equipments
+                    input_equipments = [input_equipments] if issubclass(type(input_equipments),
+                                                                        Equipment) else input_equipments
                     output_order = factory.create_from_equipment(
                         date=timezone.now(),
                         customer=self.order_deploy_complete.customer,
