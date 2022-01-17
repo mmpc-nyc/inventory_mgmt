@@ -1,3 +1,4 @@
+![GitHub commit activity](https://img.shields.io/github/commit-activity/w/schir2/inventory_mgmt) ![GitHub repo size](https://img.shields.io/github/repo-size/schir2/inventory_mgmt)
 # Inventory Management for tracking Equipment
 
 ## Models
