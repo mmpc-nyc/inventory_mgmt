@@ -1,5 +1,5 @@
 from inventory.models.order import EquipmentTransactionAction
-from test_base import AbstractTest
+from inventory.tests import AbstractTest
 
 
 class TestEquipmentTransactionManager(AbstractTest):

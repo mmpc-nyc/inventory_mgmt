@@ -1,7 +1,7 @@
 from django.utils import timezone
 
 from inventory.models.order import Order, CollectOrder, DeployOrder, InspectOrder
-from test_base import AbstractTest
+from inventory.tests import AbstractTest
 
 
 class TestOrderManager(AbstractTest):

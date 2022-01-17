@@ -1,6 +1,6 @@
 from inventory.exceptions import OrderCompletionError
 from inventory.models.order import Order
-from test_base import AbstractTest
+from inventory.tests import AbstractTest
 
 
 class TestOrder(AbstractTest):

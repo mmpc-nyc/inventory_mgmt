@@ -2,7 +2,7 @@ from django.utils import timezone
 
 from inventory.factories import collect_order_factory, deploy_order_factory, inspect_order_factory
 from inventory.models.order import Order, Equipment
-from test_base import AbstractTest
+from inventory.tests import AbstractTest
 
 
 class TestCollectOrderFactory(AbstractTest):
