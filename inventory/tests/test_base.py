@@ -3,9 +3,9 @@ from django.test import TestCase
 from django.utils import timezone
 
 from inventory.models.customer import Customer, CustomerLocation
-from inventory.models.equipment import Condition, Equipment
 from inventory.models.location import Location
-from inventory.models.order import OrderGenericProduct, OrderEquipment, DeployOrder, CollectOrder, InspectOrder
+from inventory.models.order import OrderGenericProduct, OrderEquipment, DeployOrder, CollectOrder, InspectOrder, \
+    Equipment, Condition, Order
 from inventory.models.product import ProductType, GenericProduct, Product, Brand
 from inventory.models.stock import Stock
 
@@ -81,63 +81,97 @@ class AbstractTest(TestCase):
             status=Equipment.Status.DEPLOYED
         )
 
-        self.order_deploy_initial = DeployOrder.objects.create(
-            customer=self.customer_1,
-            location=self.customer_1_location_1.location,
-            date=timezone.now(),
-        )
-        self.order_deploy_partial = DeployOrder.objects.create(
-            customer=self.customer_1,
-            location=self.customer_1_location_1.location,
-            date=timezone.now(),
-        )
-        self.order_deploy_complete = DeployOrder.objects.create(
-            customer=self.customer_1,
-            location=self.customer_1_location_1.location,
-            date=timezone.now(),
-        )
-        OrderGenericProduct.objects.create(
-            order=self.order_deploy_initial,
-            generic_product=self.generic_product,
-            quantity=2
-        )
-        OrderGenericProduct.objects.create(
-            order=self.order_deploy_partial,
-            generic_product=self.generic_product,
-            quantity=2
-        )
-        OrderGenericProduct.objects.create(
-            order=self.order_deploy_complete,
-            generic_product=self.generic_product,
-            quantity=2
-        )
-        OrderEquipment.objects.create(order=self.order_deploy_partial, equipment=self.equipment_deployed_working_1)
-        OrderEquipment.objects.create(order=self.order_deploy_complete, equipment=self.equipment_deployed_working_1)
-        OrderEquipment.objects.create(order=self.order_deploy_complete, equipment=self.equipment_deployed_working_2)
+        self.order_collect_initial = self.create_order_collect_initial()
+        self.order_collect_partial = self.create_order_collect_partial()
+        self.order_collect_complete = self.create_order_collect_complete()
+        self.order_deploy_initial = self.create_order_deploy_initial()
+        self.order_deploy_partial = self.create_order_deploy_partial()
+        self.order_deploy_complete = self.create_order_deploy_complete()
+        self.order_inspect = self.create_order_inspect()
 
-        self.order_collect_initial = CollectOrder.objects.create(
+    def create_order_collect_initial(self) -> Order:
+        order = CollectOrder.objects.create(
             customer=self.customer_1,
             location=self.customer_1_location_1.location,
             date=timezone.now()
         )
-        self.order_collect_partial = CollectOrder.objects.create(
-            customer=self.customer_1,
-            location=self.customer_1_location_1.location,
-            date=timezone.now()
-        )
-        self.order_collect_complete = CollectOrder.objects.create(
-            customer=self.customer_1,
-            location=self.customer_1_location_1.location,
-            date=timezone.now()
-        )
-        OrderEquipment.objects.create(order=self.order_collect_initial, equipment=self.equipment_deployed_working_1)
-        OrderEquipment.objects.create(order=self.order_collect_initial, equipment=self.equipment_deployed_working_2)
-        OrderEquipment.objects.create(order=self.order_collect_partial, equipment=self.equipment_picked_up_working_1)
-        OrderEquipment.objects.create(order=self.order_collect_partial, equipment=self.equipment_deployed_working_2)
-        OrderEquipment.objects.create(order=self.order_collect_complete, equipment=self.equipment_picked_up_working_1)
-        OrderEquipment.objects.create(order=self.order_collect_complete, equipment=self.equipment_picked_up_working_2)
+        order_equipment_1 = OrderEquipment.objects.create(order=order, equipment=self.equipment_deployed_working_1)
+        order_equipment_2 = OrderEquipment.objects.create(order=order, equipment=self.equipment_deployed_working_2)
+        return order
 
-        self.order_inspect = InspectOrder.objects.create(
+    def create_order_collect_partial(self) -> Order:
+        order = CollectOrder.objects.create(
+            customer=self.customer_1,
+            location=self.customer_1_location_1.location,
+            date=timezone.now()
+        )
+        order_equipment_1 = OrderEquipment.objects.create(order=order, equipment=self.equipment_picked_up_working_1)
+        order_equipment_2 = OrderEquipment.objects.create(order=order, equipment=self.equipment_deployed_working_2)
+        order.perform_equipment_activity(team_lead=self.user, equipment=order_equipment_1.equipment)
+        return order
+
+    def create_order_collect_complete(self) -> Order:
+        order = CollectOrder.objects.create(
+            customer=self.customer_1,
+            location=self.customer_1_location_1.location,
+            date=timezone.now()
+        )
+        order_equipment_1 = OrderEquipment.objects.create(order=order, equipment=self.equipment_picked_up_working_1)
+        order_equipment_2 = OrderEquipment.objects.create(order=order, equipment=self.equipment_picked_up_working_2)
+        order.perform_equipment_activity(team_lead=self.user, equipment=order_equipment_1.equipment)
+        order.perform_equipment_activity(team_lead=self.user, equipment=order_equipment_2.equipment)
+        return order
+
+    def create_order_deploy_initial(self) -> Order:
+        order = DeployOrder.objects.create(
+            customer=self.customer_1,
+            location=self.customer_1_location_1.location,
+            date=timezone.now(),
+        )
+
+        OrderGenericProduct.objects.create(
+            order=order,
+            generic_product=self.generic_product,
+            quantity=2
+        )
+        return order
+
+    def create_order_deploy_partial(self) -> Order:
+        order = DeployOrder.objects.create(
+            customer=self.customer_1,
+            location=self.customer_1_location_1.location,
+            date=timezone.now(),
+        )
+        OrderGenericProduct.objects.create(
+            order=order,
+            generic_product=self.generic_product,
+            quantity=2
+        )
+        order_equipment_1 = OrderEquipment.objects.create(order=order, equipment=self.equipment_deployed_working_1)
+        order.perform_equipment_activity(team_lead=self.user, equipment=order_equipment_1.equipment)
+        return order
+
+    def create_order_deploy_complete(self) -> Order:
+        order = DeployOrder.objects.create(
+            customer=self.customer_1,
+            location=self.customer_1_location_1.location,
+            date=timezone.now(),
+        )
+        OrderGenericProduct.objects.create(
+            order=order,
+            generic_product=self.generic_product,
+            quantity=2
+        )
+        order_equipment_1 = OrderEquipment.objects.create(order=order, equipment=self.equipment_deployed_working_1)
+        order_equipment_2 = OrderEquipment.objects.create(order=order, equipment=self.equipment_deployed_working_2)
+        order.perform_equipment_activity(team_lead=self.user, equipment=order_equipment_1.equipment)
+        order.perform_equipment_activity(team_lead=self.user, equipment=order_equipment_2.equipment)
+
+        return order
+
+    def create_order_inspect(self):
+        order = InspectOrder.objects.create(
             customer=self.customer_1,
             location=self.customer_1_location_1.location,
             date=timezone.now())
+        return order
