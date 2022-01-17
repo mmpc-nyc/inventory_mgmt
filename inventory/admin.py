@@ -5,13 +5,17 @@ from inventory.models.location import Location
 from inventory.models.stock import Stock
 from inventory.models.contact import Contact, ContactPhoneNumber, ContactEmail, PhoneNumber
 from inventory.models.customer import Customer, CustomerLocation, CustomerContact
-from inventory.models.equipment import Equipment, Condition, EquipmentTransaction
 from inventory.models.product import Product, ProductType, Brand, GenericProduct, Category
-from inventory.models.order import Order, OrderGenericProduct
+from inventory.models.order import Order, OrderGenericProduct, OrderEquipment, Equipment, Condition, \
+    EquipmentTransaction
 
 
 class GenericProductInline(TabularInline):
     model = OrderGenericProduct
+
+
+class OrderEquipmentInline(TabularInline):
+    model = OrderEquipment
 
 
 @register(CustomerLocation)
@@ -96,11 +100,11 @@ class PhoneNumberAdmin(ModelAdmin):
 @register(Order)
 class OrderAdmin(ModelAdmin):
     list_display = ['id', 'activity', 'customer', 'location', 'date', 'user_names', 'status']
-    inlines = (GenericProductInline,)
+    inlines = (GenericProductInline, OrderEquipmentInline,)
 
     @staticmethod
     def user_names(obj: Order):
-        return ', '.join(user.username for user in obj.users.all())
+        return ', '.join(user.username for user in obj.team.all())
 
 
 @register(CustomerContact)
