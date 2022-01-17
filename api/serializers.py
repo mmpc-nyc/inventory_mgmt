@@ -5,9 +5,8 @@ from inventory.models.location import Location
 from inventory.models.stock import Stock
 from inventory.models.contact import Contact, Email, PhoneNumber
 from inventory.models.customer import Customer, CustomerLocation, CustomerContact
-from inventory.models.equipment import Equipment, Condition
 from inventory.models.product import Product, ProductType, Brand, GenericProduct, Category
-from inventory.models.order import Order
+from inventory.models.order import Order, Equipment, Condition
 
 User = get_user_model()
 
