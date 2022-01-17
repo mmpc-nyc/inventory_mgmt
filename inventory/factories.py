@@ -4,8 +4,7 @@ from django.db import transaction
 from django.db.models import QuerySet
 
 from inventory.enums import OrderActivity
-from inventory.models.equipment import Equipment
-from inventory.models.order import Order
+from inventory.models.order import Order, Equipment
 
 
 class OrderFactory:
