@@ -1,39 +1,55 @@
+from dataclasses import dataclass
 from typing import Union
 
 from django.db import transaction
-from django.db.models import QuerySet
 
-from inventory.enums import OrderActivity
-from inventory.models.order import Order, Equipment
+from inventory.models.order import Order, Equipment, CollectOrder, DeployOrder, InspectOrder
 
 
+@dataclass
 class OrderFactory:
-    activity: OrderActivity
+    model: Union[type(Order)]
 
-    def create_from_orders(self, date, orders: Union[Order, list[Order], tuple[Order], QuerySet]) -> Order:
-        if isinstance(orders, Order):
-            orders = [orders]
+    @transaction.atomic
+    def create_from_orders(self, date, input_orders, team_lead=None, team=None) -> Order:
+        input_orders = [input_orders] if issubclass(type(input_orders), Order) else list(input_orders)
         equipments = set()
-        for order in orders:
-            for equipment in order.equipments.all():
+        for input_order in input_orders:
+            for equipment in input_order.equipments.all():
                 equipments.add(equipment)  # TODO Think about broken / decommissioned equipment
-        with transaction.atomic():
-            order = Order(activity=self.activity, date=date, status=Order.Status.NEW, customer=orders[0].customer,
-                          location=orders[0].location)
-            for equipment in equipments:
-                order.equipmenttransaction_set.add(equipment)
-            order.save()
-            return order
+        order = self.create_from_equipment(
+            date=date,
+            customer=input_orders[0].customer,
+            location=input_orders[0].location,
+            equipments=equipments,
+            team_lead=team_lead,
+            team=team
+        )
+        return order
 
-    def create_from_equipment(self, date, customer, location, equipments: Union[
-        Equipment, list[Equipment], tuple[Equipment], set[Equipment], QuerySet] = None) -> Order:
+    @transaction.atomic
+    def create_from_equipment(self, date, customer, location, equipments, team_lead=None, team=None) -> Order:
         if equipments:
             if isinstance(equipments, Equipment):
                 equipments = [equipments]
-        with transaction.atomic():
-            order = Order(activity=self.activity, date=date, status=Order.Status.NEW, customer=customer,
-                          location=location)
-            for equipment in equipments:
-                order.equipmenttransaction_set.add(equipment)
-            order.save()
-            return order
+            else:
+                equipments = set(equipments)
+        order = self.model.objects.create(
+            date=date,
+            status=Order.Status.NEW,
+            customer=customer,
+            location=location,
+            team_lead=team_lead,
+        )
+        for equipment in equipments:
+            order.orderequipment_set.create(equipment=equipment, order=order)
+        if team:
+            for team_member in team:
+                order.team.objects.create(team=team_member, order=order)
+        order.save()
+        return order
+
+
+collect_order_factory = OrderFactory(model=CollectOrder)
+deploy_order_factory = OrderFactory(model=DeployOrder)
+inspect_order_factory = OrderFactory(model=InspectOrder)

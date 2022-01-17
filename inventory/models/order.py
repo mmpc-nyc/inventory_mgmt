@@ -213,7 +213,7 @@ class EquipmentTransaction(models.Model):
 class Order(models.Model):
     """Model for scheduling orders to allow easier assignment of inventory, services and products"""
     COMPLETE_EQUIPMENT_STATUS: str
-
+    ACTIVITY: OrderActivity
     Activity: OrderActivity = OrderActivity
 
     class Status(models.TextChoices):
@@ -322,6 +322,7 @@ class Order(models.Model):
 
 
 class CollectOrder(Order):
+    ACTIVITY = OrderActivity.COLLECT
     COMPLETE_EQUIPMENT_STATUS = Equipment.Status.PICKED_UP
     objects = CollectOrderManager()
 
@@ -332,10 +333,13 @@ class CollectOrder(Order):
         super().complete(ignore_issues=ignore_issues)
 
     class Meta:
+        verbose_name = _('Collect Order')
+        verbose_name_plural = _('Collect Orders')
         proxy = True
 
 
 class DeployOrder(Order):
+    ACTIVITY = OrderActivity.DEPLOY
     COMPLETE_EQUIPMENT_STATUS = Equipment.Status.PICKED_UP
     objects = DeployOrderManager()
 
@@ -362,10 +366,13 @@ class DeployOrder(Order):
         super().complete(ignore_issues=ignore_issues)
 
     class Meta:
+        verbose_name = _('Deploy Order')
+        verbose_name_plural = _('Deploy Orders')
         proxy = True
 
 
 class InspectOrder(Order):
+    ACTIVITY = OrderActivity.INSPECT
     objects = InspectOrderManager()
 
     def perform_equipment_activity(self, equipment: 'Equipment', team_lead: get_user_model() = None):
@@ -376,6 +383,8 @@ class InspectOrder(Order):
         super().complete(ignore_issues=True)
 
     class Meta:
+        verbose_name = _('Inspect Order')
+        verbose_name_plural = _('Inspect Orders')
         proxy = True
 
 
