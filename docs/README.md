@@ -1,4 +1,4 @@
-![GitHub commit activity](https://img.shields.io/github/commit-activity/w/schir2/inventory_mgmt) ![Size](https://img.shields.io/github/repo-size/schir2/inventory_mgmt)
+[![Known Vulnerabilities](https://snyk.io/test/github/schir2/inventory_mgmt/badge.svg)] ![GitHub commit activity](https://img.shields.io/github/commit-activity/w/schir2/inventory_mgmt) ![Size](https://img.shields.io/github/repo-size/schir2/inventory_mgmt)
 # Inventory Management for tracking Equipment
 
 ## Models
