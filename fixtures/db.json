@@ -110,42 +110,6 @@
     }
 },
 {
-    "model": "users.user",
-    "pk": 2,
-    "fields": {
-        "password": "user",
-        "last_login": null,
-        "is_superuser": false,
-        "username": "user",
-        "first_name": "",
-        "last_name": "",
-        "email": "",
-        "is_staff": false,
-        "is_active": true,
-        "date_joined": "2022-01-17T03:36:14.089Z",
-        "groups": [],
-        "user_permissions": []
-    }
-},
-{
-    "model": "users.user",
-    "pk": 3,
-    "fields": {
-        "password": "recipient",
-        "last_login": null,
-        "is_superuser": false,
-        "username": "recipient",
-        "first_name": "",
-        "last_name": "",
-        "email": "",
-        "is_staff": false,
-        "is_active": true,
-        "date_joined": "2022-01-17T03:36:14.112Z",
-        "groups": [],
-        "user_permissions": []
-    }
-},
-{
     "model": "inventory.condition",
     "pk": 1,
     "fields": {
