@@ -22,19 +22,30 @@ class TestCollectOrderFactory(AbstractTest):
                     for input_order in input_orders:
                         for equipment in input_order.equipments.all():
                             input_equipment_set.add(equipment)
-                    output_equipment_set = {order_equipment.equipment for order_equipment in output_order.orderequipment_set.all()}
+                    output_equipment_set = set()
+                    for order_equipment in output_order.orderequipment_set.all():
+                        output_equipment_set.add(order_equipment.equipment)
                     self.assertEqual(input_equipment_set, output_equipment_set)
 
     def test_create_from_equipment(self):
         for factory in self.factories:
             with self.subTest(factory):
                 input_equipment = self.equipment_deployed_working_1
-                equipment_collections= [input_equipment, [input_equipment, ], (input_equipment, ), {input_equipment, }, Equipment.objects.all()]
+                equipment_collections = [input_equipment, [input_equipment, ], (input_equipment, ), {input_equipment, }, Equipment.objects.all()]
                 for input_equipments in equipment_collections:
-                    input_equipments = [input_equipments] if issubclass(type(input_equipments), Order) else input_equipments
+                    input_equipments = [input_equipments] if issubclass(type(input_equipments), Equipment) else input_equipments
                     output_order = factory.create_from_equipment(
                         date=timezone.now(),
                         customer=self.order_deploy_complete.customer,
                         location=self.order_deploy_complete.location,
-                        equipments=self.equipment_deployed_working_1
+                        equipments=input_equipments
                     )
+                    self.assertEqual(output_order.activity, factory.model.ACTIVITY)
+                    self.assertTrue(isinstance(output_order, Order))
+                    input_equipment_set = set()
+                    for equipment in input_equipments:
+                        input_equipment_set.add(equipment)
+                    output_equipment_set = set()
+                    for order_equipment in output_order.orderequipment_set.all():
+                        output_equipment_set.add(order_equipment.equipment)
+                    self.assertEqual(input_equipment_set, output_equipment_set)
