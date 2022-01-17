@@ -1,4 +1,4 @@
-![Django Tests](https://github.com/github/docs/actions/workflows/main.yml/badge.svg) ![GitHub commit activity](https://img.shields.io/github/commit-activity/w/schir2/inventory_mgmt) ![Size](https://img.shields.io/github/repo-size/schir2/inventory_mgmt)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/w/schir2/inventory_mgmt) ![Size](https://img.shields.io/github/repo-size/schir2/inventory_mgmt)
 # Inventory Management for tracking Equipment
 
 ## Models
