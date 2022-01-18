@@ -7,7 +7,6 @@ from users.views import LoginView, LogoutView
 
 urlpatterns = [path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
                path('api/', include(router.urls)),
-               path('accounts/', include('allauth.urls'), name='socialaccount_signup'), path('admin/', admin.site.urls),
                path('main/', include(('main.urls', 'main'), namespace='main')),
                path('', include(('inventory.urls', 'inventory'), namespace='inventory')),
                path('users/', include(('users.urls', 'users'), namespace='users')),
