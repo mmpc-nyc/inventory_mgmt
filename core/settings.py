@@ -32,7 +32,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'phonenumber_field',
     'simple_history',
-    'django_htmx',
     'main',
     'inventory', 'users']
 
@@ -45,7 +44,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django_htmx.middleware.HtmxMiddleware',
     'inventory.middleware.AxiosMiddleware',
     'django.middleware.locale.LocaleMiddleware'
 ]

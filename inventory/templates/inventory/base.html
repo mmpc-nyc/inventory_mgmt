@@ -1,6 +1,4 @@
 {% load static %}
-{% load django_htmx %}
-{% django_htmx_script %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,14 +20,7 @@
 
 {% block javascript %}{% endblock %}
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script src="https://unpkg.com/htmx.org@1.6.1"></script>
 <script defer>let csrfToken = '{{ csrf_token }}'</script>
-<script>
-    document.body.addEventListener('htmx:configRequest', (event) => {
-        event.detail.headers['X-CSRFToken'] = csrfToken;
-    })
-
-</script>
 
 </body>
 </html>
