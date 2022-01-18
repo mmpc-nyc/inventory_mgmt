@@ -6,7 +6,13 @@
 
 
 Create a **.env** in the same location where settings.py resides.
-![img.png](img.png)
+```yaml
+GOOGLE_API_KEY=GOOGLE_API_KEY  				# Google API Key Used for geolocation
+DEBUG=on 									# on/off controls debug
+ALLOWED_HOSTS=localhost,127.0.0.1 			# django server ip address or hostname
+CORS_ALLOWED_HOSTS=http://127.0.0.1:8080	# your frontend base url
+```
+
 
 Run in powershell after creating virtual environment
 ```powershell
