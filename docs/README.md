@@ -6,7 +6,7 @@
 
 
 Create a **.env** in the same location where settings.py resides.
-![env](env.png)
+![img.png](img.png)
 
 Run in powershell after creating virtual environment
 ```powershell
