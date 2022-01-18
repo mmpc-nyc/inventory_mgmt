@@ -22,12 +22,12 @@ python manage.py setup_initial
 
 ## Test Running Environment
 
-Django
+### Django
 ```shell
 python manage.py runserver
 ```
 
-Vue
+### Vue
 ```shell
 cd frontned/inventory_mgmt
 npm run serve
