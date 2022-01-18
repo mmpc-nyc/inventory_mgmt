@@ -6,14 +6,7 @@
 
 
 Create a **.env** in the same location where settings.py resides.
-```dotenv
-GOOGLE_API_KEY=GOOGLE_API_KEY # Google API Key Used for geolocation
-DEBUG=on #on for debug enabled off for debug disabled
-ALLOWED_HOSTS=localhost,127.0.0.1 # your server ip address or hostname
-CORS_ALLOWED_HOSTS=http://127.0.0.1:8080,http://localhost:8080 # your frontend base url
-```
+![env.png](img.png)
 
-```powershell
-pip install -r requirements.txt
-python manage.py setup_initial
-```
+
+![setup.png](img_1.png)
