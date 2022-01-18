@@ -66,6 +66,11 @@ Equipment is stored at a customer location based on the order.
 ### 7.1.4 Missing
 ### 7.1.5 Decommissioned
 ## 7.2 Actions
+
+<p align="center">
+<img alt="Equipment Actions" src="images/equipment_actions.png"/>
+</p>
+
 ### 7.2.1 Collect
 Collects equipment from customer location and sets status to Picked Up
 ### 7.2.2 Decommission
@@ -95,6 +100,12 @@ Equipment that is associated with the order.
 This is mainly used for deploy orders. It allows you to see if the correct amount of equipment has been deployed.
 ## 8.7 Activity
 An activity you perform during the order.
+
+
+<p align="center">
+<img alt="Order Process" src="images/Order%20Process.png"/>
+</p>
+
 ### 8.7.1 Collect
 An order for picking up deployed equipment.
 #### 8.7.1.1 Actions
