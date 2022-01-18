@@ -8,5 +8,8 @@
 Create a **.env** in the same location where settings.py resides.
 ![env](env.png)
 
-
-![setup.png](setup.png)
+Run in powershell after creating virtual environment
+```powershell
+pip install -r requirements.txt
+python manage.py setup_initial
+```
