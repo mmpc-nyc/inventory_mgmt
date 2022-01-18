@@ -1,0 +1,57 @@
+[
+{
+    "model": "inventory.location",
+    "pk": 1,
+    "fields": {
+        "name": "Location Not Set",
+        "street_number": "",
+        "route": "",
+        "raw": "Location Not Set",
+        "formatted": "",
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "model": "inventory.condition",
+    "pk": 1,
+    "fields": {
+        "name": "Working",
+        "description": "Working",
+        "action_collect": true,
+        "action_decommission": true,
+        "action_deploy": true,
+        "action_store": true,
+        "action_transfer": true,
+        "action_withdraw": true
+    }
+},
+{
+    "model": "inventory.condition",
+    "pk": 2,
+    "fields": {
+        "name": "Damaged",
+        "description": "Damaged",
+        "action_collect": true,
+        "action_decommission": true,
+        "action_deploy": false,
+        "action_store": true,
+        "action_transfer": true,
+        "action_withdraw": true
+    }
+},
+{
+    "model": "inventory.condition",
+    "pk": 3,
+    "fields": {
+        "name": "Decommissioned",
+        "description": "Decommissioned",
+        "action_collect": false,
+        "action_decommission": true,
+        "action_deploy": false,
+        "action_store": false,
+        "action_transfer": false,
+        "action_withdraw": false
+    }
+}
+]
