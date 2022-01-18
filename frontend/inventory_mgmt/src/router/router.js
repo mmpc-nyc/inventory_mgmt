@@ -21,6 +21,11 @@ const routes = [
         path: '/equipment_checkin',
         name: 'equipment_checkin',
         component: () => import(/* webpackChunkName: "equipment_checkin" */ '../views/EquipmentCheckin')
+    },
+    {
+        path: '/create_order_form',
+        name: 'create_order_form',
+        component: () => import(/* webpackChunkName: "create_order_form" */ '../views/CreateOrderForm')
     }
 ]
 
