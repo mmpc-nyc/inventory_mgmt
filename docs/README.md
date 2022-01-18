@@ -3,10 +3,17 @@
 
 ## Setup
 
-Create a .env
-...
+Create a .env with the following settings:
+Replace **ALLOWED_HOSTS** and **CORS_ALLOWED_HOSTS** with your server settings.
 
-```python
+```yaml
+GOOGLE_API_KEY=GOOGLE_API_KEY
+DEBUG=on
+ALLOWED_HOSTS=localhost,127.0.0.1
+CORS_ALLOWED_HOSTS=http://127.0.0.1:8080,http://localhost:8080
+```
+
+```powershell
 pip install -r requirements.txt
 python manage.py setup_initial
 ```
