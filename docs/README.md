@@ -6,7 +6,7 @@
 
 
 Create a **.env** in the same location where settings.py resides.
-![env.png](img.png)
+![env](env.png)
 
 
-![setup.png](img_1.png)
+![setup.png](setup.png)
