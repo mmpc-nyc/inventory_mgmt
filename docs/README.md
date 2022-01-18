@@ -19,3 +19,16 @@ Run in powershell after creating virtual environment
 pip install -r requirements.txt
 python manage.py setup_initial
 ```
+
+Test Running Environment
+
+Django
+```shell
+python manage.py runserver
+```
+
+Vue
+```shell
+cd frontned/inventory_mgmt
+npm run serve
+```
