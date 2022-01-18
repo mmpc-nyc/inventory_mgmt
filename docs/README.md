@@ -6,7 +6,7 @@
 Create a .env with the following settings:
 Replace **ALLOWED_HOSTS** and **CORS_ALLOWED_HOSTS** with your server settings.
 
-```yaml
+```dotenv
 GOOGLE_API_KEY=GOOGLE_API_KEY
 DEBUG=on
 ALLOWED_HOSTS=localhost,127.0.0.1
