@@ -13,7 +13,7 @@ User = get_user_model()
 
 
 class AbstractTest(TestCase):
-    fixtures = ['fixtures/db.json', ]
+    fixtures = ['fixtures/test.json', ]
 
     def setUp(self):
         self.user = User.objects.create(username='user', password='user')
