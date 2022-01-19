@@ -14,7 +14,7 @@
 <script>
 import TheHeader from './components/shared/TheHeader'
 import TheFooter from './components/shared/TheFooter'
-import TheLogin from './components/admin/TheLogin'
+import TheLogin from './views/auth/TheAuthentication'
 
 export default {
   name: 'home',
