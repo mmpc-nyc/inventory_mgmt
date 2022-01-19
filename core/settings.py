@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+
 import environ
 
 env = environ.Env()
@@ -25,9 +26,13 @@ INSTALLED_APPS = [
     'corsheaders',
     'mptt',
     'rest_framework',
+    'rest_framework.authtoken',
+    'rest_framework_simplejwt',
+    'djoser',
     'phonenumber_field',
     'simple_history',
     'main',
+    'api',
     'inventory', 'users']
 
 MIDDLEWARE = [
@@ -116,8 +121,15 @@ GOOGLE_API_KEY = env('GOOGLE_API_KEY')
 SITE_ID = 1
 
 # Rest Framework
-REST_FRAMEWORK = {# Use Django's standard `django.contrib.auth` permissions,
-    # or allow read-only access for unauthenticated users.
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
     'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly']}
+
+SIMPLE_JWT = {
+    'AUTH_HEADER_TYPES': ('JWT',),
+}
 
 CORS_ALLOWED_ORIGINS = env.list('CORS_ALLOWED_HOSTS', default=[])
