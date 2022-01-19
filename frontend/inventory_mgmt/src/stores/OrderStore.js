@@ -1,5 +1,7 @@
-import axios from "axios";
-import authHeader from "../services/AuthHeader"
+import axiosInstance from "../services/AxiosInstance"
+
+const instance = axiosInstance()
+
 const orderStore = {
     state() {
         return {}
@@ -8,19 +10,9 @@ const orderStore = {
     actions: {
 
         getOrderList({commit}) {
-            console.log('what the fuck')
-            axios.get(
-                'http://localhost:8000/api/orders/',
-                {headers: authHeader()}
-            ).then(
-                response => {
-                    commit('GET_ALL', response.data)
-                }
-            ).catch(
-                () => {
-                    return 'Failed to connect to API'
-                }
-            )
+            instance.get('http://localhost:8000/api/orders/').then(
+                response => {commit('GET_ALL', response.data)}
+            ).catch(() => {return 'Failed to connect to API'})
         }
     },
     mutations: {
