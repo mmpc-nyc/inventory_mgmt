@@ -3,7 +3,7 @@
   <equipment-list :equipments="equipments"></equipment-list>
 </template>
 <script>
-import EquipmentList from '@/components/EquipmentList'
+import EquipmentList from '@/components/inventory/EquipmentList'
 
 export default {
   components: {EquipmentList},

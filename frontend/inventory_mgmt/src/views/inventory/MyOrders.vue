@@ -3,7 +3,7 @@
   <order-list :orders="orders"></order-list>
 </template>
 <script>
-import OrderList from '@/components/OrderList'
+import OrderList from '@/components/inventory/OrderList'
 
 export default {
   name: "MyOrders",

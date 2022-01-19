@@ -12,9 +12,9 @@
   <TheFooter></TheFooter>
 </template>
 <script>
-import TheHeader from './components/TheHeader'
-import TheFooter from './components/TheFooter'
-import TheLogin from './components/TheLogin'
+import TheHeader from './components/shared/TheHeader'
+import TheFooter from './components/shared/TheFooter'
+import TheLogin from './components/admin/TheLogin'
 
 export default {
   name: 'home',

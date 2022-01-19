@@ -5,8 +5,8 @@
 </template>
 
 <script>
-import QrScanner from "../components/TheScanner";
-import ScannedListItem from "../components/ScannedListItem";
+import QrScanner from "../components/inventory/TheScanner";
+import ScannedListItem from "../components/inventory/ScannedListItem";
 export default {
   name: "CollectEquipment",
   components: {ScannedListItem, QrScanner}

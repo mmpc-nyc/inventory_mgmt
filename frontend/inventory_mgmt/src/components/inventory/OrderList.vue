@@ -4,7 +4,7 @@
   </ul>
 </template>
 <script>
-import OrderListItem from "@/components/OrderListItem"
+import OrderListItem from "@/components/inventory/OrderListItem"
 
 export default {
   name: "OrderList",

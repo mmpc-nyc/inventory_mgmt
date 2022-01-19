@@ -9,7 +9,7 @@
   </ul>
 </template>
 <script>
-import EquipmentListItem from "@/components/EquipmentListItem";
+import EquipmentListItem from "@/components/inventory/EquipmentListItem";
 
 export default {
   name: 'EquipmentList',
