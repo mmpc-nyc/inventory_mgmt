@@ -1,5 +1,5 @@
 import axios from "axios";
-
+import authHeader from "../services/AuthHeader"
 const orderStore = {
     state() {
         return {}
@@ -8,10 +8,12 @@ const orderStore = {
     actions: {
 
         getOrderList({commit}) {
-            axios.get('http://localhost:8000/api/orders/').then(
+            console.log('what the fuck')
+            axios.get(
+                'http://localhost:8000/api/orders/',
+                {headers: authHeader()}
+            ).then(
                 response => {
-                    console.log('axios')
-                    console.log(response.data)
                     commit('GET_ALL', response.data)
                 }
             ).catch(

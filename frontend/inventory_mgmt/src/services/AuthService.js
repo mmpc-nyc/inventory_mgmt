@@ -11,7 +11,7 @@ class AuthService {
                 password: user.password
             }
         ).then(response => {
-            if (response.data.access_token) {
+            if (response.data.access) {
                 localStorage.setItem('user', JSON.stringify(response.data));
             }
             return response.data;
@@ -19,6 +19,7 @@ class AuthService {
     }
 
     logout() {
+        console.log('removing local storage item')
         localStorage.removeItem('user')
     }
 }

@@ -223,7 +223,7 @@ class Order(models.Model):
         COMPLETED = 'Completed', _('Completed')
         CANCELED = 'Canceled', _('Canceled')
 
-    parent = models.ManyToManyField('self', related_name='children', symmetrical=False)
+    parent = models.ManyToManyField('self', related_name='children', symmetrical=False, blank=True, null=True)
     customer = models.ForeignKey(Customer, verbose_name=_('customer'), on_delete=models.CASCADE)
     activity = models.CharField(verbose_name=_('activity'), max_length=32, choices=Activity.choices)
     status = models.CharField(max_length=16, verbose_name=_('status'), choices=Status.choices, default=Status.NEW)

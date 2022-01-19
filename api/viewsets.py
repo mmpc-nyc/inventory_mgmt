@@ -1,3 +1,4 @@
+import rest_framework.permissions
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -8,57 +9,61 @@ from api.serializers import BrandSerializer, EquipmentSerializer, ProductSeriali
     GenericProductSerializer, OrderSerializer, StockSerializer, ProductTypeSerializer, UserSerializer
 
 
-class BrandViewSet(viewsets.ModelViewSet):
+class BaseViewSet(viewsets.ModelViewSet):
+    permission_classes = [rest_framework.permissions.IsAuthenticated,]
+
+
+class BrandViewSet(BaseViewSet):
     serializer_class = BrandSerializer
     queryset = serializer_class.Meta.model.objects.all()
 
 
-class LocationViewSet(viewsets.ModelViewSet):
+class LocationViewSet(BaseViewSet):
     serializer_class = LocationSerializer
     queryset = serializer_class.Meta.model.objects.all()
 
 
-class GenericProductViewSet(viewsets.ModelViewSet):
+class GenericProductViewSet(BaseViewSet):
     serializer_class = GenericProductSerializer
     queryset = serializer_class.Meta.model.objects.all()
 
 
-class EquipmentViewSet(viewsets.ModelViewSet):
+class EquipmentViewSet(BaseViewSet):
     serializer_class = EquipmentSerializer
     queryset = serializer_class.Meta.model.objects.all()
 
 
-class ProductViewSet(viewsets.ModelViewSet):
+class ProductViewSet(BaseViewSet):
     serializer_class = ProductSerializer
     queryset = serializer_class.Meta.model.objects.all()
 
 
-class CategoryViewSet(viewsets.ModelViewSet):
+class CategoryViewSet(BaseViewSet):
     serializer_class = CategorySerializer
     queryset = serializer_class.Meta.model.objects.all()
 
 
-class EmailViewSet(viewsets.ModelViewSet):
+class EmailViewSet(BaseViewSet):
     serializer_class = EmailSerializer
     queryset = serializer_class.Meta.model.objects.all()
 
 
-class PhoneNumberViewSet(viewsets.ModelViewSet):
+class PhoneNumberViewSet(BaseViewSet):
     serializer_class = PhoneNumberSerializer
     queryset = serializer_class.Meta.model.objects.all()
 
 
-class ContactViewSet(viewsets.ModelViewSet):
+class ContactViewSet(BaseViewSet):
     serializer_class = ContactSerializer
     queryset = serializer_class.Meta.model.objects.all()
 
 
-class CustomerViewSet(viewsets.ModelViewSet):
+class CustomerViewSet(BaseViewSet):
     serializer_class = CustomerSerializer
     queryset = serializer_class.Meta.model.objects.all()
 
 
-class OrderViewSet(viewsets.ModelViewSet):
+class OrderViewSet(BaseViewSet):
     serializer_class = OrderSerializer
     queryset = serializer_class.Meta.model.objects.all()
 
@@ -70,16 +75,16 @@ class OrderViewSet(viewsets.ModelViewSet):
         return Response(self.serializer_class(order, many=False, context={'request': request}).data)
 
 
-class StockViewSet(viewsets.ModelViewSet):
+class StockViewSet(BaseViewSet):
     serializer_class = StockSerializer
     queryset = serializer_class.Meta.model.objects.all()
 
 
-class ProductTypeViewSet(viewsets.ModelViewSet):
+class ProductTypeViewSet(BaseViewSet):
     serializer_class = ProductTypeSerializer
     queryset = serializer_class.Meta.model.objects.all()
 
 
-class UserViewSet(viewsets.ModelViewSet):
+class UserViewSet(BaseViewSet):
     serializer_class = UserSerializer
     queryset = serializer_class.Meta.model.objects.all()
