@@ -11,12 +11,12 @@ const orderStore = {
 
         getOrderList({commit}) {
             instance.get('http://localhost:8000/api/orders/').then(
-                response => {commit('GET_ALL', response.data)}
+                response => {commit('getOrderList', response.data)}
             ).catch(() => {return 'Failed to connect to API'})
         }
     },
     mutations: {
-        GET_ALL(state, orders) {
+        getOrderList(state, orders) {
             state.orders = orders
         }
     }

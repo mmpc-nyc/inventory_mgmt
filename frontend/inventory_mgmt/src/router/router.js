@@ -25,7 +25,7 @@ const routes = [
     {
         path: "/create_order_form",
         name: "create_order_form",
-        component: () => import(/* webpackChunkName: "create_order_form" */ "../views/CreateOrderForm")
+        component: () => import(/* webpackChunkName: "create_order_form" */ "../views/CreateOrder")
     },
 ]
 
