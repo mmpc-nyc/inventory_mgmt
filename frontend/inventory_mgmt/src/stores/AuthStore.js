@@ -1,46 +1,53 @@
-import AuthService from '../services/AuthService';
+import AuthService from "../services/AuthService";
 
-const user = JSON.parse(localStorage.getItem('user'));
+const user = JSON.parse(localStorage.getItem("user"));
 const initialState = user
-    ? {status: {loggedIn: true}, user}
-    : {status: {loggedIn: false}, user: null};
+  ? { status: { loggedIn: true }, user }
+  : { status: { loggedIn: false }, user: null };
 
 const authStore = {
-    namespaced: true,
-    state: initialState,
-    actions: {
-        login({commit}, user) {
-            return AuthService.login(user).then(
-                user => {
-                    commit('loginSuccess', user);
-                    return Promise.resolve(user);
-                },
-                error => {
-                    commit('loginFailure');
-                    return Promise.reject(error);
-                }
-            );
+  namespaced: true,
+  state: initialState,
+  actions: {
+    login({ commit }, user) {
+      return AuthService.login(user).then(
+        (user) => {
+          commit("loginSuccess", user);
+          return Promise.resolve(user);
         },
-        logout({commit}) {
-            console.log('running dispatch logout')
-            AuthService.logout();
-            commit('logout');
-        },
+        (error) => {
+          commit("loginFailure");
+          return Promise.reject(error);
+        }
+      );
     },
-    mutations: {
-        loginSuccess(state, user) {
-            state.status.loggedIn = true;
-            state.user = user;
-        },
-        loginFailure(state) {
-            state.status.loggedIn = false;
-            state.user = null;
-        },
-        logout(state) {
-            state.status.loggedIn = false;
-            state.user = null;
-        },
-    }
+    logout({ commit }) {
+      console.log("running dispatch logout");
+      AuthService.logout();
+      commit("logout");
+    },
+    refreshToken({ commit }, accessToken) {
+      commit("refreshToken", accessToken);
+    },
+  },
+  mutations: {
+    loginSuccess(state, user) {
+      state.status.loggedIn = true;
+      state.user = user;
+    },
+    loginFailure(state) {
+      state.status.loggedIn = false;
+      state.user = null;
+    },
+    logout(state) {
+      state.status.loggedIn = false;
+      state.user = null;
+    },
+    refreshToken(state, accessToken) {
+      state.status.loggedIn = true;
+      state.user = { ...state.user, accessToken: accessToken };
+    },
+  },
 };
 
-export default authStore
+export default authStore;
