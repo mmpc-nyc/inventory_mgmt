@@ -1,22 +1,25 @@
 <template>
   <TheHeader>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link :to="{name: 'my_equipment'}">Equipments</router-link>
-    <router-link :to="{name: 'equipment_checkin'}">Checkin</router-link>
-    <router-link :to="{name: 'my_orders'}">Orders</router-link>
-  </div>
-    </TheHeader>
+    <div id="nav">
+      <router-link to="/">Home</router-link>
+      <router-link :to="{name: 'my_equipment'}">Equipments</router-link>
+      <router-link :to="{name: 'equipment_checkin'}">Checkin</router-link>
+      <router-link :to="{name: 'my_orders'}">Orders</router-link>
+    </div>
+  </TheHeader>
   <router-view/>
+  <TheLogin></TheLogin>
   <TheFooter></TheFooter>
 </template>
 <script>
 import TheHeader from './components/TheHeader'
 import TheFooter from './components/TheFooter'
+import TheLogin from './components/TheLogin'
 
 export default {
   name: 'home',
   components: {
+    'TheLogin': TheLogin,
     'TheHeader': TheHeader,
     'TheFooter': TheFooter
   }
