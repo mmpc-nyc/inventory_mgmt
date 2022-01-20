@@ -1,4 +1,4 @@
-import CustomerAdmin from '@/views/admin/CustomerAdmin'
+import CustomerAdmin from '@/views/admin/customer/CustomerAdmin'
 const adminRoutes = [{
     path: "/admin",
     name: "admin",
