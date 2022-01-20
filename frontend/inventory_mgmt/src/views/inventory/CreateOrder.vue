@@ -7,7 +7,6 @@ export default {
   name: "CreateOrderForm.vue",
   methods: {
     submitForm(){
-      console.log('Submit Form Pressed')
     }
   }
 }

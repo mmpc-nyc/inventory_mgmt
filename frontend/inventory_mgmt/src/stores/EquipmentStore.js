@@ -74,7 +74,6 @@ const equipmentStore = {
             state.equipments.delete(equipment.id)
         },
         checkIn(state, equipment) {
-            console.log(state.equipments)
             state.equipments.set(equipment.id, equipment)
         },
 
