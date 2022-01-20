@@ -120,10 +120,11 @@ PHONENUMBER_DEFAULT_REGION = 'US'
 # Social Auth
 GOOGLE_API_KEY = env('GOOGLE_API_KEY')
 SITE_ID = 1
-
 # Rest Framework
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     )}
 
