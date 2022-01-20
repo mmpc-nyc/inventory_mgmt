@@ -1,7 +1,8 @@
 import {createRouter, createWebHistory} from "vue-router"
 import Home from "../views/Home.vue"
+import adminRoutes from "@/router/AdminRouter";
 
-const routes = [
+const baseRoutes = [
     {
         path: "/",
         name: "Home",
@@ -28,6 +29,8 @@ const routes = [
         component: () => import(/* webpackChunkName: "create_order_form" */ "../views/inventory/CreateOrder")
     },
 ]
+
+const routes = baseRoutes.concat(adminRoutes)
 
 const router = createRouter({
     history: createWebHistory(process.env.BASE_URL),
