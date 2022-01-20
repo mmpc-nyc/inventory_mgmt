@@ -3,6 +3,7 @@ import equipmentStore from "@/stores/EquipmentStore";
 import userStore from "@/stores/UserStore";
 import orderStore from "@/stores/OrderStore";
 import authStore from "@/stores/AuthStore"
+import customerStore from "@/stores/CustomerStore";
 
 export const store = createStore({
     state() {
@@ -12,6 +13,7 @@ export const store = createStore({
         auth: authStore,
         equipments: equipmentStore,
         users: userStore,
-        orders: orderStore
+        orders: orderStore,
+        customers: customerStore
     }
 })

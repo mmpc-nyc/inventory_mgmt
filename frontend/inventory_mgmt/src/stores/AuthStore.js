@@ -22,7 +22,6 @@ const authStore = {
       );
     },
     logout({ commit }) {
-      console.log("running dispatch logout");
       AuthService.logout();
       commit("logout");
     },

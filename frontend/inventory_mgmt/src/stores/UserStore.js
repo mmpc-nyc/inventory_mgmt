@@ -10,8 +10,6 @@ const userStore = {
         getList({commit}) {
             axios.get('http://localhost:8000/api/users/').then(
                 response => {
-                    console.log('axios')
-                    console.log(response.data)
                     commit('GET_ALL', response.data)
                 }
             ).catch(
