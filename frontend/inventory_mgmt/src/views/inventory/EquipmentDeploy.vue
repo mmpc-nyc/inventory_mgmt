@@ -3,7 +3,7 @@
 </template>
 <script>
 export default {
-  name: "CheckOut",
+  name: "EquipmentDeploy",
   props: ["equipments"],
   methods: {
     checkOut(equipment){

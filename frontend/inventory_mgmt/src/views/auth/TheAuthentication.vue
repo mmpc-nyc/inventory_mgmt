@@ -12,7 +12,7 @@ export default {
   components: {LogoutForm, LoginForm},
   computed: {
     loggedIn() {
-      return this.$store.state.auth.loggedIn;
+      return this.$store.state.auth.status.loggedIn;
     }
   },
 }

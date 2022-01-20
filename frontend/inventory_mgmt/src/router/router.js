@@ -18,9 +18,9 @@ const routes = [
         component: () => import(/* webpackChunkName: "my_orders" */ "../views/inventory/MyOrders.vue")
     },
     {
-        path: "/equipment_checkin",
-        name: "equipment_checkin",
-        component: () => import(/* webpackChunkName: "equipment_checkin" */ "../views/inventory/EquipmentCheckin")
+        path: "/equipment_collect",
+        name: "equipment_collect",
+        component: () => import(/* webpackChunkName: "equipment_collect" */ "../views/inventory/EquipmentCollect")
     },
     {
         path: "/create_order_form",

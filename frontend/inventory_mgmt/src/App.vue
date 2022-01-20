@@ -3,7 +3,6 @@
     <div id="nav">
       <router-link to="/">Home</router-link>
       <router-link :to="{name: 'my_equipment'}">Equipments</router-link>
-      <router-link :to="{name: 'equipment_checkin'}">Checkin</router-link>
       <router-link :to="{name: 'my_orders'}">Orders</router-link>
     </div>
   </TheHeader>

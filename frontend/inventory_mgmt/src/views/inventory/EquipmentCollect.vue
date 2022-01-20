@@ -8,7 +8,7 @@ import TheScanner from '@/components/inventory/TheScanner'
 import EquipmentList from "@/components/inventory/EquipmentList";
 
 export default {
-  name: 'Equipment Checkin',
+  name: 'EquipmentCollect',
   components: {EquipmentList, TheScanner},
   computed: {
     equipments() {
