@@ -1,0 +1,28 @@
+@import "variables";
+
+@mixin h-list {
+  display: grid;
+  justify-content: center;
+}
+
+@mixin v-list {
+  display: flex;
+  flex-direction: column;
+  li {
+    padding: 1ch;
+    align-content: center;
+    border-bottom: 1px solid $color-light-300;
+  }
+
+  li:hover {
+    filter: brightness(95%);
+  }
+
+  .even {
+    background-color: $color-light-100;
+  }
+
+  .odd {
+    background-color: $color-light-200;
+  }
+}
