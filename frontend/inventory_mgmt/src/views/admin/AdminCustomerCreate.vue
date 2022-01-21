@@ -1,9 +1,9 @@
 <template>
   <main>
-    <h1 :class="$tt('headline3')">Create New Customer</h1>
     <ui-form horizontal @submit.prevent="createCustomer">
       <ui-card>
-        <ui-card class="customer">
+        <h1 :class="$tt('headline3')">Create New Customer</h1>
+        <ui-card v-ripple class="customer">
           <ui-card-text><h2 :class="[$tt('headline4')]">Customer {{ customer.companyName }} {{ customer.firstName }}
             {{ customer.lastName }}</h2>
           </ui-card-text>
@@ -13,8 +13,8 @@
             <ui-textfield v-model="customer.companyName">Company Name</ui-textfield>
           </ui-form-field>
 
-          <div class="contact">
-            <ui-card-text><h3 :class="$tt('headline5')">Customer Contact</h3></ui-card-text>
+          <ui-card-text><h3 :class="$tt('headline5')">Customer Contact</h3></ui-card-text>
+          <ui-form-field class="contact">
             <ui-form-field>
               <ui-checkbox
                   input-id="same-as-customer-name"
@@ -43,12 +43,11 @@
                 </template>
               </ui-textfield>
             </ui-form-field>
-          </div>
+          </ui-form-field>
         </ui-card>
 
-        <ui-card class="service">
-          <ui-card-text :class="$tt('headline4')">Service Location</ui-card-text>
-          <ui-card-text><h3 :class="$tt('headline5')">Service Address</h3></ui-card-text>
+        <ui-card v-ripple class="service">
+          <ui-card-text><h2 :class="$tt('headline4')">Service Address</h2></ui-card-text>
           <ui-form-field>
             <ui-textfield v-model="serviceAddress.lineOne">Street Address</ui-textfield>
             <ui-textfield v-model="serviceAddress.lineTwo">Apt, Ste, etc...</ui-textfield>
@@ -60,7 +59,7 @@
                          type="checkbox"></ui-checkbox>
             <label for="service-contact-same-as-customer-contact">Same as Customer Contact</label>
           </ui-form-field>
-          <div v-if="!serviceAddressContactSameAsCustomerContact" class="service-address-contact">
+          <ui-form-field v-if="!serviceAddressContactSameAsCustomerContact" class="service-address-contact">
             <ui-textfield v-model="serviceAddress.contact.firstName">First Name</ui-textfield>
             <ui-textfield v-model="serviceAddress.contact.lastName">Last Name</ui-textfield>
             <ui-textfield v-model="serviceAddress.contact.email" type="email">Email
@@ -74,24 +73,23 @@
                 <ui-textfield-icon>phone</ui-textfield-icon>
               </template>
             </ui-textfield>
-          </div>
+          </ui-form-field>
         </ui-card>
 
-        <ui-card class="billing">
-          <ui-card-text><h2 :class="$tt('headline4')">Billing</h2></ui-card-text>
+        <ui-card v-ripple class="billing">
+          <ui-card-text><h2 :class="$tt('headline4')">Billing Address</h2></ui-card-text>
           <ui-form-field>
             <ui-checkbox input-id="same-as-service-address" v-model="billingAddressSameAsServiceAddress"
                          type="checkbox"></ui-checkbox>
             <label for="same-as-service-address">Same as Service Address</label>
           </ui-form-field>
-          <ui-card-text><h3 :class="$tt('headline5')">Address</h3></ui-card-text>
           <ui-form-field class="billing-address" v-if="!billingAddressSameAsServiceAddress">
             <ui-textfield id="billing-address-line-1" v-model="billingAddress.lineOne"
                           placeholder="Address"></ui-textfield>
             <ui-textfield id="billing-address-line-2" v-model="billingAddress.lineTwo"
                           placeholder="Apt, Suite, etc.."></ui-textfield>
           </ui-form-field>
-          <ui-card-text><h3 :class="$tt('headline5')">Contact</h3></ui-card-text>
+          <ui-card-text><h3 :class="$tt('headline5')">Billing Contact</h3></ui-card-text>
           <ui-form-field>
             <ui-checkbox :input-id="`billing-contact-same-as-customer-contact`"
                          v-model="billingAddressContactSameAsCustomerContact"
@@ -175,5 +173,13 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.mdc-card{margin:1rem; padding-left:1rem; padding-right:1rem; padding-bottom: 1rem;}
+.mdc-card {
+  margin: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-bottom: 1rem;
+}
+
+h2, h3, h4, h5 {
+}
 </style>
