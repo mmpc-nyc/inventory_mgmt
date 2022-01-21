@@ -1,17 +1,20 @@
 <template>
   <main>
     <h1>Customer Admin</h1>
-  <customer-list :customers="customers"></customer-list>
+    <customer-list :customers="customers"></customer-list>
+    <router-link to="customer_admin_create">Create</router-link>
+    <router-view/>
   </main>
 </template>
 
 <script>
 import CustomerList from "@/components/admin/CustomerList";
+
 export default {
   name: "CustomerAdmin",
   components: {CustomerList},
-  computed:{
-    customers(){
+  computed: {
+    customers() {
       return this.$store.state.customers.customers
     }
   },
