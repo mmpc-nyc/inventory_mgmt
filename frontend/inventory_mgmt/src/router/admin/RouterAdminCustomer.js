@@ -1,15 +1,13 @@
-import CustomerAdminCreate from '@/views/admin/customer/CustomerAdminCreate'
-
 const customerAdminRoutes = [{
-    path: "/customer",
-    name: "customer_admin",
-    title: "customer_admin",
-    component: () => import(/* webpackChunkName: "admin" */ "@/views/admin/customer/CustomerAdmin"),
+    path: "customers",
+    name: "admin_customer_list",
+    title: "admin_customer_list",
+    component: () => import(/* webpackChunkName: "admin_customer_list" */ "@/views/admin/AdminCustomerList"),
     children: [
         {
-            path: 'customer_admin_create',
-            name: 'customer_admin_create',
-            component: CustomerAdminCreate
+            path: 'create',
+            name: 'admin_customer_create',
+            component: () => import(/* webpackChunkName: "admin_customer_create" */ "@/views/admin/AdminCustomerCreate"),
 
         }
     ]
