@@ -1,5 +1,4 @@
 <template>
-  <main>
     <ui-form horizontal @submit.prevent="createCustomer">
       <ui-card>
         <h1 :class="$tt('headline3')">Create New Customer</h1>
@@ -116,7 +115,6 @@
         </ui-card-actions>
       </ui-card>
     </ui-form>
-  </main>
 
 </template>
 

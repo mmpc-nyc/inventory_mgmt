@@ -1,9 +1,9 @@
 <template>
-  <main>
+  <div>
     <customer-list :customers="customers"></customer-list>
     <router-link :to="{name: 'admin_customer_create'}">Create</router-link>
     <router-view/>
-  </main>
+  </div>
 </template>
 
 <script>

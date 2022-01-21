@@ -1,6 +1,9 @@
 <template>
   <the-navbar></the-navbar>
   <the-header></the-header>
+  <main>
+    <router-view/>
+  </main>
   <the-footer></the-footer>
 </template>
 <script>
@@ -24,24 +27,25 @@ export default {
 #app {
   height: 100vh;
   display: grid;
-  grid-template-areas:'. . .'
+  grid-template-areas:
   '. header .'
           '. main .'
           'footer footer footer';
-  grid-template-rows: 3rem max-content 1fr max-content;
+  grid-template-rows: max-content 1fr max-content;
   grid-template-columns: 1fr minmax(400px, 1024px) 1fr;
 
-  @media only screen and (max-width: 600px){
-  grid-template-areas:'.'
+  @media only screen and (max-width: 600px) {
+    grid-template-areas:'.'
           'messages'
           'header'
           'main'
           'footer';
-  grid-template-columns: 1fr;
-  grid-template-rows: 6rem max-content max-content 1fr 6rem;
+    grid-template-columns: 1fr;
+    grid-template-rows: 6rem max-content max-content 1fr 6rem;
 
   }
 }
+
 header {
   grid-area: header;
   z-index: 80;

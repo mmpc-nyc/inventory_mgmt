@@ -1,8 +1,6 @@
 <template>
-  <main>
-      <router-link :to="{name: 'admin_customer_list'}">Customers</router-link>
-      <router-view/>
-  </main>
+    <router-link :to="{name: 'admin_customer_list'}">Customers</router-link>
+  <router-view/>
 </template>
 
 <script>
