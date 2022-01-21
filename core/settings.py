@@ -33,7 +33,9 @@ INSTALLED_APPS = [
     'simple_history',
     'main',
     'api',
-    'inventory', 'users']
+    'inventory',
+    'users'
+]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
