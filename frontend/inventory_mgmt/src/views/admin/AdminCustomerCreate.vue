@@ -1,104 +1,123 @@
 <template>
   <main>
-    <form @submit.prevent="createCustomer">
-      <section class="customer">
-        <h2>Customer {{ customer.companyName }} {{ customer.firstName }} {{ customer.lastName }}</h2>
-        <div>
-          <input v-model="customer.firstName" placeholder="First Name">
-          <input v-model="customer.lastName" placeholder="Last Name">
-          <input v-model="customer.companyName" placeholder="Company Name">
-        </div>
+    <h1 :class="$tt('headline3')">Create New Customer</h1>
+    <ui-form horizontal @submit.prevent="createCustomer">
+      <ui-card>
+        <ui-card class="customer">
+          <ui-card-text><h2 :class="[$tt('headline4')]">Customer {{ customer.companyName }} {{ customer.firstName }}
+            {{ customer.lastName }}</h2>
+          </ui-card-text>
+          <ui-form-field>
+            <ui-textfield required v-model="customer.firstName">First Name</ui-textfield>
+            <ui-textfield required v-model="customer.lastName">Last Name</ui-textfield>
+            <ui-textfield v-model="customer.companyName">Company Name</ui-textfield>
+          </ui-form-field>
 
-        <div class="contact">
-          <h3>Customer Contact</h3>
-          <input
-              id="same-as-customer-name"
-              v-model="customerContactSameAsCustomer"
-              type="checkbox">
-          <label for="same-as-customer-name">Same as Customer</label>
-          <div>
-            <input v-if="!customerContactSameAsCustomer" v-model="customer.contact.firstName" placeholder="First Name">
-            <input v-else :value="customer.firstName" placeholder="First Name" disabled>
-            <input v-if="!customerContactSameAsCustomer" v-model="customer.contact.lastName" placeholder="Last Name">
-            <input v-else :value="customer.lastName" placeholder="Last Name" disabled>
-            <input v-model="customer.contact.email" type="email" placeholder="Email">
-            <input v-model="customer.contact.phone" type="tel" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" placeholder="Phone">
+          <div class="contact">
+            <ui-card-text><h3 :class="$tt('headline5')">Customer Contact</h3></ui-card-text>
+            <ui-form-field>
+              <ui-checkbox
+                  input-id="same-as-customer-name"
+                  v-model="customerContactSameAsCustomer">
+              </ui-checkbox>
+              <label for="same-as-customer-name">Same as Customer</label>
+            </ui-form-field>
+            <ui-form-field>
+              <ui-textfield v-if="!customerContactSameAsCustomer" v-model="customer.contact.firstName"
+              >First Name
+              </ui-textfield>
+              <ui-textfield v-else disabled>{{ customer.firstName ? customer.firstName : "First Name" }}</ui-textfield>
+              <ui-textfield v-if="!customerContactSameAsCustomer" v-model="customer.contact.lastName"
+              >Last Name
+              </ui-textfield>
+              <ui-textfield v-else disabled>{{ customer.lastName ? customer.lastName : "Last Name" }}</ui-textfield>
+              <ui-textfield v-model="customer.contact.email" type="email">Email
+                <template #after>
+                  <ui-textfield-icon>email</ui-textfield-icon>
+                </template>
+              </ui-textfield>
+              <ui-textfield v-model="customer.contact.phone" type="tel" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
+              >Phone
+                <template #after>
+                  <ui-textfield-icon>phone</ui-textfield-icon>
+                </template>
+              </ui-textfield>
+            </ui-form-field>
           </div>
-        </div>
-      </section>
+        </ui-card>
 
+        <ui-card class="service">
+          <ui-card-text :class="$tt('headline4')">Service Location</ui-card-text>
+          <ui-card-text><h3 :class="$tt('headline5')">Service Address</h3></ui-card-text>
+          <ui-form-field>
+            <ui-textfield v-model="serviceAddress.lineOne">Street Address</ui-textfield>
+            <ui-textfield v-model="serviceAddress.lineTwo">Apt, Ste, etc...</ui-textfield>
+          </ui-form-field>
+          <ui-card-text><h3 :class="$tt('headline5')">Service Contact</h3></ui-card-text>
+          <ui-form-field>
+            <ui-checkbox input-id="service-contact-same-as-customer-contact"
+                         v-model="serviceAddressContactSameAsCustomerContact"
+                         type="checkbox"></ui-checkbox>
+            <label for="service-contact-same-as-customer-contact">Same as Customer Contact</label>
+          </ui-form-field>
+          <div v-if="!serviceAddressContactSameAsCustomerContact" class="service-address-contact">
+            <ui-textfield v-model="serviceAddress.contact.firstName">First Name</ui-textfield>
+            <ui-textfield v-model="serviceAddress.contact.lastName">Last Name</ui-textfield>
+            <ui-textfield v-model="serviceAddress.contact.email" type="email">Email
+              <template #after>
+                <ui-textfield-icon>email</ui-textfield-icon>
+              </template>
+            </ui-textfield>
+            <ui-textfield v-model="serviceAddress.contact.phone" type="tel"
+            >Phone
+              <template #after>
+                <ui-textfield-icon>phone</ui-textfield-icon>
+              </template>
+            </ui-textfield>
+          </div>
+        </ui-card>
 
-      <section class="service">
-        <h2>Service</h2>
-        <h3>Address</h3>
-        <input v-model="serviceAddress.lineOne" placeholder="Address">
-        <input v-model="serviceAddress.lineTwo" placeholder="Apt, Suite, etc..">
-
-        <h3>Contact</h3>
-        <input id="service-contact-same-as-customer-contact" v-model="serviceAddressContactSameAsCustomerContact"
-               type="checkbox">
-        <label for="service-contact-same-as-customer-contact">Same as Customer Contact</label>
-        <div v-if="serviceAddressContactSameAsCustomerContact" class="service-address-contact">
-          <input
-              :value="customerContactSameAsCustomer ? customer.firstName : customer.contact.firstName"
-              placeholder="First Name"
-              disabled>
-          <input
-              :value="customerContactSameAsCustomer ?  customer.lastName : customer.contact.lastName"
-              placeholder="Last Name"
-              disabled>
-          <input :value="customer.contact.email" disabled placeholder="Email">
-          <input :value="customer.contact.phone" disabled placeholder="Phone">
-        </div>
-        <div v-else class="service-address-contact">
-          <input v-model="serviceAddress.contact.firstName" placeholder="First Name">
-          <input v-model="serviceAddress.contact.lastName" placeholder="Last Name">
-          <input v-model="serviceAddress.contact.email" type="email" placeholder="Email">
-          <input v-model="serviceAddress.contact.phone" type="tel" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
-                 placeholder="Phone">
-        </div>
-      </section>
-
-      <section class="billing">
-        <h2>Billing</h2>
-        <input id="same-as-service-address" v-model="billingAddressSameAsServiceAddress" type="checkbox">
-        <label for="same-as-service-address">Same as Service Address</label>
-        <h3>Address</h3>
-        <div class="billing-address" v-if="!billingAddressSameAsServiceAddress">
-          <input id="billing-address-line-1" v-model="billingAddress.lineOne" placeholder="Address">
-          <input id="billing-address-line-2" v-model="billingAddress.lineTwo" placeholder="Apt, Suite, etc..">
-        </div>
-        <div class="billing-address" v-else>
-          <input :value="serviceAddress.lineOne" placeholder="Address" disabled>
-          <input :value="serviceAddress.lineTwo" placeholder="Apt, Suite, etc.." disabled>
-        </div>
-        <h3>Contact</h3>
-        <input id="billing-contact-same-as-customer-contact" v-model="billingAddressContactSameAsCustomerContact"
-               type="checkbox">
-        <label for="billing-contact-same-as-customer-contact">Same as Customer Contact</label>
-
-        <div v-if="billingAddressContactSameAsCustomerContact" class="service-address-contact">
-          <input
-              :value="customerContactSameAsCustomer ? customer.firstName : customer.contact.firstName"
-              placeholder="First Name"
-              disabled>
-          <input
-              :value="customerContactSameAsCustomer ?  customer.lastName : customer.contact.lastName"
-              placeholder="Last Name"
-              disabled>
-          <input :value="customer.contact.email" disabled placeholder="Email">
-          <input :value="customer.contact.phone" disabled placeholder="Phone">
-        </div>
-        <div v-else class="service-address-contact">
-          <input v-model="billingAddress.contact.firstName" placeholder="First Name">
-          <input v-model="billingAddress.contact.lastName" placeholder="Last Name">
-          <input v-model="billingAddress.contact.email" type="email" placeholder="Email">
-          <input v-model="billingAddress.contact.phone" type="tel" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}">
-        </div>
-      </section>
-
-      <button type="submit">Submit</button>
-    </form>
+        <ui-card class="billing">
+          <ui-card-text><h2 :class="$tt('headline4')">Billing</h2></ui-card-text>
+          <ui-form-field>
+            <ui-checkbox input-id="same-as-service-address" v-model="billingAddressSameAsServiceAddress"
+                         type="checkbox"></ui-checkbox>
+            <label for="same-as-service-address">Same as Service Address</label>
+          </ui-form-field>
+          <ui-card-text><h3 :class="$tt('headline5')">Address</h3></ui-card-text>
+          <ui-form-field class="billing-address" v-if="!billingAddressSameAsServiceAddress">
+            <ui-textfield id="billing-address-line-1" v-model="billingAddress.lineOne"
+                          placeholder="Address"></ui-textfield>
+            <ui-textfield id="billing-address-line-2" v-model="billingAddress.lineTwo"
+                          placeholder="Apt, Suite, etc.."></ui-textfield>
+          </ui-form-field>
+          <ui-card-text><h3 :class="$tt('headline5')">Contact</h3></ui-card-text>
+          <ui-form-field>
+            <ui-checkbox :input-id="`billing-contact-same-as-customer-contact`"
+                         v-model="billingAddressContactSameAsCustomerContact"
+                         type="checkbox"></ui-checkbox>
+            <label :for="`billing-contact-same-as-customer-contact`">Same as Customer</label>
+          </ui-form-field>
+          <ui-form-field v-if="!billingAddressContactSameAsCustomerContact" class="service-address-contact">
+            <ui-textfield v-model="billingAddress.contact.firstName">First Name</ui-textfield>
+            <ui-textfield v-model="billingAddress.contact.lastName">Last Name</ui-textfield>
+            <ui-textfield v-model="billingAddress.contact.email">Email
+              <template #after>
+                <ui-textfield-icon>email</ui-textfield-icon>
+              </template>
+            </ui-textfield>
+            <ui-textfield v-model="billingAddress.contact.phone" type="tel">Phone
+              <template #after>
+                <ui-textfield-icon>phone</ui-textfield-icon>
+              </template>
+            </ui-textfield>
+          </ui-form-field>
+        </ui-card>
+        <ui-card-actions>
+          <ui-button raised type="submit">Submit</ui-button>
+        </ui-card-actions>
+      </ui-card>
+    </ui-form>
   </main>
 
 </template>
@@ -156,10 +175,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "/scss/variables";
-
-section {
-  padding: 1rem;
-  @include shadow-1;
-}
+.mdc-card{margin:1rem; padding-left:1rem; padding-right:1rem; padding-bottom: 1rem;}
 </style>

@@ -1,6 +1,5 @@
 <template>
   <main>
-    <h1>Customer Admin</h1>
     <customer-list :customers="customers"></customer-list>
     <router-link :to="{name: 'admin_customer_create'}">Create</router-link>
     <router-view/>
