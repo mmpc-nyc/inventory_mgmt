@@ -1,15 +1,18 @@
 <template>
+  <the-header></the-header>
   <main>
+    <router-view/>
   </main>
   <the-footer></the-footer>
+
 </template>
 
 <script>
+import TheHeader from "@/components/shared/TheHeader";
 import TheFooter from "@/components/shared/TheFooter";
-
 export default {
-  name: "TheHome",
-  components: {TheFooter}
+  name: "AdminCustomer",
+  components: {TheFooter, TheHeader}
 }
 </script>
 

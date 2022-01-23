@@ -1,16 +1,13 @@
 <template>
-  <div>
-    <customer-list :customers="customers"></customer-list>
-    <router-link :to="{name: 'admin_customer_create'}">Create</router-link>
-    <router-view/>
-  </div>
+  <customer-list :customers="customers"></customer-list>
+
 </template>
 
 <script>
 import CustomerList from "@/components/admin/CustomerList";
 
 export default {
-  name: "CustomerAdmin",
+  name: "AdminCustomerList",
   components: {CustomerList},
   computed: {
     customers() {

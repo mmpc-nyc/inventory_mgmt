@@ -1,23 +1,23 @@
 <template>
-  <the-navbar></the-navbar>
-  <the-header></the-header>
-  <main>
-    <router-view/>
-  </main>
-  <the-footer></the-footer>
+  <ui-top-app-bar short nav-id="top-app-bar" content-selector="main">
+    <template v-slot:toolbar>
+      <router-link to="/" custom v-slot="{navigate, isActive}">
+        <ui-button raised :class="{active: isActive}" @click="navigate">Home</ui-button>
+      </router-link>
+      <router-link :to="{name:'admin'}" custom v-slot="{navigate, isActive}">
+        <ui-button raised :class="{active: isActive}" @click="navigate">Admin</ui-button>
+      </router-link>
+      <the-user-info></the-user-info>
+    </template>
+  </ui-top-app-bar>
+  <router-view/>
 </template>
 <script>
-import TheHeader from './components/shared/TheHeader'
-import TheFooter from './components/shared/TheFooter'
-import TheNavbar from "@/components/shared/TheNavbar";
 
+import TheUserInfo from "@/components/shared/TheUserInfo";
 export default {
   name: 'App',
-  components: {
-    TheNavbar,
-    'TheHeader': TheHeader,
-    'TheFooter': TheFooter
-  }
+  components: {TheUserInfo}
 }
 
 </script>
@@ -31,19 +31,8 @@ export default {
   '. header .'
           '. main .'
           'footer footer footer';
-  grid-template-rows: max-content 1fr max-content;
+  grid-template-rows: auto 1fr auto;
   grid-template-columns: 1fr minmax(400px, 1024px) 1fr;
-
-  @media only screen and (max-width: 600px) {
-    grid-template-areas:'.'
-          'messages'
-          'header'
-          'main'
-          'footer';
-    grid-template-columns: 1fr;
-    grid-template-rows: 6rem max-content max-content 1fr 6rem;
-
-  }
 }
 
 header {
