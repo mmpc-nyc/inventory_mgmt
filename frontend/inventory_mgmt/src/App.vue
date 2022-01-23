@@ -1,53 +1,43 @@
 <template>
-  <ui-top-app-bar short nav-id="top-app-bar" content-selector="main">
-    <template v-slot:toolbar>
-      <router-link to="/" custom v-slot="{navigate, isActive}">
-        <ui-button raised :class="{active: isActive}" @click="navigate">Home</ui-button>
-      </router-link>
-      <router-link :to="{name:'admin'}" custom v-slot="{navigate, isActive}">
-        <ui-button raised :class="{active: isActive}" @click="navigate">Admin</ui-button>
-      </router-link>
-      <the-user-info></the-user-info>
-    </template>
-  </ui-top-app-bar>
+  <the-top-nav-bar>
+  </the-top-nav-bar>
   <router-view/>
 </template>
 <script>
 
-import TheUserInfo from "@/components/shared/TheUserInfo";
+import TheTopNavBar from "@/components/shared/TheTopNavBar";
+
 export default {
   name: 'App',
-  components: {TheUserInfo}
+  components: {TheTopNavBar}
 }
 
 </script>
 <style lang="scss">
 @import "../scss/style.scss";
 
+
 #app {
-  height: 100vh;
   display: grid;
-  grid-template-areas:
-  '. header .'
-          '. main .'
-          'footer footer footer';
-  grid-template-rows: auto 1fr auto;
-  grid-template-columns: 1fr minmax(400px, 1024px) 1fr;
-}
-
-header {
-  grid-area: header;
-  z-index: 80;
-
+  grid-template-areas: "top-nav-bar top-nav-bar top-nav-bar"
+  "side-nav-bar main .";
+  justify-content: center;
+  grid-template-rows: auto 1fr;
+  grid-template-columns: 30ch minmax(700px, 1440px) auto;
 }
 
 main {
-  z-index: 70;
   grid-area: main;
+  height: 100vh;
 }
 
-footer {
-  z-index: 80;
+.top-nav-bar {
+  grid-area: top-nav-bar
+}
+
+.side-nav-bar {
+  grid-area: side-nav-bar;
+  max-width: 30ch;
 }
 
 </style>

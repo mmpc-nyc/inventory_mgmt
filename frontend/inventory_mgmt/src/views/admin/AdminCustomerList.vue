@@ -1,5 +1,7 @@
 <template>
+  <h1 :class="$tt('headline3')">Customers</h1>
   <customer-list :customers="customers"></customer-list>
+  {{customers}}
 
 </template>
 
