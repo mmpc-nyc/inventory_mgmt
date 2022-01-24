@@ -1,5 +1,4 @@
 <template>
-
   <h1 :class="$tt('headline3')">Create New Customer</h1>
   <ui-form horizontal>
     <ui-card>
