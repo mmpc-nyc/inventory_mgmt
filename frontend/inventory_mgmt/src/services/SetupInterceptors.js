@@ -9,7 +9,7 @@ const setup = (store) => {
       if (token) {
         // config.headers["Authorization"] = 'Bearer ' + token;  // for Spring Boot back-end
         // config.headers["x-access-token"] = token; // for Node.js Express back-end
-        // config.headers["Access-Control-Allow-Credentials"] = "true";
+        config.headers["Authorization"] = "JWT " + token; // for Spring Boot back-end
       }
       return config;
     },
@@ -27,17 +27,18 @@ const setup = (store) => {
 
       if (originalConfig.url !== "/auth/signin" && err.response) {
         // Access Token was expired
+        console.log(err.response.status, originalConfig._retry);
         if (err.response.status === 401 && !originalConfig._retry) {
           originalConfig._retry = true;
 
           try {
-            const rs = await axiosInstance.post("/jwt/refresh", {
-              refreshToken: TokenService.getLocalRefreshToken(),
+            const rs = await axiosInstance.post("/auth/jwt/refresh", {
+              refresh: TokenService.getLocalRefreshToken(),
             });
 
             const { access } = rs.data;
 
-            store.dispatch("jwt/refresh", access);
+            store.dispatch("auth/refreshToken", access);
             TokenService.updateLocalAccessToken(access);
 
             return axiosInstance(originalConfig);
@@ -48,6 +49,7 @@ const setup = (store) => {
         }
       }
 
+      eventBus.dispatch("logout");
       return Promise.reject(err);
     }
   );
