@@ -11,6 +11,7 @@ class Customer(MPTTModel):
     last_name = models.CharField(max_length=150)
     company_name = models.CharField(max_length=150, blank=True, default='')
     contacts = models.ManyToManyField('Contact', through='CustomerContact', related_name='contact')
+    billing_location = models.ForeignKey('Location', verbose_name=_('Billing Location'), related_name='billing_location', on_delete=models.CASCADE)
     locations = models.ManyToManyField('Location', through='CustomerLocation', related_name='location')
     parent = TreeForeignKey('self', on_delete=models.CASCADE, blank=True, null=True)
 
