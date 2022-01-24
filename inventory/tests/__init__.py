@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.utils import timezone
 
@@ -7,7 +8,6 @@ from inventory.models.order import Condition, Equipment, Order, CollectOrder, Or
     OrderGenericProduct, InspectOrder
 from inventory.models.product import Brand, ProductType, GenericProduct, Product
 from inventory.models.stock import Stock
-from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
@@ -23,8 +23,12 @@ class AbstractTest(TestCase):
         self.location_customer_2 = Location.objects.create(raw='Customer Location 2')
         self.location_user = Location.objects.create(raw='User Location')
         self.stock = Stock.objects.create(name='Stock 1', location=self.location_stock)
-        self.customer_1 = Customer.objects.create(first_name='Test', last_name='Customer 1')
-        self.customer_2 = Customer.objects.create(first_name='Test', last_name='Customer 2')
+        self.billing_location_1 = Location.objects.create(raw='Customer Billing Location 1')
+        self.billing_location_2 = Location.objects.create(raw='Customer Billing Location 2')
+        self.customer_1 = Customer.objects.create(first_name='Test', last_name='Customer 1',
+                                                  billing_location=self.billing_location_1)
+        self.customer_2 = Customer.objects.create(first_name='Test', last_name='Customer 2',
+                                                  billing_location=self.billing_location_2)
         self.customer_1_location_1 = CustomerLocation.objects.create(customer=self.customer_1,
                                                                      location=self.location_customer_1)
         self.customer_location_2 = CustomerLocation.objects.create(customer=self.customer_2,
