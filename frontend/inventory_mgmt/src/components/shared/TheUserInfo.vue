@@ -12,6 +12,8 @@
 </template>
 
 <script>
+import EventBus from "../../common/EventBus";
+
 export default {
   name: "TheUserInfo",
   data() {
@@ -27,7 +29,8 @@ export default {
       this.$store.dispatch('auth/login', {username: this.username, password: this.password})
     },
     logout() {
-      this.$store.dispatch('auth/logout')
+      console.log("Logout")
+      EventBus.dispatch('logout')
     },
   }
 }

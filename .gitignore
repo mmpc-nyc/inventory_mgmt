@@ -16,6 +16,8 @@ media
 .idea/**/usage.statistics.xml
 .idea/**/dictionaries
 .idea/**/shelf
+.idea/**/inventory_mgmt.iml
+.idea/**/misc.xml
 
 # AWS User-specific
 .idea/**/aws.xml
@@ -53,6 +55,7 @@ atlassian-ide-plugin.xml
 .Python build/ 
 develop-eggs/ 
 dist/ 
+static/
 downloads/ 
 eggs/ 
 .eggs/ 

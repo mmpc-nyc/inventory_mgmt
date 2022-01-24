@@ -44,7 +44,7 @@ const authStore = {
     },
     refreshToken(state, accessToken) {
       state.status.loggedIn = true;
-      state.user = { ...state.user, accessToken: accessToken };
+      state.user = { ...state.user, access: accessToken };
     },
   },
 };

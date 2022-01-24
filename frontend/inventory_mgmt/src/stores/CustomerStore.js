@@ -1,29 +1,27 @@
-import axiosInstance from "../services/AxiosInstance"
-
-const instance = axiosInstance()
+import instance from "../services/AxiosInstance";
 
 const customerStore = {
-    state() {
-        return {}
+  state() {
+    return {};
+  },
+  namespaced: true,
+  actions: {
+    getCustomerList({ commit }) {
+      instance
+        .get("http://localhost:8000/api/customers/")
+        .then((response) => {
+          commit("getCustomerList", response.data);
+        })
+        .catch(() => {
+          return "Failed to connect to API";
+        });
     },
-    namespaced: true,
-    actions: {
-
-        getCustomerList({commit}) {
-            instance.get('http://localhost:8000/api/customers/').then(
-                response => {
-                    commit('getCustomerList', response.data)
-                }
-            ).catch(() => {
-                return 'Failed to connect to API'
-            })
-        }
+  },
+  mutations: {
+    getCustomerList(state, customers) {
+      state.customers = customers;
     },
-    mutations: {
-        getCustomerList(state, customers) {
-            state.customers = customers
-        }
-    }
-}
+  },
+};
 
-export default customerStore
+export default customerStore;
