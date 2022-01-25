@@ -1,18 +1,14 @@
 <template>
   <main>
+    <ui-card>
+      <ui-card-text><h1 :class="$tt('headline1')">Home Sweet Home</h1></ui-card-text>
+    </ui-card>
   </main>
-  <the-footer></the-footer>
 </template>
 
 <script>
-import TheFooter from "@/components/shared/TheFooter";
-
 export default {
   name: "TheHome",
-  components: {TheFooter}
+  components: {},
 }
 </script>
-
-<style scoped>
-
-</style>

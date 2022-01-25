@@ -59,11 +59,11 @@
                  :key="index" class="location">
 
           <ui-card-text><h3 :class="$tt('headline5')">Location {{
-              location.name ? location.name : location.line_one
+              location.name ? location.name : location.address_line_1
             }}</h3></ui-card-text>
           <ui-textfield v-model="location.name">Name</ui-textfield>
-          <ui-textfield v-model="location.line_one">Street Address</ui-textfield>
-          <ui-textfield v-model="location.line_two">Apt, Ste, etc...</ui-textfield>
+          <ui-textfield v-model="location.address_line_1">Street Address</ui-textfield>
+          <ui-textfield v-model="location.address_line_2">Apt, Ste, etc...</ui-textfield>
 
           <ui-card>
             <ui-card-text>
@@ -109,9 +109,9 @@
           </h2>
         </ui-card-text>
         <ui-form-field class="location" v-if="!customer.billing_location.location_same_as_service_location">
-          <ui-textfield id="billing-address-line-1" v-model="customer.billing_location.line_one"
+          <ui-textfield id="billing-address-line-1" v-model="customer.billing_location.address_line_1"
                         placeholder="Address"></ui-textfield>
-          <ui-textfield id="billing-address-line-2" v-model="customer.billing_location.line_two"
+          <ui-textfield id="billing-address-line-2" v-model="customer.billing_location.address_line_2"
                         placeholder="Apt, Suite, etc.."></ui-textfield>
         </ui-form-field>
         <ui-card>
@@ -173,51 +173,18 @@ export default {
         last_name: "",
         company_name: "",
         contact_same_as_customer: true,
-        contacts: [
-          {
-            first_name: "",
-            last_name: "",
-            email: "",
-            phone: "",
-          },
-        ],
-        service_locations: [
-          {
-            contact_same_as_customer: true,
-            line_one: "",
-            line_two: "",
-            contacts: [{
-              first_name: "",
-              last_name: "",
-              email: "",
-              phone: "",
-            },],
-          },
-        ],
-        billing_location: {
-          location_same_as_service_location: true,
-          contact_same_as_customer: true,
-          line_one: "",
-          line_two: "",
-          contacts: [
-            {
-              first_name: "",
-              last_name: "",
-              email: "",
-              phone: "",
-            },
-            {
-              first_name: "",
-              last_name: "",
-              email: "",
-              phone: "",
-            }
-          ],
-        },
+        contacts: [],
+        service_locations: [],
       },
       message: "",
       valid: false
     }
+  },
+  created() {
+    this.customer.service_locations.push(this.addLocation())
+    this.customer.billing_location = this.addLocation()
+    this.customer.billing_location.location_same_as_service_location = true
+    this.customer.contacts.push(this.addContact())
   },
   methods: {
     submit() {
@@ -231,6 +198,20 @@ export default {
         console.log(this.customer)
       }
     },
+    addContact() {
+      return {first_name: "", last_name: "", emails: [{email: ''}], phones: [{phone: ""}]}
+    },
+    addLocation() {
+      return {
+        name: "",
+        address_line_1: "",
+        address_line_2: "",
+        latitude: "",
+        longitude: "",
+        contact_same_as_customer: true,
+        contacts: [this.addContact()],
+      }
+    }
   },
 }
 </script>
