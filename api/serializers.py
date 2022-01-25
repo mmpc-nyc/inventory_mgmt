@@ -61,6 +61,9 @@ class CustomerSerializer(serializers.HyperlinkedModelSerializer):
     service_locations = LocationSerializer(many=True, read_only=True)
     billing_location = LocationSerializer()
 
+    def create(self, validated_data):
+        customer = Customer.objects.create(**validated_data)
+
     class Meta:
         model = Customer
         fields = ['id', 'url', 'first_name', 'last_name', 'company_name', 'parent', 'contacts', 'billing_location',

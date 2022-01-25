@@ -10,7 +10,8 @@ class Customer(MPTTModel):
     last_name = models.CharField(max_length=150)
     company_name = models.CharField(max_length=150, blank=True, default='')
     contacts = models.ManyToManyField('Contact', through='CustomerContact', related_name='contact')
-    billing_location = models.ForeignKey('Location', verbose_name=_('Billing Location'), related_name='billing_location', on_delete=models.CASCADE)
+    billing_location = models.ForeignKey('Location', verbose_name=_('Billing Location'),
+                                         related_name='billing_location', on_delete=models.CASCADE)
     service_locations = models.ManyToManyField('Location', through='ServiceLocation', related_name='service_locations')
     parent = TreeForeignKey('self', on_delete=models.CASCADE, blank=True, null=True)
 
@@ -37,6 +38,8 @@ class ServiceLocation(models.Model):
     """Service Locations for Customer."""
     location = models.ForeignKey('Location', on_delete=models.CASCADE)
     customer = models.ForeignKey('Customer', on_delete=models.CASCADE)
+    contacts = models.ManyToManyField('Location', verbose_name=_('Location Contact'), through='LocationContact',
+                                      related_name='location_contact')
 
     def __str__(self):
         return f'{self.location} | {self.customer}'
@@ -57,3 +60,16 @@ class CustomerContact(models.Model):
     class Meta:
         verbose_name = _('Customer Contact')
         verbose_name_plural = _('Customer Contacts')
+
+
+class LocationContact(models.Model):
+    """Contacts associated with specific locations"""
+    location = models.ForeignKey('Location', verbose_name=_('Location'), on_delete=models.CASCADE)
+    contact = models.ForeignKey('Contact', verbose_name=_('Contact'), on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.location} | {self.contact}'
+
+    class Meta:
+        verbose_name = _('Location Contact')
+        verbose_name_plural = _('Location Contacts')
