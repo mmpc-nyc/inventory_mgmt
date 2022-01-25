@@ -5,7 +5,7 @@ from api.serializers import CustomerSerializer
 
 class TestCustomerSerializer(TestCase):
     def test_create(self):
-        json_data = """[{
+        json_data = """{
     "first_name": "Marek",
     "last_name": "Schir",
     "company_name": "MMPC",
@@ -14,15 +14,15 @@ class TestCustomerSerializer(TestCase):
         {
             "first_name": "",
             "last_name": "",
-            "email": "schir2@gmail.com",
-            "phone": "7189093737"
+            "email": "",
+            "phone": ""
         }
     ],
     "service_locations": [
         {
             "contact_same_as_customer": true,
-            "line_one": "31-75 29th Street, Astoria NY 11106",
-            "line_two": "Apt E8",
+            "line_one": "31-75 29th Street, Long Island City",
+            "line_two": "E8",
             "contacts": [
                 {
                     "first_name": "",
@@ -54,5 +54,4 @@ class TestCustomerSerializer(TestCase):
             }
         ]
     }
-}]"""
-
+}"""
