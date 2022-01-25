@@ -2,7 +2,7 @@
   <h1 :class="$tt('headline3')">Create New Customer</h1>
   <ui-form horizontal>
     <ui-card>
-      <ui-card v-ripple class="customer">
+      <ui-card class="customer">
         <ui-card-text><h2 :class="[$tt('headline4')]">Customer {{ customer.companyName }} {{ customer.firstName }}
           {{ customer.lastName }}</h2>
         </ui-card-text>
@@ -47,7 +47,7 @@
         </ui-form-field>
       </ui-card>
 
-      <ui-card v-ripple class="service">
+      <ui-card class="service">
         <ui-card-text><h2 :class="$tt('headline4')">Service Address</h2></ui-card-text>
         <ui-form-field>
           <ui-textfield v-model="serviceAddress.lineOne">Street Address</ui-textfield>
@@ -77,7 +77,7 @@
         </ui-form-field>
       </ui-card>
 
-      <ui-card v-ripple class="billing">
+      <ui-card class="billing">
         <ui-card-text><h2 :class="$tt('headline4')">Billing Address</h2></ui-card-text>
         <ui-form-field>
           <ui-checkbox input-id="same-as-service-address" v-model="billingAddressSameAsServiceAddress"
