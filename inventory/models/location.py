@@ -26,3 +26,16 @@ class Location(models.Model):
         verbose_name = _('Location')
         verbose_name_plural = _('Locations')
         ordering = ('name',)
+
+
+class LocationContact(models.Model):
+    """Contacts associated with specific locations"""
+    location = models.ForeignKey('Location', verbose_name=_('Location'), on_delete=models.CASCADE)
+    contact = models.ForeignKey('Contact', verbose_name=_('Contact'), on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.location} | {self.contact}'
+
+    class Meta:
+        verbose_name = _('Location Contact')
+        verbose_name_plural = _('Location Contacts')

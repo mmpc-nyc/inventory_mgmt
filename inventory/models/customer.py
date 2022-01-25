@@ -38,8 +38,6 @@ class ServiceLocation(models.Model):
     """Service Locations for Customer."""
     location = models.ForeignKey('Location', on_delete=models.CASCADE)
     customer = models.ForeignKey('Customer', on_delete=models.CASCADE)
-    contacts = models.ManyToManyField('Contact', verbose_name=_('Contacts'), through='ServiceLocationContact',
-                                      related_name='service_location_contacts')
 
     def __str__(self):
         return f'{self.location} | {self.customer}'
@@ -60,17 +58,3 @@ class CustomerContact(models.Model):
     class Meta:
         verbose_name = _('Customer Contact')
         verbose_name_plural = _('Customer Contacts')
-
-
-class ServiceLocationContact(models.Model):
-    """Contacts associated with specific locations"""
-    service_location = models.ForeignKey('ServiceLocation', verbose_name=_('Service Location'),
-                                         on_delete=models.CASCADE)
-    contact = models.ForeignKey('Contact', verbose_name=_('Contact'), on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f'{self.service_location} | {self.contact}'
-
-    class Meta:
-        verbose_name = _('Location Contact')
-        verbose_name_plural = _('Location Contacts')
