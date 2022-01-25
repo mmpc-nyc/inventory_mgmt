@@ -1,21 +1,16 @@
-import { createApp } from "vue";
-import App from "./App.vue";
+import {createApp} from "vue";
+import App from "@/App.vue";
 
 import BalmUI from "balm-ui";
 import "balm-ui-css";
+import router from "@/router/Router";
+import {store} from "@/stores/Store";
+import setupInterceptors from "@/services/SetupInterceptors";
 
-import validatorRules from "@/config/validator-rules";
-import router from "./router/Router";
-import { store } from "./stores/Store";
-
-import setupInterceptors from "./services/setupInterceptors";
-
-setupInterceptors(store);
+setupInterceptors(store)
 
 const app = createApp(App);
 app.use(router);
-app.use(BalmUI, {
-  $validator: validatorRules,
-});
+app.use(BalmUI);
 app.use(store);
 app.mount("#app");

@@ -1,4 +1,3 @@
-import eventBus from "../common/EventBus";
 import TokenService from "./TokenService";
 import axiosInstance from "./AxiosInstance";
 
@@ -7,9 +6,7 @@ const setup = (store) => {
     (config) => {
       const token = TokenService.getLocalAccessToken();
       if (token) {
-        // config.headers["Authorization"] = 'Bearer ' + token;  // for Spring Boot back-end
-        // config.headers["x-access-token"] = token; // for Node.js Express back-end
-        config.headers["Authorization"] = "JWT " + token; // for Spring Boot back-end
+        config.headers["Authorization"] = "JWT " + token;
       }
       return config;
     },
@@ -43,13 +40,10 @@ const setup = (store) => {
 
             return axiosInstance(originalConfig);
           } catch (_error) {
-            eventBus.dispatch("logout");
             return Promise.reject(_error);
           }
         }
       }
-
-      eventBus.dispatch("logout");
       return Promise.reject(err);
     }
   );

@@ -6,8 +6,8 @@
 <script>
 
 import TheTopNavBar from "@/components/shared/TheTopNavBar";
-import EventBus from "./common/EventBus";
-import AuthService from "./services/AuthService";
+import EventBus from "@/common/EventBus";
+import AuthService from "@/services/AuthService";
 
 export default {
   name: 'App',
@@ -31,7 +31,7 @@ export default {
 
 </script>
 <style lang="scss">
-@import "../scss/style.scss";
+@import "@/scss/style.scss";
 
 
 #app {
