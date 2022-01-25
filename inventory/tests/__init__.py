@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.utils import timezone
 
-from inventory.models.customer import Customer, CustomerLocation
+from inventory.models.customer import Customer, ServiceLocation
 from inventory.models.location import Location
 from inventory.models.order import Condition, Equipment, Order, CollectOrder, OrderEquipment, DeployOrder, \
     OrderGenericProduct, InspectOrder
@@ -29,10 +29,10 @@ class AbstractTest(TestCase):
                                                   billing_location=self.billing_location_1)
         self.customer_2 = Customer.objects.create(first_name='Test', last_name='Customer 2',
                                                   billing_location=self.billing_location_2)
-        self.customer_1_location_1 = CustomerLocation.objects.create(customer=self.customer_1,
-                                                                     location=self.location_customer_1)
-        self.customer_location_2 = CustomerLocation.objects.create(customer=self.customer_2,
-                                                                   location=self.location_customer_2)
+        self.customer_1_location_1 = ServiceLocation.objects.create(customer=self.customer_1,
+                                                                    location=self.location_customer_1)
+        self.customer_location_2 = ServiceLocation.objects.create(customer=self.customer_2,
+                                                                  location=self.location_customer_2)
         self.brand = Brand.objects.create(name='Brand 1')
         self.product_type_equipment = ProductType.objects.create(name='Equipment')
         self.generic_product = GenericProduct.objects.create(name='Generic Product 1')

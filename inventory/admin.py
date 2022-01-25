@@ -4,7 +4,7 @@ from mptt.admin import MPTTModelAdmin
 from inventory.models.location import Location
 from inventory.models.stock import Stock
 from inventory.models.contact import Contact, ContactPhoneNumber, ContactEmail, PhoneNumber
-from inventory.models.customer import Customer, CustomerLocation, CustomerContact
+from inventory.models.customer import Customer, ServiceLocation, CustomerContact
 from inventory.models.product import Product, ProductType, Brand, GenericProduct, Category
 from inventory.models.order import Order, OrderGenericProduct, OrderEquipment, Equipment, Condition, \
     EquipmentTransaction
@@ -18,7 +18,7 @@ class OrderEquipmentInline(TabularInline):
     model = OrderEquipment
 
 
-@register(CustomerLocation)
+@register(ServiceLocation)
 class CustomerLocationAdmin(ModelAdmin):
     list_display = ('customer', 'location')
 

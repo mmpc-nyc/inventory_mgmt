@@ -6,13 +6,12 @@ from mptt.models import MPTTModel
 
 
 class Customer(MPTTModel):
-    #  TODO  Write Description
     first_name = models.CharField(max_length=150)
     last_name = models.CharField(max_length=150)
     company_name = models.CharField(max_length=150, blank=True, default='')
     contacts = models.ManyToManyField('Contact', through='CustomerContact', related_name='contact')
     billing_location = models.ForeignKey('Location', verbose_name=_('Billing Location'), related_name='billing_location', on_delete=models.CASCADE)
-    locations = models.ManyToManyField('Location', through='CustomerLocation', related_name='location')
+    service_locations = models.ManyToManyField('Location', through='ServiceLocation', related_name='service_locations')
     parent = TreeForeignKey('self', on_delete=models.CASCADE, blank=True, null=True)
 
     def get_absolute_url(self):
@@ -34,8 +33,8 @@ class Customer(MPTTModel):
         ordering = ('company_name', 'first_name', 'last_name',)
 
 
-class CustomerLocation(models.Model):
-    #  TODO  Write Description
+class ServiceLocation(models.Model):
+    """Service Locations for Customer."""
     location = models.ForeignKey('Location', on_delete=models.CASCADE)
     customer = models.ForeignKey('Customer', on_delete=models.CASCADE)
 
@@ -43,12 +42,12 @@ class CustomerLocation(models.Model):
         return f'{self.location} | {self.customer}'
 
     class Meta:
-        verbose_name = _('Customer Location')
-        verbose_name_plural = _('Customer Locations')
+        verbose_name = _('Service Location')
+        verbose_name_plural = _('Service Locations')
 
 
 class CustomerContact(models.Model):
-    #  TODO  Write Description
+    """Contacts associated with the customer"""
     customer = models.ForeignKey('Customer', on_delete=models.CASCADE)
     contact = models.ForeignKey('Contact', on_delete=models.CASCADE)
 

@@ -1,12 +1,12 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
-from inventory.models.location import Location
-from inventory.models.stock import Stock
 from inventory.models.contact import Contact, Email, PhoneNumber
-from inventory.models.customer import Customer, CustomerLocation, CustomerContact
-from inventory.models.product import Product, ProductType, Brand, GenericProduct, Category
+from inventory.models.customer import Customer, ServiceLocation, CustomerContact
+from inventory.models.location import Location
 from inventory.models.order import Order, Equipment, Condition
+from inventory.models.product import Product, ProductType, Brand, GenericProduct, Category
+from inventory.models.stock import Stock
 
 User = get_user_model()
 
@@ -46,7 +46,7 @@ class ContactSerializer(serializers.HyperlinkedModelSerializer):
 
 class CustomerLocationSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = CustomerLocation
+        model = ServiceLocation
         fields = ['customer', 'location', ]
 
 
@@ -58,11 +58,13 @@ class CustomerContactSerializer(serializers.HyperlinkedModelSerializer):
 
 class CustomerSerializer(serializers.HyperlinkedModelSerializer):
     contacts = ContactSerializer(many=True, read_only=True)
-    locations = LocationSerializer(many=True, read_only=True)
+    service_locations = LocationSerializer(many=True, read_only=True)
+    billing_location = LocationSerializer()
 
     class Meta:
         model = Customer
-        fields = ['id', 'url', 'first_name', 'last_name', 'company_name', 'parent', 'contacts', 'locations']
+        fields = ['id', 'url', 'first_name', 'last_name', 'company_name', 'parent', 'contacts', 'billing_location',
+                  'service_locations']
 
 
 class BrandSerializer(serializers.HyperlinkedModelSerializer):
