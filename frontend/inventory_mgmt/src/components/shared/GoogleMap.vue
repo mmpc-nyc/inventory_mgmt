@@ -23,17 +23,18 @@ export default {
       }
     }
   },
-  methods: {
-    setPlace(result) {
-      this.geolocation.lat = result.geometry.location.lat()
-      this.geolocation.lng = result.geometry.location.lng()
-      let formatted_address = result.formatted_address
-      let name = result.name
-      console.log(result, formatted_address, name)
+  computed: {
+    geolocation() {
+      if (!this.location.latitude || !this.location.longitude) {
+        return this.$config.DEFAULT_LAT_LNG
+      }
+      return {
+        lat: this.location.latitude,
+        lng: this.location.longitude
+      }
     }
-
   },
-  props: ["geolocation"],
+  props: ["location"],
 }
 </script>
 
