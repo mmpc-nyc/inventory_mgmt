@@ -4,12 +4,13 @@
     "pk": 1,
     "fields": {
         "name": "Location Not Set",
-        "street_number": "",
-        "route": "",
-        "raw": "Location Not Set",
-        "formatted": "",
-        "latitude": null,
-        "longitude": null
+        "address_line_1": "Location Not Set",
+        "address_line_2": "",
+        "city": "Location Not Set",
+        "state": "Location Not Set",
+        "postal_code": "00000",
+        "latitude": 0,
+        "longitude": 0
     }
 },
 {

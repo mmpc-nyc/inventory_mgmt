@@ -1,9 +1,8 @@
 from django.contrib.auth import get_user_model
-from django.db import transaction
 from rest_framework import serializers
 
 from inventory.models.contact import Contact, Email, PhoneNumber
-from inventory.models.customer import Customer, ServiceLocation, CustomerContact
+from inventory.models.customer import Customer, ServiceLocation
 from inventory.models.location import Location, LocationContact
 from inventory.models.order import Order, Equipment, Condition
 from inventory.models.product import Product, ProductType, Brand, GenericProduct, Category
@@ -21,7 +20,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 class LocationSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Location
-        fields = ['id', 'url', 'name']
+        fields = ['id', 'url', 'name', 'address_line_1', 'address_line_2', 'city', 'state', 'latitude', 'longitude']
 
 
 class PhoneNumberSerializer(serializers.HyperlinkedModelSerializer):
@@ -51,72 +50,70 @@ class CustomerLocationSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['customer', 'location', ]
 
 
-class CustomerContactSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = CustomerContact
-        fields = ['customer', 'contact']
-
-
 class CustomerSerializer(serializers.HyperlinkedModelSerializer):
-    contacts = ContactSerializer(many=True, read_only=True)
-    service_locations = LocationSerializer(many=True, read_only=True)
+    service_locations = LocationSerializer(many=True)
     billing_location = LocationSerializer()
 
     @staticmethod
-    def get_location_contacts(location) -> list:
+    def get_location_contacts(location, customer) -> list:
         """Helper method for retrieving location contacts.
         If contact same customer setting is set then it defaults to the first contact of the customer record"""
-        contacts = location.pop('contacts') if 'contacts' in location else []
+        contacts = []
         if 'contact_same_as_customer' in location:
             contact_same_as_customer = location.pop('contact_same_as_customer')
             if contact_same_as_customer:
-                contacts = [location[0]]  # Uses the first customer contact
+                contacts = [
+                    {
+                        'first_name': customer.first_name,
+                        'last_name': customer.last_name,
+                        'emails': [customer.email],
+                        'phone_numbers': [customer.phone_number],
+                    }
+                ]  # Uses the first customer contact
         return contacts
+
+    def __init__(self, *args, **kwargs):
+        if 'data' in kwargs and 'billing_location_same_as_service_location' in kwargs['data']:
+            if kwargs['data']['billing_location_same_as_service_location']:
+                kwargs['data']['billing_location'] = kwargs['data']['service_locations'][0]
+        super(CustomerSerializer, self).__init__(*args, **kwargs)
 
     def create(self, validated_data) -> Customer:
         # TODO Implement the related serializers and fix email / phone contact information
-        customer_contacts = validated_data.pop('customer_contacts') if 'contacts' in validated_data else None
-        if 'contact_same_as_customer' in validated_data:
-            contact_same_as_customer = validated_data.pop('contact_same_as_customer')
-            if contact_same_as_customer:
-                customer_contacts[0]['first_name'] = validated_data['first_name']
-                customer_contacts[0]['last_name'] = validated_data['last_name']
-                customer_contacts = customer_contacts[:1]  # Uses only the first contact
 
         service_locations = validated_data.pop('service_locations') if 'service_locations' in validated_data else []
         billing_location = validated_data.pop('billing_location') if 'billing_location' in validated_data else None
 
-        with transaction.atomic:
+        service_location_objects = []
+        for service_location in service_locations:
+            service_location_contacts = self.get_location_contacts(location=service_location, customer=validated_data)
+            service_location_objects.append(Location.objects.create(**service_location))
+            for service_location_contact in service_location_contacts:
+                LocationContact.objects.create(location=service_location_objects[-1], **service_location_contact)
 
-            # Creates Billing Location Record
-            if billing_location:
-                billing_location_contacts = self.get_location_contacts(location=billing_location)
-                if 'location_same_as_service_location' in billing_location:
-                    location_same_as_service_location = billing_location.pop('location_same_as_service_location')
-                    if location_same_as_service_location:
-                        billing_location = service_locations[0]
-                location = Location.objects.create(**billing_location)
-                for billing_location_contact in billing_location_contacts:
-                    LocationContact.objects.create(location=location, **billing_location_contact)
+        # Creates Billing Location Record
+        if 'billing_location_same_as_service_location' in self.initial_data and self.initial_data['billing_location_same_as_service_location']:
+            billing_location = service_location_objects[0]
+        else:
+            billing_location_contacts = self.get_location_contacts(location=billing_location,
+                                                                   customer=validated_data)
+            location = Location.objects.create(**billing_location)
+            for billing_location_contact in billing_location_contacts:
+                LocationContact.objects.create(location=location, **billing_location_contact)
 
-            # Creates Customer Record
-            customer = Customer.objects.create(billing_location=billing_location_contact, **validated_data)
-            for contact in customer_contacts:
-                CustomerContact.objects.create(customer=customer, contact=Contact.objects.create(**contact))
+        # Creates Customer Record
+        customer = Customer.objects.create(billing_location=billing_location, **validated_data)
 
-            # Creates Service Locations Record
-            for service_location in service_locations:
-                service_location_contacts = self.get_location_contacts(location=service_location)
-                location = Location.objects.create(**service_location)
-                for service_location_contact in service_location_contacts:
-                    LocationContact.objects.create(location=location, **service_location_contact)
-                ServiceLocation.objects.create(location=location, customer=customer)
+        # Creates Service Locations Record
+        for service_location_object in service_location_objects:
+            ServiceLocation.objects.create(location=service_location_object, customer=customer)
 
         return customer
 
     class Meta:
         model = Customer
-        fields = ['id', 'url', 'first_name', 'last_name', 'company_name', 'parent', 'contacts', 'billing_location',
+        fields = ['id', 'url', 'first_name', 'last_name', 'company_name', 'email', 'phone_number', 'parent',
+                  'billing_location',
                   'service_locations']
 
 

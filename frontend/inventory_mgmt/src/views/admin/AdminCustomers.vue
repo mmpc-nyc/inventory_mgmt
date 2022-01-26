@@ -1,16 +1,16 @@
 <template>
   <h1 :class="$tt('headline3')">Customers</h1>
-  <customer-list :customers="customers"></customer-list>
+  <admin-customer-list :customers="customers"></admin-customer-list>
   {{customers}}
 
 </template>
 
 <script>
-import CustomerList from "@/components/admin/CustomerList";
+import AdminCustomerList from "@/components/admin/AdminCustomerList";
 
 export default {
-  name: "AdminCustomerList",
-  components: {CustomerList},
+  name: "AdminCustomers",
+  components: {AdminCustomerList},
   computed: {
     customers() {
       return this.$store.state.customers.customers

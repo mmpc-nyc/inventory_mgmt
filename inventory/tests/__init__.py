@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.utils import timezone
 
+from inventory.models.contact import Contact, Email, PhoneNumber
 from inventory.models.customer import Customer, ServiceLocation
 from inventory.models.location import Location
 from inventory.models.order import Condition, Equipment, Order, CollectOrder, OrderEquipment, DeployOrder, \
@@ -18,17 +19,75 @@ class AbstractTest(TestCase):
     def setUp(self):
         self.user = User.objects.create(username='user', password='user')
         self.recipient = User.objects.create(username='recipient', password='recipient', )
-        self.location_stock = Location.objects.create(raw='Stock Location')
-        self.location_customer_1 = Location.objects.create(raw='Customer Location 1')
-        self.location_customer_2 = Location.objects.create(raw='Customer Location 2')
-        self.location_user = Location.objects.create(raw='User Location')
+        self.customer_email = "customer@email.com"
+        self.customer_phone = "2122198218"
+        self.customer_contact = Contact.objects.create(first_name="Customer", last_name="contact")
+        self.location_stock = Location.objects.create(
+            name='Stock Location 1',
+            address_line_1='Stock Location 1',
+            city="Stock City",
+            state="Stock State",
+            postal_code="00000",
+            latitude=0,
+            longitude=0, )
+        self.location_customer_1 = Location.objects.create(
+            name='Customer Location 1',
+            address_line_1='Customer Location 1',
+            city="Customer City",
+            state="Customer State",
+            postal_code="00000",
+            latitude=0,
+            longitude=0,
+        )
+        self.location_customer_2 = Location.objects.create(
+            name='Customer Location 2',
+            address_line_1='Customer Location 2',
+            city="Customer City",
+            state="Customer State",
+            postal_code="00000",
+            latitude=0,
+            longitude=0,
+        )
+        self.location_user = Location.objects.create(
+            name='User Location 2',
+            address_line_1='User Location 2',
+            city="User City",
+            state="User State",
+            postal_code="00000",
+            latitude=0,
+            longitude=0, )
         self.stock = Stock.objects.create(name='Stock 1', location=self.location_stock)
-        self.billing_location_1 = Location.objects.create(raw='Customer Billing Location 1')
-        self.billing_location_2 = Location.objects.create(raw='Customer Billing Location 2')
-        self.customer_1 = Customer.objects.create(first_name='Test', last_name='Customer 1',
-                                                  billing_location=self.billing_location_1)
-        self.customer_2 = Customer.objects.create(first_name='Test', last_name='Customer 2',
-                                                  billing_location=self.billing_location_2)
+        self.billing_location_1 = Location.objects.create(
+            name='Billing Location 1',
+            address_line_1='Billing Location 1',
+            city="Billing City",
+            state="Billing State",
+            postal_code="00000",
+            latitude=0,
+            longitude=0
+        )
+        self.billing_location_2 = Location.objects.create(
+            name='Billing Location 1',
+            address_line_1='Billing Location 1',
+            city="Billing City",
+            state="Billing State",
+            postal_code="00000",
+            latitude=0,
+            longitude=0)
+        self.customer_1 = Customer.objects.create(
+            first_name='Test',
+            last_name='Customer 1',
+            email=self.customer_email,
+            phone_number=self.customer_phone,
+            billing_location=self.billing_location_1
+        )
+        self.customer_2 = Customer.objects.create(
+            first_name='Test',
+            last_name='Customer 2',
+            billing_location=self.billing_location_2,
+            email=self.customer_email,
+            phone_number=self.customer_phone,
+        )
         self.customer_1_location_1 = ServiceLocation.objects.create(customer=self.customer_1,
                                                                     location=self.location_customer_1)
         self.customer_location_2 = ServiceLocation.objects.create(customer=self.customer_2,

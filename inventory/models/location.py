@@ -5,10 +5,11 @@ from django.utils.translation import gettext_lazy as _
 
 class Location(models.Model):
     name = models.CharField(max_length=150, blank=True)
-    street_number = models.CharField(max_length=20, blank=True)
-    route = models.CharField(max_length=100, blank=True)
-    raw = models.CharField(max_length=200)
-    formatted = models.CharField(max_length=200, blank=True)
+    address_line_1 = models.TextField()
+    address_line_2 = models.TextField(default="")
+    city = models.CharField(max_length=32)
+    state = models.CharField(max_length=32)
+    postal_code = models.CharField(max_length=5)
     latitude = models.FloatField(blank=True, null=True)
     longitude = models.FloatField(blank=True, null=True)
 
@@ -17,10 +18,6 @@ class Location(models.Model):
 
     def get_absolute_url(self):
         return reverse_lazy('inventory:location_detail', kwargs={'pk': self.pk})
-
-    def save(self, *args, **kwargs):
-        self.name = self.name or self.formatted or self.raw
-        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = _('Location')

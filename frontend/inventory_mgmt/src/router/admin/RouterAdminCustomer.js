@@ -7,7 +7,7 @@ const customerAdminRoutes = [
             {
                 path: "list",
                 name: 'admin_customer_list',
-                component: () => import(/* webpackChunkName: "admin_customer_list" */ "@/views/admin/AdminCustomerList"),
+                component: () => import(/* webpackChunkName: "admin_customer_list" */ "@/views/admin/AdminCustomers"),
             },
             {
                 path: 'create',

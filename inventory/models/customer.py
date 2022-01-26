@@ -3,13 +3,15 @@ from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from mptt.fields import TreeForeignKey
 from mptt.models import MPTTModel
+from phonenumber_field.modelfields import PhoneNumberField
 
 
 class Customer(MPTTModel):
     first_name = models.CharField(max_length=150)
     last_name = models.CharField(max_length=150)
     company_name = models.CharField(max_length=150, blank=True, default='')
-    contacts = models.ManyToManyField('Contact', through='CustomerContact', related_name='contact')
+    email = models.EmailField(blank=True)
+    phone_number = PhoneNumberField(default='', blank=True)
     billing_location = models.ForeignKey('Location', verbose_name=_('Billing Location'),
                                          related_name='billing_location', on_delete=models.CASCADE)
     service_locations = models.ManyToManyField('Location', through='ServiceLocation', related_name='service_locations')
@@ -45,16 +47,3 @@ class ServiceLocation(models.Model):
     class Meta:
         verbose_name = _('Service Location')
         verbose_name_plural = _('Service Locations')
-
-
-class CustomerContact(models.Model):
-    """Contacts associated with the customer"""
-    customer = models.ForeignKey('Customer', on_delete=models.CASCADE)
-    contact = models.ForeignKey('Contact', on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f'{self.customer} | {self.contact}'
-
-    class Meta:
-        verbose_name = _('Customer Contact')
-        verbose_name_plural = _('Customer Contacts')
