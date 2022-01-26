@@ -1,12 +1,11 @@
 import {createRouter, createWebHistory} from "vue-router"
-import TheHome from "@/views/TheHome.vue"
 import adminRoutes from "@/router/admin/RouterAdmin";
 
 const baseRoutes = [
     {
         path: "/",
         name: "Home",
-        component: TheHome
+        component: () => import(/* webpackChunkName: "admin" */ "@/views/admin/TheAdmin"),
     },
     {
         path: "/my_equipment",
