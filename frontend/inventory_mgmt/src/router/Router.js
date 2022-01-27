@@ -38,4 +38,9 @@ const router = createRouter({
     linkExactActiveClass: "exact-active",
 })
 
+router.afterEach((to, from, next) => {
+  document.title = to.meta.title || 'Invenotry Management';
+  next();
+});
+
 export default router

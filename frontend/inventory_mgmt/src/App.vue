@@ -26,7 +26,8 @@ export default {
   },
   beforeUnmount() {
     EventBus.remove("logout")
-  }
+  },
+
 }
 
 </script>
