@@ -8,24 +8,25 @@
           <ui-card-text><h2 :class="[$tt('headline4')]">Customer {{ customer.company_name }} {{ customer.first_name }}
             {{ customer.last_name }}</h2>
           </ui-card-text>
-          <ui-form-field>
-            <ui-textfield required v-model="customer.first_name" helper-text-id="first-name-helper-text">First Name
-            </ui-textfield>
-            <ui-textfield-helper id="first-name-helper-text"
-                                 v-model:validMsg="validMsg.first_name"></ui-textfield-helper>
-            <ui-textfield required v-model="customer.last_name">Last Name</ui-textfield>
-            <ui-textfield v-model="customer.company_name">Company Name</ui-textfield>
-            <ui-textfield v-model="customer.email" type="email">Email
-              <template #after>
-                <ui-textfield-icon>email</ui-textfield-icon>
-              </template>
-            </ui-textfield>
-            <ui-textfield v-model="customer.phone_number" type="tel">Phone
-              <template #after>
-                <ui-textfield-icon>phone</ui-textfield-icon>
-              </template>
-            </ui-textfield>
-          </ui-form-field>
+          <ui-textfield required v-model="customer.first_name">
+            {{ validMsg.first_name ? validMsg.first_name : "First Name" }}
+          </ui-textfield>
+          <ui-textfield required v-model="customer.last_name">{{ validMsg.last_name ? validMsg.last_name : "Last Name" }}</ui-textfield>
+          <ui-textfield v-model="customer.company_name">Company Name</ui-textfield>
+
+          <ui-textfield required v-model="customer.email" type="email">
+            {{ validMsg.email ? validMsg.email : "Email" }}
+            <template #after>
+              <ui-textfield-icon>email</ui-textfield-icon>
+            </template>
+          </ui-textfield>
+          <ui-textfield required helper-text-id="customer-phone-number-helper-text" v-model="customer.phone_number"
+                        pattern="\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$" type="tel">
+            {{ validMsg.phone_number ? validMsg.phone_number : "Phone Number" }}
+            <template #after>
+              <ui-textfield-icon>phone</ui-textfield-icon>
+            </template>
+          </ui-textfield>
         </ui-card>
 
         <!-- Service Location Section -->
@@ -38,9 +39,11 @@
                                         @setLocation="setLocation"></google-map-auto-complete>
               <ui-textfield :class="`location-address-line-2`" v-model="location.address_line_2">Apt, Ste, etc...
               </ui-textfield>
-              <ui-textfield :class="`location-city`" v-model="location.city">City</ui-textfield>
-              <ui-textfield :class="`location-state`" v-model="location.state">State</ui-textfield>
-              <ui-textfield :class="`location-postal-code`" v-model="location.postal_code">Postal Code</ui-textfield>
+              <ui-textfield required disabled :class="`location-city`" v-model="location.city">City</ui-textfield>
+              <ui-textfield required disabled :class="`location-state`" v-model="location.state">State</ui-textfield>
+              <ui-textfield required disabled :class="`location-postal-code`" v-model="location.postal_code">Postal
+                Code
+              </ui-textfield>
             </div>
             <google-map :class="`location-map`" :location="location"></google-map>
             <ui-divider :class="`location-divider`">
@@ -61,7 +64,8 @@
                     <ui-textfield-icon>email</ui-textfield-icon>
                   </template>
                 </ui-textfield>
-                <ui-textfield v-model="location.contacts.phone_numbers[0]" type="tel"
+                <ui-textfield v-model="location.contacts.phone_numbers[0]"
+                              pattern="\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$" type="tel"
                 >Phone
                   <template #after>
                     <ui-textfield-icon>phone</ui-textfield-icon>
@@ -90,9 +94,13 @@
               <ui-textfield :class="`location-address-line-2`" v-model="customer.billing_location.address_line_2">Apt,
                 Ste, etc...
               </ui-textfield>
-              <ui-textfield :class="`location-city`" v-model="customer.billing_location.city">City</ui-textfield>
-              <ui-textfield :class="`location-state`" v-model="customer.billing_location.state">State</ui-textfield>
-              <ui-textfield :class="`location-postal-code`" v-model="customer.billing_location.postal_code">Postal
+              <ui-textfield disabled required :class="`location-city`" v-model="customer.billing_location.city">City
+              </ui-textfield>
+              <ui-textfield disabled required :class="`location-state`" v-model="customer.billing_location.state">
+                State
+              </ui-textfield>
+              <ui-textfield disabled required :class="`location-postal-code`"
+                            v-model="customer.billing_location.postal_code">Postal
                 Code
               </ui-textfield>
             </div>
@@ -116,7 +124,8 @@
                     <ui-textfield-icon>email</ui-textfield-icon>
                   </template>
                 </ui-textfield>
-                <ui-textfield v-model="customer.billing_location.contacts.phone_numbers[0]" type="tel"
+                <ui-textfield v-model="customer.billing_location.contacts.phone_numbers[0]"
+                              pattern="\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$" type="tel"
                 >Phone
                   <template #after>
                     <ui-textfield-icon>phone</ui-textfield-icon>
@@ -145,6 +154,19 @@ const validations = {
     label: 'First Name',
     validator: 'required',
   },
+  last_name: {
+    label: 'Last Name',
+    validator: 'required'
+  },
+  email: {
+    label: 'Email',
+    validator: 'required',
+  },
+  phone_number: {
+    label: 'Phone Number',
+    validator: 'required, phone_number'
+  }
+
 }
 export default {
   name: "CustomerAdminCreate",
