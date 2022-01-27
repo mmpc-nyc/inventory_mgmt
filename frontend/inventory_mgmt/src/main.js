@@ -8,12 +8,15 @@ import router from "@/router/Router";
 import {store} from "@/stores/Store";
 import setupInterceptors from "@/services/SetupInterceptors";
 import {config} from "@/config/config.js";
+import validatorRules from "@/config/validator-rules";
 
 setupInterceptors(store)
 
 const app = createApp(App);
 app.use(router);
-app.use(BalmUI);
+app.use(BalmUI, {
+    $validator: validatorRules
+});
 app.use(store);
 app.config.globalProperties.$config = config
 app.use(VueGoogleMaps, {

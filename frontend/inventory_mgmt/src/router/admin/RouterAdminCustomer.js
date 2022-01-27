@@ -13,6 +13,11 @@ const customerAdminRoutes = [
                 path: 'create',
                 name: 'admin_customer_create',
                 component: () => import(/* webpackChunkName: "admin_customer_create" */ "@/views/admin/AdminCustomerCreate"),
+            },
+            {
+                path: ':id',
+                name: 'admin_customer_detail',
+                component: () => import(/* webpackChunkName: "admin_customer_detail" */ "@/views/admin/AdminCustomerDetail")
             }
         ]
     }

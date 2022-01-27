@@ -9,9 +9,9 @@ export default {
     },
     message: '%s is required'
   },
-  mobile: {
+  phone_number: {
     validate(value) {
-      return /^1[0-9]\d{9}$/.test(value);
+      return /\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/.test(value);
     },
     message: 'Invalid phone number'
   },
