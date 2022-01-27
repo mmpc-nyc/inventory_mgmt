@@ -1,4 +1,8 @@
-import instance from "../services/AxiosInstance";
+import instance from "@/services/AxiosInstance";
+
+import {config} from "@/config/config"
+
+const BASE_URL = `${config.BASE_URL}/customers`
 
 const customerStore = {
         state() {
@@ -8,7 +12,7 @@ const customerStore = {
         actions: {
             getCustomerList({commit}) {
                 instance
-                    .get("http://localhost:8000/api/customers/")
+                    .get(BASE_URL)
                     .then((response) => {
                         commit("getCustomerList", response.data);
                     })
@@ -19,13 +23,13 @@ const customerStore = {
             create({commit}, data) {
                 console.log(commit, data)
                 instance
-                    .post('http://localhost:8000/api/customers/', data)
+                    .post(BASE_URL, data)
                     .then((response) => {
                         console.log("Created customer", response.data)
                     }).catch(() => {
                     return "Failed to connect to API";
                 });
-            }
+            },
         },
         mutations: {
             getCustomerList(state, customers) {

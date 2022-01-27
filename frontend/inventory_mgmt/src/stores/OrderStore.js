@@ -1,6 +1,8 @@
-import axiosInstance from "../services/AxiosInstance"
+import axiosInstance from "@/services/AxiosInstance"
 
-const instance = axiosInstance()
+import {config} from "@/config/config"
+
+const BASE_URL = `${config.BASE_URL}/orders/`
 
 const orderStore = {
     state() {
@@ -10,9 +12,13 @@ const orderStore = {
     actions: {
 
         getOrderList({commit}) {
-            instance.get('http://localhost:8000/api/orders/').then(
-                response => {commit('getOrderList', response.data)}
-            ).catch(() => {return 'Failed to connect to API'})
+            axiosInstance.get(BASE_URL).then(
+                response => {
+                    commit('getOrderList', response.data)
+                }
+            ).catch(() => {
+                return 'Failed to connect to API'
+            })
         }
     },
     mutations: {

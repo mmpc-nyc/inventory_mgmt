@@ -1,7 +1,8 @@
 import axios from "axios";
+import {config} from "@/config/config"
 
 let axiosInstance = axios.create({
-    baseURL: "http://localhost:8000",
+    baseURL: config.BASE_URL,
     headers: {
         "Content-Type": "application/json",
     }

@@ -1,4 +1,7 @@
 import axios from "axios";
+import {config} from "@/config/config"
+
+const BASE_URL = `${config.BASE_URL}/users`
 
 const userStore = {
     state() {
@@ -8,7 +11,7 @@ const userStore = {
     actions: {
 
         getList({commit}) {
-            axios.get('http://localhost:8000/api/users/').then(
+            axios.get(BASE_URL).then(
                 response => {
                     commit('GET_ALL', response.data)
                 }

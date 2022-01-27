@@ -1,7 +1,8 @@
 import axios from "axios";
 
+import {config} from "@/config/config"
 
-const BASE_URL = 'http://localhost:8000/api/equipments'
+const BASE_URL = `${config.BASE_URL}/equipments/`
 const instance = axios.create({
     timeout: 1000,
     headers: {'Content-Type': 'application/json'}
@@ -19,7 +20,7 @@ const equipmentStore = {
     actions: {
 
         getList({commit}) {
-            instance.get('http://localhost:8000/api/equipments/').then(
+            instance.get(BASE_URL).then(
                 response => {
                     commit('getList', response.data)
                 }
