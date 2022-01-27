@@ -1,7 +1,4 @@
 <template>
-  <teleport to="#header">
-    <h1 :class="$tt('headline3')">Create New Customer</h1>
-  </teleport>
   <ui-form type="|" item-margin-bottom="16" action-align="center">
     <template #default="{ actionClass }">
       <ui-card>

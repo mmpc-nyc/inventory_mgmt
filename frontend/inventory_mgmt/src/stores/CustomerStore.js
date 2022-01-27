@@ -2,7 +2,7 @@ import instance from "@/services/AxiosInstance";
 
 import {config} from "@/config/config"
 
-const BASE_URL = `${config.BASE_URL}/customers`
+const BASE_URL = `${config.BASE_URL}/customers/`
 
 const customerStore = {
         state() {
@@ -10,11 +10,21 @@ const customerStore = {
         },
         namespaced: true,
         actions: {
-            getCustomerList({commit}) {
+            getList({commit}) {
                 instance
                     .get(BASE_URL)
                     .then((response) => {
-                        commit("getCustomerList", response.data);
+                        commit("getList", response.data);
+                    })
+                    .catch(() => {
+                        return "Failed to connect to API";
+                    });
+            },
+            getOne({commit}, data) {
+                instance
+                    .get(`${BASE_URL}${data}`)
+                    .then((response) => {
+                        commit("getOne", response.data);
                     })
                     .catch(() => {
                         return "Failed to connect to API";
@@ -32,12 +42,15 @@ const customerStore = {
             },
         },
         mutations: {
-            getCustomerList(state, customers) {
+            getList(state, customers) {
                 state.customers = customers;
             }
             ,
+            getOne(state, customer) {
+                state.customer = customer;
+            }
+            ,
         }
-        ,
     }
 ;
 

@@ -13,7 +13,7 @@ const customerAdminRoutes = [
                 name: 'admin_customer_list',
                 meta: {
                     auth: true,
-                    title: 'Customer',
+                    title: 'Customers',
                 },
                 component: () => import(/* webpackChunkName: "admin_customer_list" */ "@/views/admin/AdminCustomers"),
             },

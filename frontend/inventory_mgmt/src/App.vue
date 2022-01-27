@@ -40,11 +40,12 @@ export default {
 #app {
   display: grid;
   grid-template-areas: "top-nav-bar top-nav-bar top-nav-bar"
-  "side-nav-bar header ."
+  ". header ."
   "side-nav-bar main .";
   justify-content: center;
   grid-template-rows: auto 1fr;
   grid-template-columns: 30ch minmax(700px, 1440px) auto;
+  gap: 1rem;
 }
 
 main {

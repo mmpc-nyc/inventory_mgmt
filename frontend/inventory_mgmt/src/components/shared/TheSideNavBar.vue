@@ -1,7 +1,7 @@
 <template>
-  <ui-list class="side-nav-bar">
+  <nav class="side-nav-bar">
       <slot></slot>
-  </ui-list>
+  </nav>
 
 </template>
 

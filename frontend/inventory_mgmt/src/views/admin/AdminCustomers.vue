@@ -1,10 +1,5 @@
 <template>
-
-  <teleport to="#header">
-    <h1 :class="$tt('headline3')">Customers</h1>
-  </teleport>
   <admin-customer-list :customers="customers"></admin-customer-list>
-  {{customers}}
 
 </template>
 
@@ -20,7 +15,7 @@ export default {
     }
   },
   mounted() {
-    this.$store.dispatch("customers/getCustomerList")
+    this.$store.dispatch("customers/getList")
   },
 }
 </script>

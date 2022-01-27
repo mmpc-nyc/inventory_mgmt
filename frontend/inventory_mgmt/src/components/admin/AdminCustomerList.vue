@@ -4,7 +4,7 @@
       <span class="id">ID</span>
       <span class="customer-name">Customer Name</span>
       <span class="email">Email</span>
-      <span class="phone-number">Phone Number</span>
+      <span class="phone-number">Phone</span>
       <span class="actions">Actions</span>
     </ui-item>
     <admin-customer-list-item v-for="customer in customers" :customer="customer"
