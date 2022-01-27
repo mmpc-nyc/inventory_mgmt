@@ -1,5 +1,7 @@
 <template>
-  <h1 :class="$tt('headline3')">{{ customer }}</h1>
+  <teleport to="#header">
+    <h1 :class="$tt('headline3')">Customer Detail</h1>
+  </teleport>
 </template>
 
 <script>

@@ -1,5 +1,8 @@
 <template>
-  <h1 :class="$tt('headline3')">Customers</h1>
+
+  <teleport to="#header">
+    <h1 :class="$tt('headline3')">Customers</h1>
+  </teleport>
   <admin-customer-list :customers="customers"></admin-customer-list>
   {{customers}}
 

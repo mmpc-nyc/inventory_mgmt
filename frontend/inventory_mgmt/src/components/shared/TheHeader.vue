@@ -1,6 +1,5 @@
 <template>
   <header id="header">
-    <slot></slot>
   </header>
 </template>
 <script>

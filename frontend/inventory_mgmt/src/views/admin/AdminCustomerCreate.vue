@@ -1,5 +1,7 @@
 <template>
-  <h1 :class="$tt('headline3')">Create New Customer</h1>
+  <teleport to="#header">
+    <h1 :class="$tt('headline3')">Create New Customer</h1>
+  </teleport>
   <ui-form type="|" item-margin-bottom="16" action-align="center">
     <template #default="{ actionClass }">
       <ui-card>
@@ -11,7 +13,10 @@
           <ui-textfield required v-model="customer.first_name">
             {{ validMsg.first_name ? validMsg.first_name : "First Name" }}
           </ui-textfield>
-          <ui-textfield required v-model="customer.last_name">{{ validMsg.last_name ? validMsg.last_name : "Last Name" }}</ui-textfield>
+          <ui-textfield required v-model="customer.last_name">{{
+              validMsg.last_name ? validMsg.last_name : "Last Name"
+            }}
+          </ui-textfield>
           <ui-textfield v-model="customer.company_name">Company Name</ui-textfield>
 
           <ui-textfield required v-model="customer.email" type="email">
