@@ -39,5 +39,4 @@ const customerAdminRoutes = [
     }
 ]
 
-
 export default customerAdminRoutes
