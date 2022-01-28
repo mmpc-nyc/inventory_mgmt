@@ -1,12 +1,13 @@
 import TokenService from "./TokenService";
 import axiosInstance from "./AxiosInstance";
+import {Store} from "vuex";
 
-const setup = (store) => {
+const setup = (store: Store<any>) => {
   axiosInstance.interceptors.request.use(
     (config) => {
       const token = TokenService.getLocalAccessToken();
       if (token) {
-        config.headers["Authorization"] = "JWT " + token;
+        config.headers!["Authorization"] = "JWT " + token;
       }
       return config;
     },
@@ -35,7 +36,7 @@ const setup = (store) => {
 
             const { access } = rs.data;
 
-            store.dispatch("auth/refreshToken", access);
+            await store.dispatch("auth/refreshToken", access);
             TokenService.updateLocalAccessToken(access);
 
             return axiosInstance(originalConfig);

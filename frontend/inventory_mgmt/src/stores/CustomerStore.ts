@@ -1,8 +1,16 @@
 import instance from "@/services/AxiosInstance";
 
 import {config} from "@/config/config"
+import {Customer} from "@/models/customer";
+import {Commit} from "vuex"
 
 const BASE_URL = `${config.BASE_URL}/customers/`
+
+export interface CustomerState {
+    customer: Customer
+    customers: Customer[]
+}
+
 
 const customerStore = {
         state() {
@@ -10,7 +18,7 @@ const customerStore = {
         },
         namespaced: true,
         actions: {
-            getList({commit}) {
+            getList({commit}: { commit: Commit }) {
                 instance
                     .get(BASE_URL)
                     .then((response) => {
@@ -20,9 +28,9 @@ const customerStore = {
                         return "Failed to connect to API";
                     });
             },
-            getOne({commit}, data) {
+            getOne({commit}: { commit: Commit }, id: string) {
                 instance
-                    .get(`${BASE_URL}${data}`)
+                    .get(`${BASE_URL}${id}`)
                     .then((response) => {
                         commit("getOne", response.data);
                     })
@@ -30,10 +38,10 @@ const customerStore = {
                         return "Failed to connect to API";
                     });
             },
-            create({commit}, data) {
-                console.log(commit, data)
+            create({commit}: { commit: Commit }, customer: Customer) {
+                console.log(commit, customer)
                 instance
-                    .post(BASE_URL, data)
+                    .post(BASE_URL, customer)
                     .then((response) => {
                         console.log("Created customer", response.data)
                     }).catch(() => {
@@ -42,11 +50,11 @@ const customerStore = {
             },
         },
         mutations: {
-            getList(state, customers) {
+            getList(state: CustomerState, customers: Customer[]) {
                 state.customers = customers;
             }
             ,
-            getOne(state, customer) {
+            getOne(state: CustomerState, customer: Customer) {
                 state.customer = customer;
             }
             ,

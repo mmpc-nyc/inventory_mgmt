@@ -1,8 +1,15 @@
 import axiosInstance from "@/services/AxiosInstance"
 
 import {config} from "@/config/config"
+import {Commit} from "vuex";
+import {Order} from "@/models/order";
 
 const BASE_URL = `${config.BASE_URL}/orders/`
+
+export interface OrderState{
+    order: Order
+    orders: Order[]
+}
 
 const orderStore = {
     state() {
@@ -11,7 +18,7 @@ const orderStore = {
     namespaced: true,
     actions: {
 
-        getOrderList({commit}) {
+        getOrderList({commit}: { commit: Commit }) {
             axiosInstance.get(BASE_URL).then(
                 response => {
                     commit('getOrderList', response.data)
@@ -22,7 +29,7 @@ const orderStore = {
         }
     },
     mutations: {
-        getOrderList(state, orders) {
+        getOrderList(state: OrderState, orders: Order[]) {
             state.orders = orders
         }
     }
