@@ -37,12 +37,12 @@ export default {
   grid-area: actions;
   display: flex;
   align-items: center;
-  justify-content: start;
+  justify-content: flex-start;
 }
 
 .toolbar {
   grid-area: toolbar;
-  justify-self: end;
+  justify-self: flex-end;
   display: flex;
 }
 
