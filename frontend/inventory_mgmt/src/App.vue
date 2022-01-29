@@ -7,7 +7,6 @@
 <script>
 
 import TheTopNavBar from "@/components/shared/TheTopNavBar";
-import AuthService from "@/services/AuthService";
 import TheHeader from "@/components/shared/TheHeader";
 
 export default {
@@ -16,7 +15,6 @@ export default {
   methods: {
     logout() {
       this.$store.dispatch('auth/logout')
-      AuthService.logout()
     }
   },
 
