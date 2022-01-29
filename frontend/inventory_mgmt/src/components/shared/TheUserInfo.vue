@@ -28,11 +28,17 @@ export default {
       this.$store.dispatch('auth/login', {username: this.username, password: this.password})
     },
     logout() {
-      this.$store.dispatch('auth/logout')
+      this.$store.dispatch('auth/logout').then(
+          () => {
+            this.$router.replace('/')
+          }
+      )
     },
   }
 }
 </script>
 <style scoped lang="scss">
-ui-form{background: white;}
+ui-form {
+  background: white;
+}
 </style>
