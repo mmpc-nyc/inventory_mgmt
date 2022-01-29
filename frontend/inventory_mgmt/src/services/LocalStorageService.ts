@@ -1,5 +1,5 @@
-import {anonUser, AuthUser} from "@/models/authUser";
-import {plainToClassFromExist} from "class-transformer";
+import {AuthUser} from "@/models/authUser";
+import {plainToClass} from "class-transformer";
 
 class LocalStorageService {
   getLocalRefreshToken() {
@@ -19,9 +19,9 @@ class LocalStorageService {
   getUser() :AuthUser {
     const data = localStorage.getItem("authUser")
     if (data){
-      return plainToClassFromExist(anonUser, JSON.parse(data)) || anonUser
+      return plainToClass(AuthUser, JSON.parse(data))
     }
-    return anonUser
+    return new AuthUser()
   }
 
   setUser(authUser: AuthUser) {
@@ -29,7 +29,7 @@ class LocalStorageService {
   }
 
   removeUser() {
-    localStorage.removeItem("user");
+    localStorage.removeItem("authUser");
   }
 }
 
