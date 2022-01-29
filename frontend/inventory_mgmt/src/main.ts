@@ -7,8 +7,9 @@ import VueGoogleMaps from '@fawmi/vue-google-maps'
 import router from "@/router/Router";
 import {store} from "@/stores/Store";
 import setupInterceptors from "@/services/SetupInterceptors";
-import {config} from "@/config/config.js";
+import {config} from "@/config/config";
 import validatorRules from "@/config/validator-rules";
+import 'reflect-metadata';
 
 setupInterceptors(store)
 
