@@ -7,11 +7,17 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 
 class Customer(MPTTModel):
+    class CustomerType(models.TextChoices):
+        RESIDENTIAL = 'Residential', _('Residential')
+        COMMERCIAL = 'Commercial', _('Commercial')
+
+    customer_type = models.CharField(verbose_name=_('Type'), max_length=32, choices=CustomerType.choices)
     first_name = models.CharField(max_length=150)
     last_name = models.CharField(max_length=150)
     company_name = models.CharField(max_length=150, blank=True, default='')
     email = models.EmailField(blank=True)
     phone_number = PhoneNumberField(default='', blank=True)
+    contacts = models.ManyToManyField('Contact', through='CustomerContact', verbose_name=_('Customer Contacts'), related_name='customer_contacts')
     billing_location = models.ForeignKey('Location', verbose_name=_('Billing Location'),
                                          related_name='billing_location', on_delete=models.CASCADE)
     service_locations = models.ManyToManyField('Location', through='ServiceLocation', related_name='service_locations')
@@ -47,3 +53,9 @@ class ServiceLocation(models.Model):
     class Meta:
         verbose_name = _('Service Location')
         verbose_name_plural = _('Service Locations')
+
+
+class CustomerContact(models.Model):
+    """Contacts associated with the customer"""
+    customer = models.ForeignKey('Customer', verbose_name=_('Customer'), on_delete=models.CASCADE)
+    contact = models.ForeignKey('Contact', verbose_name=_('Contact'), on_delete=models.CASCADE)
