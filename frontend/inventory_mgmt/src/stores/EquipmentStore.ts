@@ -69,7 +69,6 @@ const actions = <ActionTree<State, any>>{
     deleteEquipment({commit}: { commit: Commit }, equipment: Equipment) {
         AxiosInstance.delete(`http://localhost:8000/api/equipments/${equipment.id}`)
             .then(response => {
-                console.log(response)
                 commit('delete', equipment)
             })
     }
