@@ -1,26 +1,29 @@
 import axiosInstance from "@/services/AxiosInstance";
-import TokenService from "./TokenService";
-import {User} from "@/models/user";
+import LocalStorageService from "./LocalStorageService";
+import {AuthUser} from "@/models/authUser";
+import {config} from "@/config/config";
 
-const API_AUTH_URL = "http://localhost:8000/auth/"; /* TODO Change this */
+const API_AUTH_URL = `${config.HOST}/auth/`; /* TODO Change this */
 
 class AuthService {
-  login(user: User) {
+  login(username: string, password: string) {
     return axiosInstance
       .post(API_AUTH_URL + "jwt/create", {
-        username: user.username,
-        password: user.password,
+        username: username,
+        password: password,
       })
       .then((response) => {
         if (response.data.access) {
-          TokenService.setUser(response.data);
+          const authUser: AuthUser = new AuthUser(username, true, response.data.access, response.data.refresh )
+          LocalStorageService.setUser(authUser);
+          return authUser
         }
-        return response.data;
+        return response
       });
   }
 
   logout() {
-    TokenService.removeUser();
+    LocalStorageService.removeUser();
   }
 }
 
