@@ -9,7 +9,6 @@ export default {
   props: ["location"],
   methods: {
     setLocation(place) {
-      console.log(place)
 
       let postal_code = null
       let city = null
