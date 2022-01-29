@@ -5,7 +5,7 @@ const baseRoutes = [
     {
         path: "/",
         name: "Home",
-        component: () => import(/* webpackChunkName: "admin" */ "@/views/admin/TheAdmin"),
+        component: () => import(/* webpackChunkName: "admin" */ "@/views/admin/TheAdmin.vue"),
     },
     {
         path: "/my_equipment",
@@ -20,12 +20,12 @@ const baseRoutes = [
     {
         path: "/equipment_collect",
         name: "equipment_collect",
-        component: () => import(/* webpackChunkName: "equipment_collect" */ "@/views/inventory/EquipmentCollect")
+        component: () => import(/* webpackChunkName: "equipment_collect" */ "@/views/inventory/EquipmentCollect.vue")
     },
     {
         path: "/create_order_form",
         name: "create_order_form",
-        component: () => import(/* webpackChunkName: "create_order_form" */ "@/views/inventory/CreateOrder")
+        component: () => import(/* webpackChunkName: "create_order_form" */ "@/views/inventory/CreateOrder.vue")
     },
 ]
 
@@ -39,8 +39,7 @@ const router = createRouter({
 })
 
 router.afterEach((to, from, next) => {
-  document.title = to.meta.title || 'Invenotry Management';
-  next();
+    document.title = typeof(to.meta.title) === "string" ? to.meta.title : 'Inventory Management';
 });
 
 export default router

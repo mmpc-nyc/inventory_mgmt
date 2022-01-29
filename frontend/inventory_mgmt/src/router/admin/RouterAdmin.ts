@@ -4,7 +4,7 @@ const adminRoutes = [{
     path: "/admin",
     name: "admin",
     title: "Admin",
-    component: () => import(/* webpackChunkName: "admin" */ "@/views/admin/TheAdmin"),
+    component: () => import(/* webpackChunkName: "admin" */ "@/views/admin/TheAdmin.vue"),
     children: customerAdminRoutes
 }]
 
