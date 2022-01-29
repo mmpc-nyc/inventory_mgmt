@@ -209,7 +209,6 @@ export default {
 
       if (valid) {
         this.$toast('ok');
-        console.log(this.customer)
       }
     },
 
