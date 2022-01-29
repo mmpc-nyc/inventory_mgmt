@@ -1,55 +1,55 @@
 import AuthService from "@/services/AuthService";
-import {Commit, MutationTree} from "vuex";
-import {User} from "@/models/user";
+import {ActionTree, Commit, MutationTree} from "vuex";
+import {AuthUser, anonUser} from "@/models/authUser";
+import LocalStorageService from "@/services/LocalStorageService";
 
-const user: User = JSON.parse(localStorage.getItem("user") || "{}");
 class State {
-  user: User = new User(user)
+    authUser: AuthUser = LocalStorageService.getUser()
+}
 
 const mutations = <MutationTree<State>>{
-  loginSuccess(state, user) {
-      state.status.loggedIn = true;
-      state.user = user;
+    loginSuccess(state, user) {
+        state.authUser = user;
     },
     loginFailure(state) {
-      state.status.loggedIn = false;
-      state.user = null;
+        state.authUser = anonUser
     },
     logout(state) {
-      state.status.loggedIn = false;
-      state.user = null;
+        state.authUser = anonUser
     },
     refreshToken(state, accessToken) {
-      state.status.loggedIn = true;
-      state.user = { ...state.user, access: accessToken };
+        state.authUser.loggedIn = true;
+        state.authUser.access = accessToken
+    },
+}
+
+const actions = <ActionTree<State, any>>{
+    login({commit}: { commit: Commit }, userInput) {
+        return AuthService.login(userInput.username, userInput.password).then(
+            (user) => {
+                commit("loginSuccess", user);
+                return Promise.resolve(user);
+            },
+            (error) => {
+                commit("loginFailure");
+                return Promise.reject(error);
+            }
+        );
+    },
+    logout({commit}: { commit: Commit }) {
+        AuthService.logout();
+        commit("logout");
+    },
+    refreshToken({commit}, accessToken) {
+        commit("refreshToken", accessToken);
     },
 }
 
 const authStore = {
-  namespaced: true,
-  state: State,
-  actions: {
-    login({ commit }: { commit: Commit }, user: User) {
-      return AuthService.login(user).then(
-        (user) => {
-          commit("loginSuccess", user);
-          return Promise.resolve(user);
-        },
-        (error) => {
-          commit("loginFailure");
-          return Promise.reject(error);
-        }
-      );
-    },
-    logout({ commit }) {
-      AuthService.logout();
-      commit("logout");
-    },
-    refreshToken({ commit }, accessToken) {
-      commit("refreshToken", accessToken);
-    },
-  },
-  mutations: mutations,
+    namespaced: true,
+    state: new State(),
+    actions: actions,
+    mutations: mutations,
 };
 
 export default authStore;
