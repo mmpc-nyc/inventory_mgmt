@@ -7,7 +7,6 @@
 <script>
 
 import TheTopNavBar from "@/components/shared/TheTopNavBar";
-import EventBus from "@/common/EventBus";
 import AuthService from "@/services/AuthService";
 import TheHeader from "@/components/shared/TheHeader";
 
@@ -19,15 +18,6 @@ export default {
       this.$store.dispatch('auth/logout')
       AuthService.logout()
     }
-  },
-  mounted() {
-    EventBus.on("logout", () => {
-      console.log("logout called")
-      this.logout()
-    })
-  },
-  beforeUnmount() {
-    EventBus.remove("logout")
   },
 
 }
