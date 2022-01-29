@@ -39,7 +39,6 @@ const customerStore = {
                     });
             },
             create({commit}: { commit: Commit }, customer: Customer) {
-                console.log(commit, customer)
                 instance
                     .post(BASE_URL, customer)
                     .then((response) => {
