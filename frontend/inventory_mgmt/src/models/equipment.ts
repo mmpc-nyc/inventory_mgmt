@@ -18,6 +18,7 @@ export class EquipmentCondition {
 export type EquipmentStatus = "Stored" | "Deployed" | "Picked Up" | "Missing" | "Decommissioned"
 
 export class Equipment {
+    id?: number
     name: string = ''
     product?: Product
     status: EquipmentStatus = "Picked Up"
