@@ -56,9 +56,9 @@ export default {
 .admin-actions {
   grid-area: admin-actions;
   display: flex;
-  align-content: end;
+  align-content: flex-end;
   align-items: center;
-  justify-content: end;
+  justify-content: flex-end;
 }
 
 .admin-content {
