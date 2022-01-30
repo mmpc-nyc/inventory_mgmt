@@ -1,8 +1,18 @@
-import {PhoneNumber} from "@/models/phone_number";
+export interface PhoneNumber {
+    id: number
+    phone_number: string
+}
 
-export class Contact{
+export class Email {
     id?: number
-    first_name?: string
-    last_name?: string
-    phone_numbers?: PhoneNumber[]
+    email: string = ""
+}
+
+
+export class Contact {
+    id?: number
+    first_name: string = ""
+    last_name: string = ""
+    phone_numbers: PhoneNumber[] = []
+    emails: Email[] = []
 }
