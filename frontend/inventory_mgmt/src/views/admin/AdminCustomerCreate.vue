@@ -111,7 +111,7 @@
                 <ui-checkbox :input-id="`billing-contact-same-as-customer-contact}`"
                              v-model="customer.billing_location.contact_same_as_customer"
                              type="checkbox"></ui-checkbox>
-                <label :for="`billing-contact-same-as-customer-contact}`">Contact Same as Customer</label>
+                <label :for="`billing-contact-same-as-customer-contact`">Contact Same as Customer</label>
               </ui-form-field>
             </ui-divider>
             <div :class="`location-contacts`" v-if="!customer.billing_location.contact_same_as_customer">

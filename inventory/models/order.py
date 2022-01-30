@@ -200,7 +200,7 @@ class EquipmentTransaction(models.Model):
 
 
 class Order(models.Model):
-    """Model for scheduling orders to allow easier assignment of inventory, services and products"""
+    """Model for scheduling orders allowing easier assignment of inventory, services and products"""
     COMPLETE_EQUIPMENT_STATUS: str
     ACTIVITY: OrderActivity
     Activity: OrderActivity = OrderActivity
@@ -222,9 +222,9 @@ class Order(models.Model):
     location = models.ForeignKey(Location, verbose_name=_('location'), on_delete=models.CASCADE)
     date = models.DateTimeField()
     equipments = models.ManyToManyField('Equipment', verbose_name=_('equipments'), through='OrderEquipment',
-                                        related_name='equipments')
+                                        related_name='equipments', null=True)
     generic_products = models.ManyToManyField('GenericProduct', verbose_name=_('generic products'),
-                                              through='OrderGenericProduct', related_name='generic_products')
+                                              through='OrderGenericProduct', related_name='generic_products', null=True)
 
     objects = OrderManager()
 
