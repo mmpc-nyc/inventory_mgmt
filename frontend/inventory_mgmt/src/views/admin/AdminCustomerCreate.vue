@@ -4,8 +4,7 @@
       <ui-card>
         <!-- Customer Section -->
         <ui-card class="customer">
-          <ui-card-text><h2 :class="[$tt('headline4')]">Customer {{ customer.company_name }} {{ customer.first_name }}
-            {{ customer.last_name }}</h2>
+          <ui-card-text><h2 :class="[$tt('headline4')]">Customer {{ customer.name() }}</h2>
           </ui-card-text>
           <ui-textfield required v-model="customer.first_name">
             {{ validMsg.first_name ? validMsg.first_name : "First Name" }}
@@ -109,10 +108,10 @@
             <google-map :class="`location-map`" :location="customer.billing_location"></google-map>
             <ui-divider :class="`location-divider`">
               <ui-form-field>
-                <ui-checkbox :input-id="`service-contact-same-as-customer-contact-${index}`"
+                <ui-checkbox :input-id="`billing-contact-same-as-customer-contact}`"
                              v-model="customer.billing_location.contact_same_as_customer"
                              type="checkbox"></ui-checkbox>
-                <label :for="`service-contact-same-as-customer-contact-${index}`">Contact Same as Customer</label>
+                <label :for="`billing-contact-same-as-customer-contact}`">Contact Same as Customer</label>
               </ui-form-field>
             </ui-divider>
             <div :class="`location-contacts`" v-if="!customer.billing_location.contact_same_as_customer">
@@ -185,10 +184,6 @@ export default {
     }
   },
   created() {
-    this.customer.service_locations.push(this.addLocation())
-    this.customer.billing_location = this.addLocation()
-    this.customer.billing_location_same_as_service_location = true
-    this.customer.contacts.push(this.addContact())
   },
   methods: {
     submit() {
@@ -200,24 +195,6 @@ export default {
 
       if (valid) {
         this.$toast('ok');
-      }
-    },
-
-    addContact() {
-      return {first_name: "", last_name: "", emails: [''], phone_numbers: [""]}
-    },
-    addLocation() {
-      return {
-        name: "",
-        address_line_1: "",
-        address_line_2: "",
-        city: "",
-        state: "",
-        postal_code: "",
-        latitude: "",
-        longitude: "",
-        contact_same_as_customer: true,
-        contacts: [this.addContact()],
       }
     },
     setLocation({location, ...data}) {

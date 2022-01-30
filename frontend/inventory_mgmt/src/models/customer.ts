@@ -31,11 +31,11 @@ export class Customer implements Customer {
     phone_number: string = ""
     contacts: Contact[] = []
     billing_location: Location = new Location()
-    service_locations: Location[] = []
+    service_locations: Location[] = [new Location()]
     parent: Customer | null = null
 
     name() {
-        if (this.customer_type) {
+        if (this.customer_type === "Commercial") {
             return this.company_name
         }
         return [this.first_name, this.last_name].join(" ")
