@@ -150,6 +150,7 @@
 import {useValidator} from "balm-ui";
 import GoogleMapAutoComplete from "@/components/shared/GoogleMapAutoComplete";
 import GoogleMap from "@/components/shared/GoogleMap";
+import {Customer} from "@/models/customer.ts";
 
 const validations = {
   first_name: {
@@ -178,17 +179,7 @@ export default {
       validMsg: {},
       validator: useValidator(),
       validations: validations,
-      customer: {
-        first_name: "",
-        last_name: "",
-        company_name: "",
-        email: "",
-        phone_number: "",
-        billing_contact_same_as_customer: true,
-        contacts: [],
-        service_locations: [],
-        billing_location: null,
-      },
+      customer: new Customer(),
       message: "",
       valid: false
     }
