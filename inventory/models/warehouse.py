@@ -5,11 +5,11 @@ from django.utils.translation import gettext_lazy as _
 from inventory.models.location import Location
 
 
-class Stock(models.Model):
+class Warehouse(models.Model):
     """A holder for all equipment"""
 
-    class StockStatus(models.TextChoices):
-        """Choices for setting the status of a stock location
+    class WarehouseStatus(models.TextChoices):
+        """Choices for setting the status of a warehouse location
         Active: Available for picking up and dropping off items
         Inactive: Not in use. Products cannot be picked up or dropped off from this location
         Full: The inventory location is currently full. No items can be dropped off.
@@ -20,15 +20,15 @@ class Stock(models.Model):
         FULL = 'Full', _('Full')
 
     name = models.CharField(max_length=150, blank=True)
-    status = models.CharField(max_length=32, choices=StockStatus.choices, default=StockStatus.ACTIVE)
+    status = models.CharField(max_length=32, choices=WarehouseStatus.choices, default=WarehouseStatus.ACTIVE)
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
 
     def __str__(self):
         return f'{self.name}'
 
     class Meta:
-        verbose_name = _('Stock')
-        verbose_name_plural = _('Stocks')
+        verbose_name = _('Warehouse')
+        verbose_name_plural = _('Warehouses')
 
     def get_absolute_url(self):
-        return reverse_lazy('stock:stock_detail', kwargs={'pk': self.pk})
+        return reverse_lazy('warehouse:warehouse_detail', kwargs={'pk': self.pk})

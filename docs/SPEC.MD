@@ -14,19 +14,19 @@ A location record for a single location
 A list of locations associated with the customer
 ## 3.2 Customer Contacts
 A list of contacts associated with the customer
-# 4 Stock
+# 4 Warehouse
 A place where equipment and products are stored
 ## 4.1 Name
-Name of Stock / Warehouse
+Name of Warehouse / Warehouse
 ## 4.2 Location
-A location associated with the stock
+A location associated with the warehouse
 ## 4.3 Status
 ### 4.3.1 Active
-A stock location that is available for withdrawing and storing equipment.
+A warehouse location that is available for withdrawing and storing equipment.
 ### 4.3.2 Inactive
-A stock location that is not available for withdrawing or storing equipment.
+A warehouse location that is not available for withdrawing or storing equipment.
 ### 4.3.3 Full
-A stock location that is full and is not available for storing equipment. It is available for withdrawing equipment.
+A warehouse location that is full and is not available for storing equipment. It is available for withdrawing equipment.
 # 5 Generic Product
 A container for uniting similar products from different vendors. For example, an 18 Inch Fan from DeWal performs the same function as an 18 Inch Fan from General Electric. This label is used for requesting equipment on an order.
 ## 5.1 Category
@@ -59,7 +59,7 @@ The product and all of its associated equipment should be recalled
 # 7 Equipment
 ## 7.1 Status
 ### 7.1.1 Stored
-Equipment is stored in Stock. A user is not assigned to this equipment
+Equipment is stored in Warehouse. A user is not assigned to this equipment
 ### 7.1.2 Deployed
 Equipment is stored at a customer location based on the order.
 ### 7.1.3 Picked Up
@@ -78,11 +78,11 @@ Decommission’s equipment. It can no longer be used or stored. Sets status to D
 ### 7.2.3 Deploy
 Deploys equipment at the customer location and sets the status to Deployed
 ### 7.2.4 Store
-Stores the equipment at stock and sets the status to Stored
+Stores the equipment at warehouse and sets the status to Stored
 ### 7.2.5 Transfer
 Transfers equipment from one user to another. Sets status to Picked Up
 ### 7.2.6 Withdraw
-Picks up equipment from stock and sets status to Picked Up
+Picks up equipment from warehouse and sets status to Picked Up
 
 # 8 Order
 An order for requested services, products or equipment. An order consists of three activities. Collect, Deploy and Inspect

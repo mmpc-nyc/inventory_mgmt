@@ -8,7 +8,7 @@ from inventory.models.location import Location
 from inventory.models.order import Condition, Equipment, Order, CollectOrder, OrderEquipment, DeployOrder, \
     OrderGenericProduct, InspectOrder
 from inventory.models.product import Brand, ProductType, GenericProduct, Product
-from inventory.models.stock import Stock
+from inventory.models.warehouse import Warehouse
 
 User = get_user_model()
 
@@ -22,11 +22,11 @@ class AbstractTest(TestCase):
         self.customer_email = "customer@email.com"
         self.customer_phone = "2122198218"
         self.customer_contact = Contact.objects.create(first_name="Customer", last_name="contact")
-        self.location_stock = Location.objects.create(
-            name='Stock Location 1',
-            address_line_1='Stock Location 1',
-            city="Stock City",
-            state="Stock State",
+        self.location_warehouse = Location.objects.create(
+            name='Warehouse Location 1',
+            address_line_1='Warehouse Location 1',
+            city="Warehouse City",
+            state="Warehouse State",
             postal_code="00000",
             latitude=0,
             longitude=0, )
@@ -56,7 +56,7 @@ class AbstractTest(TestCase):
             postal_code="00000",
             latitude=0,
             longitude=0, )
-        self.stock = Stock.objects.create(name='Stock 1', location=self.location_stock)
+        self.warehouse = Warehouse.objects.create(name='Warehouse 1', location=self.location_warehouse)
         self.billing_location_1 = Location.objects.create(
             name='Billing Location 1',
             address_line_1='Billing Location 1',
@@ -93,13 +93,11 @@ class AbstractTest(TestCase):
         self.customer_location_2 = ServiceLocation.objects.create(customer=self.customer_2,
                                                                   location=self.location_customer_2)
         self.brand = Brand.objects.create(name='Brand 1')
-        self.product_type_equipment = ProductType.objects.create(name='Equipment')
         self.generic_product = GenericProduct.objects.create(name='Generic Product 1')
         self.product = Product.objects.create(
             name='Product 1',
             generic_product=self.generic_product,
             brand=self.brand,
-            product_type=self.product_type_equipment
         )
         self.condition_working = Condition.objects.get(name='Working')
         self.condition_damaged = Condition.objects.get(name='Damaged')
@@ -108,14 +106,14 @@ class AbstractTest(TestCase):
             name='stored_working',
             product=self.product,
             condition=self.condition_working,
-            stock=self.stock,
-            location=self.stock.location
+            warehouse=self.warehouse,
+            location=self.warehouse.location
         )
         self.equipment_picked_up_working_1 = Equipment.objects.create(
             name='picked_up_working_1',
             product=self.product,
             condition=self.condition_working,
-            stock=self.stock,
+            warehouse=self.warehouse,
             location=self.location_user,
             user=self.user,
             status=Equipment.Status.PICKED_UP
@@ -124,7 +122,7 @@ class AbstractTest(TestCase):
             name='picked_up_working_2',
             product=self.product,
             condition=self.condition_working,
-            stock=self.stock,
+            warehouse=self.warehouse,
             location=self.location_user,
             user=self.user,
             status=Equipment.Status.PICKED_UP
@@ -133,14 +131,14 @@ class AbstractTest(TestCase):
             name='deployed_working_1',
             product=self.product,
             condition=self.condition_working,
-            stock=self.stock,
+            warehouse=self.warehouse,
             status=Equipment.Status.DEPLOYED
         )
         self.equipment_deployed_working_2 = Equipment.objects.create(
             name='deployed_working_2',
             product=self.product,
             condition=self.condition_working,
-            stock=self.stock,
+            warehouse=self.warehouse,
             status=Equipment.Status.DEPLOYED
         )
 

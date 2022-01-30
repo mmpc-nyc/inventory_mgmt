@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django_filters import FilterSet, rest_framework as filters
 
 from inventory.models.product import Product
-from inventory.models.stock import Stock
+from inventory.models.warehouse import Warehouse
 
 User = get_user_model()
 
@@ -10,7 +10,7 @@ User = get_user_model()
 class ProductFilter(FilterSet):
     name = filters.CharFilter(field_name='name', lookup_expr='contains')
     status = filters.ChoiceFilter(choices=Product.Status.choices)
-    stock = filters.ModelChoiceFilter(queryset=Stock.objects.all())
+    warehouse = filters.ModelChoiceFilter(queryset=Warehouse.objects.all())
     user = filters.ModelChoiceFilter(queryset=User.objects.all())
 
     class Meta:

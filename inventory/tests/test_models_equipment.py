@@ -14,7 +14,7 @@ class TestEquipmentTransactionManager(AbstractTest):
         with self.subTest(): self.assertEqual(transaction.user, self.user)
         with self.subTest(): self.assertIsNone(transaction.recipient)
         with self.subTest(): self.assertEqual(transaction.condition, transaction.equipment.condition)
-        with self.subTest(): self.assertEqual(transaction.stock, transaction.equipment.stock)
+        with self.subTest(): self.assertEqual(transaction.warehouse, transaction.equipment.warehouse)
 
     def test_decommission(self):
         transaction = self.equipment_picked_up_working_1.decommission(user=self.user, )
@@ -23,7 +23,7 @@ class TestEquipmentTransactionManager(AbstractTest):
                                               self.equipment_stored_working.Status.DECOMMISSIONED)
 
         with self.subTest(): self.assertIsNone(transaction.recipient)
-        with self.subTest(): self.assertIsNone(transaction.stock)
+        with self.subTest(): self.assertIsNone(transaction.warehouse)
         with self.subTest(): self.assertIsNone(transaction.equipment.user)
 
         with self.subTest(): self.assertIsNone(transaction.equipment.location)
@@ -38,18 +38,18 @@ class TestEquipmentTransactionManager(AbstractTest):
         with self.subTest(): self.assertEqual(transaction.user, self.user)
         with self.subTest(): self.assertIsNone(transaction.recipient)
         with self.subTest(): self.assertEqual(transaction.condition, transaction.equipment.condition)
-        with self.subTest(): self.assertEqual(transaction.stock, transaction.equipment.stock)
+        with self.subTest(): self.assertEqual(transaction.warehouse, transaction.equipment.warehouse)
 
     def test_store(self):
-        transaction = self.equipment_picked_up_working_1.store(user=self.user, stock=self.stock, condition=None, )
+        transaction = self.equipment_picked_up_working_1.store(user=self.user, warehouse=self.warehouse, condition=None, )
         with self.subTest(): self.assertEqual(transaction.action, EquipmentTransactionAction.STORE)
         with self.subTest(): self.assertEqual(transaction.equipment.status, self.equipment_stored_working.Status.STORED)
         with self.subTest(): self.assertIsNone(transaction.equipment.user)
         with self.subTest(): self.assertEqual(transaction.user, self.user)
         with self.subTest(): self.assertIsNone(transaction.recipient)
         with self.subTest(): self.assertEqual(transaction.condition, transaction.equipment.condition)
-        with self.subTest(): self.assertEqual(transaction.stock, transaction.equipment.stock)
-        with self.subTest(): self.assertEqual(transaction.stock, self.stock)
+        with self.subTest(): self.assertEqual(transaction.warehouse, transaction.equipment.warehouse)
+        with self.subTest(): self.assertEqual(transaction.warehouse, self.warehouse)
 
     def test_transfer(self):
         transaction = self.equipment_picked_up_working_1.transfer(recipient=self.recipient, condition=None, )
@@ -61,7 +61,7 @@ class TestEquipmentTransactionManager(AbstractTest):
         with self.subTest(): self.assertNotEqual(transaction.equipment.user, self.user)
         with self.subTest(): self.assertEqual(transaction.equipment.user, self.recipient)
         with self.subTest(): self.assertEqual(transaction.condition, transaction.equipment.condition)
-        with self.subTest(): self.assertEqual(transaction.stock, transaction.equipment.stock)
+        with self.subTest(): self.assertEqual(transaction.warehouse, transaction.equipment.warehouse)
 
     def test_withdraw(self):
         transaction = self.equipment_stored_working.withdraw(user=self.user, condition=None, )
@@ -71,4 +71,4 @@ class TestEquipmentTransactionManager(AbstractTest):
         with self.subTest(): self.assertEqual(transaction.user, self.user)
         with self.subTest(): self.assertIsNone(transaction.recipient)
         with self.subTest(): self.assertEqual(transaction.condition, transaction.equipment.condition)
-        with self.subTest(): self.assertEqual(transaction.stock, transaction.equipment.stock)
+        with self.subTest(): self.assertEqual(transaction.warehouse, transaction.equipment.warehouse)

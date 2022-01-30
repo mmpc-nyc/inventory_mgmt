@@ -1,8 +1,8 @@
 <li id="{{ model_name }}-{{ object.id }}" class="{% if counter and counter|divisibleby:2 %}even{% else %}odd{% endif %}">
-    <span class="id" id="product_id_{{ stock.id }}">
-        <a href="{% url 'inventory:stock_detail' pk=stock.id %}">{{ stock.id }}</a>
+    <span class="id" id="product_id_{{ warehouse.id }}">
+        <a href="{% url 'inventory:warehouse_detail' pk=warehouse.id %}">{{ warehouse.id }}</a>
     </span>
-    <span class="name">{{ stock.name }}</span>
-    <span class="status">{{ stock.status }}</span>
-    <span class="location">{{ stock.location }}</span>
+    <span class="name">{{ warehouse.name }}</span>
+    <span class="status">{{ warehouse.status }}</span>
+    <span class="location">{{ warehouse.location }}</span>
 </li>

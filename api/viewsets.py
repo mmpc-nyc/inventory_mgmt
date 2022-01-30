@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from api.exceptions import exception_serializer
 from api.serializers import BrandSerializer, EquipmentSerializer, ProductSerializer, CategorySerializer, \
     EmailSerializer, PhoneNumberSerializer, ContactSerializer, CustomerSerializer, LocationSerializer, \
-    GenericProductSerializer, OrderSerializer, StockSerializer, ProductTypeSerializer, UserSerializer
+    GenericProductSerializer, OrderSerializer, WarehouseSerializer, ProductTypeSerializer, UserSerializer
 
 
 class BaseViewSet(viewsets.ModelViewSet):
@@ -75,8 +75,8 @@ class OrderViewSet(BaseViewSet):
         return Response(self.serializer_class(order, many=False, context={'request': request}).data)
 
 
-class StockViewSet(BaseViewSet):
-    serializer_class = StockSerializer
+class WarehouseViewSet(BaseViewSet):
+    serializer_class = WarehouseSerializer
     queryset = serializer_class.Meta.model.objects.all()
 
 

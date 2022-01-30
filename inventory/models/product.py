@@ -20,7 +20,6 @@ class Product(models.Model):
     name = models.CharField(max_length=150)
     generic_product = models.ForeignKey('GenericProduct', on_delete=models.CASCADE)
     brand = models.ForeignKey('Brand', on_delete=models.CASCADE)
-    product_type = models.ForeignKey('ProductType', on_delete=models.CASCADE)
     status = models.CharField(max_length=16, choices=Status.choices, default=Status.ACTIVE)
     counter = models.IntegerField(default=0)
 

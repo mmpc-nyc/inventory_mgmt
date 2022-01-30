@@ -15,7 +15,7 @@ from inventory.managers.order import OrderManager, DeployOrderManager, InspectOr
 from inventory.models.customer import Customer
 from inventory.models.location import Location
 from inventory.models.product import Product
-from inventory.models.stock import Stock
+from inventory.models.warehouse import Warehouse
 
 
 class Equipment(models.Model):
@@ -24,7 +24,7 @@ class Equipment(models.Model):
     class Status(models.TextChoices):
         """Current status of the product"""
 
-        STORED = 'STORED', _('Stored')  # Equipment stored in Stock
+        STORED = 'STORED', _('Stored')  # Equipment stored in Warehouse
         DEPLOYED = 'DEPLOYED', _('Deployed')  # Equipment is currently deployed at order location
         PICKED_UP = 'PICKED_UP', _('Picked Up')  # Equipment is with the employee
         MISSING = 'MISSING', _('Missing')  # Equipment cannot be found.
@@ -33,12 +33,11 @@ class Equipment(models.Model):
     name = models.CharField(max_length=150, blank=True, null=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     status = models.CharField(max_length=32, choices=Status.choices, default=Status.STORED)
-    stock = models.ForeignKey('Stock', on_delete=models.SET_NULL, blank=True, null=True)
+    warehouse = models.ForeignKey('Warehouse', on_delete=models.SET_NULL, blank=True, null=True)
     condition = models.ForeignKey('Condition', on_delete=models.CASCADE)
     user = models.ForeignKey(get_user_model(), related_name='equipment_employee', on_delete=models.SET_NULL, null=True,
                              blank=True)
     location = models.ForeignKey('Location', on_delete=models.SET_NULL, null=True, blank=True)
-    counter = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
         return f'{self.name}'
@@ -55,17 +54,17 @@ class Equipment(models.Model):
                 raise ValidationError('Cannot Perform the same action as the last action')
 
     def _execute(self, action: 'EquipmentTransactionAction', user: get_user_model(), order: 'Order' = None,
-                 condition: 'Condition' = None, stock: 'Stock' = None,
+                 condition: 'Condition' = None, warehouse: 'Warehouse' = None,
                  recipient: get_user_model() = None) -> 'EquipmentTransaction':
         if not self.condition.has_action(action.name):
             raise ProductConditionError(_(f'This equipment in condition {self.condition} cannot use action {action}'))
 
         with transaction.atomic():
             self.save()
-            stock = stock or self.stock
+            warehouse = warehouse or self.warehouse
             condition = condition or self.condition
             return EquipmentTransaction.objects.create(action=action, equipment=self, user=user, condition=condition,
-                                                       stock=stock, order=order, recipient=recipient)
+                                                       warehouse=warehouse, order=order, recipient=recipient)
 
     def decommission(self, user: get_user_model()):
         action = EquipmentTransactionAction.DECOMMISSION
@@ -74,7 +73,7 @@ class Equipment(models.Model):
         self.user = None
         self.status = self.Status.DECOMMISSIONED
         self.location = None
-        self.stock = None
+        self.warehouse = None
         self.condition = condition
 
         return self._execute(action=action, user=user, condition=condition)
@@ -100,12 +99,12 @@ class Equipment(models.Model):
 
         return self._execute(action=action, user=user, order=order, condition=condition)
 
-    def store(self, user: get_user_model(), stock: 'Stock' = None, condition: 'Condition' = None):
+    def store(self, user: get_user_model(), warehouse: 'Warehouse' = None, condition: 'Condition' = None):
         action = EquipmentTransactionAction.STORE
-        stock = stock or self.stock
+        warehouse = warehouse or self.warehouse
 
         self.user = None
-        self.location = stock.location
+        self.location = warehouse.location
         self.status = self.Status.STORED
         self.location = None
 
@@ -129,16 +128,6 @@ class Equipment(models.Model):
 
     def get_absolute_url(self):
         return reverse_lazy('inventory:equipment_detail', kwargs={'pk': self.pk})
-
-    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
-        # TODO  Review This Method for uniqueness and usefulness
-        if not self.name:
-            self.name = self.name or slugify(
-                f'{self.product.generic_product.name} {self.product.id} {self.product.counter}')
-            self.counter = self.product.counter
-            self.product.counter += 1
-            self.product.save()
-        return super().save(force_insert, force_update, using, update_fields)
 
 
 class Condition(models.Model):
@@ -189,7 +178,7 @@ class EquipmentTransaction(models.Model):
     user = models.ForeignKey(get_user_model(), verbose_name=_('user'), on_delete=models.CASCADE)
     recipient = models.ForeignKey(get_user_model(), verbose_name=_('recipient'), related_name='recipient',
                                   on_delete=models.CASCADE, blank=True, null=True)
-    stock = models.ForeignKey('Stock', verbose_name=_('stock'), on_delete=models.CASCADE, blank=True, null=True)
+    warehouse = models.ForeignKey('Warehouse', verbose_name=_('warehouse'), on_delete=models.CASCADE, blank=True, null=True)
     condition = models.ForeignKey(Condition, verbose_name=_('condition'), on_delete=models.CASCADE)
     timestamp = models.DateTimeField(verbose_name=_('timestamp'), auto_now=True)
     location = models.ForeignKey('Location', verbose_name=_('Location'), blank=True, null=True,

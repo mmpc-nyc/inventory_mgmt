@@ -22,16 +22,12 @@
                 <span class="property-value">{{ object.condition }}</span>
             </li>
             <li class="property">
-                <span class="property-name">Stock</span>
+                <span class="property-name">Warehouse</span>
                 <span class="property-value">
-                    {% if object.stock %}
-                        <a href="{% url 'inventory:stock_detail' pk=object.stock.id %}">{{ object.stock }}</a>
+                    {% if object.warehouse %}
+                        <a href="{% url 'inventory:warehouse_detail' pk=object.warehouse.id %}">{{ object.warehouse }}</a>
                     {% endif %}
                 </span>
-            </li>
-            <li class="property">
-                <span class="property-name">Type</span>
-                <span class="property-value">{{ object.product_type }}</span>
             </li>
         </ul>
         <ul class="card-actions">

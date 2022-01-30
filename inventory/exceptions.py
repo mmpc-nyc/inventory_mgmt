@@ -11,7 +11,7 @@ class ProductConditionError(ValidationError):
     ...
 
 
-class StockLogicError(ValidationError):
+class WarehouseLogicError(ValidationError):
     """An error of logic"""
     ...
 
