@@ -1,6 +1,6 @@
-export interface PhoneNumber {
-    id: number
-    phone_number: string
+export class PhoneNumber {
+    id?: number
+    phone_number: string = ""
 }
 
 export class Email {

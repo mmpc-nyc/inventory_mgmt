@@ -5,6 +5,7 @@ import {Location} from "@/models/location";
 
 
 export class EquipmentCondition {
+    id?: number
     name: string = ''
     description: string = ''
     action_collect: boolean = false
