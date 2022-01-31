@@ -1,5 +1,6 @@
 import {createRouter, createWebHistory} from "vue-router"
 import adminRoutes from "@/router/admin/RouterAdmin";
+import { store } from "@/stores";
 
 const baseRoutes = [
     {
@@ -37,6 +38,13 @@ const router = createRouter({
     linkActiveClass: "active",
     linkExactActiveClass: "exact-active",
 })
+
+router.beforeEach((to, from, next) => {
+    // guard the auth
+    if (from.meta.auth && !store.state.auth.authUser.loggedIn) {
+        next({ name: '/' })
+    } else next()
+});
 
 router.afterEach((to, from, next) => {
     document.title = typeof(to.meta.title) === "string" ? to.meta.title : 'Inventory Management';

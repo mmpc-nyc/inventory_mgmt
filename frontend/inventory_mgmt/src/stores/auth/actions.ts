@@ -32,11 +32,11 @@ export const actions = <ActionTree<AuthState, any>>{
         });
     },
     logout({commit}: { commit: Commit }) {
-
         LocalStorageService.removeUser();
         commit("logout");
     },
     refreshToken({commit}, accessToken) {
+        LocalStorageService.updateLocalAccessToken(accessToken);
         commit("refreshToken", accessToken);
     },
 }

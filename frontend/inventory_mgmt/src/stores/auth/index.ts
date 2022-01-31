@@ -7,6 +7,12 @@ const index = {
     state: new AuthState(),
     actions: actions,
     mutations: mutations,
+    getters: {
+        // experimenting
+        isLoggedIn: (state: AuthState) => {
+            return state.authUser.loggedIn
+        }
+    }
 };
 
 export default index;

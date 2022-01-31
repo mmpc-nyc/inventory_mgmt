@@ -23,6 +23,7 @@ const setup = (store: Store<any>) => {
         },
         async (err) => {
             const originalConfig = err.config;
+            console.log(originalConfig.url)
 
             if (originalConfig.url !== "/auth/signin" && err.response) {
                 // Access Token was expired
@@ -38,7 +39,6 @@ const setup = (store: Store<any>) => {
                         const {access} = rs.data;
 
                         await store.dispatch("auth/refreshToken", access);
-                        LocalStorageService.updateLocalAccessToken(access);
 
                         return axiosInstance(originalConfig);
                     } catch (_error) {
