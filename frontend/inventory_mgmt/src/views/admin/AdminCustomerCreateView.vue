@@ -82,13 +82,13 @@
             <h2 :class="$tt('headline4')">Billing Location
               <ui-form-field>
                 <ui-checkbox input-id="same-as-service-address"
-                             v-model="customer.billing_location_same_as_service_location"
+                             v-model="billing_location_same_as_service_location"
                              type="checkbox"></ui-checkbox>
                 <label for="same-as-service-address">Same as Service Location</label>
               </ui-form-field>
             </h2>
           </ui-card-text>
-          <div class="location" v-if="!customer.billing_location_same_as_service_location">
+          <div class="location" v-if="!billing_location_same_as_service_location">
             <div class="location-inputs">
               <google-map-auto-complete :class="`location-address-line-1`" :location="customer.billing_location"
                                         @setLocation="setLocation"></google-map-auto-complete>
@@ -108,7 +108,7 @@
             <google-map :class="`location-map`" :location="customer.billing_location"></google-map>
             <ui-divider :class="`location-divider`">
               <ui-form-field>
-                <ui-checkbox :input-id="`billing-contact-same-as-customer-contact}`"
+                <ui-checkbox :input-id="`billing-contact-same-as-customer-contact`"
                              v-model="customer.billing_location.contact_same_as_customer"
                              type="checkbox"></ui-checkbox>
                 <label :for="`billing-contact-same-as-customer-contact`">Contact Same as Customer</label>
@@ -150,6 +150,7 @@ import {useValidator} from "balm-ui";
 import GoogleMapAutoComplete from "@/components/shared/GoogleMapAutoComplete";
 import GoogleMap from "@/components/shared/GoogleMap";
 import {Customer} from "@/models/customer.ts";
+import {Location} from "@/models/location.ts";
 
 const validations = {
   first_name: {
@@ -171,7 +172,7 @@ const validations = {
 
 }
 export default {
-  name: "CustomerAdminCreate",
+  name: "CustomerAdminCreateView",
   components: {GoogleMap, GoogleMapAutoComplete},
   data() {
     return {
@@ -179,6 +180,7 @@ export default {
       validator: useValidator(),
       validations: validations,
       customer: new Customer(),
+      billing_location_same_as_service_location: true,
       message: "",
       valid: false
     }
@@ -207,6 +209,13 @@ export default {
       location.city = data.city
     },
   },
+  watch: {
+    billing_location_same_as_service_location(value) {
+      if (!value && !this.customer.billing_location) {
+        this.customer.billing_location = new Location()
+      }
+    }
+  }
 }
 </script>
 

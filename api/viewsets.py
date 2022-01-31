@@ -1,5 +1,6 @@
 import rest_framework.permissions
-from rest_framework import viewsets
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import viewsets, filters
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
@@ -61,6 +62,9 @@ class ContactViewSet(BaseViewSet):
 class CustomerViewSet(BaseViewSet):
     serializer_class = CustomerSerializer
     queryset = serializer_class.Meta.model.objects.all()
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filterset_fields= ['first_name', 'last_name', 'company_name', 'email', 'phone_number']
+    search_fields = ['first_name', 'last_name', 'company_name', 'email', 'phone_number']
 
 
 class OrderViewSet(BaseViewSet):

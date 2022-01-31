@@ -7,7 +7,7 @@
 import AdminCustomerList from "@/components/admin/AdminCustomerList";
 
 export default {
-  name: "AdminCustomers",
+  name: "AdminCustomerListView",
   components: {AdminCustomerList},
   computed: {
     customers() {

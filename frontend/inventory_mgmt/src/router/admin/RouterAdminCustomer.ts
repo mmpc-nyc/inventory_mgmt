@@ -6,7 +6,7 @@ const customerAdminRoutes = [
             auth: true,
             title: 'Customer Admin',
         },
-        component: () => import(/* webpackChunkName: "admin_customer_list" */ "@/views/admin/AdminCustomerIndex.vue"),
+        component: () => import(/* webpackChunkName: "admin_customer_list" */ "@/views/admin/AdminCustomerIndexView.vue"),
         children: [
             {
                 path: "list",
@@ -15,7 +15,7 @@ const customerAdminRoutes = [
                     auth: true,
                     title: 'Customers',
                 },
-                component: () => import(/* webpackChunkName: "admin_customer_list" */ "@/views/admin/AdminCustomers.vue"),
+                component: () => import(/* webpackChunkName: "admin_customer_list" */ "@/views/admin/AdminCustomerListView.vue"),
             },
             {
                 path: 'create',
@@ -24,7 +24,7 @@ const customerAdminRoutes = [
                     auth: true,
                     title: 'Add Customer',
                 },
-                component: () => import(/* webpackChunkName: "admin_customer_create" */ "@/views/admin/AdminCustomerCreate.vue"),
+                component: () => import(/* webpackChunkName: "admin_customer_create" */ "@/views/admin/AdminCustomerCreateView.vue"),
             },
             {
                 path: ':id',
@@ -33,7 +33,7 @@ const customerAdminRoutes = [
                     auth: true,
                     title: 'Customer Detail',
                 },
-                component: () => import(/* webpackChunkName: "admin_customer_detail" */ "@/views/admin/AdminCustomerDetail.vue")
+                component: () => import(/* webpackChunkName: "admin_customer_detail" */ "@/views/admin/AdminCustomerDetailView.vue")
             }
         ]
     }

@@ -1,24 +1,13 @@
+import {ActionTree, Commit} from "vuex";
+import {CustomerState} from "@/stores/customer/types";
 import instance from "@/services/AxiosInstance";
-
-import {config} from "@/config/config"
+import {plainToClass} from "class-transformer";
 import {Customer} from "@/models/customer";
-import {Commit, MutationTree} from "vuex"
+import {config} from "@/config/config";
 
 const BASE_URL = `${config.BASE_URL}/customers/`
 
-export interface CustomerState {
-    customer: Customer
-    customers: Customer[]
-}
-
-class State {
-    customer: Customer | null = null
-    customers: Customer[] = []
-}
-
-import {ActionTree} from "vuex";
-
-const actions = <ActionTree<State, any>>{
+export const customerActions = <ActionTree<CustomerState, any>>{
     getList({commit}: { commit: Commit }) {
         instance
             .get(BASE_URL)
@@ -33,7 +22,7 @@ const actions = <ActionTree<State, any>>{
         instance
             .get(`${BASE_URL}${id}`)
             .then((response) => {
-                commit("getOne", response.data);
+                commit("getOne", plainToClass(Customer, response.data));
             })
             .catch(() => {
                 return "Failed to connect to API";
@@ -49,24 +38,3 @@ const actions = <ActionTree<State, any>>{
         });
     }
 }
-
-const mutations = <MutationTree<State>>{
-    getList(state: CustomerState, customers: Customer[]) {
-        state.customers = customers;
-    }
-    ,
-    getOne(state: CustomerState, customer: Customer) {
-        state.customer = customer;
-    }
-}
-
-
-const customerStore = {
-        state: new State(),
-        namespaced: true,
-        actions: actions,
-        mutations: mutations
-    }
-;
-
-export default customerStore;

@@ -1,33 +1,13 @@
-import {ActionTree, Commit, MutationTree} from "vuex";
+import {ActionTree, Commit} from "vuex";
+import {AuthState} from "@/stores/auth/types";
+import axiosInstance from "@/services/AxiosInstance";
 import {AuthUser} from "@/models/authUser";
 import LocalStorageService from "@/services/LocalStorageService";
 import {config} from "@/config/config";
-import axiosInstance from "@/services/AxiosInstance";
 
 const API_AUTH_URL = `${config.HOST}/auth/`;
 
-class State {
-    authUser: AuthUser = LocalStorageService.getUser()
-}
-
-const mutations = <MutationTree<State>>{
-    loginSuccess(state, authUser) {
-        console.log(authUser)
-        state.authUser = authUser;
-    },
-    loginFailure(state) {
-        state.authUser = new AuthUser()
-    },
-    logout(state) {
-        state.authUser = new AuthUser()
-    },
-    refreshToken(state, accessToken) {
-        state.authUser.loggedIn = true;
-        state.authUser.access = accessToken
-    },
-}
-
-const actions = <ActionTree<State, any>>{
+export const actions = <ActionTree<AuthState, any>>{
     login({commit}: { commit: Commit }, userInput) {
         axiosInstance
             .post(`${API_AUTH_URL}jwt/create`, {
@@ -60,12 +40,3 @@ const actions = <ActionTree<State, any>>{
         commit("refreshToken", accessToken);
     },
 }
-
-const authStore = {
-    namespaced: true,
-    state: new State(),
-    actions: actions,
-    mutations: mutations,
-};
-
-export default authStore;
