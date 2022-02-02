@@ -1,5 +1,5 @@
 <template>
-
+  <ui-card></ui-card>
 </template>
 
 <script>

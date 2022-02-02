@@ -36,7 +36,7 @@ const customerAdminRoutes = [
                 component: () => import(/* webpackChunkName: "admin_customer_detail" */ "@/views/admin/AdminCustomerDetailView.vue")
             }
         ]
-    }
+    },
 ]
 
 export default customerAdminRoutes

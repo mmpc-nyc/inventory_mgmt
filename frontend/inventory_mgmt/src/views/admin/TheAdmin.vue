@@ -4,6 +4,9 @@
       <router-link custom v-slot="{isActive, href, navigate}" :to="{name:'admin_customer_list'}">
         <ui-item :active="isActive" :href="href" @click="navigate">Customers</ui-item>
       </router-link>
+      <router-link custom v-slot="{isActive, href, navigate}" :to="{name:'admin_order_list'}">
+        <ui-item :active="isActive" :href="href" @click="navigate">Orders</ui-item>
+      </router-link>
     </ui-nav>
   </the-side-nav-bar>
   <main>

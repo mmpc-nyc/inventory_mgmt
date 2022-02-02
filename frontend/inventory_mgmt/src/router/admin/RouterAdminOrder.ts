@@ -1,42 +1,40 @@
-const orderAdminRoutes = [
-    {
+export const orderAdminRoutes = {
         path: "orders",
         name: 'admin_order',
         meta: {
             auth: true,
-            title: 'Customer Admin',
+            title: 'Order Admin',
         },
-        component: () => import(/* webpackChunkName: "admin_order_list" */ "@/views/admin/AdminCustomerIndexView.vue"),
+        component: () => import(/* webpackChunkName: "admin_order_list" */ "@/views/admin/AdminOrderIndexView.vue"),
         children: [
             {
                 path: "list",
                 name: 'admin_order_list',
                 meta: {
                     auth: true,
-                    title: 'Customers',
+                    title: 'Orders',
                 },
-                component: () => import(/* webpackChunkName: "admin_order_list" */ "@/views/admin/AdminCustomerListView.vue"),
+                component: () => import(/* webpackChunkName: "admin_order_list" */ "@/views/admin/AdminOrderListView.vue"),
             },
             {
                 path: 'create',
                 name: 'admin_order_create',
                 meta: {
                     auth: true,
-                    title: 'Add Customer',
+                    title: 'Add Order',
                 },
-                component: () => import(/* webpackChunkName: "admin_order_create" */ "@/views/admin/AdminCustomerCreateView.vue"),
+                component: () => import(/* webpackChunkName: "admin_order_create" */ "@/views/admin/AdminOrderCreateView.vue"),
             },
             {
                 path: ':id',
                 name: 'admin_order_detail',
                 meta: {
                     auth: true,
-                    title: 'Customer Detail',
+                    title: 'Order Detail',
                 },
-                component: () => import(/* webpackChunkName: "admin_order_detail" */ "@/views/admin/AdminCustomerDetailView.vue")
+                component: () => import(/* webpackChunkName: "admin_order_detail" */ "@/views/admin/AdminOrderDetailView.vue")
             }
         ]
     }
-]
 
 export default orderAdminRoutes
