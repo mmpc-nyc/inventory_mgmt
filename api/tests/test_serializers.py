@@ -11,6 +11,7 @@ class TestCustomerSerializer(TestCase):
     "first_name": "Marek",
     "last_name": "Schir",
     "company_name": "MMPC",
+    "customer_type": "Residential",
     "email": "schir2@gmail.com",
     "phone_number": "7189093737",
     "billing_contact_same_as_customer": true,
