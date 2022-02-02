@@ -1,31 +1,53 @@
 import {createRouter, createWebHistory} from "vue-router"
 import adminRoutes from "@/router/admin/RouterAdmin";
-import { store } from "@/stores";
+import {store} from "@/stores";
 
 const baseRoutes = [
     {
         path: "/",
-        name: "Home",
-        component: () => import(/* webpackChunkName: "admin" */ "@/views/admin/TheAdmin.vue"),
+        name: "home",
+        meta: {
+            auth: false,
+            title: 'Home',
+        },
+        component: () => import(/* webpackChunkName: "home" */ "@/views/admin/TheAdmin.vue"),
     },
     {
         path: "/my_equipment",
         name: "my_equipment",
+        meta: {
+            auth: true,
+            title: 'My Equipment',
+        },
         component: () => import(/* webpackChunkName: "my_equipment" */ "@/views/inventory/MyEquipment.vue")
     },
     {
         path: "/my_orders",
         name: "my_orders",
+
+        meta: {
+            auth: true,
+            title: 'My Orders',
+        },
         component: () => import(/* webpackChunkName: "my_orders" */ "@/views/inventory/MyOrders.vue")
     },
     {
         path: "/equipment_collect",
         name: "equipment_collect",
+
+        meta: {
+            auth: true,
+            title: 'Collect Equipment',
+        },
         component: () => import(/* webpackChunkName: "equipment_collect" */ "@/views/inventory/EquipmentCollect.vue")
     },
     {
         path: "/create_order_form",
         name: "create_order_form",
+        meta: {
+            auth: true,
+            title: 'Create Order',
+        },
         component: () => import(/* webpackChunkName: "create_order_form" */ "@/views/inventory/CreateOrder.vue")
     },
 ]
@@ -40,14 +62,17 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    // guard the auth
-    if (from.meta.auth && !store.state.auth.authUser.loggedIn) {
-        next({ name: '/' })
-    } else next()
+
+    if (to.meta.auth && !store.state.auth.authUser.loggedIn) {
+        next({name: 'home'})
+    }
+    else {
+        next()
+    }
 });
 
 router.afterEach((to, from, next) => {
-    document.title = typeof(to.meta.title) === "string" ? to.meta.title : 'Inventory Management';
+    document.title = typeof (to.meta.title) === "string" ? to.meta.title : 'Inventory Management';
 });
 
 export default router
