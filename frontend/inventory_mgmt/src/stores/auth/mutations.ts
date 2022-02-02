@@ -4,7 +4,6 @@ import {AuthUser} from "@/models/authUser";
 
 export const mutations = <MutationTree<AuthState>>{
     loginSuccess(state, authUser) {
-        console.log(authUser)
         state.authUser = authUser;
     },
     loginFailure(state) {
