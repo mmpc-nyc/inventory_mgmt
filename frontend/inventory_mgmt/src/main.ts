@@ -4,7 +4,7 @@ import App from "@/App.vue";
 import BalmUI from "balm-ui";
 import "balm-ui-css";
 import VueGoogleMaps from '@fawmi/vue-google-maps'
-import router from "@/router/Router";
+import router from "@/router";
 import {store} from "@/stores";
 import setupInterceptors from "@/services/SetupInterceptors";
 import {config} from "@/config/config";

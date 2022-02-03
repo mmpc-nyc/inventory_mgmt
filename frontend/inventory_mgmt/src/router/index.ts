@@ -1,6 +1,6 @@
 import {createRouter, createWebHistory} from "vue-router"
-import adminRoutes from "@/router/admin/RouterAdmin";
-import {store} from "@/stores";
+import adminRoutes from "@/router/admin";
+import store from "@/stores";
 
 const baseRoutes = [
     {

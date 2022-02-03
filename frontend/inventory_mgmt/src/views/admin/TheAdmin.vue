@@ -18,7 +18,7 @@
           </router-link>
         </nav>
         <nav class="admin-actions" id="admin-actions">
-          <router-link custom v-slot="{navigate}" :to="{name:'admin_customer_create'}">
+          <router-link custom v-slot="{navigate}" :to="{path:'create'}">
             <ui-button outlined icon="add" @click="navigate">Add</ui-button>
           </router-link>
         </nav>

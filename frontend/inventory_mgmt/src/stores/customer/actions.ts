@@ -1,16 +1,13 @@
 import {ActionTree, Commit} from "vuex";
 import {CustomerState} from "@/stores/customer/types";
-import instance from "@/services/AxiosInstance";
+
 import {plainToClass} from "class-transformer";
 import {Customer} from "@/models/customer";
-import {config} from "@/config/config";
-
-const BASE_URL = `${config.BASE_URL}/customers/`
+import customerService from "@/services/CustomerService";
 
 export const customerActions = <ActionTree<CustomerState, any>>{
     getList({commit}: { commit: Commit }) {
-        instance
-            .get(BASE_URL)
+        customerService.getList()
             .then((response) => {
                 commit("getList", response.data);
             })
@@ -19,8 +16,7 @@ export const customerActions = <ActionTree<CustomerState, any>>{
             });
     },
     getOne({commit}: { commit: Commit }, id: string) {
-        instance
-            .get(`${BASE_URL}${id}`)
+        customerService.get(id)
             .then((response) => {
                 commit("getOne", plainToClass(Customer, response.data));
             })
@@ -29,8 +25,7 @@ export const customerActions = <ActionTree<CustomerState, any>>{
             });
     },
     create({commit}: { commit: Commit }, customer: Customer) {
-        instance
-            .post(BASE_URL, customer)
+        customerService.create(customer)
             .then((response) => {
                 console.log("Created customer", response.data)
             }).catch(() => {

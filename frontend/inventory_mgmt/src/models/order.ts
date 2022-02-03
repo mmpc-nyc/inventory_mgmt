@@ -7,6 +7,21 @@ import {Location} from "@/models/location";
 export type OrderActivity = "Deploy" | "Collect" | "Inspect"
 export type OrderStatus = "New" | "Assigned" | "In Progress" | "Completed" | "Canceled"
 
+const ORDER_ACTIVITIES: {value: OrderActivity, label: string}[] = [
+    {
+        value: "Deploy",
+        label: "Deploy"
+    },
+    {
+        value: "Collect",
+        label: "Collect"
+    },
+    {
+        value: "Inspect",
+        label: "Inspect"
+    }
+]
+
 export class Order {
     id?: number
     activity: OrderActivity = "Deploy"
@@ -18,6 +33,10 @@ export class Order {
     team: User[] = []
     generic_products: GenericProduct[] = []
     date: string = ""
+
+    getOrderActivities() {
+        return ORDER_ACTIVITIES
+    }
 }
 
 export class DeployOrder extends Order {
