@@ -1,6 +1,6 @@
 import {AuthUser} from "@/models/authUser";
-import LocalStorageService from "@/services/LocalStorageService";
+import LocalStorageService from "@/storage/auth/LocalAuthStorage";
 
 export class AuthState {
-    authUser: AuthUser = LocalStorageService.getUser()
+    authUser: AuthUser = LocalStorageService.getAuthUser()
 }
