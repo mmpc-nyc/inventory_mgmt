@@ -2,7 +2,7 @@ import {AuthState} from "@/stores/auth/types";
 import {mutations} from "@/stores/auth/mutations";
 import {actions} from "@/stores/auth/actions";
 
-const index = {
+const authStore = {
     namespaced: true,
     state: new AuthState(),
     actions: actions,
@@ -15,4 +15,4 @@ const index = {
     }
 };
 
-export default index;
+export default authStore;
