@@ -1,12 +1,12 @@
-import LocalStorageService from "@/services/LocalStorageService";
 import axiosInstance from "@/services/AxiosInstance";
 import {Store} from "vuex";
-import {config} from "@/config/config";
+import AuthService from "@/services/AuthService";
+import authService from "@/services/AuthService";
 
 const setup = (store: Store<any>) => {
     axiosInstance.interceptors.request.use(
         (config) => {
-            const token = LocalStorageService.getLocalAccessToken();
+            const token = AuthService.getAccessToken();
             if (token) {
                 config.headers!["Authorization"] = "JWT " + token;
             }
@@ -21,32 +21,35 @@ const setup = (store: Store<any>) => {
         (res) => {
             return res;
         },
-        async (err) => {
-            const originalConfig = err.config;
-            console.log(originalConfig.url)
-
-            if (originalConfig.url !== "/auth/signin" && err.response) {
-                // Access Token was expired
-                console.log(err.response.status, originalConfig._retry);
-                if (err.response.status === 401 && !originalConfig._retry) {
-                    originalConfig._retry = true;
-
-                    try {
-                        const rs = await axiosInstance.post(`${config.HOST}/auth/jwt/refresh`, {
-                            refresh: LocalStorageService.getLocalRefreshToken(),
-                        });
-
-                        const {access} = rs.data;
-
-                        await store.dispatch("auth/refreshToken", access);
-
-                        return axiosInstance(originalConfig);
-                    } catch (_error) {
-                        return Promise.reject(_error);
+        async (error) => {
+            const originalConfig = error.config;
+            const authUser = authService.AuthStorage.getAuthUser()
+            console.log(
+                authUser , authUser.loggedIn ,
+                authUser.refresh ,
+                typeof originalConfig._retry === 'undefined' ,
+                !originalConfig._retry)
+            if (
+                authUser && authUser.loggedIn &&
+                authUser.refresh &&
+                typeof originalConfig._retry !== 'undefined' &&
+                !originalConfig._retry
+            ) {
+                originalConfig._retry = true
+                const accessToken = await authService.refresh().then(
+                    function resolve(accessToken) {
+                        return Promise.resolve(accessToken)
                     }
+                )
+                console.log(accessToken)
+                if (accessToken) {
+                    console.log(accessToken)
+                    await store.dispatch("auth/setAccessToken", accessToken);
+                    return axiosInstance(originalConfig);
                 }
             }
-            return Promise.reject(err);
+            await store.dispatch("auth/logout")
+            return Promise.reject(error)
         }
     );
 };
