@@ -12,7 +12,7 @@ export const mutations = <MutationTree<AuthState>>{
     logout(state) {
         state.authUser = new AuthUser()
     },
-    refreshToken(state, accessToken) {
+    setAccessToken(state, accessToken) {
         state.authUser.loggedIn = true;
         state.authUser.access = accessToken
     },
