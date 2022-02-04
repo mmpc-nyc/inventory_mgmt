@@ -6,9 +6,9 @@ import authService from "@/services/AuthService";
 const setup = (store: Store<any>) => {
     axiosInstance.interceptors.request.use(
         (config) => {
-            const token = AuthService.getAccessToken();
-            if (token) {
-                config.headers!["Authorization"] = "JWT " + token;
+            const accessToken = AuthService.getAccessToken();
+            if (accessToken) {
+                config.headers!["Authorization"] = "JWT " + accessToken;
             }
             return config;
         },
@@ -23,33 +23,17 @@ const setup = (store: Store<any>) => {
         },
         async (error) => {
             const originalConfig = error.config;
-            const authUser = authService.AuthStorage.getAuthUser()
-            console.log(
-                authUser , authUser.loggedIn ,
-                authUser.refresh ,
-                typeof originalConfig._retry === 'undefined' ,
-                !originalConfig._retry)
-            if (
-                authUser && authUser.loggedIn &&
-                authUser.refresh &&
-                typeof originalConfig._retry !== 'undefined' &&
-                !originalConfig._retry
-            ) {
-                originalConfig._retry = true
-                const accessToken = await authService.refresh().then(
-                    function resolve(accessToken) {
-                        return Promise.resolve(accessToken)
-                    }
-                )
-                console.log(accessToken)
+            try {
+                const accessToken = await authService.refresh()
+
                 if (accessToken) {
-                    console.log(accessToken)
                     await store.dispatch("auth/setAccessToken", accessToken);
                     return axiosInstance(originalConfig);
                 }
+            } catch (error) {
+                await store.dispatch("auth/logout")
+                return Promise.reject(error)
             }
-            await store.dispatch("auth/logout")
-            return Promise.reject(error)
         }
     );
 };

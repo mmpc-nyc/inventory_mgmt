@@ -2,7 +2,6 @@ import {config} from "@/config/config";
 import axios from "axios"
 import LocalAuthStorage from "@/storage/auth/LocalAuthStorage";
 import {AuthUser} from "@/models/authUser";
-import axiosInstance from "@/services/AxiosInstance";
 
 
 const authService = {
@@ -54,7 +53,7 @@ const authService = {
     },
 
     async refresh(): Promise<string> {
-        const response = await axiosInstance.post(`${config.HOST}/auth/jwt/refresh`, {refresh: this.getRefreshToken()})
+        const response = await axios.post(`${config.HOST}/auth/jwt/refresh`, {refresh: this.getRefreshToken()})
         if (response.data.access) {
             this.setAccessToken(response.data.access)
             return Promise.resolve(response.data.access)
