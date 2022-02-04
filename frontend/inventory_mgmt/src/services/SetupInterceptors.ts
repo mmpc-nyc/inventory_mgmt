@@ -23,12 +23,8 @@ const setup = (store: Store<any>) => {
         },
         async (error) => {
             try {
-                const accessToken = await authService.refresh()
-
-                if (accessToken) {
-                    await store.dispatch("auth/setAccessToken", accessToken);
-                    return axiosInstance(error.config);
-                }
+                await store.dispatch("auth/setAccessToken", await authService.refresh());
+                return axiosInstance(error.config);
             } catch (error) {
                 await store.dispatch("auth/logout")
                 return Promise.reject(error)
