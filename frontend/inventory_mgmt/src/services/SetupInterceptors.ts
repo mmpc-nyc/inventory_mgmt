@@ -22,13 +22,12 @@ const setup = (store: Store<any>) => {
             return res;
         },
         async (error) => {
-            const originalConfig = error.config;
             try {
                 const accessToken = await authService.refresh()
 
                 if (accessToken) {
                     await store.dispatch("auth/setAccessToken", accessToken);
-                    return axiosInstance(originalConfig);
+                    return axiosInstance(error.config);
                 }
             } catch (error) {
                 await store.dispatch("auth/logout")
