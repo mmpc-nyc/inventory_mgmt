@@ -11,25 +11,17 @@ export const customerActions = <ActionTree<CustomerState, any>>{
             .then((response) => {
                 commit("getList", response.data);
             })
-            .catch(() => {
-                return "Failed to connect to API";
-            });
     },
     getOne({commit}: { commit: Commit }, id: string) {
         customerService.get(id)
             .then((response) => {
                 commit("getOne", plainToClass(Customer, response.data));
             })
-            .catch(() => {
-                return "Failed to connect to API";
-            });
     },
     create({commit}: { commit: Commit }, customer: Customer) {
         customerService.create(customer)
             .then((response) => {
                 console.log("Created customer", response.data)
-            }).catch(() => {
-            return "Failed to connect to API";
-        });
+            })
     }
 }
