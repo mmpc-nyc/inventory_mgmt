@@ -16,11 +16,18 @@
           remote
           fullwidth
       ></ui-autocomplete>
-      <div  v-if="newOrder.customer"  class="customer-details">
-        <span>{{newOrder.customer.first_name}}</span>
-      </div>
+      <admin-order-create-customer-detail v-if="newOrder.customer" :customer="newOrder.customer"
+                                          class="customer-details">
+      </admin-order-create-customer-detail>
     </section>
-    <section v-if="newOrder.customer" class="location"><h2>Location</h2>
+    <section v-if="newOrder.customer" class="location">
+      <h2>Location</h2>
+      <ui-autocomplete
+          :source="newOrder.customer.service_locations"
+          :source-format="{label: 'name', value:'id'}"
+          fullwidth
+      >
+      </ui-autocomplete>
     </section>
     <section class="generic-products"><h2>Generic Products</h2></section>
     <section class="equipments"><h2>Equipment</h2></section>
@@ -33,9 +40,11 @@
 <script>
 
 import customerService from "@/services/CustomerService.ts";
+import AdminOrderCreateCustomerDetail from "@/components/admin/AdminOrderCreateCustomerDetail";
 
 export default {
   name: "AdminOrderCreate",
+  components: {AdminOrderCreateCustomerDetail},
   props: ["order"],
   data() {
     return {
@@ -47,13 +56,11 @@ export default {
   created() {
     this.newOrder = this.order
   },
-  methods:{
-    async onSearchCustomer(text){
-      console.log(text)
-      let searchResults =  await customerService.search(text)
-      this.customerSearchResults = searchResults.data
+  methods: {
+    async onSearchCustomer(text) {
+      this.customerSearchResults = await customerService.search(text)
     },
-    onSelectCustomer(customer){
+    onSelectCustomer(customer) {
       this.newOrder.customer = customer
     }
 

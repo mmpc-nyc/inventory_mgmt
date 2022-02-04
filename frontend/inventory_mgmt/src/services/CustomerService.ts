@@ -23,8 +23,8 @@ const customerService = {
         return await axiosInstance.post(this.BASE_URL, customer)
     },
 
-    async search(text: string) {
-        return await axiosInstance.get(this.BASE_URL, {params: {search: text}})
+    async search(text: string) : Promise<Customer | Customer[]> {
+        return this.toClass((await axiosInstance.get(this.BASE_URL, {params: {search: text}})).data)
     }
 }
 

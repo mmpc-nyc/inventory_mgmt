@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: "CreateOrderForm.vue",
+  name: "CreateOrderForm",
   methods: {
     submitForm(){
     }
