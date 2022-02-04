@@ -92,7 +92,8 @@ class CustomerSerializer(serializers.HyperlinkedModelSerializer):
                 LocationContact.objects.create(location=service_location_objects[-1], **service_location_contact)
 
         # Creates Billing Location Record
-        if 'billing_location_same_as_service_location' in self.initial_data and self.initial_data['billing_location_same_as_service_location']:
+        if 'billing_location_same_as_service_location' in self.initial_data and self.initial_data[
+            'billing_location_same_as_service_location']:
             billing_location = service_location_objects[0]
         else:
             billing_location_contacts = self.get_location_contacts(location=billing_location,
@@ -112,7 +113,8 @@ class CustomerSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Customer
-        fields = ['id', 'url', 'first_name', 'last_name', 'company_name', 'customer_type', 'email', 'phone_number', 'parent',
+        fields = ['id', 'url', 'first_name', 'last_name', 'company_name', 'customer_type', 'email', 'phone_number',
+                  'parent',
                   'billing_location',
                   'service_locations']
 
@@ -163,7 +165,8 @@ class WarehouseSerializer(serializers.HyperlinkedModelSerializer):
 class ConditionSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Condition
-        fields = ['name', 'description', 'is_deployable', 'is_storable']
+        fields = ['name', 'description', 'action_collect', 'action_decommission', 'action_deploy', 'action_store',
+                  'action_transfer', 'action_withdraw']
 
 
 class EquipmentSerializer(serializers.HyperlinkedModelSerializer):

@@ -8,6 +8,8 @@ from api.exceptions import exception_serializer
 from api.serializers import BrandSerializer, EquipmentSerializer, ProductSerializer, CategorySerializer, \
     EmailSerializer, PhoneNumberSerializer, ContactSerializer, CustomerSerializer, LocationSerializer, \
     GenericProductSerializer, OrderSerializer, WarehouseSerializer, ProductTypeSerializer, UserSerializer
+from inventory.models.order import Equipment
+from inventory.models.product import GenericProduct
 
 
 class BaseViewSet(viewsets.ModelViewSet):
@@ -26,12 +28,18 @@ class LocationViewSet(BaseViewSet):
 
 class GenericProductViewSet(BaseViewSet):
     serializer_class = GenericProductSerializer
-    queryset = serializer_class.Meta.model.objects.all()
+    queryset = GenericProduct.objects.all()
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filterset_fields= ['name']
+    search_fields = ['name']
 
 
 class EquipmentViewSet(BaseViewSet):
     serializer_class = EquipmentSerializer
-    queryset = serializer_class.Meta.model.objects.all()
+    queryset = Equipment.objects.all()
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filterset_fields= ['name']
+    search_fields = ['name']
 
 
 class ProductViewSet(BaseViewSet):
