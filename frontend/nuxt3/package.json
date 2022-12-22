@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.13.6",
+    "@pinia/nuxt": "^0.4.6",
     "class-transformer": "^0.5.1"
   }
 }
