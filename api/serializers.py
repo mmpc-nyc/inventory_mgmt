@@ -4,8 +4,8 @@ from rest_framework import serializers
 from inventory.models.contact import Contact, Email, PhoneNumber
 from inventory.models.customer import Customer, ServiceLocation
 from inventory.models.location import Location, LocationContact
-from inventory.models.order import Order, Equipment, Condition
-from inventory.models.product import Product, ProductType, Brand, GenericProduct, Category
+from inventory.models.equipment import Equipment, Condition
+from inventory.models.product import Product, ProductType, Brand, InterchangeableProduct, Category
 from inventory.models.warehouse import Warehouse
 
 User = get_user_model()
@@ -131,11 +131,11 @@ class CategorySerializer(serializers.HyperlinkedModelSerializer):
         fields = ['name', 'parent']
 
 
-class GenericProductSerializer(serializers.HyperlinkedModelSerializer):
+class InterchangeableProductSerializer(serializers.HyperlinkedModelSerializer):
     category = CategorySerializer()
 
     class Meta:
-        model = GenericProduct
+        model = InterchangeableProduct
         fields = ['id', 'url', 'name', 'category', 'status']
 
 
@@ -147,11 +147,11 @@ class ProductTypeSerializer(serializers.HyperlinkedModelSerializer):
 
 class ProductSerializer(serializers.HyperlinkedModelSerializer):
     brand = BrandSerializer()
-    generic_product = GenericProductSerializer()
+    interchangeable_product = InterchangeableProductSerializer()
 
     class Meta:
         model = Product
-        fields = ['id', 'url', 'name', 'brand', 'generic_product', 'status', ]
+        fields = ['id', 'url', 'name', 'brand', 'interchangeable_product', 'status', ]
 
 
 class WarehouseSerializer(serializers.HyperlinkedModelSerializer):
@@ -177,14 +177,3 @@ class EquipmentSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Equipment
         fields = ['id', 'url', 'name', 'product', 'status', 'condition', 'warehouse', 'user', ]
-
-
-class OrderSerializer(serializers.HyperlinkedModelSerializer):
-    location = LocationSerializer(read_only=True)
-    customer = CustomerSerializer(read_only=True)
-    equipments = EquipmentSerializer(many=True)
-    generic_products = GenericProductSerializer(many=True)
-
-    class Meta:
-        model = Order
-        fields = ['id', 'url', 'status', 'customer', 'location', 'date', 'equipments', 'generic_products']

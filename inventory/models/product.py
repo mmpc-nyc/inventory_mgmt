@@ -18,7 +18,7 @@ class Product(models.Model):
         RECALL = 'Recall', _('Recall')  # The product is inactive and should no longer be used.
 
     name = models.CharField(max_length=150)
-    generic_product = models.ForeignKey('GenericProduct', on_delete=models.CASCADE)
+    interchangeable_product = models.ForeignKey('InterchangeableProduct', on_delete=models.CASCADE)
     brand = models.ForeignKey('Brand', on_delete=models.CASCADE)
     status = models.CharField(max_length=16, choices=Status.choices, default=Status.ACTIVE)
     counter = models.IntegerField(default=0)
@@ -62,13 +62,13 @@ class Brand(models.Model):
         verbose_name_plural = _('Brands')
 
 
-class GenericProduct(models.Model):
+class InterchangeableProduct(models.Model):
     """A generic product container that relates to different versions of the same product.
     For example: a product having different brands or different sizes or colors
     """
 
     class Status(models.TextChoices):
-        """Generic Product status choices
+        """Interchangeable Product status choices
         Active: The generic product is available for all actions
         Inactive: The generic product is no longer active but is still stored in the inventory
         """
@@ -83,8 +83,8 @@ class GenericProduct(models.Model):
         return f'{self.name}'
 
     class Meta:
-        verbose_name = _('Generic Product')
-        verbose_name_plural = _('Generic Products')
+        verbose_name = _('Interchangeable Product')
+        verbose_name_plural = _('Interchangeable Products')
 
 
 class Category(MPTTModel):

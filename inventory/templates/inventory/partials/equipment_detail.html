@@ -3,7 +3,6 @@
         <a href="{% url 'inventory:equipment_detail' pk=object.id %}">{{ object.name }}</a></span>
     <span class=product">{{ object.product.name }}</span>
     <span class=brand">{{ object.product.brand.name }}</span>
-    <span class=order">{{ object.order.id }}</span>
     <span class=employee">{{ object.employee.username }}</span>
     <span class=status">{{ object.status }}</span>
     <span class=actions">

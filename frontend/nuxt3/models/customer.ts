@@ -1,7 +1,6 @@
 import {Location} from "~/models/location";
 import {Contact} from "~/models/contact";
 import { Type } from 'class-transformer';
-import {Order} from "~/models/order";
 
 type CustomerType = "Residential" | "Commercial"
 
@@ -18,7 +17,6 @@ export class Customer {
     billing_location?: Location
     service_locations: Location[] = [new Location()]
     parent: Customer | null = null
-    orders: Order[] = []
 
     name() {
         if (this.customer_type === "Commercial") {

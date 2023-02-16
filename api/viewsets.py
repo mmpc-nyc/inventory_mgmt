@@ -1,15 +1,12 @@
 import rest_framework.permissions
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, filters
-from rest_framework.decorators import action
-from rest_framework.response import Response
 
-from api.exceptions import exception_serializer
 from api.serializers import BrandSerializer, EquipmentSerializer, ProductSerializer, CategorySerializer, \
     EmailSerializer, PhoneNumberSerializer, ContactSerializer, CustomerSerializer, LocationSerializer, \
-    GenericProductSerializer, OrderSerializer, WarehouseSerializer, ProductTypeSerializer, UserSerializer
-from inventory.models.order import Equipment
-from inventory.models.product import GenericProduct
+    InterchangeableProductSerializer, WarehouseSerializer, ProductTypeSerializer, UserSerializer
+from inventory.models.equipment import Equipment
+from inventory.models.product import InterchangeableProduct
 
 
 class BaseViewSet(viewsets.ModelViewSet):
@@ -26,9 +23,9 @@ class LocationViewSet(BaseViewSet):
     queryset = serializer_class.Meta.model.objects.all()
 
 
-class GenericProductViewSet(BaseViewSet):
-    serializer_class = GenericProductSerializer
-    queryset = GenericProduct.objects.all()
+class InterchangeableProductViewSet(BaseViewSet):
+    serializer_class = InterchangeableProductSerializer
+    queryset = InterchangeableProduct.objects.all()
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     filterset_fields= ['name']
     search_fields = ['name']
@@ -73,18 +70,6 @@ class CustomerViewSet(BaseViewSet):
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     filterset_fields= ['first_name', 'last_name', 'company_name', 'email', 'phone_number']
     search_fields = ['first_name', 'last_name', 'company_name', 'email', 'phone_number']
-
-
-class OrderViewSet(BaseViewSet):
-    serializer_class = OrderSerializer
-    queryset = serializer_class.Meta.model.objects.all()
-
-    @exception_serializer
-    @action(detail=True, methods=['get'])
-    def complete(self, request, pk):
-        order = self.get_object()
-        order.complete()
-        return Response(self.serializer_class(order, many=False, context={'request': request}).data)
 
 
 class WarehouseViewSet(BaseViewSet):

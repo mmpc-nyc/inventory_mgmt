@@ -27,21 +27,21 @@ A warehouse location that is available for withdrawing and storing equipment.
 A warehouse location that is not available for withdrawing or storing equipment.
 ### 4.3.3 Full
 A warehouse location that is full and is not available for storing equipment. It is available for withdrawing equipment.
-# 5 Generic Product
+# 5 Interchangeable Product
 A container for uniting similar products from different vendors. For example, an 18 Inch Fan from DeWal performs the same function as an 18 Inch Fan from General Electric. This label is used for requesting equipment on an order.
 ## 5.1 Category
 A hierarchical way of grouping generic products. For example, an 18 Inch Industrial Fan would be under the category of Fans, which has a subcategory of 18 inch fans.
 ## 5.2 Status
 ### 5.2.1 Active
-Generic Products, Products and Equipment can be used.
+Interchangeable Products, Products and Equipment can be used.
 ### 5.2.2 Inactive
-Generic Products, Products and Equipment that share this generic product will be unusable.
+Interchangeable Products, Products and Equipment that share this generic product will be unusable.
 # 6 Product
 A unique identifier for a product consisting of name, brand, product type, and generic product
 ## 6.1 Name
 A unique name for the product
-## 6.2 Generic Product
-Refer to Generic Product
+## 6.2 Interchangeable Product
+Refer to Interchangeable Product
 ## 6.3 Brand
 The brand of the product
 ## 6.4 Product Type
@@ -51,12 +51,13 @@ Refer to Equipment
 A consumable type product that gets used. It cannot be picked up
 ## 6.5 Status
 ### 6.5.1 Active
-Refer to Generic Product Status Active
+Refer to Interchangeable Product Status Active
 ### 6.5.2 Inactive
-Refer to Generic Product Status Inactive
+Refer to Interchangeable Product Status Inactive
 ### 6.5.3 Recall
 The product and all of its associated equipment should be recalled
 # 7 Equipment
+Equipment refers to tracked physical assets such as machinery and tools used in a business, that are not vehicles and are tracked for inventory purposes. These assets are depreciable and can be used to generate income or are necessary for production. The inventory tracking system maintains their quantity, location, status, maintenance and other relevant information.
 ## 7.1 Status
 ### 7.1.1 Stored
 Equipment is stored in Warehouse. A user is not assigned to this equipment

@@ -5,17 +5,8 @@ from inventory.models.location import Location
 from inventory.models.warehouse import Warehouse
 from inventory.models.contact import Contact, ContactPhoneNumber, ContactEmail, PhoneNumber
 from inventory.models.customer import Customer, ServiceLocation
-from inventory.models.product import Product, ProductType, Brand, GenericProduct, Category
-from inventory.models.order import Order, OrderGenericProduct, OrderEquipment, Equipment, Condition, \
-    EquipmentTransaction
-
-
-class GenericProductInline(TabularInline):
-    model = OrderGenericProduct
-
-
-class OrderEquipmentInline(TabularInline):
-    model = OrderEquipment
+from inventory.models.product import Product, ProductType, Brand, InterchangeableProduct, Category
+from inventory.models.equipment import Equipment, Condition
 
 
 @register(ServiceLocation)
@@ -33,8 +24,8 @@ class ContactPhoneNumberAdmin(ModelAdmin):
     list_display = ('contact', 'phone_number',)
 
 
-@register(GenericProduct)
-class GenericProductAdmin(ModelAdmin):
+@register(InterchangeableProduct)
+class InterchangeableProductAdmin(ModelAdmin):
     list_display = ('name',)
     list_filter = ('name', 'category',)
     search_fields = ('category__name',)
@@ -52,7 +43,7 @@ class ContactAdmin(ModelAdmin):
 
 @register(Product)
 class ProductAdmin(ModelAdmin):
-    list_display = ('name', 'brand', 'generic_product', 'status', 'count',)
+    list_display = ('name', 'brand', 'interchangeable_product', 'status', 'count',)
     history_list_display = list_display
 
 
@@ -81,11 +72,6 @@ class BrandAdmin(ModelAdmin):
     list_display = ('name',)
 
 
-@register(OrderGenericProduct)
-class OrderGenericProductAdmin(ModelAdmin):
-    ...
-
-
 @register(Location)
 class LocationAdmin(ModelAdmin):
     ...
@@ -96,21 +82,6 @@ class PhoneNumberAdmin(ModelAdmin):
     ...
 
 
-@register(Order)
-class OrderAdmin(ModelAdmin):
-    list_display = ['id', 'activity', 'customer', 'location', 'date', 'user_names', 'status']
-    inlines = (GenericProductInline, OrderEquipmentInline,)
-
-    @staticmethod
-    def user_names(obj: Order):
-        return ', '.join(user.username for user in obj.team.all())
-
-
 @register(Condition)
 class ConditionAdmin(ModelAdmin):
     list_display = ['name', 'description']
-
-
-@register(EquipmentTransaction)
-class EquipmentTransactionAdmin(ModelAdmin):
-    ...

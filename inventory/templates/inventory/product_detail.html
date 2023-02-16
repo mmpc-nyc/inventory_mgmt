@@ -2,13 +2,9 @@
 {% block main %}
     <div class="card">
         <h2>{{ object.name }}</h2>
-        <h3>{{ object.generic_product.name }}</h3>
-        <span class="tag">{{ object.generic_product.category }}</span>
+        <h3>{{ object.interchangeable_product.name }}</h3>
+        <span class="tag">{{ object.interchangeable_product.category }}</span>
         <ul class="properties">
-            <li class="property">
-                <span class="property-name">Order</span>
-                <span class="property-value">{{ object.order.id }}</span>
-            </li>
             <li class="property">
                 <span class="property-name">Status</span>
                 <span class="property-value">{{ object.status }}</span>

@@ -1,13 +1,11 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
-from django.utils import timezone
 
-from inventory.models.contact import Contact, Email, PhoneNumber
+from inventory.models.contact import Contact
 from inventory.models.customer import Customer, ServiceLocation
 from inventory.models.location import Location
-from inventory.models.order import Condition, Equipment, Order, CollectOrder, OrderEquipment, DeployOrder, \
-    OrderGenericProduct, InspectOrder
-from inventory.models.product import Brand, ProductType, GenericProduct, Product
+from inventory.models.equipment import Equipment, Condition
+from inventory.models.product import Brand, InterchangeableProduct, Product
 from inventory.models.warehouse import Warehouse
 
 User = get_user_model()
@@ -93,10 +91,10 @@ class AbstractTest(TestCase):
         self.customer_location_2 = ServiceLocation.objects.create(customer=self.customer_2,
                                                                   location=self.location_customer_2)
         self.brand = Brand.objects.create(name='Brand 1')
-        self.generic_product = GenericProduct.objects.create(name='Generic Product 1')
+        self.interchangeable_product = InterchangeableProduct.objects.create(name='Interchangeable Product 1')
         self.product = Product.objects.create(
             name='Product 1',
-            generic_product=self.generic_product,
+            interchangeable_product=self.interchangeable_product,
             brand=self.brand,
         )
         self.condition_working = Condition.objects.get(name='Working')
@@ -141,98 +139,3 @@ class AbstractTest(TestCase):
             warehouse=self.warehouse,
             status=Equipment.Status.DEPLOYED
         )
-
-        self.order_collect_initial = self.create_order_collect_initial()
-        self.order_collect_partial = self.create_order_collect_partial()
-        self.order_collect_complete = self.create_order_collect_complete()
-        self.order_deploy_initial = self.create_order_deploy_initial()
-        self.order_deploy_partial = self.create_order_deploy_partial()
-        self.order_deploy_complete = self.create_order_deploy_complete()
-        self.order_inspect = self.create_order_inspect()
-
-    def create_order_collect_initial(self) -> Order:
-        order = CollectOrder.objects.create(
-            customer=self.customer_1,
-            location=self.customer_1_location_1.location,
-            date=timezone.now()
-        )
-        order_equipment_1 = OrderEquipment.objects.create(order=order, equipment=self.equipment_deployed_working_1)
-        order_equipment_2 = OrderEquipment.objects.create(order=order, equipment=self.equipment_deployed_working_2)
-        return order
-
-    def create_order_collect_partial(self) -> Order:
-        order = CollectOrder.objects.create(
-            customer=self.customer_1,
-            location=self.customer_1_location_1.location,
-            date=timezone.now()
-        )
-        order_equipment_1 = OrderEquipment.objects.create(order=order, equipment=self.equipment_picked_up_working_1)
-        order_equipment_2 = OrderEquipment.objects.create(order=order, equipment=self.equipment_deployed_working_2)
-        order.perform_equipment_activity(team_lead=self.user, equipment=order_equipment_1.equipment)
-        return order
-
-    def create_order_collect_complete(self) -> Order:
-        order = CollectOrder.objects.create(
-            customer=self.customer_1,
-            location=self.customer_1_location_1.location,
-            date=timezone.now()
-        )
-        order_equipment_1 = OrderEquipment.objects.create(order=order, equipment=self.equipment_picked_up_working_1)
-        order_equipment_2 = OrderEquipment.objects.create(order=order, equipment=self.equipment_picked_up_working_2)
-        order.perform_equipment_activity(team_lead=self.user, equipment=order_equipment_1.equipment)
-        order.perform_equipment_activity(team_lead=self.user, equipment=order_equipment_2.equipment)
-        return order
-
-    def create_order_deploy_initial(self) -> Order:
-        order = DeployOrder.objects.create(
-            customer=self.customer_1,
-            location=self.customer_1_location_1.location,
-            date=timezone.now(),
-        )
-
-        OrderGenericProduct.objects.create(
-            order=order,
-            generic_product=self.generic_product,
-            quantity=2
-        )
-        return order
-
-    def create_order_deploy_partial(self) -> Order:
-        order = DeployOrder.objects.create(
-            customer=self.customer_1,
-            location=self.customer_1_location_1.location,
-            date=timezone.now(),
-        )
-        OrderGenericProduct.objects.create(
-            order=order,
-            generic_product=self.generic_product,
-            quantity=2
-        )
-        order_equipment_1 = OrderEquipment.objects.create(order=order, equipment=self.equipment_deployed_working_1)
-        order.perform_equipment_activity(team_lead=self.user, equipment=order_equipment_1.equipment)
-        return order
-
-    def create_order_deploy_complete(self) -> Order:
-        order = DeployOrder.objects.create(
-            customer=self.customer_1,
-            location=self.customer_1_location_1.location,
-            date=timezone.now(),
-        )
-        OrderGenericProduct.objects.create(
-            order=order,
-            generic_product=self.generic_product,
-            quantity=2
-        )
-        order_equipment_1 = OrderEquipment.objects.create(order=order, equipment=self.equipment_deployed_working_1)
-        order_equipment_2 = OrderEquipment.objects.create(order=order, equipment=self.equipment_deployed_working_2)
-        order.perform_equipment_activity(team_lead=self.user, equipment=order_equipment_1.equipment)
-        order.perform_equipment_activity(team_lead=self.user, equipment=order_equipment_2.equipment)
-
-        return order
-
-    def create_order_inspect(self):
-        order = InspectOrder.objects.create(
-            customer=self.customer_1,
-            location=self.customer_1_location_1.location,
-            date=timezone.now())
-        return order

@@ -1,7 +1,7 @@
 import {Customer} from "~/models/customer";
 import {User} from "~/models/user";
 import {Equipment} from "~/models/equipment";
-import {GenericProduct} from "~/models/genericProduct";
+import {InterchangeableProduct} from "~/models/interchangeableProduct";
 import {Location} from "~/models/location";
 
 export type OrderActivity = "Deploy" | "Collect" | "Inspect"
@@ -31,7 +31,7 @@ export class Order {
     equipments: Equipment[] = []
     team_lead?: User
     team: User[] = []
-    generic_products: GenericProduct[] = []
+    interchangeable_products: InterchangeableProduct[] = []
     date: string = ""
 
     getOrderActivities() {

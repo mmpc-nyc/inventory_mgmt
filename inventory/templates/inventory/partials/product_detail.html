@@ -2,8 +2,8 @@
     <span class="name">
         <a href="{% url 'inventory:product_detail' pk=object.id %}">{{ object.name }}</a></span>
     <span class="brand">{{ object.brand.name }}</span>
-    <span class="genericname">{{ object.generic_product.name }}</span>
-    <span class="category">{{ object.generic_product.category.name }}</span>
+    <span class="genericname">{{ object.interchangeable_product.name }}</span>
+    <span class="category">{{ object.interchangeable_product.category.name }}</span>
     <span class="status">{{ object.status }}</span>
     <span class="actions">
         COLLECT

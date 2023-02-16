@@ -1,4 +1,4 @@
-import {GenericProduct} from "./genericProduct";
+import {InterchangeableProduct} from "./interchangeableProduct";
 
 export class Brand{
     id?: number
@@ -8,7 +8,7 @@ export type ProductStatus = "Active" | "Inactive" | "Recall"
 
 export class Product{
     id?: number
-    generic_product?: GenericProduct
+    interchangeable_product?: InterchangeableProduct
     brand?: Brand
     status: ProductStatus = "Active"
 
