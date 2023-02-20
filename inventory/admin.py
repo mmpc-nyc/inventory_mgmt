@@ -1,8 +1,8 @@
-from django.contrib.admin import register, ModelAdmin, TabularInline
+from django.contrib.admin import register, ModelAdmin
 from mptt.admin import MPTTModelAdmin
 
 from inventory.models.location import Location
-from inventory.models.warehouse import Warehouse
+from inventory.models.stock_location import StockLocation
 from inventory.models.contact import Contact, ContactPhoneNumber, ContactEmail, PhoneNumber
 from inventory.models.customer import Customer, ServiceLocation
 from inventory.models.product import Product, ProductType, Brand, InterchangeableProduct, Category
@@ -43,7 +43,7 @@ class ContactAdmin(ModelAdmin):
 
 @register(Product)
 class ProductAdmin(ModelAdmin):
-    list_display = ('name', 'brand', 'interchangeable_product', 'status', 'count',)
+    list_display = ('name', 'brand', 'interchangeable_product', 'status',)
     history_list_display = list_display
 
 
@@ -52,8 +52,8 @@ class EquipmentAdmin(ModelAdmin):
     list_display = ('id', 'name', 'status', 'condition', 'warehouse', 'location', 'user',)
 
 
-@register(Warehouse)
-class WarehouseAdmin(ModelAdmin):
+@register(StockLocation)
+class StockLocationAdmin(ModelAdmin):
     list_display = ('name', 'status', 'location',)
 
 

@@ -6,7 +6,7 @@ from inventory.models.customer import Customer, ServiceLocation
 from inventory.models.location import Location, LocationContact
 from inventory.models.equipment import Equipment, Condition
 from inventory.models.product import Product, ProductType, Brand, InterchangeableProduct, Category
-from inventory.models.warehouse import Warehouse
+from inventory.models.stock_location import StockLocation
 
 User = get_user_model()
 
@@ -154,11 +154,11 @@ class ProductSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['id', 'url', 'name', 'brand', 'interchangeable_product', 'status', ]
 
 
-class WarehouseSerializer(serializers.HyperlinkedModelSerializer):
+class StockLocationSerializer(serializers.HyperlinkedModelSerializer):
     location = LocationSerializer()
 
     class Meta:
-        model = Warehouse
+        model = StockLocation
         fields = ['id', 'url', 'name', 'status', 'location']
 
 
@@ -171,7 +171,7 @@ class ConditionSerializer(serializers.HyperlinkedModelSerializer):
 
 class EquipmentSerializer(serializers.HyperlinkedModelSerializer):
     product = ProductSerializer()
-    warehouse = WarehouseSerializer()
+    warehouse = StockLocationSerializer()
     condition = ConditionSerializer(many=False)
 
     class Meta:

@@ -6,7 +6,7 @@ from inventory.models.customer import Customer, ServiceLocation
 from inventory.models.location import Location
 from inventory.models.equipment import Equipment, Condition
 from inventory.models.product import Brand, InterchangeableProduct, Product
-from inventory.models.warehouse import Warehouse
+from inventory.models.stock_location import StockLocation
 
 User = get_user_model()
 
@@ -21,10 +21,10 @@ class AbstractTest(TestCase):
         self.customer_phone = "2122198218"
         self.customer_contact = Contact.objects.create(first_name="Customer", last_name="contact")
         self.location_warehouse = Location.objects.create(
-            name='Warehouse Location 1',
-            address_line_1='Warehouse Location 1',
-            city="Warehouse City",
-            state="Warehouse State",
+            name='Stock Location 1',
+            address_line_1='Stock Location 1',
+            city="Stock Location City",
+            state="Stock LocationState",
             postal_code="00000",
             latitude=0,
             longitude=0, )
@@ -54,7 +54,7 @@ class AbstractTest(TestCase):
             postal_code="00000",
             latitude=0,
             longitude=0, )
-        self.warehouse = Warehouse.objects.create(name='Warehouse 1', location=self.location_warehouse)
+        self.warehouse = StockLocation.objects.create(name='Stock Location1', location=self.location_warehouse)
         self.billing_location_1 = Location.objects.create(
             name='Billing Location 1',
             address_line_1='Billing Location 1',

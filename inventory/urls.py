@@ -7,11 +7,11 @@ from inventory.views.dashboard_views import HomeView
 urlpatterns = [
     path('', HomeView.as_view(), name='home'),
     path('warehouse/', include([
-        path('', warehouse_views.WarehouseListView.as_view(), name='warehouse_list'),
-        path('create', warehouse_views.WarehouseCreateView.as_view(), name='warehouse_create'),
-        path('<int:pk>', warehouse_views.WarehouseDetailView.as_view(), name='warehouse_detail'),
-        path('<int:pk>/delete', warehouse_views.WarehouseDeleteView.as_view(), name='warehouse_delete'),
-        path('<int:pk>/update', warehouse_views.WarehouseUpdateView.as_view(), name='warehouse_update'),
+        path('', warehouse_views.StockLocationListView.as_view(), name='warehouse_list'),
+        path('create', warehouse_views.StockLocationCreateView.as_view(), name='warehouse_create'),
+        path('<int:pk>', warehouse_views.StockLocationDetailView.as_view(), name='warehouse_detail'),
+        path('<int:pk>/delete', warehouse_views.StockLocationDeleteView.as_view(), name='warehouse_delete'),
+        path('<int:pk>/update', warehouse_views.StockLocationUpdateView.as_view(), name='warehouse_update'),
     ])),
     path('products/', include([
         path('', product_views.ProductListView.as_view(), name='product_list'),

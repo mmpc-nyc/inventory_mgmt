@@ -14,10 +14,10 @@ A location record for a single location
 A list of locations associated with the customer
 ## 3.2 Customer Contacts
 A list of contacts associated with the customer
-# 4 Warehouse
+# 4 Stock Location
 A place where equipment and products are stored
 ## 4.1 Name
-Name of Warehouse / Warehouse
+Name of Stock Location/ Stock Location
 ## 4.2 Location
 A location associated with the warehouse
 ## 4.3 Status
@@ -60,7 +60,7 @@ The product and all of its associated equipment should be recalled
 Equipment refers to tracked physical assets such as machinery and tools used in a business, that are not vehicles and are tracked for inventory purposes. These assets are depreciable and can be used to generate income or are necessary for production. The inventory tracking system maintains their quantity, location, status, maintenance and other relevant information.
 ## 7.1 Status
 ### 7.1.1 Stored
-Equipment is stored in Warehouse. A user is not assigned to this equipment
+Equipment is stored in Stock Location. A user is not assigned to this equipment
 ### 7.1.2 Deployed
 Equipment is stored at a customer location based on the order.
 ### 7.1.3 Picked Up

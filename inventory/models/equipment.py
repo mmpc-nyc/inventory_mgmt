@@ -11,7 +11,7 @@ class Equipment(models.Model):
     class Status(models.TextChoices):
         """Current status of the product"""
 
-        STORED = 'STORED', _('Stored')  # Equipment stored in Warehouse
+        STORED = 'STORED', _('Stored')  # Equipment stored in Stock Location
         DEPLOYED = 'DEPLOYED', _('Deployed')  # Equipment is currently deployed at order location
         PICKED_UP = 'PICKED_UP', _('Picked Up')  # Equipment is with the employee
         MISSING = 'MISSING', _('Missing')  # Equipment cannot be found.
@@ -20,7 +20,7 @@ class Equipment(models.Model):
     name = models.CharField(max_length=150, blank=True, null=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     status = models.CharField(max_length=32, choices=Status.choices, default=Status.STORED)
-    warehouse = models.ForeignKey('Warehouse', on_delete=models.SET_NULL, blank=True, null=True)
+    warehouse = models.ForeignKey('StockLocation', on_delete=models.SET_NULL, blank=True, null=True)
     condition = models.ForeignKey('Condition', on_delete=models.CASCADE)
     user = models.ForeignKey(get_user_model(), related_name='equipment_employee', on_delete=models.SET_NULL, null=True,
                              blank=True)

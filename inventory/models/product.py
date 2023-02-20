@@ -1,31 +1,19 @@
 from django.db import models
 from django.urls import reverse_lazy
-from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 from mptt.fields import TreeForeignKey
 from mptt.models import MPTTModel
 
 
 class Product(models.Model):
-    """A unique identifier for a product consisting of name, brand, product type, and generic product"""
-
-    class Status(models.TextChoices):
-        """Product status choices
-        TODO  Rethink this
-        """
-        ACTIVE = 'Active', _('Active')  # Can be used and allows purchasing of new equipment
-        INACTIVE = 'Inactive', _('Inactive')  # The product is no longer active but is still stored in the inventory
-        RECALL = 'Recall', _('Recall')  # The product is inactive and should no longer be used.
+    """A unique identifier for a product consisting of name, brand, product type"""
 
     name = models.CharField(max_length=150)
-    interchangeable_product = models.ForeignKey('InterchangeableProduct', on_delete=models.CASCADE)
     brand = models.ForeignKey('Brand', on_delete=models.CASCADE)
-    status = models.CharField(max_length=16, choices=Status.choices, default=Status.ACTIVE)
-    counter = models.IntegerField(default=0)
-
-    @cached_property
-    def count(self):
-        return self.equipment_set.count()
+    active = models.BooleanField(default=True)
+    recall = models.BooleanField(default=False)
+    type_ = models.ForeignKey('ProductType', verbose_name='type', on_delete=models.SET_NULL, null=True)
+    category = TreeForeignKey('Category', on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return f'{self.name} | {self.brand.name}'
@@ -62,34 +50,9 @@ class Brand(models.Model):
         verbose_name_plural = _('Brands')
 
 
-class InterchangeableProduct(models.Model):
-    """A generic product container that relates to different versions of the same product.
-    For example: a product having different brands or different sizes or colors
-    """
-
-    class Status(models.TextChoices):
-        """Interchangeable Product status choices
-        Active: The generic product is available for all actions
-        Inactive: The generic product is no longer active but is still stored in the inventory
-        """
-        ACTIVE = 'Active', _('Active')
-        INACTIVE = 'Inactive', _('Inactive')
-
-    category = TreeForeignKey('Category', on_delete=models.SET_NULL, null=True, blank=True)
-    name = models.CharField(max_length=150, unique=True)
-    status = models.CharField(max_length=16, choices=Status.choices, default=Status.ACTIVE)
-
-    def __str__(self):
-        return f'{self.name}'
-
-    class Meta:
-        verbose_name = _('Interchangeable Product')
-        verbose_name_plural = _('Interchangeable Products')
-
-
 class Category(MPTTModel):
     name = models.CharField(max_length=64)
-    slug = models.SlugField()
+    description = models.CharField(max_length=256)
     parent = TreeForeignKey('self', on_delete=models.CASCADE, blank=True, null=True)
 
     class MPTTMeta:

@@ -1,24 +1,24 @@
-from inventory.models.warehouse import Warehouse
+from inventory.models.stock_location import StockLocation
 from inventory.views.base_views import CustomDetailView, CustomListView, CustomCreateView, CustomDeleteView, \
     CustomUpdateView
 
 
-class WarehouseDetailView(CustomDetailView):
-    model = Warehouse
+class StockLocationDetailView(CustomDetailView):
+    model = StockLocation
 
 
-class WarehouseListView(CustomListView):
-    model = Warehouse
+class StockLocationListView(CustomListView):
+    model = StockLocation
 
 
-class WarehouseCreateView(CustomCreateView):
-    model = Warehouse
+class StockLocationCreateView(CustomCreateView):
+    model = StockLocation
 
 
-class WarehouseDeleteView(CustomDeleteView):
-    model = Warehouse
+class StockLocationDeleteView(CustomDeleteView):
+    model = StockLocation
 
 
-class WarehouseUpdateView(CustomUpdateView):
-    model = Warehouse
+class StockLocationUpdateView(CustomUpdateView):
+    model = StockLocation
 

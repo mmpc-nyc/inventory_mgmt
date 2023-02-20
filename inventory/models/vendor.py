@@ -27,3 +27,5 @@ class VendorProduct(models.Model):
     product = models.ForeignKey('Product', on_delete=models.CASCADE)
     sku = models.CharField(max_length=256)
 
+
+

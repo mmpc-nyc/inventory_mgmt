@@ -1,9 +1,9 @@
 import {Location} from "~/models/location";
 
-type WarehouseStatus = "Active" | "Inactive" | "Full"
+type StockLocationStatus = "Active" | "Inactive" | "Full"
 
-export class Warehouse{
+export class StockLocation{
     id?: number
-    status: WarehouseStatus = "Active"
+    status: StockLocationStatus = "Active"
     location?: Location
 }
