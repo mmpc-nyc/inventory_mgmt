@@ -5,7 +5,7 @@ from inventory.models.contact import Contact, Email, PhoneNumber
 from inventory.models.customer import Customer, ServiceLocation
 from inventory.models.location import Location, LocationContact
 from inventory.models.equipment import Equipment, Condition
-from inventory.models.product import Product, ProductType, Brand, InterchangeableProduct, Category
+from inventory.models.product import Product, ProductType, Brand, ProductCategory
 from inventory.models.stock_location import StockLocation
 
 User = get_user_model()
@@ -127,16 +127,8 @@ class BrandSerializer(serializers.HyperlinkedModelSerializer):
 
 class CategorySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = Category
+        model = ProductCategory
         fields = ['name', 'parent']
-
-
-class InterchangeableProductSerializer(serializers.HyperlinkedModelSerializer):
-    category = CategorySerializer()
-
-    class Meta:
-        model = InterchangeableProduct
-        fields = ['id', 'url', 'name', 'category', 'status']
 
 
 class ProductTypeSerializer(serializers.HyperlinkedModelSerializer):
@@ -147,7 +139,6 @@ class ProductTypeSerializer(serializers.HyperlinkedModelSerializer):
 
 class ProductSerializer(serializers.HyperlinkedModelSerializer):
     brand = BrandSerializer()
-    interchangeable_product = InterchangeableProductSerializer()
 
     class Meta:
         model = Product

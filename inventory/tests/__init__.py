@@ -5,7 +5,7 @@ from inventory.models.contact import Contact
 from inventory.models.customer import Customer, ServiceLocation
 from inventory.models.location import Location
 from inventory.models.equipment import Equipment, Condition
-from inventory.models.product import Brand, InterchangeableProduct, Product
+from inventory.models.product import Brand, Product
 from inventory.models.stock_location import StockLocation
 
 User = get_user_model()
@@ -91,7 +91,6 @@ class AbstractTest(TestCase):
         self.customer_location_2 = ServiceLocation.objects.create(customer=self.customer_2,
                                                                   location=self.location_customer_2)
         self.brand = Brand.objects.create(name='Brand 1')
-        self.interchangeable_product = InterchangeableProduct.objects.create(name='Interchangeable Product 1')
         self.product = Product.objects.create(
             name='Product 1',
             interchangeable_product=self.interchangeable_product,

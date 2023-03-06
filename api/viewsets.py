@@ -4,9 +4,8 @@ from rest_framework import viewsets, filters
 
 from api.serializers import BrandSerializer, EquipmentSerializer, ProductSerializer, CategorySerializer, \
     EmailSerializer, PhoneNumberSerializer, ContactSerializer, CustomerSerializer, LocationSerializer, \
-    InterchangeableProductSerializer, StockLocationSerializer, ProductTypeSerializer, UserSerializer
+    StockLocationSerializer, ProductTypeSerializer, UserSerializer
 from inventory.models.equipment import Equipment
-from inventory.models.product import InterchangeableProduct
 
 
 class BaseViewSet(viewsets.ModelViewSet):
@@ -21,14 +20,6 @@ class BrandViewSet(BaseViewSet):
 class LocationViewSet(BaseViewSet):
     serializer_class = LocationSerializer
     queryset = serializer_class.Meta.model.objects.all()
-
-
-class InterchangeableProductViewSet(BaseViewSet):
-    serializer_class = InterchangeableProductSerializer
-    queryset = InterchangeableProduct.objects.all()
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    filterset_fields= ['name']
-    search_fields = ['name']
 
 
 class EquipmentViewSet(BaseViewSet):

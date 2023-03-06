@@ -1,5 +1,5 @@
 from django.urls import path, include
-from inventory.views import customer_views, equipment_views, interchangeableproduct_views
+from inventory.views import customer_views, equipment_views
 from inventory.views import product_views
 from inventory.views import warehouse_views
 from inventory.views.dashboard_views import HomeView
@@ -19,13 +19,6 @@ urlpatterns = [
         path('<int:pk>', product_views.ProductDetailView.as_view(), name='product_detail'),
         path('<int:pk>/delete', product_views.ProductDeleteView.as_view(), name='product_delete'),
         path('<int:pk>/update', product_views.ProductUpdateView.as_view(), name='product_update'),
-    ])),
-    path('interchangeableproducts/', include([
-        path('', interchangeableproduct_views.InterchangeableProductListView.as_view(), name='interchangeableproduct_list'),
-        path('create', interchangeableproduct_views.InterchangeableProductCreateView.as_view(), name='interchangeableproduct_create'),
-        path('<int:pk>', interchangeableproduct_views.InterchangeableProductDetailView.as_view(), name='interchangeableproduct_detail'),
-        path('<int:pk>/delete', interchangeableproduct_views.InterchangeableProductDeleteView.as_view(), name='interchangeableproduct_delete'),
-        path('<int:pk>/update', interchangeableproduct_views.InterchangeableProductUpdateView.as_view(), name='interchangeableproduct_update'),
     ])),
     path('equipments/', include([
         path('', equipment_views.EquipmentListView.as_view(), name='equipment_list'),

@@ -1,11 +1,12 @@
 from django.contrib.admin import register, ModelAdmin
 from mptt.admin import MPTTModelAdmin
 
+from inventory.models.field import Field
 from inventory.models.location import Location
 from inventory.models.stock_location import StockLocation
 from inventory.models.contact import Contact, ContactPhoneNumber, ContactEmail, PhoneNumber
 from inventory.models.customer import Customer, ServiceLocation
-from inventory.models.product import Product, ProductType, Brand, InterchangeableProduct, Category
+from inventory.models.product import Product, ProductType, Brand, ProductCategory
 from inventory.models.equipment import Equipment, Condition
 
 
@@ -24,13 +25,6 @@ class ContactPhoneNumberAdmin(ModelAdmin):
     list_display = ('contact', 'phone_number',)
 
 
-@register(InterchangeableProduct)
-class InterchangeableProductAdmin(ModelAdmin):
-    list_display = ('name',)
-    list_filter = ('name', 'category',)
-    search_fields = ('category__name',)
-
-
 @register(Customer)
 class CustomerAdmin(MPTTModelAdmin):
     list_display = ('first_name', 'last_name', 'company_name', 'parent')
@@ -43,7 +37,7 @@ class ContactAdmin(ModelAdmin):
 
 @register(Product)
 class ProductAdmin(ModelAdmin):
-    list_display = ('name', 'brand', 'interchangeable_product', 'status',)
+    list_display = ('name', 'brand')
     history_list_display = list_display
 
 
@@ -57,7 +51,7 @@ class StockLocationAdmin(ModelAdmin):
     list_display = ('name', 'status', 'location',)
 
 
-@register(Category)
+@register(ProductCategory)
 class CategoryAdmin(MPTTModelAdmin):
     ...
 
@@ -85,3 +79,8 @@ class PhoneNumberAdmin(ModelAdmin):
 @register(Condition)
 class ConditionAdmin(ModelAdmin):
     list_display = ['name', 'description']
+
+
+@register(Field)
+class FieldAdmin(ModelAdmin):
+    ...
