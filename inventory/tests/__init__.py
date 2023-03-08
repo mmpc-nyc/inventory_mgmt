@@ -5,7 +5,7 @@ from inventory.models.contact import Contact
 from inventory.models.customer import Customer, ServiceLocation
 from inventory.models.location import Location
 from inventory.models.equipment import Equipment, Condition
-from inventory.models.product import Brand, Product
+from inventory.models.material import Brand, Material
 from inventory.models.stock_location import StockLocation
 
 User = get_user_model()
@@ -91,9 +91,8 @@ class AbstractTest(TestCase):
         self.customer_location_2 = ServiceLocation.objects.create(customer=self.customer_2,
                                                                   location=self.location_customer_2)
         self.brand = Brand.objects.create(name='Brand 1')
-        self.product = Product.objects.create(
-            name='Product 1',
-            interchangeable_product=self.interchangeable_product,
+        self.material = Material.objects.create(
+            name='Material 1',
             brand=self.brand,
         )
         self.condition_working = Condition.objects.get(name='Working')
@@ -101,14 +100,14 @@ class AbstractTest(TestCase):
         self.condition_decommissioned = Condition.objects.get(name='Decommissioned')
         self.equipment_stored_working = Equipment.objects.create(
             name='stored_working',
-            product=self.product,
+            material=self.material,
             condition=self.condition_working,
             warehouse=self.warehouse,
             location=self.warehouse.location
         )
         self.equipment_picked_up_working_1 = Equipment.objects.create(
             name='picked_up_working_1',
-            product=self.product,
+            material=self.material,
             condition=self.condition_working,
             warehouse=self.warehouse,
             location=self.location_user,
@@ -117,7 +116,7 @@ class AbstractTest(TestCase):
         )
         self.equipment_picked_up_working_2 = Equipment.objects.create(
             name='picked_up_working_2',
-            product=self.product,
+            material=self.material,
             condition=self.condition_working,
             warehouse=self.warehouse,
             location=self.location_user,
@@ -126,14 +125,14 @@ class AbstractTest(TestCase):
         )
         self.equipment_deployed_working_1 = Equipment.objects.create(
             name='deployed_working_1',
-            product=self.product,
+            material=self.material,
             condition=self.condition_working,
             warehouse=self.warehouse,
             status=Equipment.Status.DEPLOYED
         )
         self.equipment_deployed_working_2 = Equipment.objects.create(
             name='deployed_working_2',
-            product=self.product,
+            material=self.material,
             condition=self.condition_working,
             warehouse=self.warehouse,
             status=Equipment.Status.DEPLOYED
