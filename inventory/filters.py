@@ -1,18 +1,18 @@
 from django.contrib.auth import get_user_model
 from django_filters import FilterSet, rest_framework as filters
 
-from inventory.models.product import Product
+from inventory.models.material import Material
 from inventory.models.stock_location import StockLocation
 
 User = get_user_model()
 
 
-class ProductFilter(FilterSet):
+class MaterialFilter(FilterSet):
     name = filters.CharFilter(field_name='name', lookup_expr='contains')
-    status = filters.ChoiceFilter(choices=Product.Status.choices)
+    status = filters.ChoiceFilter(choices=Material.Status.choices)
     warehouse = filters.ModelChoiceFilter(queryset=StockLocation.objects.all())
     user = filters.ModelChoiceFilter(queryset=User.objects.all())
 
     class Meta:
-        model = Product
+        model = Material
         fields = ('name', 'status',)

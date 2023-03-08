@@ -1,6 +1,6 @@
 from django.urls import path, include
 from inventory.views import customer_views, equipment_views
-from inventory.views import product_views
+from inventory.views import material_views
 from inventory.views import warehouse_views
 from inventory.views.dashboard_views import HomeView
 
@@ -13,12 +13,12 @@ urlpatterns = [
         path('<int:pk>/delete', warehouse_views.StockLocationDeleteView.as_view(), name='warehouse_delete'),
         path('<int:pk>/update', warehouse_views.StockLocationUpdateView.as_view(), name='warehouse_update'),
     ])),
-    path('products/', include([
-        path('', product_views.ProductListView.as_view(), name='product_list'),
-        path('create', product_views.ProductCreateView.as_view(), name='product_create'),
-        path('<int:pk>', product_views.ProductDetailView.as_view(), name='product_detail'),
-        path('<int:pk>/delete', product_views.ProductDeleteView.as_view(), name='product_delete'),
-        path('<int:pk>/update', product_views.ProductUpdateView.as_view(), name='product_update'),
+    path('materials/', include([
+        path('', material_views.MaterialListView.as_view(), name='material_list'),
+        path('create', material_views.MaterialCreateView.as_view(), name='material_create'),
+        path('<int:pk>', material_views.MaterialDetailView.as_view(), name='material_detail'),
+        path('<int:pk>/delete', material_views.MaterialDeleteView.as_view(), name='material_delete'),
+        path('<int:pk>/update', material_views.MaterialUpdateView.as_view(), name='material_update'),
     ])),
     path('equipments/', include([
         path('', equipment_views.EquipmentListView.as_view(), name='equipment_list'),

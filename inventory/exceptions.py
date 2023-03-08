@@ -2,12 +2,12 @@ from django.core.exceptions import ValidationError
 
 
 class ProductStatusError(ValidationError):
-    """Exceptions related to Product Status"""
+    """Exceptions related to Material Status"""
     ...
 
 
-class ProductConditionError(ValidationError):
-    """Exceptions related to Product Condition"""
+class MaterialConditionError(ValidationError):
+    """Exceptions related to Material Condition"""
     ...
 
 
@@ -16,8 +16,8 @@ class StockLocationLogicError(ValidationError):
     ...
 
 
-class ProductOrderAssignmentError(ValidationError):
-    """Product order assignment error"""
+class MaterialOrderAssignmentError(ValidationError):
+    """Material order assignment error"""
 
 
 class OrderCompletionError(ValidationError):

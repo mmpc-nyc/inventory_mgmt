@@ -11,7 +11,7 @@ class StockLocation(models.Model):
     class StockLocationStatus(models.TextChoices):
         """Choices for setting the status of a warehouse location
         Active: Available for picking up and dropping off items
-        Inactive: Not in use. Products cannot be picked up or dropped off from this location
+        Inactive: Not in use. Materials cannot be picked up or dropped off from this location
         Full: The inventory location is currently full. No items can be dropped off.
         """
 

@@ -1,13 +1,17 @@
-from django.contrib.admin import register, ModelAdmin
+from django.contrib.admin import register, ModelAdmin, TabularInline
 from mptt.admin import MPTTModelAdmin
 
 from inventory.models.field import Field
 from inventory.models.location import Location
+from inventory.models.material import MaterialField
 from inventory.models.stock_location import StockLocation
 from inventory.models.contact import Contact, ContactPhoneNumber, ContactEmail, PhoneNumber
 from inventory.models.customer import Customer, ServiceLocation
-from inventory.models.product import Product, ProductType, Brand, ProductCategory
+from inventory.models.material import Material, MaterialType, Brand, MaterialCategory
 from inventory.models.equipment import Equipment, Condition
+from inventory.models.target import Target
+from inventory.models.unit import Unit
+from inventory.models.vendor import Vendor
 
 
 @register(ServiceLocation)
@@ -35,12 +39,6 @@ class ContactAdmin(ModelAdmin):
     list_display = ('first_name', 'last_name',)
 
 
-@register(Product)
-class ProductAdmin(ModelAdmin):
-    list_display = ('name', 'brand')
-    history_list_display = list_display
-
-
 @register(Equipment)
 class EquipmentAdmin(ModelAdmin):
     list_display = ('id', 'name', 'status', 'condition', 'warehouse', 'location', 'user',)
@@ -51,13 +49,13 @@ class StockLocationAdmin(ModelAdmin):
     list_display = ('name', 'status', 'location',)
 
 
-@register(ProductCategory)
+@register(MaterialCategory)
 class CategoryAdmin(MPTTModelAdmin):
     ...
 
 
-@register(ProductType)
-class ProductTypeAdmin(ModelAdmin):
+@register(MaterialType)
+class MaterialTypeAdmin(ModelAdmin):
     list_display = ('name',)
 
 
@@ -83,4 +81,33 @@ class ConditionAdmin(ModelAdmin):
 
 @register(Field)
 class FieldAdmin(ModelAdmin):
+    list_display = ['name', 'content_type', 'field_type', 'validation_type', 'default_value', 'is_required']
+
+
+class MaterialFieldInline(TabularInline):
+    model = MaterialField
+
+
+@register(Material)
+class MaterialAdmin(ModelAdmin):
+    list_display = ('name', 'brand')
+
+    inlines = [
+        MaterialFieldInline,
+    ]
+    history_list_display = list_display
+
+
+@register(Vendor)
+class VendorAdmin(ModelAdmin):
     ...
+
+
+@register(Unit)
+class UnitAdmin(ModelAdmin):
+    ...
+
+
+@register(Target)
+class TargetAdmin(ModelAdmin):
+    list_display = ['name', 'description', 'parent', ]

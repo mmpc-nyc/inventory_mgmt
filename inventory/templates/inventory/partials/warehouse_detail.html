@@ -1,5 +1,5 @@
 <li id="{{ model_name }}-{{ object.id }}" class="{% if counter and counter|divisibleby:2 %}even{% else %}odd{% endif %}">
-    <span class="id" id="product_id_{{ warehouse.id }}">
+    <span class="id" id="material_id_{{ warehouse.id }}">
         <a href="{% url 'inventory:warehouse_detail' pk=warehouse.id %}">{{ warehouse.id }}</a>
     </span>
     <span class="name">{{ warehouse.name }}</span>

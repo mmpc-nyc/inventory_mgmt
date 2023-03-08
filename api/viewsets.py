@@ -2,9 +2,9 @@ import rest_framework.permissions
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, filters
 
-from api.serializers import BrandSerializer, EquipmentSerializer, ProductSerializer, CategorySerializer, \
+from api.serializers import BrandSerializer, EquipmentSerializer, MaterialSerializer, CategorySerializer, \
     EmailSerializer, PhoneNumberSerializer, ContactSerializer, CustomerSerializer, LocationSerializer, \
-    StockLocationSerializer, ProductTypeSerializer, UserSerializer
+    StockLocationSerializer, MaterialTypeSerializer, UserSerializer
 from inventory.models.equipment import Equipment
 
 
@@ -30,8 +30,8 @@ class EquipmentViewSet(BaseViewSet):
     search_fields = ['name']
 
 
-class ProductViewSet(BaseViewSet):
-    serializer_class = ProductSerializer
+class MaterialViewSet(BaseViewSet):
+    serializer_class = MaterialSerializer
     queryset = serializer_class.Meta.model.objects.all()
 
 
@@ -68,8 +68,8 @@ class StockLocationViewSet(BaseViewSet):
     queryset = serializer_class.Meta.model.objects.all()
 
 
-class ProductTypeViewSet(BaseViewSet):
-    serializer_class = ProductTypeSerializer
+class MaterialTypeViewSet(BaseViewSet):
+    serializer_class = MaterialTypeSerializer
     queryset = serializer_class.Meta.model.objects.all()
 
 

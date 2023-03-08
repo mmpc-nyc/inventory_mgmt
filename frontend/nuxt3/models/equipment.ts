@@ -1,4 +1,4 @@
-import {Product} from "~/models/product";
+import {Material} from "~/models/material";
 import {StockLocation} from "~/models/warehouse";
 import {User} from "~/models/user";
 import {Location} from "~/models/location";
@@ -21,7 +21,6 @@ export type EquipmentStatus = "Stored" | "Deployed" | "Picked Up" | "Missing" | 
 export class Equipment {
     id?: number
     name: string = ''
-    product?: Product
     status: EquipmentStatus = "Picked Up"
     warehouse?: StockLocation
     condition?: EquipmentCondition

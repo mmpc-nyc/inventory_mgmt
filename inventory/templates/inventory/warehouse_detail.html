@@ -1,4 +1,4 @@
 {% extends 'inventory/base.html' %}
 {% block main %}
-    {% include 'inventory/partials/product_list.html' with object_list=warehouse.product_set.all %}
+    {% include 'inventory/partials/material_list.html' with object_list=warehouse.material_set.all %}
 {% endblock %}

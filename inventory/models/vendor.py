@@ -21,10 +21,10 @@ class Vendor(models.Model):
         return reverse_lazy('warehouse:vendor_detail', kwargs={'pk': self.pk})
 
 
-class VendorProduct(models.Model):
+class VendorMaterial(models.Model):
     """good or service that is produced or supplied by an external vendor or supplier,
     rather than being produced in-house. It is offered for sale by the vendor."""
-    product = models.ForeignKey('Product', on_delete=models.CASCADE)
+    material = models.ForeignKey('Material', on_delete=models.CASCADE)
     sku = models.CharField(max_length=256)
 
 

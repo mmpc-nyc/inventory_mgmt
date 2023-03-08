@@ -2,14 +2,14 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
-from inventory.models.product import Product
+from inventory.models.material import Material
 
 
 class Equipment(models.Model):
     """Equipment refers to tracked physical assets such as machinery and tools used in a business, that are not vehicles and are tracked for inventory purposes. These assets are depreciable and can be used to generate income or are necessary for production. The inventory tracking system maintains their quantity, location, status, maintenance and other relevant information."""
 
     class Status(models.TextChoices):
-        """Current status of the product"""
+        """Current status of the material"""
 
         STORED = 'STORED', _('Stored')  # Equipment stored in Stock Location
         DEPLOYED = 'DEPLOYED', _('Deployed')  # Equipment is currently deployed at order location
@@ -18,7 +18,6 @@ class Equipment(models.Model):
         DECOMMISSIONED = 'DECOMMISSIONED', _('Decommissioned')
 
     name = models.CharField(max_length=150, blank=True, null=True)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
     status = models.CharField(max_length=32, choices=Status.choices, default=Status.STORED)
     warehouse = models.ForeignKey('StockLocation', on_delete=models.SET_NULL, blank=True, null=True)
     condition = models.ForeignKey('Condition', on_delete=models.CASCADE)
@@ -38,7 +37,7 @@ class Equipment(models.Model):
 
 
 class Condition(models.Model):
-    """Physical condition of the product that determines if it can be used"""
+    """Physical condition of the material that determines if it can be used"""
     name = models.CharField(verbose_name=_('name'), max_length=32)
     description = models.TextField(verbose_name=_('description'))
     action_collect = models.BooleanField(verbose_name=_('collect'), default=False)

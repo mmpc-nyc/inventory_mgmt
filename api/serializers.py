@@ -5,7 +5,7 @@ from inventory.models.contact import Contact, Email, PhoneNumber
 from inventory.models.customer import Customer, ServiceLocation
 from inventory.models.location import Location, LocationContact
 from inventory.models.equipment import Equipment, Condition
-from inventory.models.product import Product, ProductType, Brand, ProductCategory
+from inventory.models.material import Material, MaterialType, Brand, MaterialCategory
 from inventory.models.stock_location import StockLocation
 
 User = get_user_model()
@@ -127,22 +127,22 @@ class BrandSerializer(serializers.HyperlinkedModelSerializer):
 
 class CategorySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = ProductCategory
+        model = MaterialCategory
         fields = ['name', 'parent']
 
 
-class ProductTypeSerializer(serializers.HyperlinkedModelSerializer):
+class MaterialTypeSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = ProductType
+        model = MaterialType
         fields = ['id', 'url', 'name']
 
 
-class ProductSerializer(serializers.HyperlinkedModelSerializer):
+class MaterialSerializer(serializers.HyperlinkedModelSerializer):
     brand = BrandSerializer()
 
     class Meta:
-        model = Product
-        fields = ['id', 'url', 'name', 'brand', 'interchangeable_product', 'status', ]
+        model = Material
+        fields = ['id', 'url', 'name', 'brand', 'status', ]
 
 
 class StockLocationSerializer(serializers.HyperlinkedModelSerializer):
@@ -161,10 +161,10 @@ class ConditionSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class EquipmentSerializer(serializers.HyperlinkedModelSerializer):
-    product = ProductSerializer()
+    material = MaterialSerializer()
     warehouse = StockLocationSerializer()
     condition = ConditionSerializer(many=False)
 
     class Meta:
         model = Equipment
-        fields = ['id', 'url', 'name', 'product', 'status', 'condition', 'warehouse', 'user', ]
+        fields = ['id', 'url', 'name', 'material', 'status', 'condition', 'warehouse', 'user', ]

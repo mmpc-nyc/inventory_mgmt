@@ -2,8 +2,8 @@
 {% block main %}
     <div class="card">
         <h2>{{ object.name }}</h2>
-        <h3>{{ object.interchangeable_product.name }}</h3>
-        <span class="tag">{{ object.interchangeable_product.category }}</span>
+        <h3>{{ object.interchangeable_material.name }}</h3>
+        <span class="tag">{{ object.interchangeable_material.category }}</span>
         <ul class="properties">
             <li class="property">
                 <span class="property-name">Status</span>
@@ -27,8 +27,8 @@
             </li>
         </ul>
         <ul class="card-actions">
-            <li class="card-action"><a href="{% url "inventory:product_update" pk=object.id %}">Edit</a></li>
-            <li class="card-action"><a href="{% url "inventory:product_delete" pk=object.id %}">Delete</a></li>
+            <li class="card-action"><a href="{% url "inventory:material_update" pk=object.id %}">Edit</a></li>
+            <li class="card-action"><a href="{% url "inventory:material_delete" pk=object.id %}">Delete</a></li>
         </ul>
     </div>
 {% endblock %}
