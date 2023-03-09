@@ -1,9 +1,9 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 
-from inventory.models.contact import Contact
+from common.models.contact import Contact
 from inventory.models.customer import Customer, ServiceLocation
-from inventory.models.location import Location
+from common.models.location import Location
 from inventory.models.equipment import Equipment, Condition
 from inventory.models.material import Brand, Material
 from inventory.models.stock_location import StockLocation
