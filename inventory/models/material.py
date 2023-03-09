@@ -25,7 +25,7 @@ class MaterialCategory(MPTTModel):
         return f'{self.name}'
 
 
-class MaterialType(models.Model):
+class MaterialClass(models.Model):
     #  TODO  Write Description
     name = models.CharField(max_length=64)
 
@@ -33,8 +33,8 @@ class MaterialType(models.Model):
         return f'{self.name}'
 
     class Meta:
-        verbose_name = _('Material Type')
-        verbose_name_plural = _('Material Types')
+        verbose_name = _('Material Class')
+        verbose_name_plural = _('Material Classes')
 
 
 class Material(models.Model):
@@ -44,7 +44,7 @@ class Material(models.Model):
     description = models.TextField()
     brand = models.ForeignKey('Brand', on_delete=models.CASCADE)
     active = models.BooleanField(default=True)
-    material_type = models.ForeignKey('MaterialType', verbose_name='type', on_delete=models.SET_NULL, null=True)
+    material_class = models.ForeignKey('MaterialClass', verbose_name='type', on_delete=models.SET_NULL, null=True)
     category = TreeForeignKey('MaterialCategory', on_delete=models.SET_NULL, null=True, blank=True)
     is_taxable = models.BooleanField(default=True)
     is_active = models.BooleanField(default=True)
