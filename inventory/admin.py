@@ -2,8 +2,8 @@ from django.contrib.admin import register, ModelAdmin, TabularInline
 from mptt.admin import MPTTModelAdmin
 
 from inventory.models.customer import Customer, ServiceLocation
-from inventory.models.equipment import Equipment, Condition
-from inventory.models.material import Material, MaterialType, Brand, MaterialCategory
+from inventory.models.equipment import Equipment, Condition, EquipmentCategory, EquipmentField, EquipmentClass
+from inventory.models.material import Material, MaterialClass, Brand, MaterialCategory
 from inventory.models.material import MaterialField
 from inventory.models.stock_location import StockLocation
 from inventory.models.target import Target
@@ -21,9 +21,32 @@ class CustomerAdmin(MPTTModelAdmin):
     list_display = ('first_name', 'last_name', 'company_name', 'parent')
 
 
+class EquipmentFieldInline(TabularInline):
+    model = EquipmentField
+
+
 @register(Equipment)
 class EquipmentAdmin(ModelAdmin):
-    list_display = ('id', 'name', 'status', 'condition', 'stock_location', 'location', 'user',)
+    list_display = ('id', 'name', 'status', 'condition', 'user',)
+
+    inlines = [
+        EquipmentFieldInline,
+    ]
+
+
+@register(EquipmentCategory)
+class EquipmentCategoryAdmin(ModelAdmin):
+    ...
+
+
+@register(EquipmentField)
+class EquipmentFieldAdmin(ModelAdmin):
+    ...
+
+
+@register(EquipmentClass)
+class EquipmentClassAdmin(ModelAdmin):
+    ...
 
 
 @register(StockLocation)
@@ -36,7 +59,7 @@ class MaterialCategoryAdmin(MPTTModelAdmin):
     ...
 
 
-@register(MaterialType)
+@register(MaterialClass)
 class MaterialTypeAdmin(ModelAdmin):
     list_display = ('name',)
 

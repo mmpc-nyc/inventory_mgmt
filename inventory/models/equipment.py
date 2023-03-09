@@ -2,8 +2,34 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
+from mptt.fields import TreeForeignKey
+from mptt.models import MPTTModel
 
-from common.models.location import Location
+from common.models.field import Field
+from inventory.models.stock_location import StockLocation
+
+
+class EquipmentClass(models.Model):
+    name = models.CharField(max_length=64)
+
+    def __str__(self):
+        return f'{self.name}'
+
+
+class EquipmentCategory(MPTTModel):
+    name = models.CharField(max_length=64)
+    description = models.CharField(max_length=256)
+    parent = TreeForeignKey('self', on_delete=models.CASCADE, blank=True, null=True)
+
+    class MPTTMeta:
+        order_insertion_by = ['name', ]
+
+    class Meta:
+        verbose_name = _('Equipment Category')
+        verbose_name_plural = _('Equipment Categories')
+
+    def __str__(self):
+        return f'{self.name}'
 
 
 class Equipment(models.Model):
@@ -20,11 +46,12 @@ class Equipment(models.Model):
 
     name = models.CharField(max_length=150, blank=True, null=True)
     status = models.CharField(max_length=32, choices=Status.choices, default=Status.STORED)
-    stock_location = models.ForeignKey('StockLocation', on_delete=models.SET_NULL, blank=True, null=True)
+    stock_location = models.ForeignKey(StockLocation, on_delete=models.SET_NULL, blank=True, null=True)
     condition = models.ForeignKey('Condition', on_delete=models.CASCADE)
     user = models.ForeignKey(get_user_model(), related_name='equipment_employee', on_delete=models.SET_NULL, null=True,
                              blank=True)
-    location = models.ForeignKey(Location, on_delete=models.SET_NULL, null=True, blank=True)
+    category = TreeForeignKey('EquipmentCategory', on_delete=models.SET_NULL, null=True, blank=True)
+    equipment_class = models.ForeignKey(EquipmentClass, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return f'{self.name}'
@@ -35,6 +62,15 @@ class Equipment(models.Model):
 
     def get_absolute_url(self):
         return reverse_lazy('inventory:equipment_detail', kwargs={'pk': self.pk})
+
+
+class EquipmentField(models.Model):
+    material = models.ForeignKey(Equipment, on_delete=models.CASCADE)
+    field = models.ForeignKey(Field, on_delete=models.CASCADE)
+    value = models.CharField(max_length=255)
+
+    def __str__(self):
+        return f"{self.field.name}: {self.value}"
 
 
 class Condition(models.Model):
