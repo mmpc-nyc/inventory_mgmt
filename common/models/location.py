@@ -2,6 +2,8 @@ from django.db import models
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 
+from common.models.contact import Contact
+
 
 class Location(models.Model):
     name = models.CharField(max_length=150, blank=True)
@@ -28,7 +30,7 @@ class Location(models.Model):
 class LocationContact(models.Model):
     """Contacts associated with specific locations"""
     location = models.ForeignKey('Location', verbose_name=_('Location'), on_delete=models.CASCADE)
-    contact = models.ForeignKey('Contact', verbose_name=_('Contact'), on_delete=models.CASCADE)
+    contact = models.ForeignKey(Contact, verbose_name=_('Contact'), on_delete=models.CASCADE)
 
     def __str__(self):
         return f'{self.location} | {self.contact}'

@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from mptt.fields import TreeForeignKey
 from mptt.models import MPTTModel
 
-from inventory.models.field import Field
+from common.models.field import Field
 from inventory.models.unit import Unit
 from inventory.models.vendor import Vendor
 

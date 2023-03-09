@@ -2,7 +2,7 @@ from django.db import models
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 
-from inventory.models.location import Location
+from common.models.location import Location
 
 
 class StockLocation(models.Model):

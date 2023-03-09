@@ -4,6 +4,8 @@ from django.utils.translation import gettext_lazy as _
 from mptt.fields import TreeForeignKey
 from mptt.models import MPTTModel
 from phonenumber_field.modelfields import PhoneNumberField
+from common.models.location import Location
+from common.models.contact import Contact
 
 
 class Customer(MPTTModel):
@@ -17,10 +19,10 @@ class Customer(MPTTModel):
     company_name = models.CharField(max_length=150, blank=True, default='')
     email = models.EmailField(blank=True)
     phone_number = PhoneNumberField(default='', blank=True)
-    contacts = models.ManyToManyField('Contact', through='CustomerContact', verbose_name=_('Customer Contacts'), related_name='customer_contacts')
-    billing_location = models.ForeignKey('Location', verbose_name=_('Billing Location'),
+    contacts = models.ManyToManyField(Contact, through='CustomerContact', verbose_name=_('Customer Contacts'), related_name='customer_contacts')
+    billing_location = models.ForeignKey(Location, verbose_name=_('Billing Location'),
                                          related_name='billing_location', on_delete=models.CASCADE)
-    service_locations = models.ManyToManyField('Location', through='ServiceLocation', related_name='service_locations')
+    service_locations = models.ManyToManyField(Location, through='ServiceLocation', related_name='service_locations')
     parent = TreeForeignKey('self', on_delete=models.CASCADE, blank=True, null=True)
 
     def get_absolute_url(self):
@@ -44,7 +46,7 @@ class Customer(MPTTModel):
 
 class ServiceLocation(models.Model):
     """Service Locations for Customer."""
-    location = models.ForeignKey('Location', on_delete=models.CASCADE)
+    location = models.ForeignKey(Location, on_delete=models.CASCADE)
     customer = models.ForeignKey('Customer', on_delete=models.CASCADE)
 
     def __str__(self):
@@ -58,4 +60,4 @@ class ServiceLocation(models.Model):
 class CustomerContact(models.Model):
     """Contacts associated with the customer"""
     customer = models.ForeignKey('Customer', verbose_name=_('Customer'), on_delete=models.CASCADE)
-    contact = models.ForeignKey('Contact', verbose_name=_('Contact'), on_delete=models.CASCADE)
+    contact = models.ForeignKey(Contact, verbose_name=_('Contact'), on_delete=models.CASCADE)
