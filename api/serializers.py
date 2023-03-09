@@ -5,7 +5,7 @@ from common.models.contact import Contact, Email, PhoneNumber
 from inventory.models.customer import Customer, ServiceLocation
 from common.models.location import Location, LocationContact
 from inventory.models.equipment import Equipment, Condition
-from inventory.models.material import Material, MaterialType, Brand, MaterialCategory
+from inventory.models.material import Material, MaterialClass, Brand, MaterialCategory
 from inventory.models.stock_location import StockLocation
 
 User = get_user_model()
@@ -133,7 +133,7 @@ class MaterialCategorySerializer(serializers.HyperlinkedModelSerializer):
 
 class MaterialTypeSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = MaterialType
+        model = MaterialClass
         fields = ['id', 'url', 'name']
 
 
