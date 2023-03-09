@@ -1,5 +1,5 @@
 import {Material} from "~/models/material";
-import {StockLocation} from "~/models/warehouse";
+import {StockLocation} from "~/models/stock_location";
 import {User} from "~/models/user";
 import {Location} from "~/models/location";
 
@@ -22,7 +22,7 @@ export class Equipment {
     id?: number
     name: string = ''
     status: EquipmentStatus = "Picked Up"
-    warehouse?: StockLocation
+    stock_location?: StockLocation
     condition?: EquipmentCondition
     user?: User
     location?: Location

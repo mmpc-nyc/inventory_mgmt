@@ -125,7 +125,7 @@ class BrandSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['id', 'url', 'name']
 
 
-class CategorySerializer(serializers.HyperlinkedModelSerializer):
+class MaterialCategorySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = MaterialCategory
         fields = ['name', 'parent']
@@ -162,9 +162,9 @@ class ConditionSerializer(serializers.HyperlinkedModelSerializer):
 
 class EquipmentSerializer(serializers.HyperlinkedModelSerializer):
     material = MaterialSerializer()
-    warehouse = StockLocationSerializer()
+    stock_location = StockLocationSerializer()
     condition = ConditionSerializer(many=False)
 
     class Meta:
         model = Equipment
-        fields = ['id', 'url', 'name', 'material', 'status', 'condition', 'warehouse', 'user', ]
+        fields = ['id', 'url', 'name', 'material', 'status', 'condition', 'stock_location', 'user', ]

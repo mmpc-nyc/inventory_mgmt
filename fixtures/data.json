@@ -1777,16 +1777,6 @@
     }
   },
   {
-    "model": "inventory.unit",
-    "pk": 1,
-    "fields": {}
-  },
-  {
-    "model": "inventory.unit",
-    "pk": 2,
-    "fields": {}
-  },
-  {
     "model": "inventory.vendor",
     "pk": 1,
     "fields": {

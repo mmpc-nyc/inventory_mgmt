@@ -41,7 +41,7 @@ class ContactAdmin(ModelAdmin):
 
 @register(Equipment)
 class EquipmentAdmin(ModelAdmin):
-    list_display = ('id', 'name', 'status', 'condition', 'warehouse', 'location', 'user',)
+    list_display = ('id', 'name', 'status', 'condition', 'stock_location', 'location', 'user',)
 
 
 @register(StockLocation)
@@ -50,7 +50,7 @@ class StockLocationAdmin(ModelAdmin):
 
 
 @register(MaterialCategory)
-class CategoryAdmin(MPTTModelAdmin):
+class MaterialCategoryAdmin(MPTTModelAdmin):
     ...
 
 

@@ -9,7 +9,7 @@ class StockLocation(models.Model):
     """A holder for all equipment"""
 
     class StockLocationStatus(models.TextChoices):
-        """Choices for setting the status of a warehouse location
+        """Choices for setting the status of a stock_location location
         Active: Available for picking up and dropping off items
         Inactive: Not in use. Materials cannot be picked up or dropped off from this location
         Full: The inventory location is currently full. No items can be dropped off.
@@ -31,4 +31,4 @@ class StockLocation(models.Model):
         verbose_name_plural = _('Stock Locations')
 
     def get_absolute_url(self):
-        return reverse_lazy('warehouse:warehouse_detail', kwargs={'pk': self.pk})
+        return reverse_lazy('stock_location:stock_location_detail', kwargs={'pk': self.pk})

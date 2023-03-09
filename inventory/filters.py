@@ -10,7 +10,7 @@ User = get_user_model()
 class MaterialFilter(FilterSet):
     name = filters.CharFilter(field_name='name', lookup_expr='contains')
     status = filters.ChoiceFilter(choices=Material.Status.choices)
-    warehouse = filters.ModelChoiceFilter(queryset=StockLocation.objects.all())
+    stock_location = filters.ModelChoiceFilter(queryset=StockLocation.objects.all())
     user = filters.ModelChoiceFilter(queryset=User.objects.all())
 
     class Meta:

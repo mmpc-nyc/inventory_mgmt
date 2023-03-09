@@ -20,7 +20,7 @@ class AbstractTest(TestCase):
         self.customer_email = "customer@email.com"
         self.customer_phone = "2122198218"
         self.customer_contact = Contact.objects.create(first_name="Customer", last_name="contact")
-        self.location_warehouse = Location.objects.create(
+        self.location_stock_location = Location.objects.create(
             name='Stock Location 1',
             address_line_1='Stock Location 1',
             city="Stock Location City",
@@ -54,7 +54,7 @@ class AbstractTest(TestCase):
             postal_code="00000",
             latitude=0,
             longitude=0, )
-        self.warehouse = StockLocation.objects.create(name='Stock Location1', location=self.location_warehouse)
+        self.stock_location = StockLocation.objects.create(name='Stock Location1', location=self.location_stock_location)
         self.billing_location_1 = Location.objects.create(
             name='Billing Location 1',
             address_line_1='Billing Location 1',
@@ -102,14 +102,14 @@ class AbstractTest(TestCase):
             name='stored_working',
             material=self.material,
             condition=self.condition_working,
-            warehouse=self.warehouse,
-            location=self.warehouse.location
+            stock_location=self.stock_location,
+            location=self.stock_location.location
         )
         self.equipment_picked_up_working_1 = Equipment.objects.create(
             name='picked_up_working_1',
             material=self.material,
             condition=self.condition_working,
-            warehouse=self.warehouse,
+            stock_location=self.stock_location,
             location=self.location_user,
             user=self.user,
             status=Equipment.Status.PICKED_UP
@@ -118,7 +118,7 @@ class AbstractTest(TestCase):
             name='picked_up_working_2',
             material=self.material,
             condition=self.condition_working,
-            warehouse=self.warehouse,
+            stock_location=self.stock_location,
             location=self.location_user,
             user=self.user,
             status=Equipment.Status.PICKED_UP
@@ -127,13 +127,13 @@ class AbstractTest(TestCase):
             name='deployed_working_1',
             material=self.material,
             condition=self.condition_working,
-            warehouse=self.warehouse,
+            stock_location=self.stock_location,
             status=Equipment.Status.DEPLOYED
         )
         self.equipment_deployed_working_2 = Equipment.objects.create(
             name='deployed_working_2',
             material=self.material,
             condition=self.condition_working,
-            warehouse=self.warehouse,
+            stock_location=self.stock_location,
             status=Equipment.Status.DEPLOYED
         )

@@ -2,14 +2,14 @@ import rest_framework.permissions
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, filters
 
-from api.serializers import BrandSerializer, EquipmentSerializer, MaterialSerializer, CategorySerializer, \
+from api.serializers import BrandSerializer, EquipmentSerializer, MaterialSerializer, MaterialCategorySerializer, \
     EmailSerializer, PhoneNumberSerializer, ContactSerializer, CustomerSerializer, LocationSerializer, \
     StockLocationSerializer, MaterialTypeSerializer, UserSerializer
 from inventory.models.equipment import Equipment
 
 
 class BaseViewSet(viewsets.ModelViewSet):
-    permission_classes = [rest_framework.permissions.IsAuthenticated,]
+    permission_classes = [rest_framework.permissions.IsAuthenticated, ]
 
 
 class BrandViewSet(BaseViewSet):
@@ -26,7 +26,7 @@ class EquipmentViewSet(BaseViewSet):
     serializer_class = EquipmentSerializer
     queryset = Equipment.objects.all()
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    filterset_fields= ['name']
+    filterset_fields = ['name']
     search_fields = ['name']
 
 
@@ -35,8 +35,8 @@ class MaterialViewSet(BaseViewSet):
     queryset = serializer_class.Meta.model.objects.all()
 
 
-class CategoryViewSet(BaseViewSet):
-    serializer_class = CategorySerializer
+class MaterialCategoryViewSet(BaseViewSet):
+    serializer_class = MaterialCategorySerializer
     queryset = serializer_class.Meta.model.objects.all()
 
 
@@ -59,7 +59,7 @@ class CustomerViewSet(BaseViewSet):
     serializer_class = CustomerSerializer
     queryset = serializer_class.Meta.model.objects.all()
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    filterset_fields= ['first_name', 'last_name', 'company_name', 'email', 'phone_number']
+    filterset_fields = ['first_name', 'last_name', 'company_name', 'email', 'phone_number']
     search_fields = ['first_name', 'last_name', 'company_name', 'email', 'phone_number']
 
 

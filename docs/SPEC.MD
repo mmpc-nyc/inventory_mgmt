@@ -19,14 +19,14 @@ A place where equipment and materials are stored
 ## 4.1 Name
 Name of Stock Location/ Stock Location
 ## 4.2 Location
-A location associated with the warehouse
+A location associated with the stock_location
 ## 4.3 Status
 ### 4.3.1 Active
-A warehouse location that is available for withdrawing and storing equipment.
+A stock_location location that is available for withdrawing and storing equipment.
 ### 4.3.2 Inactive
-A warehouse location that is not available for withdrawing or storing equipment.
+A stock_location location that is not available for withdrawing or storing equipment.
 ### 4.3.3 Full
-A warehouse location that is full and is not available for storing equipment. It is available for withdrawing equipment.
+A stock_location location that is full and is not available for storing equipment. It is available for withdrawing equipment.
 ## 5.1 Category
 A hierarchical way of grouping generic materials. For example, an 18 Inch Industrial Fan would be under the category of Fans, which has a subcategory of 18 inch fans.
 ## 5.2 Status
@@ -75,11 +75,11 @@ Decommission’s equipment. It can no longer be used or stored. Sets status to D
 ### 7.2.3 Deploy
 Deploys equipment at the customer location and sets the status to Deployed
 ### 7.2.4 Store
-Stores the equipment at warehouse and sets the status to Stored
+Stores the equipment at stock_location and sets the status to Stored
 ### 7.2.5 Transfer
 Transfers equipment from one user to another. Sets status to Picked Up
 ### 7.2.6 Withdraw
-Picks up equipment from warehouse and sets status to Picked Up
+Picks up equipment from stock_location and sets status to Picked Up
 
 # 8 Order
 An order for requested services, materials or equipment. An order consists of three activities. Collect, Deploy and Inspect

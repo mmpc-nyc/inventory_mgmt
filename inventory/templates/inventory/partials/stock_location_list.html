@@ -6,7 +6,7 @@
         <span class="location">Location</span>
         <span class="actions">Actions</span>
     </li>
-{% for warehouse in warehouse_list %}
-    {% include partial_detail_template with warehouse=warehouse %}
+{% for stock_location in stock_location_list %}
+    {% include partial_detail_template with stock_location=stock_location %}
 {% endfor %}
 </ul>

@@ -1,6 +1,6 @@
 from rest_framework import routers
 from api.viewsets import BrandViewSet, EquipmentViewSet, MaterialViewSet, EmailViewSet, PhoneNumberViewSet, \
-    ContactViewSet, CustomerViewSet, LocationViewSet, CategoryViewSet, \
+    ContactViewSet, CustomerViewSet, LocationViewSet, MaterialCategoryViewSet, \
     StockLocationViewSet, MaterialTypeViewSet, UserViewSet
 
 router = routers.DefaultRouter()
@@ -12,6 +12,6 @@ router.register(r'phone_numbers', PhoneNumberViewSet)
 router.register(r'contacts', ContactViewSet)
 router.register(r'customers', CustomerViewSet)
 router.register(r'locations', LocationViewSet)
-router.register(r'categories', CategoryViewSet)
-router.register(r'warehouse', StockLocationViewSet)
+router.register(r'categories', MaterialCategoryViewSet)
+router.register(r'stock_location', StockLocationViewSet)
 router.register(r'users', UserViewSet)
