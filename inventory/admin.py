@@ -1,16 +1,16 @@
 from django.contrib.admin import register, ModelAdmin, TabularInline
 from mptt.admin import MPTTModelAdmin
 
-from inventory.models.field import Field
-from inventory.models.location import Location
-from inventory.models.material import MaterialField
-from inventory.models.stock_location import StockLocation
 from inventory.models.contact import Contact, ContactPhoneNumber, ContactEmail, PhoneNumber
 from inventory.models.customer import Customer, ServiceLocation
-from inventory.models.material import Material, MaterialType, Brand, MaterialCategory
 from inventory.models.equipment import Equipment, Condition
+from inventory.models.field import Field
+from inventory.models.location import Location
+from inventory.models.material import Material, MaterialType, Brand, MaterialCategory
+from inventory.models.material import MaterialField
+from inventory.models.stock_location import StockLocation
 from inventory.models.target import Target
-from inventory.models.unit import Unit
+from inventory.models.unit import Unit, UnitCategory
 from inventory.models.vendor import Vendor
 
 
@@ -105,7 +105,12 @@ class VendorAdmin(ModelAdmin):
 
 @register(Unit)
 class UnitAdmin(ModelAdmin):
-    ...
+    list_display = ['name', 'abbreviation', 'conversion_factor', 'is_metric']
+
+
+@register(UnitCategory)
+class UnitCategoryAdmin(ModelAdmin):
+    pass
 
 
 @register(Target)

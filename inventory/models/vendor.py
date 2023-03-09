@@ -15,7 +15,7 @@ class Vendor(models.Model):
 
     class Meta:
         verbose_name = _('Vendor')
-        verbose_name_plural = _('Vendor')
+        verbose_name_plural = _('Vendors')
 
     def get_absolute_url(self):
         return reverse_lazy('warehouse:vendor_detail', kwargs={'pk': self.pk})

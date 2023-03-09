@@ -2,8 +2,6 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
-from inventory.models.material import Material
-
 
 class Equipment(models.Model):
     """Equipment refers to tracked physical assets such as machinery and tools used in a business, that are not vehicles and are tracked for inventory purposes. These assets are depreciable and can be used to generate income or are necessary for production. The inventory tracking system maintains their quantity, location, status, maintenance and other relevant information."""
@@ -19,7 +17,7 @@ class Equipment(models.Model):
 
     name = models.CharField(max_length=150, blank=True, null=True)
     status = models.CharField(max_length=32, choices=Status.choices, default=Status.STORED)
-    warehouse = models.ForeignKey('StockLocation', on_delete=models.SET_NULL, blank=True, null=True)
+    stock_location = models.ForeignKey('StockLocation', on_delete=models.SET_NULL, blank=True, null=True)
     condition = models.ForeignKey('Condition', on_delete=models.CASCADE)
     user = models.ForeignKey(get_user_model(), related_name='equipment_employee', on_delete=models.SET_NULL, null=True,
                              blank=True)

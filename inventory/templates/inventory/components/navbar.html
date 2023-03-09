@@ -4,7 +4,6 @@
         {% if request.user.is_authenticated %}
             <li class="navbar-link"><a href="{% url 'inventory:equipment_list' %}">Equipment</a></li>
             <li class="navbar-link"><a href="{% url 'inventory:material_list' %}">Materials</a></li>
-            <li class="navbar-link"><a href="{% url 'inventory:interchangeablematerial_list' %}">Interchangeable Materials</a></li>
             <li class="navbar-link"><a href="{% url 'inventory:customer_list' %}">Customers</a></li>
         {% endif %}
     </ul>

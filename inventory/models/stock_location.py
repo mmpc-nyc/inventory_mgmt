@@ -27,8 +27,8 @@ class StockLocation(models.Model):
         return f'{self.name}'
 
     class Meta:
-        verbose_name = _('StockLocation')
-        verbose_name_plural = _('StockLocations')
+        verbose_name = _('Stock Location')
+        verbose_name_plural = _('Stock Locations')
 
     def get_absolute_url(self):
         return reverse_lazy('warehouse:warehouse_detail', kwargs={'pk': self.pk})
