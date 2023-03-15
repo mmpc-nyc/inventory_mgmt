@@ -1,6 +1,8 @@
 from django.contrib.admin import register, ModelAdmin, TabularInline
+from django.contrib.contenttypes.admin import GenericStackedInline
 from mptt.admin import MPTTModelAdmin
 
+from common.models.field import Field
 from inventory.models.customer import Customer, ServiceLocation
 from inventory.models.equipment import Equipment, Condition, EquipmentCategory, EquipmentField, EquipmentClass
 from inventory.models.material import Material, MaterialClass, Brand, MaterialCategory
@@ -34,11 +36,6 @@ class EquipmentAdmin(ModelAdmin):
     ]
 
 
-@register(EquipmentCategory)
-class EquipmentCategoryAdmin(ModelAdmin):
-    ...
-
-
 @register(EquipmentField)
 class EquipmentFieldAdmin(ModelAdmin):
     ...
@@ -52,11 +49,6 @@ class EquipmentClassAdmin(ModelAdmin):
 @register(StockLocation)
 class StockLocationAdmin(ModelAdmin):
     list_display = ('name', 'status', 'location',)
-
-
-@register(MaterialCategory)
-class MaterialCategoryAdmin(MPTTModelAdmin):
-    ...
 
 
 @register(MaterialClass)
@@ -76,6 +68,11 @@ class ConditionAdmin(ModelAdmin):
 
 class MaterialFieldInline(TabularInline):
     model = MaterialField
+    extra = 0
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        kwargs['queryset'] = Field.objects.all()
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 
 @register(Material)
@@ -86,6 +83,12 @@ class MaterialAdmin(ModelAdmin):
         MaterialFieldInline,
     ]
     history_list_display = list_display
+
+
+class GenericFieldInline(GenericStackedInline):
+    model = Field
+    extra = 0
+
 
 
 @register(Vendor)
@@ -106,3 +109,14 @@ class UnitCategoryAdmin(ModelAdmin):
 @register(Target)
 class TargetAdmin(ModelAdmin):
     list_display = ['name', 'description', 'parent', ]
+    ordering = 'parent', 'name'
+
+
+@register(MaterialCategory)
+class MaterialCategoryAdmin(MPTTModelAdmin):
+    inlines = [GenericFieldInline]
+
+
+@register(EquipmentCategory)
+class EquipmentCategoryAdmin(ModelAdmin):
+    inlines = [GenericFieldInline]
