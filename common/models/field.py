@@ -41,3 +41,8 @@ class Field(models.Model):
 
     def __str__(self):
         return f'{self.name} | {self.content_object}'
+
+    class Meta:
+        indexes = [
+            models.Index(fields=["content_type", "object_id"]),
+        ]

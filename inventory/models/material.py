@@ -1,3 +1,4 @@
+from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
@@ -12,6 +13,7 @@ from inventory.models.vendor import Vendor
 class MaterialCategory(MPTTModel):
     name = models.CharField(max_length=64)
     description = models.CharField(max_length=256)
+    fields = GenericRelation(Field)
     parent = TreeForeignKey('self', on_delete=models.CASCADE, blank=True, null=True)
 
     class MPTTMeta:
