@@ -21,7 +21,6 @@
       <excludeFolder url="file://$MODULE_DIR$/static" />
       <excludeFolder url="file://$MODULE_DIR$/inventory/migrations" />
       <excludeFolder url="file://$MODULE_DIR$/users/migrations" />
-      <excludeFolder url="file://$MODULE_DIR$/fixtures" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.11 (inventory_mgmt)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
