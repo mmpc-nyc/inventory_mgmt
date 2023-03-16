@@ -42,3 +42,5 @@ tzdata==2022.7
 uritemplate==4.1.1
 urllib3==1.26.14
 Werkzeug==2.2.3
+
+selenium~=4.8.2
