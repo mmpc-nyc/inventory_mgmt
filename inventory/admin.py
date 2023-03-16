@@ -13,6 +13,21 @@ from inventory.models.unit import Unit, UnitCategory
 from inventory.models.vendor import Vendor
 
 
+class GenericFieldInline(GenericStackedInline):
+    model = Field
+    extra = 0
+
+
+class EquipmentFieldInline(TabularInline):
+    model = EquipmentField
+    extra = 0
+
+
+class MaterialFieldInline(TabularInline):
+    model = MaterialField
+    extra = 0
+
+
 @register(ServiceLocation)
 class CustomerLocationAdmin(ModelAdmin):
     list_display = ('customer', 'location')
@@ -21,10 +36,6 @@ class CustomerLocationAdmin(ModelAdmin):
 @register(Customer)
 class CustomerAdmin(MPTTModelAdmin):
     list_display = ('first_name', 'last_name', 'company_name', 'parent')
-
-
-class EquipmentFieldInline(TabularInline):
-    model = EquipmentField
 
 
 @register(Equipment)
@@ -66,15 +77,6 @@ class ConditionAdmin(ModelAdmin):
     list_display = ['name', 'description']
 
 
-class MaterialFieldInline(TabularInline):
-    model = MaterialField
-    extra = 0
-
-    def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        kwargs['queryset'] = Field.objects.all()
-        return super().formfield_for_foreignkey(db_field, request, **kwargs)
-
-
 @register(Material)
 class MaterialAdmin(ModelAdmin):
     list_display = ('name', 'brand')
@@ -83,12 +85,6 @@ class MaterialAdmin(ModelAdmin):
         MaterialFieldInline,
     ]
     history_list_display = list_display
-
-
-class GenericFieldInline(GenericStackedInline):
-    model = Field
-    extra = 0
-
 
 
 @register(Vendor)
