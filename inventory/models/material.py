@@ -1,11 +1,14 @@
 from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from mptt.fields import TreeForeignKey
 from mptt.models import MPTTModel
 
 from common.models.field import Field
+from inventory.models.brand import Brand
 from inventory.models.target import Target
 from inventory.models.unit import Unit
 from inventory.models.vendor import Vendor
@@ -13,16 +16,19 @@ from inventory.models.vendor import Vendor
 
 class Material(models.Model):
     """
-    Represents a material or product that can be sold, purchased, or used by the organization.
+        Model for a Material
+        A material is a physical item that can be used in the provision of a service.
+        Each material has a name and a unique identifier, and can be associated with multiple material classes.
+        The priority of the material within a material class determines its suggested order of use.
     """
 
     name = models.CharField(max_length=150)
     description = models.TextField()
-    brand = models.ForeignKey('Brand', on_delete=models.CASCADE)
+    brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
     active = models.BooleanField(default=True)
-    material_class = models.ForeignKey('MaterialClass', verbose_name='class', on_delete=models.SET_NULL, null=True)
+    material_classes = models.ManyToManyField('MaterialClass', through='MaterialClassMembership')
     category = TreeForeignKey('MaterialCategory', on_delete=models.SET_NULL, null=True, blank=True)
-    targets = GenericRelation(Target)
+    targets = models.ManyToManyField(Target, related_name='material_targets')
     is_taxable = models.BooleanField(default=True)
     is_active = models.BooleanField(default=True)
     is_product = models.BooleanField(default=False)
@@ -67,11 +73,12 @@ class MaterialCategory(MPTTModel):
 
 class MaterialClass(models.Model):
     """
-    Represents a category of materials that can be used interchangeably based on their
-    properties or intended use, allowing them to be grouped together for easy access.
+    A material class is a group of materials that can be used interchangeably in the provision of a service.
+    Each material class has a name and can include multiple materials, each with a priority order.
     """
 
     name = models.CharField(max_length=64)
+    description = models.TextField()
 
     def __str__(self):
         return f'{self.name}'
@@ -79,6 +86,25 @@ class MaterialClass(models.Model):
     class Meta:
         verbose_name = _('Material Class')
         verbose_name_plural = _('Material Classes')
+
+
+class MaterialClassMembership(models.Model):
+    """
+    A material class membership defines the relationship between a material and a material class.
+    It also defines the priority of the material within the material class.
+    """
+    material = models.ForeignKey(Material, on_delete=models.CASCADE)
+    material_class = models.ForeignKey(MaterialClass, on_delete=models.CASCADE)
+    priority = models.PositiveIntegerField()
+
+    class Meta:
+        unique_together = ('material', 'material_class')
+        ordering = ['priority']
+        verbose_name = _('Material Class Membership')
+        verbose_name_plural = _('Material Class Memberships')
+
+    def __str__(self):
+        return f'{self.material.name} ({self.material_class.name})'
 
 
 class MaterialField(models.Model):
@@ -90,15 +116,29 @@ class MaterialField(models.Model):
         return f"{self.field.name}: {self.value}"
 
 
-class Brand(models.Model):
-    """
-    Represents a brand or manufacturer of products.
-    """
-    name = models.CharField(max_length=64)
+@receiver(pre_save, sender=MaterialClassMembership)
+def update_material_priority(sender, instance, **kwargs):
+    # Get the current priority
+    current_priority = instance.priority
 
-    def __str__(self):
-        return f'{self.name}'
+    # Check if the priority has changed
+    if instance.pk:
+        original_instance = sender.objects.get(pk=instance.pk)
+        if original_instance.priority == instance.priority:
+            return
 
-    class Meta:
-        verbose_name = _('Brand')
-        verbose_name_plural = _('Brands')
+    # Get the other memberships with the same material and material class
+    other_memberships = sender.objects.filter(material=instance.material, material_class=instance.material_class)
+
+    # If the priority is already the lowest, there is nothing to do
+    if current_priority == 1:
+        return
+
+    # If the priority is greater than 1, move the lower-priority memberships up by one
+    for membership in other_memberships:
+        if membership.pk != instance.pk and membership.priority < current_priority:
+            membership.priority += 1
+            membership.save()
+
+    # Update the priority of the current membership
+    instance.priority = 1
