@@ -12,13 +12,15 @@ from inventory.models.vendor import Vendor
 
 
 class Material(models.Model):
-    """A unique identifier for a material consisting of name, brand, material type"""
+    """
+    Represents a material or product that can be sold, purchased, or used by the organization.
+    """
 
     name = models.CharField(max_length=150)
     description = models.TextField()
     brand = models.ForeignKey('Brand', on_delete=models.CASCADE)
     active = models.BooleanField(default=True)
-    material_class = models.ForeignKey('MaterialClass', verbose_name='type', on_delete=models.SET_NULL, null=True)
+    material_class = models.ForeignKey('MaterialClass', verbose_name='class', on_delete=models.SET_NULL, null=True)
     category = TreeForeignKey('MaterialCategory', on_delete=models.SET_NULL, null=True, blank=True)
     targets = GenericRelation(Target)
     is_taxable = models.BooleanField(default=True)
@@ -44,6 +46,9 @@ class Material(models.Model):
 
 
 class MaterialCategory(MPTTModel):
+    """
+    Represents a category of materials that share common fields, properties, or characteristics.
+    """
     name = models.CharField(max_length=64)
     description = models.CharField(max_length=256)
     fields = GenericRelation(Field)
@@ -61,7 +66,11 @@ class MaterialCategory(MPTTModel):
 
 
 class MaterialClass(models.Model):
-    #  TODO  Write Description
+    """
+    Represents a category of materials that can be used interchangeably based on their
+    properties or intended use, allowing them to be grouped together for easy access.
+    """
+
     name = models.CharField(max_length=64)
 
     def __str__(self):
@@ -82,7 +91,9 @@ class MaterialField(models.Model):
 
 
 class Brand(models.Model):
-    #  TODO  Write Description
+    """
+    Represents a brand or manufacturer of products.
+    """
     name = models.CharField(max_length=64)
 
     def __str__(self):
