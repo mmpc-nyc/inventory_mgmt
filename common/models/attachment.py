@@ -1,5 +1,6 @@
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 
 class Attachment(models.Model):
@@ -12,3 +13,7 @@ class Attachment(models.Model):
 
     def __str__(self):
         return f'{self.file.name}'
+
+    class Meta:
+        verbose_name = _('Attachment')
+        verbose_name_plural = _('Attachments')

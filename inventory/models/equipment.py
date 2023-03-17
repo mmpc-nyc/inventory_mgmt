@@ -16,6 +16,10 @@ class EquipmentClass(models.Model):
     def __str__(self):
         return f'{self.name}'
 
+    class Meta:
+        verbose_name = _('Equipment Class')
+        verbose_name_plural = _('Equipment Classes')
+
 
 class EquipmentCategory(MPTTModel):
     name = models.CharField(max_length=64)
