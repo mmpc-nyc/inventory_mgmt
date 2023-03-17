@@ -4,6 +4,8 @@ from inventory.models.material import Material, MaterialClass
 from common.models.target import Target
 from orders.models.warranty import Warranty
 
+from django.utils.translation import gettext_lazy as _
+
 
 class Service(models.Model):
     # TODO Check this model to see if it works properly
@@ -24,10 +26,18 @@ class Service(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = _('Service')
+        verbose_name_plural = _('Services')
+
 
 class PricingScheme(models.Model):
     # TODO Define the properties for pricing scheme
     name = models.CharField(max_length=255)
+
+    class Meta:
+        verbose_name = _('Pricing Scheme')
+        verbose_name_plural = _('Pricing Schemes')
 
 
 class RequiredServiceMaterial(models.Model):
@@ -38,6 +48,10 @@ class RequiredServiceMaterial(models.Model):
     def __str__(self):
         return f'{self.material} ({self.quantity})'
 
+    class Meta:
+        verbose_name = _('Required Service Material')
+        verbose_name_plural = _('Required Service Materials')
+
 
 class SuggestedServiceMaterial(models.Model):
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
@@ -46,6 +60,10 @@ class SuggestedServiceMaterial(models.Model):
 
     def __str__(self):
         return f'{self.material} ({self.quantity})'
+
+    class Meta:
+        verbose_name = _('Suggested Service Material')
+        verbose_name_plural = _('Suggested Service Materials')
 
 
 class ServiceProduct(models.Model):
@@ -56,10 +74,18 @@ class ServiceProduct(models.Model):
     def __str__(self):
         return f'{self.product} ({self.quantity})'
 
+    class Meta:
+        verbose_name = _('Service Product')
+        verbose_name_plural = _('Service Products')
+
 
 class ServiceMaterialClass(models.Model):
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
     material_class = models.ForeignKey(MaterialClass, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = _('Service Material Class')
+        verbose_name_plural = _('ServiceMaterialClasses')
 
 
 class ServiceWarranty(models.Model):
@@ -68,3 +94,7 @@ class ServiceWarranty(models.Model):
 
     def __str__(self):
         return f'{self.warranty.name} ({self.service.name})'
+
+    class Meta:
+        verbose_name = _('Service Warranty')
+        verbose_name_plural = _('Service Warranties')

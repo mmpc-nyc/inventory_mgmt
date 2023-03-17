@@ -115,6 +115,10 @@ class MaterialField(models.Model):
     def __str__(self):
         return f"{self.field.name}: {self.value}"
 
+    class Meta:
+        verbose_name = _('Material Field')
+        verbose_name_plural = _('Material Fields')
+
 
 @receiver(pre_save, sender=MaterialClassMembership)
 def update_material_priority(sender, instance, **kwargs):

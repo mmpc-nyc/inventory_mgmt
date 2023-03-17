@@ -43,6 +43,8 @@ class Field(models.Model):
         return f'{self.name} | {self.content_object}'
 
     class Meta:
+        verbose_name = _('Field')
+        verbose_name_plural = _('Fields')
         indexes = [
             models.Index(fields=["content_type", "object_id"]),
         ]
