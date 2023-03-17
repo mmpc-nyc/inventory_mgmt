@@ -1,5 +1,6 @@
 from django.contrib.admin import register, ModelAdmin
 
+from common.models.document import Document
 from common.models.contact import Contact, PhoneNumber, ContactEmail, ContactPhoneNumber
 from common.models.field import Field
 from common.models.location import Location
@@ -51,3 +52,28 @@ class UnitCategoryAdmin(ModelAdmin):
 @register(Unit)
 class UnitAdmin(ModelAdmin):
     list_display = ['name', 'abbreviation', 'conversion_factor', 'is_metric']
+
+
+@register(Document)
+class AgreementAdmin(ModelAdmin):
+    list_display = ('sender', 'document', 'status', 'date_created')
+    list_filter = ('status', 'date_created')
+    search_fields = ('sender__username', 'recipients__username', 'document__name')
+    readonly_fields = ('date_created', 'date_sent', 'date_completed', 'signature')
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        else:
+            return qs.filter(sender=request.user) | qs.filter(recipients=request.user)
+
+    def has_change_permission(self, request, obj=None):
+        if obj is not None and not request.user.is_superuser and obj.sender != request.user:
+            return False
+        return True
+
+    def has_delete_permission(self, request, obj=None):
+        if obj is not None and not request.user.is_superuser and obj.sender != request.user:
+            return False
+        return True
