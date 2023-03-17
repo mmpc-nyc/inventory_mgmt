@@ -1,4 +1,4 @@
-from inventory.models.customer import Customer
+from customers.models.customer import Customer
 from inventory.views.base_views import CustomDeleteView, CustomCreateView, CustomDetailView, CustomUpdateView, \
     CustomListView
 

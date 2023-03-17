@@ -1,0 +1,236 @@
+[
+  {
+    "model": "common.target",
+    "pk": 1,
+    "fields": {
+      "name": "Pest",
+      "description": "Unwanted organism, such as insects, rodents, or weeds, that can cause harm or damage.",
+      "parent": null,
+      "lft": 1,
+      "rght": 36,
+      "tree_id": 1,
+      "level": 0
+    }
+  },
+  {
+    "model": "common.target",
+    "pk": 2,
+    "fields": {
+      "name": "Insect",
+      "description": "A class of arthropods with three body segments, six legs, and wings in some species.",
+      "parent": 1,
+      "lft": 2,
+      "rght": 23,
+      "tree_id": 1,
+      "level": 1
+    }
+  },
+  {
+    "model": "common.target",
+    "pk": 3,
+    "fields": {
+      "name": "Crawling Insect",
+      "description": "A type of insect that moves around on its legs and body, such as ants, cockroaches, and bed bugs.",
+      "parent": 2,
+      "lft": 3,
+      "rght": 14,
+      "tree_id": 1,
+      "level": 2
+    }
+  },
+  {
+    "model": "common.target",
+    "pk": 4,
+    "fields": {
+      "name": "Cockroach",
+      "description": "A type of crawling insect that is flattened, has long antennae and legs, and is known for its ability to adapt to various environments.",
+      "parent": 3,
+      "lft": 4,
+      "rght": 11,
+      "tree_id": 1,
+      "level": 3
+    }
+  },
+  {
+    "model": "common.target",
+    "pk": 5,
+    "fields": {
+      "name": "German Cockroach",
+      "description": "Small light brown or tan insect, with two black stripes on its back. Often found in kitchens, bathrooms, and other areas with moisture.",
+      "parent": 4,
+      "lft": 5,
+      "rght": 6,
+      "tree_id": 1,
+      "level": 4
+    }
+  },
+  {
+    "model": "common.target",
+    "pk": 6,
+    "fields": {
+      "name": "American Cockroach",
+      "description": "Large reddish-brown insect, with a yellowish figure-8 pattern on its head. Often found in commercial and residential buildings.",
+      "parent": 4,
+      "lft": 7,
+      "rght": 8,
+      "tree_id": 1,
+      "level": 4
+    }
+  },
+  {
+    "model": "common.target",
+    "pk": 7,
+    "fields": {
+      "name": "Oriental Cockroach",
+      "description": "Dark brown or black insect, with a shiny appearance. Often found in damp areas, such as basements and sewers.",
+      "parent": 4,
+      "lft": 9,
+      "rght": 10,
+      "tree_id": 1,
+      "level": 4
+    }
+  },
+  {
+    "model": "common.target",
+    "pk": 8,
+    "fields": {
+      "name": "Flying Insect",
+      "description": "A type of insect that has wings and can fly, such as flies, mosquitoes, and wasps.",
+      "parent": 2,
+      "lft": 15,
+      "rght": 22,
+      "tree_id": 1,
+      "level": 2
+    }
+  },
+  {
+    "model": "common.target",
+    "pk": 9,
+    "fields": {
+      "name": "Mosquito",
+      "description": "Small flying insect with long legs, a slender body, and elongated mouthparts used to feed on blood. Can transmit diseases to humans and animals.",
+      "parent": 8,
+      "lft": 16,
+      "rght": 17,
+      "tree_id": 1,
+      "level": 3
+    }
+  },
+  {
+    "model": "common.target",
+    "pk": 10,
+    "fields": {
+      "name": "Fruit Fly",
+      "description": "Small flying insect with a tan or brown body and red eyes. Often found near ripe or decaying fruits and vegetables.",
+      "parent": 8,
+      "lft": 18,
+      "rght": 19,
+      "tree_id": 1,
+      "level": 3
+    }
+  },
+  {
+    "model": "common.target",
+    "pk": 11,
+    "fields": {
+      "name": "Wasp",
+      "description": "Flying insect with a slender body and two pairs of wings. Can sting multiple times and cause allergic reactions.",
+      "parent": 8,
+      "lft": 20,
+      "rght": 21,
+      "tree_id": 1,
+      "level": 3
+    }
+  },
+  {
+    "model": "common.target",
+    "pk": 12,
+    "fields": {
+      "name": "Bed Bug",
+      "description": "Small, reddish-brown insects that feed on blood and are often found in homes, hotels, and other areas where people sleep.",
+      "parent": 3,
+      "lft": 12,
+      "rght": 13,
+      "tree_id": 1,
+      "level": 3
+    }
+  },
+  {
+    "model": "common.target",
+    "pk": 13,
+    "fields": {
+      "name": "Rodent",
+      "description": "A type of mammal characterized by their continuously growing incisors and their ability to gnaw on various materials. They can be pests and pose health risks, as they can transmit diseases and cause damage to property.",
+      "parent": 1,
+      "lft": 24,
+      "rght": 35,
+      "tree_id": 1,
+      "level": 1
+    }
+  },
+  {
+    "model": "common.target",
+    "pk": 14,
+    "fields": {
+      "name": "Mouse",
+      "description": "A small, light brown or gray rodent with a pointed nose and large ears. They are characterized by their continuously growing incisors and their ability to gnaw on various materials. Often found in homes, restaurants, and other areas with food sources.",
+      "parent": 13,
+      "lft": 25,
+      "rght": 28,
+      "tree_id": 1,
+      "level": 2
+    }
+  },
+  {
+    "model": "common.target",
+    "pk": 15,
+    "fields": {
+      "name": "Rat",
+      "description": "A larger rodent with a blunt nose and small ears. They are characterized by their continuously growing incisors and their ability to gnaw on various materials. Often found in basements, sewers, and other areas with moisture.",
+      "parent": 13,
+      "lft": 29,
+      "rght": 34,
+      "tree_id": 1,
+      "level": 2
+    }
+  },
+  {
+    "model": "common.target",
+    "pk": 16,
+    "fields": {
+      "name": "House Mouse",
+      "description": "Small, light brown or gray rodent with a pointed nose and large ears. Often found in homes, restaurants, and other areas with food sources.",
+      "parent": 14,
+      "lft": 26,
+      "rght": 27,
+      "tree_id": 1,
+      "level": 3
+    }
+  },
+  {
+    "model": "common.target",
+    "pk": 17,
+    "fields": {
+      "name": "Norway Rat",
+      "description": "Large, brown or gray rodent with a blunt nose and small ears. Often found in basements, sewers, and other areas with moisture.",
+      "parent": 15,
+      "lft": 30,
+      "rght": 31,
+      "tree_id": 1,
+      "level": 3
+    }
+  },
+  {
+    "model": "common.target",
+    "pk": 18,
+    "fields": {
+      "name": "Roof Rat",
+      "description": "Smaller, dark brown or black rodent with a pointed nose and large ears. Often found in attics, trees, and other elevated areas.",
+      "parent": 15,
+      "lft": 32,
+      "rght": 33,
+      "tree_id": 1,
+      "level": 3
+    }
+  }
+]

@@ -9,8 +9,8 @@ from mptt.models import MPTTModel
 
 from common.models.field import Field
 from inventory.models.brand import Brand
-from inventory.models.target import Target
-from inventory.models.unit import Unit
+from common.models.target import Target
+from common.models.unit import Unit
 from inventory.models.vendor import Vendor
 
 

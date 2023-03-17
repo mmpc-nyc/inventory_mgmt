@@ -1,7 +1,7 @@
 from django.db import models
 
 from inventory.models.material import Material, MaterialClass
-from inventory.models.target import Target
+from common.models.target import Target
 from inventory.models.warranty import WarrantyTemplate
 
 

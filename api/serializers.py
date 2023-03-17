@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
 from common.models.contact import Contact, Email, PhoneNumber
-from inventory.models.customer import Customer, ServiceLocation
+from customers.models.customer import Customer, ServiceLocation
 from common.models.location import Location, LocationContact
 from inventory.models.equipment import Equipment, Condition
 from inventory.models.material import Material, MaterialClass, MaterialCategory

@@ -1,0 +1,24 @@
+[
+  {
+    "model": "inventory.material",
+    "pk": 1,
+    "fields": {
+      "name": "Maxforce FC Ant Bait Station",
+      "description": "Maxforce FC Ant Bait Stations are all about fast control and secondary kill. Due to Fipronil and its accelerated Domino Effect kill, Maxforce Ant Bait Stations start to kill ants in just six hours. Tests show 90% population reductions in just four days for ants. This product is more of a protein-based bait. We recommend using these bait stations along with a gel bait which is mostly a source of sugar since ants could be in the mood for either protein or sugar. Gels and stations provide different dietary needs for ants. The ants may eat the gel, or bait stations, or both. And their diet may change frequently between gels and the bait stations. It is better to provide them with both for an optimum kill.",
+      "brand": 1,
+      "active": true,
+      "material_class": 1,
+      "category": 1,
+      "is_taxable": true,
+      "is_active": true,
+      "is_product": false,
+      "product_sell_price": "0.00",
+      "material_sell_price": "0.00",
+      "preferred_vendor": 1,
+      "usage_unit": 1,
+      "retail_unit": 2,
+      "min_stock": 0,
+      "max_stock": 0
+    }
+  }
+]
