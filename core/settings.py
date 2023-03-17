@@ -36,7 +36,9 @@ INSTALLED_APPS = [
     'api',
     'inventory',
     'users',
-    'common'
+    'common',
+    'customers',
+    'orders',
 ]
 
 MIDDLEWARE = [

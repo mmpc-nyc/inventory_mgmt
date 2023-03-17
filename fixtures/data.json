@@ -266,6 +266,111 @@
     }
 },
 {
+    "model": "contenttypes.contenttype",
+    "fields": {
+        "app_label": "inventory",
+        "model": "pricingscheme"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "fields": {
+        "app_label": "inventory",
+        "model": "requiredservicematerial"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "fields": {
+        "app_label": "inventory",
+        "model": "service"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "fields": {
+        "app_label": "inventory",
+        "model": "warrantytemplate"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "fields": {
+        "app_label": "inventory",
+        "model": "warranty"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "fields": {
+        "app_label": "inventory",
+        "model": "suggestedservicematerial"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "fields": {
+        "app_label": "inventory",
+        "model": "serviceproduct"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "fields": {
+        "app_label": "inventory",
+        "model": "servicematerialclass"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "fields": {
+        "app_label": "inventory",
+        "model": "materialclassmembership"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "fields": {
+        "app_label": "common",
+        "model": "unitcategory"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "fields": {
+        "app_label": "common",
+        "model": "unit"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "fields": {
+        "app_label": "common",
+        "model": "target"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "fields": {
+        "app_label": "customers",
+        "model": "customercontact"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "fields": {
+        "app_label": "customers",
+        "model": "customer"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "fields": {
+        "app_label": "customers",
+        "model": "servicelocation"
+    }
+},
+{
     "model": "sessions.session",
     "pk": "k109unhjmgjmcuesfqz1ac32zd1er8rk",
     "fields": {
@@ -294,6 +399,13 @@
     "fields": {
         "domain": "example.com",
         "name": "example.com"
+    }
+},
+{
+    "model": "inventory.brand",
+    "pk": 1,
+    "fields": {
+        "name": "MaxForce"
     }
 },
 {
@@ -340,206 +452,6 @@
     }
 },
 {
-    "model": "inventory.unitcategory",
-    "pk": 1,
-    "fields": {
-        "name": "Length",
-        "description": "The measurement of distance between two points. Common units include meters, feet, and inches."
-    }
-},
-{
-    "model": "inventory.unitcategory",
-    "pk": 2,
-    "fields": {
-        "name": "Mass",
-        "description": "The amount of matter in an object. Common units include kilograms, pounds, and grams."
-    }
-},
-{
-    "model": "inventory.unitcategory",
-    "pk": 3,
-    "fields": {
-        "name": "Volume",
-        "description": "The amount of space occupied by an object or substance. Common units include liters, gallons, and cubic meters."
-    }
-},
-{
-    "model": "inventory.unitcategory",
-    "pk": 4,
-    "fields": {
-        "name": "Time",
-        "description": "The duration or interval between two events. Common units include seconds, minutes, and hours."
-    }
-},
-{
-    "model": "inventory.unitcategory",
-    "pk": 5,
-    "fields": {
-        "name": "Temperature",
-        "description": "The degree of hotness or coldness of an object or substance. Common units include Celsius, Fahrenheit, and Kelvin."
-    }
-},
-{
-    "model": "inventory.unitcategory",
-    "pk": 6,
-    "fields": {
-        "name": "Energy",
-        "description": "The ability to do work or cause a change. Common units include joules, calories, and kilowatt-hours."
-    }
-},
-{
-    "model": "inventory.unitcategory",
-    "pk": 7,
-    "fields": {
-        "name": "Pressure",
-        "description": "The force per unit area exerted by a substance. Common units include pascals, atmospheres, and pounds per square inch."
-    }
-},
-{
-    "model": "inventory.unitcategory",
-    "pk": 8,
-    "fields": {
-        "name": "Electric Current",
-        "description": "The flow of electric charge in a circuit. Common units include amperes and milliamperes."
-    }
-},
-{
-    "model": "inventory.unitcategory",
-    "pk": 9,
-    "fields": {
-        "name": "Frequency",
-        "description": "The number of occurrences of a repeating event per unit time. Common units include hertz and megahertz."
-    }
-},
-{
-    "model": "inventory.unitcategory",
-    "pk": 10,
-    "fields": {
-        "name": "Angle",
-        "description": "The measurement of the space between two intersecting lines or planes. Common units include degrees, radians, and gradians."
-    }
-},
-{
-    "model": "inventory.unit",
-    "pk": 1,
-    "fields": {
-        "name": "Meter",
-        "abbreviation": "m",
-        "conversion_factor": "1.00000",
-        "display_format": null,
-        "category": 1,
-        "is_metric": true
-    }
-},
-{
-    "model": "inventory.unit",
-    "pk": 2,
-    "fields": {
-        "name": "Centimeter",
-        "abbreviation": "cm",
-        "conversion_factor": "0.01000",
-        "display_format": null,
-        "category": 1,
-        "is_metric": true
-    }
-},
-{
-    "model": "inventory.unit",
-    "pk": 3,
-    "fields": {
-        "name": "Inch",
-        "abbreviation": "in",
-        "conversion_factor": "0.02540",
-        "display_format": null,
-        "category": 1,
-        "is_metric": false
-    }
-},
-{
-    "model": "inventory.unit",
-    "pk": 4,
-    "fields": {
-        "name": "Foot",
-        "abbreviation": "ft",
-        "conversion_factor": "0.30480",
-        "display_format": null,
-        "category": 1,
-        "is_metric": false
-    }
-},
-{
-    "model": "inventory.unit",
-    "pk": 5,
-    "fields": {
-        "name": "Milligram",
-        "abbreviation": "mg",
-        "conversion_factor": "0.00000",
-        "display_format": null,
-        "category": 2,
-        "is_metric": true
-    }
-},
-{
-    "model": "inventory.unit",
-    "pk": 6,
-    "fields": {
-        "name": "Gram",
-        "abbreviation": "g",
-        "conversion_factor": "0.00100",
-        "display_format": null,
-        "category": 2,
-        "is_metric": true
-    }
-},
-{
-    "model": "inventory.unit",
-    "pk": 7,
-    "fields": {
-        "name": "Ounce",
-        "abbreviation": "oz",
-        "conversion_factor": "0.02835",
-        "display_format": null,
-        "category": 2,
-        "is_metric": false
-    }
-},
-{
-    "model": "inventory.unit",
-    "pk": 8,
-    "fields": {
-        "name": "Pound",
-        "abbreviation": "lb",
-        "conversion_factor": "0.45359",
-        "display_format": null,
-        "category": 2,
-        "is_metric": false
-    }
-},
-{
-    "model": "inventory.unit",
-    "pk": 9,
-    "fields": {
-        "name": "Liter",
-        "abbreviation": "L",
-        "conversion_factor": "1.00000",
-        "display_format": null,
-        "category": 3,
-        "is_metric": true
-    }
-},
-{
-    "model": "inventory.unit",
-    "pk": 10,
-    "fields": {
-        "name": "Milliliter",
-        "abbreviation": "mL",
-        "conversion_factor": "0.00100",
-        "display_format": null,
-        "category": 3,
-        "is_metric": true
-    }
-},
-{
     "model": "inventory.vendor",
     "pk": 1,
     "fields": {
@@ -547,6 +459,30 @@
         "active": true,
         "delivery_time": 7,
         "website": "https://www.domyown.com/"
+    }
+},
+{
+    "model": "inventory.material",
+    "pk": 1,
+    "fields": {
+        "name": "Maxforce FC Ant Bait Station",
+        "description": "Maxforce FC Ant Bait Stations are all about fast control and secondary kill. Due to Fipronil and its accelerated Domino Effect kill, Maxforce Ant Bait Stations start to kill ants in just six hours. Tests show 90% population reductions in just four days for ants. This product is more of a protein-based bait. We recommend using these bait stations along with a gel bait which is mostly a source of sugar since ants could be in the mood for either protein or sugar. Gels and stations provide different dietary needs for ants. The ants may eat the gel, or bait stations, or both. And their diet may change frequently between gels and the bait stations. It is better to provide them with both for an optimum kill.",
+        "brand": 1,
+        "active": true,
+        "category": 1,
+        "is_taxable": true,
+        "is_active": true,
+        "is_product": false,
+        "product_sell_price": "0.00",
+        "material_sell_price": "0.00",
+        "preferred_vendor": 1,
+        "usage_unit": 1,
+        "retail_unit": 2,
+        "min_stock": 0,
+        "max_stock": 0,
+        "targets": [
+            1
+        ]
     }
 },
 {
@@ -566,279 +502,8 @@
     "model": "inventory.materialclass",
     "pk": 1,
     "fields": {
-        "name": "This Is Useless"
-    }
-},
-{
-    "model": "inventory.material",
-    "pk": 1,
-    "fields": {
-        "name": "Maxforce FC Ant Bait Station",
-        "description": "Maxforce FC Ant Bait Stations are all about fast control and secondary kill. Due to Fipronil and its accelerated Domino Effect kill, Maxforce Ant Bait Stations start to kill ants in just six hours. Tests show 90% population reductions in just four days for ants. This product is more of a protein-based bait. We recommend using these bait stations along with a gel bait which is mostly a source of sugar since ants could be in the mood for either protein or sugar. Gels and stations provide different dietary needs for ants. The ants may eat the gel, or bait stations, or both. And their diet may change frequently between gels and the bait stations. It is better to provide them with both for an optimum kill.",
-        "brand": 1,
-        "active": true,
-        "material_class": 1,
-        "category": 1,
-        "is_taxable": true,
-        "is_active": true,
-        "is_product": false,
-        "product_sell_price": "0.00",
-        "material_sell_price": "0.00",
-        "preferred_vendor": 1,
-        "usage_unit": 1,
-        "retail_unit": 2,
-        "min_stock": 0,
-        "max_stock": 0
-    }
-},
-{
-    "model": "inventory.materialfield",
-    "pk": 1,
-    "fields": {
-        "material": 1,
-        "field": 1,
-        "value": "432-1256"
-    }
-},
-{
-    "model": "inventory.brand",
-    "pk": 1,
-    "fields": {
-        "name": "MaxForce"
-    }
-},
-{
-    "model": "inventory.target",
-    "pk": 1,
-    "fields": {
-        "name": "Pest",
-        "description": "Unwanted organism, such as insects, rodents, or weeds, that can cause harm or damage.",
-        "parent": null,
-        "lft": 1,
-        "rght": 36,
-        "tree_id": 1,
-        "level": 0
-    }
-},
-{
-    "model": "inventory.target",
-    "pk": 2,
-    "fields": {
-        "name": "Insect",
-        "description": "A class of arthropods with three body segments, six legs, and wings in some species.",
-        "parent": 1,
-        "lft": 2,
-        "rght": 23,
-        "tree_id": 1,
-        "level": 1
-    }
-},
-{
-    "model": "inventory.target",
-    "pk": 3,
-    "fields": {
-        "name": "Crawling Insect",
-        "description": "A type of insect that moves around on its legs and body, such as ants, cockroaches, and bed bugs.",
-        "parent": 2,
-        "lft": 3,
-        "rght": 14,
-        "tree_id": 1,
-        "level": 2
-    }
-},
-{
-    "model": "inventory.target",
-    "pk": 4,
-    "fields": {
-        "name": "Cockroach",
-        "description": "A type of crawling insect that is flattened, has long antennae and legs, and is known for its ability to adapt to various environments.",
-        "parent": 3,
-        "lft": 4,
-        "rght": 11,
-        "tree_id": 1,
-        "level": 3
-    }
-},
-{
-    "model": "inventory.target",
-    "pk": 5,
-    "fields": {
-        "name": "German Cockroach",
-        "description": "Small light brown or tan insect, with two black stripes on its back. Often found in kitchens, bathrooms, and other areas with moisture.",
-        "parent": 4,
-        "lft": 5,
-        "rght": 6,
-        "tree_id": 1,
-        "level": 4
-    }
-},
-{
-    "model": "inventory.target",
-    "pk": 6,
-    "fields": {
-        "name": "American Cockroach",
-        "description": "Large reddish-brown insect, with a yellowish figure-8 pattern on its head. Often found in commercial and residential buildings.",
-        "parent": 4,
-        "lft": 7,
-        "rght": 8,
-        "tree_id": 1,
-        "level": 4
-    }
-},
-{
-    "model": "inventory.target",
-    "pk": 7,
-    "fields": {
-        "name": "Oriental Cockroach",
-        "description": "Dark brown or black insect, with a shiny appearance. Often found in damp areas, such as basements and sewers.",
-        "parent": 4,
-        "lft": 9,
-        "rght": 10,
-        "tree_id": 1,
-        "level": 4
-    }
-},
-{
-    "model": "inventory.target",
-    "pk": 8,
-    "fields": {
-        "name": "Flying Insect",
-        "description": "A type of insect that has wings and can fly, such as flies, mosquitoes, and wasps.",
-        "parent": 2,
-        "lft": 15,
-        "rght": 22,
-        "tree_id": 1,
-        "level": 2
-    }
-},
-{
-    "model": "inventory.target",
-    "pk": 9,
-    "fields": {
-        "name": "Mosquito",
-        "description": "Small flying insect with long legs, a slender body, and elongated mouthparts used to feed on blood. Can transmit diseases to humans and animals.",
-        "parent": 8,
-        "lft": 16,
-        "rght": 17,
-        "tree_id": 1,
-        "level": 3
-    }
-},
-{
-    "model": "inventory.target",
-    "pk": 10,
-    "fields": {
-        "name": "Fruit Fly",
-        "description": "Small flying insect with a tan or brown body and red eyes. Often found near ripe or decaying fruits and vegetables.",
-        "parent": 8,
-        "lft": 18,
-        "rght": 19,
-        "tree_id": 1,
-        "level": 3
-    }
-},
-{
-    "model": "inventory.target",
-    "pk": 11,
-    "fields": {
-        "name": "Wasp",
-        "description": "Flying insect with a slender body and two pairs of wings. Can sting multiple times and cause allergic reactions.",
-        "parent": 8,
-        "lft": 20,
-        "rght": 21,
-        "tree_id": 1,
-        "level": 3
-    }
-},
-{
-    "model": "inventory.target",
-    "pk": 12,
-    "fields": {
-        "name": "Bed Bug",
-        "description": "Small, reddish-brown insects that feed on blood and are often found in homes, hotels, and other areas where people sleep.",
-        "parent": 3,
-        "lft": 12,
-        "rght": 13,
-        "tree_id": 1,
-        "level": 3
-    }
-},
-{
-    "model": "inventory.target",
-    "pk": 13,
-    "fields": {
-        "name": "Rodent",
-        "description": "A type of mammal characterized by their continuously growing incisors and their ability to gnaw on various materials. They can be pests and pose health risks, as they can transmit diseases and cause damage to property.",
-        "parent": 1,
-        "lft": 24,
-        "rght": 35,
-        "tree_id": 1,
-        "level": 1
-    }
-},
-{
-    "model": "inventory.target",
-    "pk": 14,
-    "fields": {
-        "name": "Mouse",
-        "description": "A small, light brown or gray rodent with a pointed nose and large ears. They are characterized by their continuously growing incisors and their ability to gnaw on various materials. Often found in homes, restaurants, and other areas with food sources.",
-        "parent": 13,
-        "lft": 25,
-        "rght": 28,
-        "tree_id": 1,
-        "level": 2
-    }
-},
-{
-    "model": "inventory.target",
-    "pk": 15,
-    "fields": {
-        "name": "Rat",
-        "description": "A larger rodent with a blunt nose and small ears. They are characterized by their continuously growing incisors and their ability to gnaw on various materials. Often found in basements, sewers, and other areas with moisture.",
-        "parent": 13,
-        "lft": 29,
-        "rght": 34,
-        "tree_id": 1,
-        "level": 2
-    }
-},
-{
-    "model": "inventory.target",
-    "pk": 16,
-    "fields": {
-        "name": "House Mouse",
-        "description": "Small, light brown or gray rodent with a pointed nose and large ears. Often found in homes, restaurants, and other areas with food sources.",
-        "parent": 14,
-        "lft": 26,
-        "rght": 27,
-        "tree_id": 1,
-        "level": 3
-    }
-},
-{
-    "model": "inventory.target",
-    "pk": 17,
-    "fields": {
-        "name": "Norway Rat",
-        "description": "Large, brown or gray rodent with a blunt nose and small ears. Often found in basements, sewers, and other areas with moisture.",
-        "parent": 15,
-        "lft": 30,
-        "rght": 31,
-        "tree_id": 1,
-        "level": 3
-    }
-},
-{
-    "model": "inventory.target",
-    "pk": 18,
-    "fields": {
-        "name": "Roof Rat",
-        "description": "Smaller, dark brown or black rodent with a pointed nose and large ears. Often found in attics, trees, and other elevated areas.",
-        "parent": 15,
-        "lft": 32,
-        "rght": 33,
-        "tree_id": 1,
-        "level": 3
+        "name": "This Is Useless",
+        "description": "Unknown"
     }
 },
 {
@@ -960,6 +625,440 @@
         "postal_code": "11101",
         "latitude": null,
         "longitude": null
+    }
+},
+{
+    "model": "common.target",
+    "pk": 1,
+    "fields": {
+        "name": "Pest",
+        "description": "Unwanted organism, such as insects, rodents, or weeds, that can cause harm or damage.",
+        "parent": null,
+        "lft": 1,
+        "rght": 36,
+        "tree_id": 1,
+        "level": 0
+    }
+},
+{
+    "model": "common.target",
+    "pk": 2,
+    "fields": {
+        "name": "Insect",
+        "description": "A class of arthropods with three body segments, six legs, and wings in some species.",
+        "parent": 1,
+        "lft": 2,
+        "rght": 23,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "common.target",
+    "pk": 3,
+    "fields": {
+        "name": "Crawling Insect",
+        "description": "A type of insect that moves around on its legs and body, such as ants, cockroaches, and bed bugs.",
+        "parent": 2,
+        "lft": 3,
+        "rght": 14,
+        "tree_id": 1,
+        "level": 2
+    }
+},
+{
+    "model": "common.target",
+    "pk": 4,
+    "fields": {
+        "name": "Cockroach",
+        "description": "A type of crawling insect that is flattened, has long antennae and legs, and is known for its ability to adapt to various environments.",
+        "parent": 3,
+        "lft": 4,
+        "rght": 11,
+        "tree_id": 1,
+        "level": 3
+    }
+},
+{
+    "model": "common.target",
+    "pk": 5,
+    "fields": {
+        "name": "German Cockroach",
+        "description": "Small light brown or tan insect, with two black stripes on its back. Often found in kitchens, bathrooms, and other areas with moisture.",
+        "parent": 4,
+        "lft": 5,
+        "rght": 6,
+        "tree_id": 1,
+        "level": 4
+    }
+},
+{
+    "model": "common.target",
+    "pk": 6,
+    "fields": {
+        "name": "American Cockroach",
+        "description": "Large reddish-brown insect, with a yellowish figure-8 pattern on its head. Often found in commercial and residential buildings.",
+        "parent": 4,
+        "lft": 7,
+        "rght": 8,
+        "tree_id": 1,
+        "level": 4
+    }
+},
+{
+    "model": "common.target",
+    "pk": 7,
+    "fields": {
+        "name": "Oriental Cockroach",
+        "description": "Dark brown or black insect, with a shiny appearance. Often found in damp areas, such as basements and sewers.",
+        "parent": 4,
+        "lft": 9,
+        "rght": 10,
+        "tree_id": 1,
+        "level": 4
+    }
+},
+{
+    "model": "common.target",
+    "pk": 8,
+    "fields": {
+        "name": "Flying Insect",
+        "description": "A type of insect that has wings and can fly, such as flies, mosquitoes, and wasps.",
+        "parent": 2,
+        "lft": 15,
+        "rght": 22,
+        "tree_id": 1,
+        "level": 2
+    }
+},
+{
+    "model": "common.target",
+    "pk": 9,
+    "fields": {
+        "name": "Mosquito",
+        "description": "Small flying insect with long legs, a slender body, and elongated mouthparts used to feed on blood. Can transmit diseases to humans and animals.",
+        "parent": 8,
+        "lft": 16,
+        "rght": 17,
+        "tree_id": 1,
+        "level": 3
+    }
+},
+{
+    "model": "common.target",
+    "pk": 10,
+    "fields": {
+        "name": "Fruit Fly",
+        "description": "Small flying insect with a tan or brown body and red eyes. Often found near ripe or decaying fruits and vegetables.",
+        "parent": 8,
+        "lft": 18,
+        "rght": 19,
+        "tree_id": 1,
+        "level": 3
+    }
+},
+{
+    "model": "common.target",
+    "pk": 11,
+    "fields": {
+        "name": "Wasp",
+        "description": "Flying insect with a slender body and two pairs of wings. Can sting multiple times and cause allergic reactions.",
+        "parent": 8,
+        "lft": 20,
+        "rght": 21,
+        "tree_id": 1,
+        "level": 3
+    }
+},
+{
+    "model": "common.target",
+    "pk": 12,
+    "fields": {
+        "name": "Bed Bug",
+        "description": "Small, reddish-brown insects that feed on blood and are often found in homes, hotels, and other areas where people sleep.",
+        "parent": 3,
+        "lft": 12,
+        "rght": 13,
+        "tree_id": 1,
+        "level": 3
+    }
+},
+{
+    "model": "common.target",
+    "pk": 13,
+    "fields": {
+        "name": "Rodent",
+        "description": "A type of mammal characterized by their continuously growing incisors and their ability to gnaw on various materials. They can be pests and pose health risks, as they can transmit diseases and cause damage to property.",
+        "parent": 1,
+        "lft": 24,
+        "rght": 35,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "common.target",
+    "pk": 14,
+    "fields": {
+        "name": "Mouse",
+        "description": "A small, light brown or gray rodent with a pointed nose and large ears. They are characterized by their continuously growing incisors and their ability to gnaw on various materials. Often found in homes, restaurants, and other areas with food sources.",
+        "parent": 13,
+        "lft": 25,
+        "rght": 28,
+        "tree_id": 1,
+        "level": 2
+    }
+},
+{
+    "model": "common.target",
+    "pk": 15,
+    "fields": {
+        "name": "Rat",
+        "description": "A larger rodent with a blunt nose and small ears. They are characterized by their continuously growing incisors and their ability to gnaw on various materials. Often found in basements, sewers, and other areas with moisture.",
+        "parent": 13,
+        "lft": 29,
+        "rght": 34,
+        "tree_id": 1,
+        "level": 2
+    }
+},
+{
+    "model": "common.target",
+    "pk": 16,
+    "fields": {
+        "name": "House Mouse",
+        "description": "Small, light brown or gray rodent with a pointed nose and large ears. Often found in homes, restaurants, and other areas with food sources.",
+        "parent": 14,
+        "lft": 26,
+        "rght": 27,
+        "tree_id": 1,
+        "level": 3
+    }
+},
+{
+    "model": "common.target",
+    "pk": 17,
+    "fields": {
+        "name": "Norway Rat",
+        "description": "Large, brown or gray rodent with a blunt nose and small ears. Often found in basements, sewers, and other areas with moisture.",
+        "parent": 15,
+        "lft": 30,
+        "rght": 31,
+        "tree_id": 1,
+        "level": 3
+    }
+},
+{
+    "model": "common.target",
+    "pk": 18,
+    "fields": {
+        "name": "Roof Rat",
+        "description": "Smaller, dark brown or black rodent with a pointed nose and large ears. Often found in attics, trees, and other elevated areas.",
+        "parent": 15,
+        "lft": 32,
+        "rght": 33,
+        "tree_id": 1,
+        "level": 3
+    }
+},
+{
+    "model": "common.unitcategory",
+    "pk": 1,
+    "fields": {
+        "name": "Length",
+        "description": "The measurement of distance between two points. Common units include meters, feet, and inches."
+    }
+},
+{
+    "model": "common.unitcategory",
+    "pk": 2,
+    "fields": {
+        "name": "Mass",
+        "description": "The amount of matter in an object. Common units include kilograms, pounds, and grams."
+    }
+},
+{
+    "model": "common.unitcategory",
+    "pk": 3,
+    "fields": {
+        "name": "Volume",
+        "description": "The amount of space occupied by an object or substance. Common units include liters, gallons, and cubic meters."
+    }
+},
+{
+    "model": "common.unitcategory",
+    "pk": 4,
+    "fields": {
+        "name": "Time",
+        "description": "The duration or interval between two events. Common units include seconds, minutes, and hours."
+    }
+},
+{
+    "model": "common.unitcategory",
+    "pk": 5,
+    "fields": {
+        "name": "Temperature",
+        "description": "The degree of hotness or coldness of an object or substance. Common units include Celsius, Fahrenheit, and Kelvin."
+    }
+},
+{
+    "model": "common.unitcategory",
+    "pk": 6,
+    "fields": {
+        "name": "Energy",
+        "description": "The ability to do work or cause a change. Common units include joules, calories, and kilowatt-hours."
+    }
+},
+{
+    "model": "common.unitcategory",
+    "pk": 7,
+    "fields": {
+        "name": "Pressure",
+        "description": "The force per unit area exerted by a substance. Common units include pascals, atmospheres, and pounds per square inch."
+    }
+},
+{
+    "model": "common.unitcategory",
+    "pk": 8,
+    "fields": {
+        "name": "Electric Current",
+        "description": "The flow of electric charge in a circuit. Common units include amperes and milliamperes."
+    }
+},
+{
+    "model": "common.unitcategory",
+    "pk": 9,
+    "fields": {
+        "name": "Frequency",
+        "description": "The number of occurrences of a repeating event per unit time. Common units include hertz and megahertz."
+    }
+},
+{
+    "model": "common.unitcategory",
+    "pk": 10,
+    "fields": {
+        "name": "Angle",
+        "description": "The measurement of the space between two intersecting lines or planes. Common units include degrees, radians, and gradians."
+    }
+},
+{
+    "model": "common.unit",
+    "pk": 1,
+    "fields": {
+        "name": "Meter",
+        "abbreviation": "m",
+        "conversion_factor": "1.00000",
+        "display_format": null,
+        "category": 1,
+        "is_metric": true
+    }
+},
+{
+    "model": "common.unit",
+    "pk": 2,
+    "fields": {
+        "name": "Centimeter",
+        "abbreviation": "cm",
+        "conversion_factor": "0.01000",
+        "display_format": null,
+        "category": 1,
+        "is_metric": true
+    }
+},
+{
+    "model": "common.unit",
+    "pk": 3,
+    "fields": {
+        "name": "Inch",
+        "abbreviation": "in",
+        "conversion_factor": "0.02540",
+        "display_format": null,
+        "category": 1,
+        "is_metric": false
+    }
+},
+{
+    "model": "common.unit",
+    "pk": 4,
+    "fields": {
+        "name": "Foot",
+        "abbreviation": "ft",
+        "conversion_factor": "0.30480",
+        "display_format": null,
+        "category": 1,
+        "is_metric": false
+    }
+},
+{
+    "model": "common.unit",
+    "pk": 5,
+    "fields": {
+        "name": "Milligram",
+        "abbreviation": "mg",
+        "conversion_factor": "0.00000",
+        "display_format": null,
+        "category": 2,
+        "is_metric": true
+    }
+},
+{
+    "model": "common.unit",
+    "pk": 6,
+    "fields": {
+        "name": "Gram",
+        "abbreviation": "g",
+        "conversion_factor": "0.00100",
+        "display_format": null,
+        "category": 2,
+        "is_metric": true
+    }
+},
+{
+    "model": "common.unit",
+    "pk": 7,
+    "fields": {
+        "name": "Ounce",
+        "abbreviation": "oz",
+        "conversion_factor": "0.02835",
+        "display_format": null,
+        "category": 2,
+        "is_metric": false
+    }
+},
+{
+    "model": "common.unit",
+    "pk": 8,
+    "fields": {
+        "name": "Pound",
+        "abbreviation": "lb",
+        "conversion_factor": "0.45359",
+        "display_format": null,
+        "category": 2,
+        "is_metric": false
+    }
+},
+{
+    "model": "common.unit",
+    "pk": 9,
+    "fields": {
+        "name": "Liter",
+        "abbreviation": "L",
+        "conversion_factor": "1.00000",
+        "display_format": null,
+        "category": 3,
+        "is_metric": true
+    }
+},
+{
+    "model": "common.unit",
+    "pk": 10,
+    "fields": {
+        "name": "Milliliter",
+        "abbreviation": "mL",
+        "conversion_factor": "0.00100",
+        "display_format": null,
+        "category": 3,
+        "is_metric": true
     }
 },
 {
@@ -2019,6 +2118,24 @@
         "object_repr": "Pesticide",
         "action_flag": 2,
         "change_message": "[{\"added\": {\"name\": \"field\", \"object\": \"Sites | Pesticide\"}}, {\"added\": {\"name\": \"field\", \"object\": \"Active Ingredients | Pesticide\"}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 52,
+    "fields": {
+        "action_time": "2023-03-17T16:58:08.150Z",
+        "user": [
+            "mareks"
+        ],
+        "content_type": [
+            "inventory",
+            "material"
+        ],
+        "object_id": "1",
+        "object_repr": "Maxforce FC Ant Bait Station | MaxForce",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
     }
 }
 ]

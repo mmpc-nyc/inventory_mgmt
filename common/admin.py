@@ -1,11 +1,10 @@
-from django.contrib import admin
-
-# Register your models here.
 from django.contrib.admin import register, ModelAdmin
 
 from common.models.contact import Contact, PhoneNumber, ContactEmail, ContactPhoneNumber
 from common.models.field import Field
 from common.models.location import Location
+from common.models.target import Target
+from common.models.unit import UnitCategory, Unit
 
 
 @register(Field)
@@ -36,3 +35,19 @@ class ContactEmailAdmin(ModelAdmin):
 @register(ContactPhoneNumber)
 class ContactPhoneNumberAdmin(ModelAdmin):
     list_display = ('contact', 'phone_number',)
+
+
+@register(Target)
+class TargetAdmin(ModelAdmin):
+    list_display = ['name', 'description', 'parent', ]
+    ordering = 'parent', 'name'
+
+
+@register(UnitCategory)
+class UnitCategoryAdmin(ModelAdmin):
+    pass
+
+
+@register(Unit)
+class UnitAdmin(ModelAdmin):
+    list_display = ['name', 'abbreviation', 'conversion_factor', 'is_metric']

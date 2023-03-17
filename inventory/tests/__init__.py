@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 
 from common.models.contact import Contact
-from inventory.models.customer import Customer, ServiceLocation
+from customers.models.customer import Customer, ServiceLocation
 from common.models.location import Location
 from inventory.models.equipment import Equipment, Condition
 from inventory.models.material import Material

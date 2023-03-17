@@ -41,8 +41,8 @@ class ContactEmail(models.Model):
         return f'{self.email}'
 
     class Meta:
-        verbose_name = _('Category')
-        verbose_name_plural = _('Categories')
+        verbose_name = _('Contact Email')
+        verbose_name_plural = _('Contact Emails')
 
 
 class Email(models.Model):
