@@ -8,7 +8,6 @@ from orders.models.service import RequiredServiceMaterial, SuggestedServiceMater
 
 
 class RequiredServiceMaterialInline(TabularInline):
-
     model = RequiredServiceMaterial
     extra = 1
 
@@ -36,11 +35,16 @@ class ServiceMaterialClassInline(TabularInline):
 class ServiceAdmin(ModelAdmin):
     inlines = [RequiredServiceMaterialInline, SuggestedServiceMaterialInline, ServiceProductInline,
                ServiceMaterialClassInline]
-    list_display = ('name', 'price', 'is_active')
+    list_display = ('name', 'price', 'is_active', 'get_targets', 'warranty', 'price',)
     search_fields = ('name',)
     formfield_overrides = {
         models.CharField: {'widget': TextInput(attrs={'size': '20'})},
     }
+
+    def get_targets(self, obj):
+        return ", ".join([t.name for t in obj.targets.all()])
+
+    get_targets.short_description = 'Targets'
 
 
 @register(RequiredServiceMaterial)
