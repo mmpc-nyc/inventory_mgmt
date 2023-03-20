@@ -1,3 +1,4 @@
+from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 
 from inventory.models.material import Material, MaterialClass
@@ -22,6 +23,7 @@ class Service(models.Model):
                                       through='ServiceProduct')
     warranty = models.ForeignKey(Warranty, on_delete=models.SET_NULL, null=True, blank=True)
     is_active = models.BooleanField(default=True)
+    # tasks = GenericRelation('common.Task')
 
     def __str__(self):
         return self.name
@@ -55,11 +57,11 @@ class RequiredServiceMaterial(models.Model):
 
 class RequiredServiceEquipment(models.Model):
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
-    material = models.ForeignKey('Equipment', on_delete=models.CASCADE)
+    equipment = models.ForeignKey('inventory.Equipment', on_delete=models.CASCADE)
     quantity = models.IntegerField()
 
     def __str__(self):
-        return f'{self.material} ({self.quantity})'
+        return f'{self.equipment} ({self.quantity})'
 
     class Meta:
         verbose_name = _('Required Service Material')
@@ -98,7 +100,7 @@ class ServiceMaterialClass(models.Model):
 
     class Meta:
         verbose_name = _('Service Material Class')
-        verbose_name_plural = _('ServiceMaterialClasses')
+        verbose_name_plural = _('Service Material Classes')
 
 
 class ServiceWarranty(models.Model):
