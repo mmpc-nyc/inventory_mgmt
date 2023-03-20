@@ -63,11 +63,21 @@ class MaterialInline(TabularInline):
 
 @register(Equipment)
 class EquipmentAdmin(ModelAdmin):
-    list_display = ('id', 'name', 'status', 'condition', 'user',)
+    list_display = ('name', 'status', 'stock_location', 'condition', 'category', 'equipment_class')
+    list_filter = ('status', 'condition', 'category', 'equipment_class')
+    search_fields = ('name',)
+    ordering = ('name',)
 
-    inlines = [
-        EquipmentFieldInline,
-    ]
+    fieldsets = (
+        (None, {'fields': ('name', 'status', 'stock_location', 'condition')}),
+        ('Additional Information', {'fields': ('user', 'category', 'equipment_class')}),
+    )
+
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        return queryset.select_related('stock_location', 'condition', 'category', 'equipment_class')
+
+    inlines = [EquipmentFieldInline,]
 
 
 @register(EquipmentField)
@@ -97,12 +107,27 @@ class ConditionAdmin(ModelAdmin):
 
 @register(Material)
 class MaterialAdmin(ModelAdmin):
-    list_display = ('name', 'brand')
+    list_display = ('name', 'description', 'brand', 'category', 'is_taxable', 'is_active')
+    list_filter = ('brand', 'category', 'is_taxable', 'is_active')
+    search_fields = ('name', 'description')
+    filter_horizontal = ('material_classes', 'targets')
 
     inlines = [
         MaterialFieldInline,
     ]
     history_list_display = list_display
+
+    fieldsets = (
+        (None, {
+            'fields': ('name', 'description', 'brand', 'category', 'targets')
+        }),
+        ('Pricing', {
+            'fields': ('is_taxable', 'is_active', 'is_product', 'product_sell_price', 'material_sell_price', 'preferred_vendor')
+        }),
+        ('Units', {
+            'fields': ('usage_unit', 'retail_unit', 'min_stock', 'max_stock')
+        }),
+    )
 
 
 @register(Vendor)
