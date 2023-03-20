@@ -26,7 +26,6 @@ class Task(models.Model):
     end_date = models.DateTimeField()
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='todo')
     priority = models.CharField(max_length=20, choices=PRIORITY_CHOICES, default='medium')
-    location = models.CharField(max_length=200, blank=True, null=True)
     assigned_to = models.ForeignKey('users.User', on_delete=models.CASCADE, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

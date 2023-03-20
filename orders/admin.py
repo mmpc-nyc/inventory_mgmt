@@ -2,6 +2,7 @@ from django.contrib.admin import TabularInline, register, ModelAdmin, StackedInl
 from django.db import models
 from django.forms import TextInput
 
+from common.admin import TaskInline, QuestionInline
 from orders.models.warranty import Warranty
 from orders.models.service import RequiredServiceMaterial, SuggestedServiceMaterial, ServiceProduct, \
     ServiceMaterialClass, Service, ServiceWarranty
@@ -34,7 +35,7 @@ class ServiceMaterialClassInline(TabularInline):
 @register(Service)
 class ServiceAdmin(ModelAdmin):
     inlines = [RequiredServiceMaterialInline, SuggestedServiceMaterialInline, ServiceProductInline,
-               ServiceMaterialClassInline]
+               ServiceMaterialClassInline, TaskInline, QuestionInline]
     list_display = ('name', 'price', 'is_active', 'get_targets', 'warranty', 'price',)
     search_fields = ('name',)
     formfield_overrides = {

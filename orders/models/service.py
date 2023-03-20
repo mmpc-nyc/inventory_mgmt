@@ -23,7 +23,8 @@ class Service(models.Model):
                                       through='ServiceProduct')
     warranty = models.ForeignKey(Warranty, on_delete=models.SET_NULL, null=True, blank=True)
     is_active = models.BooleanField(default=True)
-    # tasks = GenericRelation('common.Task')
+    tasks = GenericRelation('common.Task')
+    questions = GenericRelation('common.Question')
 
     def __str__(self):
         return self.name

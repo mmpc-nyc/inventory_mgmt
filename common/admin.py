@@ -5,6 +5,7 @@ from common.models.document import Document
 from common.models.contact import Contact, PhoneNumber, ContactEmail, ContactPhoneNumber
 from common.models.field import Field
 from common.models.location import Location
+from common.models.question import Question
 from common.models.target import Target
 from common.models.task import Task
 from common.models.unit import UnitCategory, Unit
@@ -83,8 +84,10 @@ class AgreementAdmin(ModelAdmin):
 
 class TaskInline(GenericTabularInline):
     model = Task
+    extra = 1
 
 
+@register(Task)
 class TaskAdmin(ModelAdmin):
     list_display = ('title', 'start_date', 'end_date', 'status', 'priority', 'assigned_to')
     list_filter = ('status', 'priority')
@@ -106,3 +109,13 @@ class TaskAdmin(ModelAdmin):
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         return qs.select_related('assigned_to')
+
+
+class QuestionInline(GenericTabularInline):
+    model = Question
+    extra = 1
+
+
+@register(Question)
+class QuestionAdmin(ModelAdmin):
+    list_display = ('text',)
