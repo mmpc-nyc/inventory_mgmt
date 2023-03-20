@@ -2,10 +2,14 @@ from dataclasses import dataclass
 from datetime import datetime
 
 from selenium import webdriver
-from selenium.common import NoSuchElementException, ElementNotSelectableException
+from selenium.common import NoSuchElementException
 from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
 
+from inventory.utils.datetime_utils import date_from_string
+
+SEARCH_URL = 'https://ordspub.epa.gov/ords/pesticides/f?p=PPLS:1'
+SEARCH_INPUT_ID = 'P1_EPA_REG_NO'
 
 @dataclass
 class Pesticide:
@@ -26,24 +30,6 @@ class Pesticide:
     pests: list[str]
 
 
-def date_from_string(text: str):
-    return datetime.strptime(text, '%B %d, %Y').date()
-
-
-def unsafe_selenium_text_selector(exception=ElementNotSelectableException, exception_return_value=''):
-    def wrap(func):
-        def wrapped_function(*args, **kwargs):
-            try:
-                result = func(*args, **kwargs)
-            except exception:
-                return exception_return_value
-            return result.text
-
-        return wrapped_function
-
-    return wrap
-
-
 class SeleniumScraper:
 
     def __init__(self):
@@ -54,11 +40,9 @@ class SeleniumScraper:
         return self._parse_pesticide()
 
     def _lookup_epa_number(self, epa_number: str | int):
-        search_url = 'https://ordspub.epa.gov/ords/pesticides/f?p=PPLS:1'
-        search_input_id = 'P1_EPA_REG_NO'
 
-        self.driver.get(search_url)
-        search_input = self.driver.find_element(By.ID, search_input_id)
+        self.driver.get(SEARCH_URL)
+        search_input = self.driver.find_element(By.ID, SEARCH_INPUT_ID)
         search_input.send_keys(epa_number)
         search_input.send_keys(Keys.RETURN)
 
@@ -196,3 +180,5 @@ class SeleniumScraper:
             sites=self._get_pesticide_sites(),
             pests=self._get_pesticide_pests(),
         )
+
+
