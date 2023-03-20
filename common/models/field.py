@@ -29,6 +29,7 @@ class Field(models.Model):
         LIST = 'LIST', _('List')
 
     name = models.CharField(max_length=255)
+    label = models.CharField(max_length=255)
     description = models.TextField()
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
@@ -40,7 +41,7 @@ class Field(models.Model):
     is_required = models.BooleanField(default=False)
 
     def __str__(self):
-        return f'{self.name} | {self.content_object}'
+        return f'{self.label} | {self.content_object}'
 
     class Meta:
         verbose_name = _('Field')
