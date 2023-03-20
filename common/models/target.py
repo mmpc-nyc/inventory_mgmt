@@ -5,7 +5,7 @@ from django.utils.translation import gettext_lazy as _
 
 
 class Target(MPTTModel):
-    name = models.CharField(max_length=64)
+    name = models.CharField(max_length=64, unique=True)
     description = models.CharField(max_length=256)
     parent = TreeForeignKey('self', on_delete=models.CASCADE, blank=True, null=True)
 
