@@ -54,8 +54,6 @@ class Equipment(models.Model):
     status = models.CharField(max_length=32, choices=Status.choices, default=Status.STORED)
     stock_location = models.ForeignKey(StockLocation, on_delete=models.SET_NULL, blank=True, null=True)
     condition = models.ForeignKey('Condition', on_delete=models.CASCADE)
-    user = models.ForeignKey(get_user_model(), related_name='equipment_employee', on_delete=models.SET_NULL, null=True,
-                             blank=True)
     category = TreeForeignKey('EquipmentCategory', on_delete=models.SET_NULL, null=True, blank=True)
     equipment_class = models.ForeignKey(EquipmentClass, on_delete=models.SET_NULL, null=True, blank=True)
 
