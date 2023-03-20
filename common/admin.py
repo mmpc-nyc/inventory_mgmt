@@ -1,10 +1,12 @@
 from django.contrib.admin import register, ModelAdmin
+from django.contrib.contenttypes.admin import GenericTabularInline
 
 from common.models.document import Document
 from common.models.contact import Contact, PhoneNumber, ContactEmail, ContactPhoneNumber
 from common.models.field import Field
 from common.models.location import Location
 from common.models.target import Target
+from common.models.task import Task
 from common.models.unit import UnitCategory, Unit
 
 
@@ -77,3 +79,30 @@ class AgreementAdmin(ModelAdmin):
         if obj is not None and not request.user.is_superuser and obj.sender != request.user:
             return False
         return True
+
+
+class TaskInline(GenericTabularInline):
+    model = Task
+
+
+class TaskAdmin(ModelAdmin):
+    list_display = ('title', 'start_date', 'end_date', 'status', 'priority', 'assigned_to')
+    list_filter = ('status', 'priority')
+    search_fields = ('title', 'description', 'location', 'assigned_to__username')
+    date_hierarchy = 'start_date'
+    ordering = ('-updated_at',)
+    fieldsets = (
+        (None, {
+            'fields': ('title', 'description')
+        }),
+        ('Dates', {
+            'fields': ('start_date', 'end_date')
+        }),
+        ('Details', {
+            'fields': ('status', 'priority', 'location', 'assigned_to')
+        }),
+    )
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs.select_related('assigned_to')
