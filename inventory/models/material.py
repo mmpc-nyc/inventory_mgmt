@@ -22,12 +22,12 @@ class Material(models.Model):
         The priority of the material within a material class determines its suggested order of use.
     """
 
-    name = models.CharField(max_length=150)
+    name = models.CharField(max_length=150, unique=True)
     description = models.TextField()
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
     active = models.BooleanField(default=True)
     material_classes = models.ManyToManyField('MaterialClass', through='MaterialClassMembership')
-    category = TreeForeignKey('MaterialCategory', on_delete=models.SET_NULL, null=True, blank=True)
+    category = TreeForeignKey('MaterialCategory', on_delete=models.CASCADE)
     targets = models.ManyToManyField(Target, related_name='material_targets')
     is_taxable = models.BooleanField(default=True)
     is_active = models.BooleanField(default=True)
@@ -110,7 +110,7 @@ class MaterialClassMembership(models.Model):
 class MaterialField(models.Model):
     material = models.ForeignKey(Material, on_delete=models.CASCADE)
     field = models.ForeignKey(Field, on_delete=models.CASCADE)
-    value = models.CharField(max_length=255)
+    value = models.TextField()
 
     def __str__(self):
         return f"{self.field.name}: {self.value}"
@@ -118,6 +118,7 @@ class MaterialField(models.Model):
     class Meta:
         verbose_name = _('Material Field')
         verbose_name_plural = _('Material Fields')
+        unique_together = ('material', 'field',)
 
 
 @receiver(pre_save, sender=MaterialClassMembership)
