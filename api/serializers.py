@@ -1,9 +1,9 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
-from common.models.contact import Contact, Email, PhoneNumber
+from common.models.contact import Contact
 from customers.models.customer import Customer, ServiceLocation
-from common.models.location import Location, LocationContact
+from common.models.address import Address
 from inventory.models.equipment import Equipment, Condition
 from inventory.models.material import Material, MaterialClass, MaterialCategory
 from inventory.models.brand import Brand
@@ -20,25 +20,11 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
 class LocationSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = Location
+        model = Address
         fields = ['id', 'url', 'name', 'address_line_1', 'address_line_2', 'city', 'state', 'latitude', 'longitude']
 
 
-class PhoneNumberSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = PhoneNumber
-        fields = ['id', 'url', 'phone_number']
-
-
-class EmailSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Email
-        fields = ['id', 'url', 'email']
-
-
 class ContactSerializer(serializers.HyperlinkedModelSerializer):
-    emails = EmailSerializer(many=True, read_only=True)
-    phone_numbers = PhoneNumberSerializer(many=True, read_only=True)
 
     class Meta:
         model = Contact
@@ -88,9 +74,9 @@ class CustomerSerializer(serializers.HyperlinkedModelSerializer):
         service_location_objects = []
         for service_location in service_locations:
             service_location_contacts = self.get_location_contacts(location=service_location, customer=validated_data)
-            service_location_objects.append(Location.objects.create(**service_location))
-            for service_location_contact in service_location_contacts:
-                LocationContact.objects.create(location=service_location_objects[-1], **service_location_contact)
+            service_location_objects.append(Address.objects.create(**service_location))
+            # TODO Replace this code: for service_location_contact in service_location_contacts:
+            # TODO Replace this code:    LocationContact.objects.create(location=service_location_objects[-1], **service_location_contact)
 
         # Creates Billing Location Record
         if 'billing_location_same_as_service_location' in self.initial_data and self.initial_data[
@@ -99,9 +85,9 @@ class CustomerSerializer(serializers.HyperlinkedModelSerializer):
         else:
             billing_location_contacts = self.get_location_contacts(location=billing_location,
                                                                    customer=validated_data)
-            location = Location.objects.create(**billing_location)
-            for billing_location_contact in billing_location_contacts:
-                LocationContact.objects.create(location=location, **billing_location_contact)
+            location = Address.objects.create(**billing_location)
+            # TODO Replace this code: for billing_location_contact in billing_location_contacts:
+            # TODO Replace this code:    LocationContact.objects.create(location=location, **billing_location_contact)
 
         # Creates Customer Record
         customer = Customer.objects.create(billing_location=billing_location, **validated_data)
