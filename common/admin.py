@@ -1,4 +1,5 @@
 from django.contrib.admin import register, ModelAdmin, TabularInline
+from django.contrib.contenttypes.admin import GenericTabularInline
 from django.db import models
 from django.forms.widgets import RadioSelect
 
@@ -6,7 +7,9 @@ from common.models.address import Address
 from common.models.contact import Contact, ContactEmail, ContactPhoneNumber
 from common.models.document import Document
 from common.models.field import Field
+from common.models.question import Question
 from common.models.target import Target
+from common.models.task import Task
 from common.models.unit import UnitCategory, Unit
 
 
@@ -117,3 +120,44 @@ class AgreementAdmin(ModelAdmin):
         if obj is not None and not request.user.is_superuser and obj.sender != request.user:
             return False
         return True
+
+
+
+
+class TaskInline(GenericTabularInline):
+    model = Task
+    extra = 1
+
+
+@register(Task)
+class TaskAdmin(ModelAdmin):
+    list_display = ('title', 'start_date', 'end_date', 'status', 'priority', 'assigned_to')
+    list_filter = ('status', 'priority')
+    search_fields = ('title', 'description', 'location', 'assigned_to__username')
+    date_hierarchy = 'start_date'
+    ordering = ('-updated_at',)
+    fieldsets = (
+        (None, {
+            'fields': ('title', 'description')
+        }),
+        ('Dates', {
+            'fields': ('start_date', 'end_date')
+        }),
+        ('Details', {
+            'fields': ('status', 'priority', 'location', 'assigned_to')
+        }),
+    )
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs.select_related('assigned_to')
+
+
+class QuestionInline(GenericTabularInline):
+    model = Question
+    extra = 1
+
+
+@register(Question)
+class QuestionAdmin(ModelAdmin):
+    list_display = ('text',)
