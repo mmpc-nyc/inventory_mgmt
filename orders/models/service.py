@@ -9,7 +9,7 @@ class Service(models.Model):
     description = models.TextField()
     price = models.DecimalField(max_digits=8, decimal_places=2, blank=True)
     targets = models.ManyToManyField('common.Target', related_name='service_targets')
-    material_classes = models.ManyToManyField('inventory.MaterialClass', blank=True, null=True)
+    material_classes = models.ManyToManyField('inventory.MaterialClass')
     required_materials = models.ManyToManyField('inventory.Material', related_name='services_with_required_materials', blank=True,
                                                 through='RequiredServiceMaterial')
     suggested_materials = models.ManyToManyField('inventory.Material', related_name='services_with_suggested_materials', blank=True,
