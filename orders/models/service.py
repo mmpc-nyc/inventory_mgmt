@@ -1,9 +1,5 @@
 from django.db import models
 
-from inventory.models.material import Material, MaterialClass
-from common.models.target import Target
-from orders.models.warranty import Warranty
-
 from django.utils.translation import gettext_lazy as _
 
 
@@ -12,15 +8,15 @@ class Service(models.Model):
     name = models.CharField(max_length=50)
     description = models.TextField()
     price = models.DecimalField(max_digits=8, decimal_places=2, blank=True)
-    targets = models.ManyToManyField(Target, related_name='service_targets')
+    targets = models.ManyToManyField('common.Target', related_name='service_targets')
     material_classes = models.ManyToManyField('inventory.MaterialClass', blank=True, null=True)
-    required_materials = models.ManyToManyField(Material, related_name='services_with_required_materials', blank=True,
+    required_materials = models.ManyToManyField('inventory.Material', related_name='services_with_required_materials', blank=True,
                                                 through='RequiredServiceMaterial')
-    suggested_materials = models.ManyToManyField(Material, related_name='services_with_suggested_materials', blank=True,
+    suggested_materials = models.ManyToManyField('inventory.Material', related_name='services_with_suggested_materials', blank=True,
                                                  through='SuggestedServiceMaterial')
-    products = models.ManyToManyField(Material, related_name='services_with_products', blank=True,
+    products = models.ManyToManyField('inventory.Material', related_name='services_with_products', blank=True,
                                       through='ServiceProduct')
-    warranty = models.ForeignKey(Warranty, on_delete=models.SET_NULL, null=True, blank=True)
+    warranty = models.ForeignKey('orders.Warranty', on_delete=models.SET_NULL, null=True, blank=True)
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
@@ -41,8 +37,8 @@ class PricingScheme(models.Model):
 
 
 class RequiredServiceMaterial(models.Model):
-    service = models.ForeignKey(Service, on_delete=models.CASCADE)
-    material = models.ForeignKey(Material, on_delete=models.CASCADE)
+    service = models.ForeignKey('orders.Service', on_delete=models.CASCADE)
+    material = models.ForeignKey('inventory.Material', on_delete=models.CASCADE)
     quantity = models.IntegerField()
 
     def __str__(self):
@@ -55,7 +51,7 @@ class RequiredServiceMaterial(models.Model):
 
 class RequiredServiceEquipment(models.Model):
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
-    material = models.ForeignKey('Equipment', on_delete=models.CASCADE)
+    material = models.ForeignKey('inventory.Equipment', on_delete=models.CASCADE)
     quantity = models.IntegerField()
 
     def __str__(self):
@@ -67,8 +63,8 @@ class RequiredServiceEquipment(models.Model):
 
 
 class SuggestedServiceMaterial(models.Model):
-    service = models.ForeignKey(Service, on_delete=models.CASCADE)
-    material = models.ForeignKey(Material, on_delete=models.CASCADE)
+    service = models.ForeignKey('orders.Service', on_delete=models.CASCADE)
+    material = models.ForeignKey('inventory.Material', on_delete=models.CASCADE)
     quantity = models.IntegerField()
 
     def __str__(self):
@@ -80,8 +76,8 @@ class SuggestedServiceMaterial(models.Model):
 
 
 class ServiceProduct(models.Model):
-    service = models.ForeignKey(Service, on_delete=models.CASCADE)
-    product = models.ForeignKey(Material, on_delete=models.CASCADE)
+    service = models.ForeignKey('orders.Service', on_delete=models.CASCADE)
+    product = models.ForeignKey('inventory.Material', on_delete=models.CASCADE)
     quantity = models.IntegerField()
 
     def __str__(self):
@@ -94,7 +90,7 @@ class ServiceProduct(models.Model):
 
 class ServiceMaterialClass(models.Model):
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
-    material_class = models.ForeignKey(MaterialClass, on_delete=models.CASCADE)
+    material_class = models.ForeignKey('inventory.MaterialClass', on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = _('Service Material Class')
