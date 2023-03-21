@@ -3,7 +3,7 @@ from django.test import TestCase
 
 from common.models.contact import Contact
 from customers.models.customer import Customer, ServiceLocation
-from common.models.location import Location
+from common.models.address import Address
 from inventory.models.equipment import Equipment, Condition
 from inventory.models.material import Material
 from inventory.models.brand import Brand
@@ -21,7 +21,7 @@ class AbstractTest(TestCase):
         self.customer_email = "customer@email.com"
         self.customer_phone = "2122198218"
         self.customer_contact = Contact.objects.create(first_name="Customer", last_name="contact")
-        self.location_stock_location = Location.objects.create(
+        self.location_stock_location = Address.objects.create(
             name='Stock Location 1',
             address_line_1='Stock Location 1',
             city="Stock Location City",
@@ -29,7 +29,7 @@ class AbstractTest(TestCase):
             postal_code="00000",
             latitude=0,
             longitude=0, )
-        self.location_customer_1 = Location.objects.create(
+        self.location_customer_1 = Address.objects.create(
             name='Customer Location 1',
             address_line_1='Customer Location 1',
             city="Customer City",
@@ -38,7 +38,7 @@ class AbstractTest(TestCase):
             latitude=0,
             longitude=0,
         )
-        self.location_customer_2 = Location.objects.create(
+        self.location_customer_2 = Address.objects.create(
             name='Customer Location 2',
             address_line_1='Customer Location 2',
             city="Customer City",
@@ -47,7 +47,7 @@ class AbstractTest(TestCase):
             latitude=0,
             longitude=0,
         )
-        self.location_user = Location.objects.create(
+        self.location_user = Address.objects.create(
             name='User Location 2',
             address_line_1='User Location 2',
             city="User City",
@@ -56,7 +56,7 @@ class AbstractTest(TestCase):
             latitude=0,
             longitude=0, )
         self.stock_location = StockLocation.objects.create(name='Stock Location1', location=self.location_stock_location)
-        self.billing_location_1 = Location.objects.create(
+        self.billing_location_1 = Address.objects.create(
             name='Billing Location 1',
             address_line_1='Billing Location 1',
             city="Billing City",
@@ -65,7 +65,7 @@ class AbstractTest(TestCase):
             latitude=0,
             longitude=0
         )
-        self.billing_location_2 = Location.objects.create(
+        self.billing_location_2 = Address.objects.create(
             name='Billing Location 1',
             address_line_1='Billing Location 1',
             city="Billing City",
@@ -104,7 +104,7 @@ class AbstractTest(TestCase):
             material=self.material,
             condition=self.condition_working,
             stock_location=self.stock_location,
-            location=self.stock_location.location
+            location=self.stock_location.address
         )
         self.equipment_picked_up_working_1 = Equipment.objects.create(
             name='picked_up_working_1',

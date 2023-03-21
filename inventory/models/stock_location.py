@@ -2,7 +2,7 @@ from django.db import models
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 
-from common.models.location import Location
+from common.models.address import Address
 
 
 class StockLocation(models.Model):
@@ -21,7 +21,7 @@ class StockLocation(models.Model):
 
     name = models.CharField(max_length=150, blank=True)
     status = models.CharField(max_length=32, choices=StockLocationStatus.choices, default=StockLocationStatus.ACTIVE)
-    location = models.ForeignKey(Location, on_delete=models.CASCADE)
+    location = models.ForeignKey(Address, on_delete=models.CASCADE)
 
     def __str__(self):
         return f'{self.name}'

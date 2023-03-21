@@ -25,7 +25,6 @@ class Material(models.Model):
     name = models.CharField(max_length=150, unique=True)
     description = models.TextField()
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
-    active = models.BooleanField(default=True)
     material_classes = models.ManyToManyField('MaterialClass', through='MaterialClassMembership')
     category = TreeForeignKey('MaterialCategory', on_delete=models.CASCADE)
     targets = models.ManyToManyField(Target, related_name='material_targets')

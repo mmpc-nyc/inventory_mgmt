@@ -3,7 +3,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, filters
 
 from api.serializers import BrandSerializer, EquipmentSerializer, MaterialSerializer, MaterialCategorySerializer, \
-    EmailSerializer, PhoneNumberSerializer, ContactSerializer, CustomerSerializer, LocationSerializer, \
+    ContactSerializer, CustomerSerializer, LocationSerializer, \
     StockLocationSerializer, MaterialTypeSerializer, UserSerializer
 from inventory.models.equipment import Equipment
 
@@ -37,16 +37,6 @@ class MaterialViewSet(BaseViewSet):
 
 class MaterialCategoryViewSet(BaseViewSet):
     serializer_class = MaterialCategorySerializer
-    queryset = serializer_class.Meta.model.objects.all()
-
-
-class EmailViewSet(BaseViewSet):
-    serializer_class = EmailSerializer
-    queryset = serializer_class.Meta.model.objects.all()
-
-
-class PhoneNumberViewSet(BaseViewSet):
-    serializer_class = PhoneNumberSerializer
     queryset = serializer_class.Meta.model.objects.all()
 
 
