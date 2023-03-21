@@ -5,10 +5,14 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 class Contact(models.Model):
     """Model for managing contacts that attach to customers and employees"""
+    PREFERRED_CONTACT_CHOICES = [
+        ('PHONE', 'Phone'),
+        ('EMAIL', 'Email'),
+    ]
+
     first_name = models.CharField(max_length=150)
     last_name = models.CharField(max_length=150)
-    emails = models.ManyToManyField('Email', through='ContactEmail', related_name='emails')
-    phone_numbers = models.ManyToManyField('PhoneNumber', through='ContactPhoneNumber', related_name='phone_numbers')
+    preferred_contact_method = models.CharField(max_length=10, choices=PREFERRED_CONTACT_CHOICES, default='PHONE')
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
@@ -20,9 +24,13 @@ class Contact(models.Model):
 
 
 class ContactPhoneNumber(models.Model):
-    #  TODO  Write Description
+    """
+    Model for managing phone numbers associated with a contact.
+    """
     contact = models.ForeignKey('Contact', on_delete=models.CASCADE)
-    phone_number = models.ForeignKey('PhoneNumber', on_delete=models.CASCADE)
+    phone_number = PhoneNumberField(default='', blank=True)
+    phone_type = models.ForeignKey('PhoneNumberType', on_delete=models.SET_NULL, null=True, blank=True)
+    is_primary = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.contact} | {self.phone_number}'
@@ -32,10 +40,23 @@ class ContactPhoneNumber(models.Model):
         verbose_name_plural = _('Contact Phone Numbers')
 
 
+
+    def save(self, *args, **kwargs):
+        if self.is_primary:
+            # Set all other phone numbers for this contact as not primary
+            self.contact.contactphonenumber_set.exclude(pk=self.pk).update(is_primary=False)
+
+        super().save(*args, **kwargs)
+
+
 class ContactEmail(models.Model):
-    #  TODO  Write Description
+    """
+    Model for managing email addresses associated with a contact.
+    """
     contact = models.ForeignKey('Contact', on_delete=models.CASCADE)
-    email = models.ForeignKey('Email', on_delete=models.CASCADE)
+    email = models.EmailField(blank=True)
+    email_type = models.ForeignKey('EmailType', on_delete=models.SET_NULL, null=True, blank=True)
+    is_primary = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.email}'
@@ -44,26 +65,23 @@ class ContactEmail(models.Model):
         verbose_name = _('Contact Email')
         verbose_name_plural = _('Contact Emails')
 
+    def save(self, *args, **kwargs):
+        if self.is_primary:
+            # Set all other emails for this contact as not primary
+            self.contact.contactemail_set.exclude(pk=self.pk).update(is_primary=False)
 
-class Email(models.Model):
-    #  TODO  Write Description
-    email = models.EmailField(blank=True)
-
-    def __str__(self):
-        return f'{self.email}'
-
-    class Meta:
-        verbose_name = _('Email')
-        verbose_name_plural = _('Emails')
+        super().save(*args, **kwargs)
 
 
-class PhoneNumber(models.Model):
-    #  TODO  Write Description
-    phone_number = PhoneNumberField(default='', blank=True)
+class PhoneNumberType(models.Model):
+    name = models.CharField(max_length=50)
 
     def __str__(self):
-        return f'{self.phone_number}'
+        return self.name
 
-    class Meta:
-        verbose_name = _('Phone Number')
-        verbose_name_plural = _('Phone Numbers')
+
+class EmailType(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
