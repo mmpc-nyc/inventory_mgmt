@@ -1,9 +1,11 @@
-from django.contrib.admin import register, ModelAdmin
+from django.contrib.admin import register, ModelAdmin, TabularInline
+from django.db import models
+from django.forms.widgets import RadioSelect
 
+from common.models.address import Address
+from common.models.contact import Contact, ContactEmail, ContactPhoneNumber
 from common.models.document import Document
-from common.models.contact import Contact, PhoneNumber, ContactEmail, ContactPhoneNumber
 from common.models.field import Field
-from common.models.location import Location
 from common.models.target import Target
 from common.models.unit import UnitCategory, Unit
 
@@ -13,29 +15,67 @@ class FieldAdmin(ModelAdmin):
     list_display = ['name', 'content_type', 'field_type', 'validation_type', 'default_value', 'is_required']
 
 
-@register(Contact)
-class ContactAdmin(ModelAdmin):
-    list_display = ('first_name', 'last_name',)
-
-
-@register(Location)
-class LocationAdmin(ModelAdmin):
-    ...
-
-
-@register(PhoneNumber)
-class PhoneNumberAdmin(ModelAdmin):
-    ...
+@register(Address)
+class AddressAdmin(ModelAdmin):
+    list_display = ('name', 'address_line_1', 'city', 'state', 'postal_code',)
+    search_fields = ('name', 'address_line_1', 'city', 'state', 'postal_code',)
+    list_filter = ('state',)
+    ordering = ('name', 'address_line_1',)
+    fieldsets = (
+        (None, {
+            'fields': ('name', 'address_line_1', 'address_line_2', 'city', 'state', 'postal_code',)
+        }),
+        ('Geo Location', {
+            'fields': ('latitude', 'longitude',),
+        }),
+    )
 
 
 @register(ContactEmail)
 class ContactEmailAdmin(ModelAdmin):
-    list_display = ('contact', 'email',)
+    list_display = ('contact', 'email', 'email_type', 'is_primary')
+    list_filter = ('email_type', 'is_primary')
+    search_fields = ('contact__first_name', 'contact__last_name', 'email')
+    fieldsets = (
+        (None, {
+            'fields': ('contact', 'email', 'email_type', 'is_primary')
+        }),
+    )
 
 
 @register(ContactPhoneNumber)
 class ContactPhoneNumberAdmin(ModelAdmin):
-    list_display = ('contact', 'phone_number',)
+    list_display = ('contact', 'phone_number', 'phone_type', 'is_primary')
+    list_filter = ('phone_type', 'is_primary')
+    search_fields = ('contact__first_name', 'contact__last_name', 'phone_number')
+    fieldsets = (
+        (None, {
+            'fields': ('contact', 'phone_number', 'phone_type', 'is_primary')
+        }),
+    )
+
+
+class ContactPhoneNumberInline(TabularInline):
+    model = ContactPhoneNumber
+    extra = 1
+
+
+class ContactEmailInline(TabularInline):
+    model = ContactEmail
+    extra = 1
+
+
+@register(Contact)
+class ContactAdmin(ModelAdmin):
+    list_display = ('first_name', 'last_name')
+    search_fields = ('first_name', 'last_name', 'emails__email', 'phone_numbers__phone_number')
+
+    inlines = [ContactPhoneNumberInline, ContactEmailInline]
+
+    def name(self, obj):
+        return str(obj)
+
+    name.admin_order_field = 'first_name'
 
 
 @register(Target)
