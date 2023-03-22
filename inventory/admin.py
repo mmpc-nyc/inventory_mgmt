@@ -85,7 +85,7 @@ class EquipmentAdmin(ModelAdmin):
 
     fieldsets = (
         (None, {'fields': ('name', 'status', 'stock_location', 'condition')}),
-        ('Additional Information', {'fields': ('user', 'category', 'equipment_class')}),
+        ('Additional Information', {'fields': ('category', 'equipment_class')}),
     )
 
     def get_queryset(self, request):
