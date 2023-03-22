@@ -23,7 +23,7 @@ class AbstractTest(TestCase):
         self.customer_contact = Contact.objects.create(first_name="Customer", last_name="contact")
         self.location_stock_location = Address.objects.create(
             name='Stock Location 1',
-            address_line_1='Stock Location 1',
+            street_address='Stock Location 1',
             city="Stock Location City",
             state="Stock LocationState",
             postal_code="00000",
@@ -31,7 +31,7 @@ class AbstractTest(TestCase):
             longitude=0, )
         self.location_customer_1 = Address.objects.create(
             name='Customer Location 1',
-            address_line_1='Customer Location 1',
+            street_address='Customer Location 1',
             city="Customer City",
             state="Customer State",
             postal_code="00000",
@@ -40,7 +40,7 @@ class AbstractTest(TestCase):
         )
         self.location_customer_2 = Address.objects.create(
             name='Customer Location 2',
-            address_line_1='Customer Location 2',
+            street_address='Customer Location 2',
             city="Customer City",
             state="Customer State",
             postal_code="00000",
@@ -49,7 +49,7 @@ class AbstractTest(TestCase):
         )
         self.location_user = Address.objects.create(
             name='User Location 2',
-            address_line_1='User Location 2',
+            street_address='User Location 2',
             city="User City",
             state="User State",
             postal_code="00000",
@@ -58,7 +58,7 @@ class AbstractTest(TestCase):
         self.stock_location = StockLocation.objects.create(name='Stock Location1', location=self.location_stock_location)
         self.billing_location_1 = Address.objects.create(
             name='Billing Location 1',
-            address_line_1='Billing Location 1',
+            street_address='Billing Location 1',
             city="Billing City",
             state="Billing State",
             postal_code="00000",
@@ -67,7 +67,7 @@ class AbstractTest(TestCase):
         )
         self.billing_location_2 = Address.objects.create(
             name='Billing Location 1',
-            address_line_1='Billing Location 1',
+            street_address='Billing Location 1',
             city="Billing City",
             state="Billing State",
             postal_code="00000",
