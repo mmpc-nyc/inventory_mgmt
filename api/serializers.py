@@ -21,7 +21,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 class LocationSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Address
-        fields = ['id', 'url', 'name', 'address_line_1', 'address_line_2', 'city', 'state', 'latitude', 'longitude']
+        fields = ['id', 'url', 'name', 'street_address', 'address_line_2', 'city', 'state', 'latitude', 'longitude']
 
 
 class ContactSerializer(serializers.HyperlinkedModelSerializer):
