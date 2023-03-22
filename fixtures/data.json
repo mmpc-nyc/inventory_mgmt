@@ -655,7 +655,7 @@
     "pk": 1,
     "fields": {
         "name": "LIC Office",
-        "address_line_1": "3927 29th Street",
+        "street_address": "3927 29th Street",
         "address_line_2": "",
         "city": "Long Island City",
         "state": "New York",
@@ -669,7 +669,7 @@
     "pk": 2,
     "fields": {
         "name": "Marek Schir",
-        "address_line_1": "3927 29th Street",
+        "street_address": "3927 29th Street",
         "address_line_2": "",
         "city": "Long Island City",
         "state": "New York",
@@ -683,7 +683,7 @@
     "pk": 3,
     "fields": {
         "name": "Marek Schir",
-        "address_line_1": "3927 29th Street",
+        "street_address": "3927 29th Street",
         "address_line_2": "",
         "city": "Long Island City",
         "state": "NY",
@@ -697,7 +697,7 @@
     "pk": 4,
     "fields": {
         "name": "Office",
-        "address_line_1": "3927 29th Street",
+        "street_address": "3927 29th Street",
         "address_line_2": "",
         "city": "Long Island City",
         "state": "NY",
@@ -711,7 +711,7 @@
     "pk": 5,
     "fields": {
         "name": "Office",
-        "address_line_1": "3927 29th Street",
+        "street_address": "3927 29th Street",
         "address_line_2": "",
         "city": "Long Island City",
         "state": "New York",
