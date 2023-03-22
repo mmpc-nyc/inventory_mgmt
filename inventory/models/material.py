@@ -36,8 +36,6 @@ class Material(models.Model):
     preferred_vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE, blank=True, null=True)
     usage_unit = models.ForeignKey(Unit, on_delete=models.CASCADE, related_name='usage_unit')
     retail_unit = models.ForeignKey(Unit, on_delete=models.CASCADE, related_name='retail_unit')
-    min_stock = models.PositiveIntegerField(default=0)
-    max_stock = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return f'{self.name} | {self.brand.name}'
