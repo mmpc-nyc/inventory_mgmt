@@ -20,13 +20,13 @@ class FieldAdmin(ModelAdmin):
 
 @register(Address)
 class AddressAdmin(ModelAdmin):
-    list_display = ('name', 'address_line_1', 'city', 'state', 'postal_code',)
-    search_fields = ('name', 'address_line_1', 'city', 'state', 'postal_code',)
+    list_display = ('name', 'street_address', 'city', 'state', 'postal_code',)
+    search_fields = ('name', 'street_address', 'city', 'state', 'postal_code',)
     list_filter = ('state',)
-    ordering = ('name', 'address_line_1',)
+    ordering = ('name', 'street_address',)
     fieldsets = (
         (None, {
-            'fields': ('name', 'address_line_1', 'address_line_2', 'city', 'state', 'postal_code',)
+            'fields': ('name', 'street_address', 'address_line_2', 'city', 'state', 'postal_code',)
         }),
         ('Geo Location', {
             'fields': ('latitude', 'longitude',),
