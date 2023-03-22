@@ -476,6 +476,55 @@
     }
 },
 {
+    "model": "contenttypes.contenttype",
+    "fields": {
+        "app_label": "common",
+        "model": "task"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "fields": {
+        "app_label": "common",
+        "model": "question"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "fields": {
+        "app_label": "inventory",
+        "model": "transferacceptance"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "fields": {
+        "app_label": "inventory",
+        "model": "transfer"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "fields": {
+        "app_label": "inventory",
+        "model": "materialstock"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "fields": {
+        "app_label": "inventory",
+        "model": "transferitem"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "fields": {
+        "app_label": "inventory",
+        "model": "transferitemacceptance"
+    }
+},
+{
     "model": "sessions.session",
     "pk": "0q9ipfgyf1aui32veaqod18l50srrnkx",
     "fields": {
@@ -534,6 +583,18 @@
     "pk": 2,
     "fields": {
         "name": "Unspecified"
+    }
+},
+{
+    "model": "inventory.equipment",
+    "pk": 1,
+    "fields": {
+        "name": "B&G Tank",
+        "status": "STORED",
+        "stock_location": 1,
+        "condition": 1,
+        "category": null,
+        "equipment_class": null
     }
 },
 {
@@ -596,8 +657,6 @@
         "preferred_vendor": 1,
         "usage_unit": 1,
         "retail_unit": 2,
-        "min_stock": 0,
-        "max_stock": 0,
         "targets": [
             1
         ]
@@ -630,7 +689,7 @@
     "fields": {
         "name": "LIC Office",
         "status": "Active",
-        "location": 1
+        "address": 1
     }
 },
 {
@@ -655,7 +714,7 @@
     "pk": 1,
     "fields": {
         "name": "LIC Office",
-        "street_address": "3927 29th Street",
+        "street_address": "street_address",
         "address_line_2": "",
         "city": "Long Island City",
         "state": "New York",
@@ -669,7 +728,7 @@
     "pk": 2,
     "fields": {
         "name": "Marek Schir",
-        "street_address": "3927 29th Street",
+        "street_address": "street_address",
         "address_line_2": "",
         "city": "Long Island City",
         "state": "New York",
@@ -683,7 +742,7 @@
     "pk": 3,
     "fields": {
         "name": "Marek Schir",
-        "street_address": "3927 29th Street",
+        "street_address": "street_address",
         "address_line_2": "",
         "city": "Long Island City",
         "state": "NY",
@@ -697,7 +756,7 @@
     "pk": 4,
     "fields": {
         "name": "Office",
-        "street_address": "3927 29th Street",
+        "street_address": "street_address",
         "address_line_2": "",
         "city": "Long Island City",
         "state": "NY",
@@ -711,7 +770,7 @@
     "pk": 5,
     "fields": {
         "name": "Office",
-        "street_address": "3927 29th Street",
+        "street_address": "street_address",
         "address_line_2": "",
         "city": "Long Island City",
         "state": "New York",
@@ -764,6 +823,7 @@
     "pk": 1,
     "fields": {
         "name": "EEPA Registration Number",
+        "label": "Label",
         "description": "EPA Registration Number",
         "content_type": [
             "inventory",
@@ -782,6 +842,7 @@
     "pk": 2,
     "fields": {
         "name": "Size",
+        "label": "Label",
         "description": "Size",
         "content_type": [
             "inventory",
@@ -800,6 +861,7 @@
     "pk": 3,
     "fields": {
         "name": "Pests",
+        "label": "Label",
         "description": "Target Pests",
         "content_type": [
             "inventory",
@@ -818,6 +880,7 @@
     "pk": 4,
     "fields": {
         "name": "Sites",
+        "label": "Label",
         "description": "Target Sites",
         "content_type": [
             "inventory",
@@ -836,6 +899,7 @@
     "pk": 5,
     "fields": {
         "name": "Active Ingredients",
+        "label": "Label",
         "description": "Active Ingredients",
         "content_type": [
             "inventory",
@@ -1533,21 +1597,6 @@
         "history_change_reason": null,
         "history_type": "~",
         "history_user": null
-    }
-},
-{
-    "model": "inventory.equipment",
-    "pk": 1,
-    "fields": {
-        "name": "B&G Tank",
-        "status": "STORED",
-        "stock_location": 1,
-        "condition": 1,
-        "user": [
-            "mareks"
-        ],
-        "category": null,
-        "equipment_class": null
     }
 },
 {
