@@ -12,7 +12,7 @@
     "pk": 1,
     "fields": {
         "name": "Location Not Set",
-        "address_line_1": "Location Not Set",
+        "street_address": "Location Not Set",
         "address_line_2": "",
         "city": "Location Not Set",
         "state": "Location Not Set",
