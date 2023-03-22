@@ -6,12 +6,16 @@ from django.utils.translation import gettext_lazy as _
 from mptt.admin import MPTTModelAdmin
 
 from common.models.field import Field
+from inventory.models import Transfer, TransferAcceptance
 from inventory.models.brand import Brand
-from inventory.models.equipment import Equipment, Condition, EquipmentCategory, EquipmentField, EquipmentClass
+from inventory.models.equipment import Equipment, Condition, EquipmentCategory, EquipmentField, EquipmentClass, \
+    EquipmentItem
 from inventory.models.material import Material, MaterialClass, MaterialCategory, MaterialClassMembership
 from inventory.models.material import MaterialField
-from inventory.models.stock_location import StockLocation
+from inventory.models.stock_location import StockLocation, MaterialStock
+from inventory.models.transfer import TransferItem, TransferItemAcceptance
 from inventory.models.vendor import Vendor
+from users.models import User
 
 
 class MaterialClassInline(TabularInline):
@@ -61,10 +65,21 @@ class MaterialInline(TabularInline):
     }
 
 
+class MaterialStockInline(TabularInline):
+    model = MaterialStock
+    extra = 1
+
+
+class EquipmentItemInline(TabularInline):
+    model = EquipmentItem
+    extra = 1
+
+
 @register(Equipment)
 class EquipmentAdmin(ModelAdmin):
     list_display = ('name', 'status', 'stock_location', 'condition', 'category', 'equipment_class')
     list_filter = ('status', 'condition', 'category', 'equipment_class')
+    inlines = (EquipmentItemInline, EquipmentFieldInline)
     search_fields = ('name',)
     ordering = ('name',)
 
@@ -76,8 +91,6 @@ class EquipmentAdmin(ModelAdmin):
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
         return queryset.select_related('stock_location', 'condition', 'category', 'equipment_class')
-
-    inlines = [EquipmentFieldInline,]
 
 
 @register(EquipmentField)
@@ -92,7 +105,15 @@ class EquipmentClassAdmin(ModelAdmin):
 
 @register(StockLocation)
 class StockLocationAdmin(ModelAdmin):
-    list_display = ('name', 'status', 'location',)
+    list_display = ('name', 'address', 'status')
+    search_fields = ('name', 'location__street_address', 'location__city', 'location__state')
+    list_filter = ('status',)
+    actions = ['deactivate_stock_location']
+
+    def deactivate_stock_location(self, request, queryset):
+        queryset.update(status=StockLocation.StockLocationStatus.INACTIVE)
+
+    deactivate_stock_location.short_description = 'Deactivate selected stock locations'
 
 
 @register(Brand)
@@ -122,7 +143,9 @@ class MaterialAdmin(ModelAdmin):
             'fields': ('name', 'description', 'brand', 'category', 'targets')
         }),
         ('Pricing', {
-            'fields': ('is_taxable', 'is_active', 'is_product', 'product_sell_price', 'material_sell_price', 'preferred_vendor')
+            'fields': (
+                'is_taxable', 'is_active', 'is_product', 'product_sell_price', 'material_sell_price',
+                'preferred_vendor')
         }),
         ('Units', {
             'fields': ('usage_unit', 'retail_unit', 'min_stock', 'max_stock')
@@ -163,3 +186,29 @@ class MaterialClassMembershipAdmin(ModelAdmin):
     search_fields = ('material__name', 'material__description', 'material__id')
 
 
+class TransferItemInline(TabularInline):
+    model = TransferItem
+    min_num = 1
+
+
+@register(Transfer)
+class TransferAdmin(ModelAdmin):
+    list_display = ('created_at', 'source', 'destination', 'agent', 'status')
+    search_fields = ('item__name', 'source__name', 'destination__name')
+    list_filter = ('status',)
+    inlines = (TransferItemInline,)
+
+
+class TransferItemAcceptanceInline(TabularInline):
+    model = TransferItemAcceptance
+    extra = 1
+
+
+@register(TransferAcceptance)
+class TransferAcceptanceAdmin(ModelAdmin):
+    list_display = ('transfer', 'accepted_by', 'accepted_at')
+    search_fields = (
+        'transfer__item__name', 'transfer__source__name', 'transfer__destination__name', 'accepted_by__first_name',
+        'accepted_by__last_name')
+    list_filter = ('transfer__status', 'accepted_at')
+    inlines = (TransferItemAcceptanceInline,)
