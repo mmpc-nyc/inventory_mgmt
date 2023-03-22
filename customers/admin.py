@@ -7,14 +7,14 @@ from customers.models.customer import Customer, BillingLocation, ServiceLocation
 
 class BillingLocationInline(admin.StackedInline):
     model = BillingLocation
-    fields = ('name', 'address_line_1', 'address_line_2', 'city', 'state', 'postal_code')
+    fields = ('name', 'street_address', 'address_line_2', 'city', 'state', 'postal_code')
     extra = 1
     max_num = 1
 
 
 class ServiceLocationInline(admin.TabularInline):
     model = ServiceLocation
-    fields = ('name', 'address_line_1', 'address_line_2', 'city', 'state', 'postal_code', 'is_primary')
+    fields = ('name', 'street_address', 'address_line_2', 'city', 'state', 'postal_code', 'is_primary')
     extra = 0
     min_num = 1
 
