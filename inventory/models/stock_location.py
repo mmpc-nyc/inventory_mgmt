@@ -21,7 +21,7 @@ class StockLocation(models.Model):
 
     name = models.CharField(max_length=150, blank=True)
     status = models.CharField(max_length=32, choices=StockLocationStatus.choices, default=StockLocationStatus.ACTIVE)
-    location = models.ForeignKey(Address, on_delete=models.CASCADE)
+    address = models.ForeignKey(Address, on_delete=models.CASCADE)
 
     def __str__(self):
         return f'{self.name}'
@@ -32,3 +32,22 @@ class StockLocation(models.Model):
 
     def get_absolute_url(self):
         return reverse_lazy('stock_location:stock_location_detail', kwargs={'pk': self.pk})
+
+
+class MaterialStock(models.Model):
+    """
+    Represents the stock of a material at a particular stock location.
+    """
+    material = models.ForeignKey('inventory.Material', on_delete=models.CASCADE)
+    stock_location = models.ForeignKey(StockLocation, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=0)
+    min_quantity = models.PositiveIntegerField(default=0)
+    max_quantity = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return f"{self.material.name} @ {self.stock_location.name}"
+
+    class Meta:
+        verbose_name = _('Material Stock')
+        verbose_name_plural = _('Material Stocks')
+        unique_together = ['material', 'stock_location']
