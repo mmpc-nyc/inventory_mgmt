@@ -30,7 +30,7 @@ class TestCustomerSerializer(TestCase):
     "service_locations": [
         {
             "name": "31-75 29th St",
-            "address_line_1": "31-75 29th St, Queens, NY 11106, USA",
+            "street_address": "31-75 29th St, Queens, NY 11106, USA",
             "address_line_2": "Apt E8",
             "city": "Queens",
             "state": "New York",
@@ -54,7 +54,7 @@ class TestCustomerSerializer(TestCase):
     ],
     "billing_location": {
         "name": "",
-        "address_line_1": "",
+        "street_address": "",
         "address_line_2": "",
         "city": "",
         "state": "",
