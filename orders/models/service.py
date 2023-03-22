@@ -51,11 +51,11 @@ class RequiredServiceMaterial(models.Model):
 
 class RequiredServiceEquipment(models.Model):
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
-    material = models.ForeignKey('inventory.Equipment', on_delete=models.CASCADE)
+    equipment = models.ForeignKey('inventory.Equipment', on_delete=models.CASCADE)
     quantity = models.IntegerField()
 
     def __str__(self):
-        return f'{self.material} ({self.quantity})'
+        return f'{self.equipment} ({self.quantity})'
 
     class Meta:
         verbose_name = _('Required Service Material')

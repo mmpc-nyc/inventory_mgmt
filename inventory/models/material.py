@@ -130,7 +130,7 @@ def update_material_priority(sender, instance, **kwargs):
             return
 
     # Get the other memberships with the same material and material class
-    other_memberships = sender.objects.filter(material=instance.material, material_class=instance.material_class)
+    other_memberships = sender.objects.filter(material=instance.equipment, material_class=instance.material_class)
 
     # If the priority is already the lowest, there is nothing to do
     if current_priority == 1:

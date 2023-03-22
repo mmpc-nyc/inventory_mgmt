@@ -789,36 +789,6 @@
     }
 },
 {
-    "model": "common.contactphonenumber",
-    "pk": 1,
-    "fields": {
-        "contact": 1,
-        "phone_number": "+17189093737",
-        "phone_type": null,
-        "is_primary": true
-    }
-},
-{
-    "model": "common.contactphonenumber",
-    "pk": 2,
-    "fields": {
-        "contact": 1,
-        "phone_number": "+12122198218",
-        "phone_type": null,
-        "is_primary": false
-    }
-},
-{
-    "model": "common.contactemail",
-    "pk": 1,
-    "fields": {
-        "contact": 1,
-        "email": "schir2@gmail.com",
-        "email_type": null,
-        "is_primary": false
-    }
-},
-{
     "model": "common.field",
     "pk": 1,
     "fields": {
@@ -1345,90 +1315,6 @@
         "display_format": null,
         "category": 3,
         "is_metric": true
-    }
-},
-{
-    "model": "customers.customer",
-    "pk": 1,
-    "fields": {
-        "customer_type": "Commercial",
-        "first_name": "Marek",
-        "last_name": "Schir",
-        "company_name": "MMPC",
-        "email": "m.schir@mmenviro.net",
-        "phone_number": "+19174732493",
-        "parent": 2,
-        "lft": 2,
-        "rght": 3,
-        "tree_id": 1,
-        "level": 1,
-        "service_locations": []
-    }
-},
-{
-    "model": "customers.customer",
-    "pk": 2,
-    "fields": {
-        "customer_type": "Commercial",
-        "first_name": "Marek",
-        "last_name": "Schir",
-        "company_name": "MMPC",
-        "email": "m.schir@mmenviro.net",
-        "phone_number": "+19174732493",
-        "parent": null,
-        "lft": 1,
-        "rght": 4,
-        "tree_id": 1,
-        "level": 0,
-        "service_locations": []
-    }
-},
-{
-    "model": "customers.servicelocation",
-    "pk": 4,
-    "fields": {
-        "address_ptr": 4,
-        "customer": 2,
-        "is_active": true,
-        "is_primary": true,
-        "contacts": []
-    }
-},
-{
-    "model": "customers.servicelocation",
-    "pk": 5,
-    "fields": {
-        "address_ptr": 5,
-        "customer": 1,
-        "is_active": true,
-        "is_primary": true,
-        "contacts": []
-    }
-},
-{
-    "model": "customers.billinglocation",
-    "pk": 2,
-    "fields": {
-        "address_ptr": 2,
-        "customer": 1,
-        "contacts": []
-    }
-},
-{
-    "model": "customers.billinglocation",
-    "pk": 3,
-    "fields": {
-        "address_ptr": 3,
-        "customer": 2,
-        "contacts": []
-    }
-},
-{
-    "model": "customers.customercontact",
-    "pk": 1,
-    "fields": {
-        "customer": 1,
-        "contact": 1
     }
 },
 {
