@@ -4,7 +4,7 @@ export class LocationState{
 
 export class Location{
     id?: number
-    address_line_1: string = ""
+    street_address: string = ""
     address_line_2: string = ""
     city: string = ""
     state?: LocationState
