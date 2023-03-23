@@ -15,8 +15,7 @@ class BillingLocationInline(admin.StackedInline):
 class ServiceLocationInline(admin.TabularInline):
     model = ServiceLocation
     fields = ('name', 'street_address', 'address_line_2', 'city', 'state', 'postal_code', 'is_primary')
-    extra = 0
-    min_num = 1
+    extra = 1
 
 
 class ServiceLocationAdmin(admin.ModelAdmin):
