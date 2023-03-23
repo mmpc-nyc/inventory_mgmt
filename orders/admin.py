@@ -37,6 +37,7 @@ class ServiceAdmin(ModelAdmin):
     inlines = [RequiredServiceMaterialInline, SuggestedServiceMaterialInline, ServiceProductInline,
                ServiceMaterialClassInline, TaskInline, QuestionInline]
     list_display = ('name', 'price', 'is_active', 'get_targets', 'warranty', 'price',)
+    filter_horizontal = ('targets',)
     search_fields = ('name',)
     formfield_overrides = {
         models.CharField: {'widget': TextInput(attrs={'size': '20'})},
