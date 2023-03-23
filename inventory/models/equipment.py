@@ -1,4 +1,3 @@
-from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 from django.urls import reverse_lazy
@@ -10,21 +9,11 @@ from common.models.field import Field
 
 
 class Equipment(models.Model):
-    """Equipment refers to tracked physical assets such as machinery and tools used in a business, that are not vehicles and are tracked for inventory purposes. These assets are depreciable and can be used to generate income or are necessary for production. The inventory tracking system maintains their quantity, location, status, maintenance and other relevant information."""
-
-    class Status(models.TextChoices):
-        """Current status of the material"""
-
-        STORED = 'STORED', _('Stored')  # Equipment stored in Stock Location
-        DEPLOYED = 'DEPLOYED', _('Deployed')  # Equipment is currently deployed at order location
-        PICKED_UP = 'PICKED_UP', _('Picked Up')  # Equipment is with the employee
-        MISSING = 'MISSING', _('Missing')  # Equipment cannot be found.
-        DECOMMISSIONED = 'DECOMMISSIONED', _('Decommissioned')
-
+    """
+    Equipment refers to tracked physical assets such as machinery and tools used in a business, that are not vehicles and are
+    tracked for inventory purposes. These assets are depreciable and can be used to generate income or are necessary for production.
+    """
     name = models.CharField(max_length=150, blank=True, null=True)
-    status = models.CharField(max_length=32, choices=Status.choices, default=Status.STORED)
-    stock_location = models.ForeignKey('inventory.StockLocation', on_delete=models.SET_NULL, blank=True, null=True)
-    condition = models.ForeignKey('Condition', on_delete=models.CASCADE)
     category = TreeForeignKey('EquipmentCategory', on_delete=models.SET_NULL, null=True, blank=True)
     equipment_class = models.ForeignKey('inventory.EquipmentClass', on_delete=models.SET_NULL, null=True, blank=True)
 
@@ -43,15 +32,32 @@ class EquipmentItem(models.Model):
     """
     Represents an individual instance of a piece of equipment.
     """
+
+    class Status(models.TextChoices):
+        """Current status of the material"""
+
+        STORED = 'STORED', _('Stored')  # Equipment stored in Stock Location
+        DEPLOYED = 'DEPLOYED', _('Deployed')  # Equipment is currently deployed at order location
+        PICKED_UP = 'PICKED_UP', _('Picked Up')  # Equipment is with the employee
+        MISSING = 'MISSING', _('Missing')  # Equipment cannot be found.
+        DECOMMISSIONED = 'DECOMMISSIONED', _('Decommissioned')
+
     equipment = models.ForeignKey('inventory.Equipment', on_delete=models.CASCADE)
     serial_number = models.CharField(max_length=50, unique=True)
     purchase_date = models.DateField(null=True, blank=True)
     purchase_price = models.DecimalField(decimal_places=2, max_digits=8, default=0)
     current_value = models.DecimalField(decimal_places=2, max_digits=8, default=0)
+    status = models.CharField(max_length=32, choices=Status.choices, default=Status.STORED)
+    stock_location = models.ForeignKey('inventory.StockLocation', on_delete=models.SET_NULL, blank=True, null=True)
+    condition = models.ForeignKey('Condition', on_delete=models.CASCADE)
     notes = models.TextField(blank=True)
 
     def __str__(self):
         return f"{self.equipment.name} ({self.serial_number})"
+
+    class Meta:
+        verbose_name = _('Equipment Item')
+        verbose_name_plural = _('Equipment Items')
 
 
 class EquipmentClass(models.Model):
