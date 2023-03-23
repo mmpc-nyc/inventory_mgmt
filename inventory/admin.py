@@ -6,7 +6,7 @@ from django.utils.translation import gettext_lazy as _
 from mptt.admin import MPTTModelAdmin
 
 from common.models.field import Field
-from inventory.models import Transfer, TransferAcceptance
+from inventory.models import Transfer, TransferAcceptance, Vehicle, VehicleMaterial, VehicleEquipmentItem
 from inventory.models.brand import Brand
 from inventory.models.equipment import Equipment, Condition, EquipmentCategory, EquipmentField, EquipmentClass, \
     EquipmentItem
@@ -15,7 +15,6 @@ from inventory.models.material import MaterialField
 from inventory.models.stock_location import StockLocation, MaterialStock
 from inventory.models.transfer import TransferItem, TransferItemAcceptance
 from inventory.models.vendor import Vendor
-from users.models import User
 
 
 class MaterialClassInline(TabularInline):
@@ -77,20 +76,50 @@ class EquipmentItemInline(TabularInline):
 
 @register(Equipment)
 class EquipmentAdmin(ModelAdmin):
-    list_display = ('name', 'status', 'stock_location', 'condition', 'category', 'equipment_class')
-    list_filter = ('status', 'condition', 'category', 'equipment_class')
+    list_display = ('name', 'category', 'equipment_class')
+    list_filter = ('category', 'equipment_class')
     inlines = (EquipmentItemInline, EquipmentFieldInline)
     search_fields = ('name',)
     ordering = ('name',)
 
     fieldsets = (
-        (None, {'fields': ('name', 'status', 'stock_location', 'condition')}),
-        ('Additional Information', {'fields': ('user', 'category', 'equipment_class')}),
+        (None, {'fields': ('name',)}),
+        ('Additional Information', {'fields': ('category', 'equipment_class')}),
     )
 
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
-        return queryset.select_related('stock_location', 'condition', 'category', 'equipment_class')
+        return queryset.select_related('category', 'equipment_class')
+
+
+@register(EquipmentItem)
+class EquipmentItemAdmin(ModelAdmin):
+    list_display = ('equipment', 'serial_number', 'condition', 'purchase_date', 'purchase_price', 'current_value', 'status', 'stock_location')
+    list_filter = ('equipment', 'status', 'condition', 'stock_location')
+    search_fields = ('equipment__name', 'serial_number', 'notes', 'condition__name', 'stock_location__name')
+    readonly_fields = ('current_value',)
+    fieldsets = (
+        (None, {
+            'fields': ('equipment', 'serial_number', 'condition', 'status')
+        }),
+        ('Details', {
+            'fields': ('purchase_date', 'purchase_price', 'current_value', 'notes')
+        }),
+        ('Stock Location', {
+            'fields': ('stock_location',)
+        })
+    )
+
+    def get_readonly_fields(self, request, obj=None):
+        if obj:
+            return self.readonly_fields + ('equipment', 'serial_number', 'condition')
+        else:
+            return self.readonly_fields
+
+    def current_value_display(self, obj):
+        return f"${obj.current_value:,.2f}"
+    current_value_display.admin_order_field = 'current_value'
+    current_value_display.short_description = 'Current Value'
 
 
 @register(EquipmentField)
@@ -148,7 +177,7 @@ class MaterialAdmin(ModelAdmin):
                 'preferred_vendor')
         }),
         ('Units', {
-            'fields': ('usage_unit', 'retail_unit', 'min_stock', 'max_stock')
+            'fields': ('usage_unit', 'retail_unit')
         }),
     )
 
@@ -212,3 +241,29 @@ class TransferAcceptanceAdmin(ModelAdmin):
         'accepted_by__last_name')
     list_filter = ('transfer__status', 'accepted_at')
     inlines = (TransferItemAcceptanceInline,)
+
+
+class VehicleMaterialInline(TabularInline):
+    model = VehicleMaterial
+    extra = 1
+
+
+class VehicleEquipmentItemInline(TabularInline):
+    model = VehicleEquipmentItem
+    extra = 1
+
+
+@register(Vehicle)
+class VehicleAdmin(ModelAdmin):
+    inlines = [VehicleMaterialInline, VehicleEquipmentItemInline]
+    list_display = ['name', 'vehicle_type', 'driver', 'vin_number', 'license_plate', 'make', 'model', 'model_year']
+    list_filter = ('vehicle_type', 'make', 'model_year')
+    search_fields = ['name', 'driver', 'vin_number', 'license_plate', 'make', 'model', 'model_year']
+    fieldsets = (
+        (None, {
+            'fields': ('name', 'vehicle_type', 'driver')
+        }),
+        ('Vehicle Details', {
+            'fields': ('vin_number', 'license_plate', 'make', 'model', 'model_year')
+        }),
+    )
