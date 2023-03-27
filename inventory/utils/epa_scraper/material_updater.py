@@ -12,7 +12,7 @@ def get_or_update_materials_and_targets(epa_registration_numbers: list[str]):
     p = inflect.engine()
     scraper = SeleniumScraper()
     pesticide_category = MaterialCategory.objects.get(name='Pesticide')
-    unset_unit = Unit.objects.get(name='Unset')
+    unset_unit = Unit.objects.get(name='Unspecified')
     unspecified_brand = Brand.objects.get(name='Unspecified')
     failed_chemicals = []
     for epa_registration_number in epa_registration_numbers:
