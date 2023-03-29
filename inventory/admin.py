@@ -6,7 +6,7 @@ from django.utils.translation import gettext_lazy as _
 from mptt.admin import MPTTModelAdmin
 
 from common.models.field import Field
-from inventory.models import Transfer, TransferAcceptance
+from inventory.models import Transfer, TransferAcceptance, Vehicle, VehicleEquipmentItem, VehicleMaterial
 from inventory.models.brand import Brand
 from inventory.models.equipment import Equipment, Condition, EquipmentCategory, EquipmentField, EquipmentClass, \
     EquipmentItem
@@ -83,8 +83,8 @@ class EquipmentAdmin(ModelAdmin):
     ordering = ('name',)
 
     fieldsets = (
-        (None, {'fields': ('name', 'status', 'stock_location', 'condition')}),
-        ('Additional Information', {'fields': ('user', 'category', 'equipment_class')}),
+        (None, {'fields': ('name',)}),
+        ('Additional Information', {'fields': ('category', 'equipment_class')}),
     )
 
     def get_queryset(self, request):
@@ -157,7 +157,7 @@ class ConditionAdmin(ModelAdmin):
 
 @register(Material)
 class MaterialAdmin(ModelAdmin):
-    list_display = ('name', 'description', 'brand', 'category', 'is_taxable', 'is_active')
+    list_display = ('name', 'get_targets', 'brand', 'category', 'is_taxable', 'is_active')
     list_filter = ('brand', 'category', 'is_taxable', 'is_active')
     search_fields = ('name', 'description')
     filter_horizontal = ('material_classes', 'targets')
@@ -180,6 +180,11 @@ class MaterialAdmin(ModelAdmin):
             'fields': ('usage_unit', 'retail_unit')
         }),
     )
+
+    def get_targets(self, obj):
+        return ", ".join([t.name for t in obj.targets.all()])
+
+    get_targets.short_description = 'Targets'
 
 
 @register(Vendor)
