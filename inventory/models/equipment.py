@@ -31,7 +31,7 @@ class Equipment(models.Model):
 
 class EquipmentItem(models.Model):
     """
-    Represents an individual instance of a piece of equipment.
+    Represents an physical piece of equipment.
     """
 
     class Status(models.TextChoices):
@@ -47,7 +47,7 @@ class EquipmentItem(models.Model):
     serial_number = models.CharField(max_length=50, unique=True)
     purchase_date = models.DateField(null=True, blank=True)
     purchase_price = models.DecimalField(decimal_places=2, max_digits=8, default=0)
-    current_value = models.DecimalField(decimal_places=2, max_digits=8, default=0)
+    purchase_from = models.ForeignKey('inventory.Vendor', blank=True, null=True, on_delete=models.SET_NULL)
     status = models.CharField(max_length=32, choices=Status.choices, default=Status.STORED)
     stock_location = models.ForeignKey('inventory.StockLocation', on_delete=models.SET_NULL, blank=True, null=True)
     condition = models.ForeignKey('Condition', on_delete=models.CASCADE)

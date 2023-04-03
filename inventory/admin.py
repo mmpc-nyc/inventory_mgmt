@@ -94,16 +94,15 @@ class EquipmentAdmin(ModelAdmin):
 
 @register(EquipmentItem)
 class EquipmentItemAdmin(ModelAdmin):
-    list_display = ('equipment', 'serial_number', 'condition', 'purchase_date', 'purchase_price', 'current_value', 'status', 'stock_location')
+    list_display = ('equipment', 'serial_number', 'condition', 'purchase_date', 'purchase_price', 'status', 'stock_location')
     list_filter = ('equipment', 'status', 'condition', 'stock_location')
     search_fields = ('equipment__name', 'serial_number', 'notes', 'condition__name', 'stock_location__name')
-    readonly_fields = ('current_value',)
     fieldsets = (
         (None, {
             'fields': ('equipment', 'serial_number', 'condition', 'status')
         }),
         ('Details', {
-            'fields': ('purchase_date', 'purchase_price', 'current_value', 'notes')
+            'fields': ('purchase_date', 'purchase_price', 'notes')
         }),
         ('Stock Location', {
             'fields': ('stock_location',)

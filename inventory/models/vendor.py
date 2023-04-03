@@ -7,7 +7,7 @@ class Vendor(models.Model):
     """A person, company, or organization that sells goods."""
     name = models.CharField(max_length=150, blank=True)
     is_active = models.BooleanField(default=True)
-    delivery_time = models.PositiveIntegerField()
+    delivery_time = models.PositiveIntegerField(default=7, blank=True)
     website = models.URLField(max_length=256, default='', blank=True)
 
     def __str__(self):
