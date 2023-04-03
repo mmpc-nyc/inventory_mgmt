@@ -16,6 +16,7 @@ class Equipment(models.Model):
     name = models.CharField(max_length=150, blank=True, null=True)
     category = TreeForeignKey('EquipmentCategory', on_delete=models.SET_NULL, null=True, blank=True)
     equipment_class = models.ForeignKey('inventory.EquipmentClass', on_delete=models.SET_NULL, null=True, blank=True)
+    brand = models.ForeignKey('inventory.Brand', on_delete=models.CASCADE)
 
     def __str__(self):
         return f'{self.name}'

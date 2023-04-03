@@ -76,20 +76,20 @@ class EquipmentItemInline(TabularInline):
 
 @register(Equipment)
 class EquipmentAdmin(ModelAdmin):
-    list_display = ('name', 'category', 'equipment_class')
-    list_filter = ('category', 'equipment_class')
+    list_display = ('name', 'brand', 'category', 'equipment_class')
+    list_filter = ('brand', 'category', 'equipment_class')
     inlines = (EquipmentItemInline, EquipmentFieldInline)
     search_fields = ('name',)
     ordering = ('name',)
 
     fieldsets = (
-        (None, {'fields': ('name',)}),
+        (None, {'fields': ('name', 'brand',)}),
         ('Additional Information', {'fields': ('category', 'equipment_class')}),
     )
 
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
-        return queryset.select_related('category', 'equipment_class')
+        return queryset.select_related('category', 'equipment_class', 'brand')
 
 
 @register(EquipmentItem)
