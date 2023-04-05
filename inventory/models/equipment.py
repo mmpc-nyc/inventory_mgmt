@@ -51,7 +51,7 @@ class EquipmentItem(models.Model):
     purchased_by = models.ForeignKey('users.User', on_delete=models.CASCADE)
     status = models.CharField(max_length=32, choices=Status.choices, default=Status.STORED)
     stock_location = models.ForeignKey('inventory.StockLocation', on_delete=models.SET_NULL, blank=True, null=True)
-    condition = models.ForeignKey('Condition', on_delete=models.CASCADE)
+    condition = models.ForeignKey('Condition', on_delete=models.CASCADE, default=1)
     notes = models.TextField(blank=True)
 
     def __str__(self):
