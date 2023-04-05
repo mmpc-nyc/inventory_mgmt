@@ -31,7 +31,7 @@ class Equipment(models.Model):
 
 class EquipmentItem(models.Model):
     """
-    Represents an physical piece of equipment.
+    Represents a physical piece of equipment.
     """
 
     class Status(models.TextChoices):
@@ -48,6 +48,7 @@ class EquipmentItem(models.Model):
     purchase_date = models.DateField(null=True, blank=True)
     purchase_price = models.DecimalField(decimal_places=2, max_digits=8, default=0)
     purchase_from = models.ForeignKey('inventory.Vendor', blank=True, null=True, on_delete=models.SET_NULL)
+    purchased_by = models.ForeignKey('users.User', on_delete=models.CASCADE)
     status = models.CharField(max_length=32, choices=Status.choices, default=Status.STORED)
     stock_location = models.ForeignKey('inventory.StockLocation', on_delete=models.SET_NULL, blank=True, null=True)
     condition = models.ForeignKey('Condition', on_delete=models.CASCADE)
@@ -102,32 +103,10 @@ class Condition(models.Model):
     """Physical condition of the material that determines if it can be used"""
     name = models.CharField(verbose_name=_('name'), max_length=32)
     description = models.TextField(verbose_name=_('description'))
-    action_collect = models.BooleanField(verbose_name=_('collect'), default=False)
-    action_decommission = models.BooleanField(verbose_name=_('decommission'), default=False)
-    action_deploy = models.BooleanField(verbose_name=_('deploy'), default=False)
-    action_store = models.BooleanField(verbose_name=_('store'), default=False)
-    action_transfer = models.BooleanField(verbose_name=_('transfer'), default=False)
-    action_withdraw = models.BooleanField(verbose_name=_('withdraw'), default=False)
 
     def __str__(self):
         return f'{self.name}'
 
-    def has_action(self, action_name: str) -> bool:
-        formatted_action_name = f'action_{action_name.lower()}'
-        if hasattr(self, formatted_action_name):
-            return getattr(self, formatted_action_name)
-        return False
-
     class Meta:
         verbose_name = _('Condition')
         verbose_name_plural = _('Conditions')
-
-
-class EquipmentTransactionAction(models.TextChoices):
-    INSPECT = 'Inspect', _('Inspect')
-    COLLECT = 'Collect', _('Collect')
-    DECOMMISSION = 'Decommission', _('Decommission')
-    DEPLOY = 'Deploy', _('Deploy')
-    STORE = 'Store', _('Store')
-    TRANSFER = 'Transfer', _('Transfer')
-    WITHDRAW = 'Withdraw', _('Withdraw')

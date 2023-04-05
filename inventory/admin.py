@@ -94,7 +94,9 @@ class EquipmentAdmin(ModelAdmin):
 
 @register(EquipmentItem)
 class EquipmentItemAdmin(ModelAdmin):
-    list_display = ('equipment', 'serial_number', 'condition', 'purchase_date', 'purchase_price', 'status', 'stock_location')
+    list_display = (
+        'equipment', 'serial_number', 'condition', 'purchase_price', 'purchased_by', 'purchase_date', 'status',
+        'stock_location')
     list_filter = ('equipment', 'status', 'condition', 'stock_location')
     search_fields = ('equipment__name', 'serial_number', 'notes', 'condition__name', 'stock_location__name')
     fieldsets = (
@@ -102,7 +104,7 @@ class EquipmentItemAdmin(ModelAdmin):
             'fields': ('equipment', 'serial_number', 'condition', 'status')
         }),
         ('Details', {
-            'fields': ('purchase_date', 'purchase_price', 'notes')
+            'fields': ('purchase_price', 'purchased_by', 'purchase_date', 'notes')
         }),
         ('Stock Location', {
             'fields': ('stock_location',)
@@ -117,6 +119,7 @@ class EquipmentItemAdmin(ModelAdmin):
 
     def current_value_display(self, obj):
         return f"${obj.current_value:,.2f}"
+
     current_value_display.admin_order_field = 'current_value'
     current_value_display.short_description = 'Current Value'
 
