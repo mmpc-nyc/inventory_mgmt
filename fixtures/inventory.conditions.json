@@ -1,0 +1,34 @@
+[
+  {
+    "model": "inventory.condition",
+    "pk": 1,
+    "fields": {
+      "name": "New",
+      "description": "Brand new, never used equipment in perfect condition"
+    }
+  },
+  {
+    "model": "inventory.condition",
+    "pk": 2,
+    "fields": {
+      "name": "Working",
+      "description": "Used equipment in good working condition"
+    }
+  },
+  {
+    "model": "inventory.condition",
+    "pk": 3,
+    "fields": {
+      "name": "Damaged",
+      "description": "Equipment with minor damage that can still be used"
+    }
+  },
+  {
+    "model": "inventory.condition",
+    "pk": 4,
+    "fields": {
+      "name": "Decommissioned",
+      "description": "Equipment that has been taken out of service and can no longer be used"
+    }
+  }
+]
