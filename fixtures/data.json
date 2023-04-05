@@ -1004,8 +1004,8 @@
     "model": "inventory.material",
     "pk": 13,
     "fields": {
-        "name": "Mycotrol® Es",
-        "description": "Mycotrol® es",
+        "name": "MycotrolÂ® Es",
+        "description": "MycotrolÂ® es",
         "brand": 2,
         "category": 1,
         "is_taxable": true,
@@ -1118,8 +1118,8 @@
     "model": "inventory.material",
     "pk": 19,
     "fields": {
-        "name": "Contrapest®",
-        "description": "Contrapest®",
+        "name": "ContrapestÂ®",
+        "description": "ContrapestÂ®",
         "brand": 2,
         "category": 1,
         "is_taxable": true,
@@ -2258,8 +2258,8 @@
     "model": "inventory.material",
     "pk": 79,
     "fields": {
-        "name": "Uld® Bp-300 Insecticide",
-        "description": "Uld® bp-300 insecticide",
+        "name": "UldÂ® Bp-300 Insecticide",
+        "description": "UldÂ® bp-300 insecticide",
         "brand": 2,
         "category": 1,
         "is_taxable": true,
@@ -2296,8 +2296,8 @@
     "model": "inventory.material",
     "pk": 81,
     "fields": {
-        "name": "Mgk® Formula 2976",
-        "description": "Mgk® formula 2976",
+        "name": "MgkÂ® Formula 2976",
+        "description": "MgkÂ® formula 2976",
         "brand": 2,
         "category": 1,
         "is_taxable": true,
