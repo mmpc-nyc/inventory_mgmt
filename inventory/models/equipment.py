@@ -1,6 +1,9 @@
+from datetime import timedelta
+
 from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 from django.urls import reverse_lazy
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from mptt.fields import TreeForeignKey
 from mptt.models import MPTTModel
@@ -13,10 +16,18 @@ class Equipment(models.Model):
     Equipment refers to tracked physical assets such as machinery and tools used in a business, that are not vehicles and are
     tracked for inventory purposes. These assets are depreciable and can be used to generate income or are necessary for production.
     """
+
+    class AssetType(models.TextChoices):
+        SHORT_TERM = 'Short Term', _('Short Term')
+        LONG_TERM = 'Long Term', _('Long Term')
+
     name = models.CharField(max_length=150, blank=True, null=True)
     category = TreeForeignKey('EquipmentCategory', on_delete=models.SET_NULL, null=True, blank=True)
     equipment_class = models.ForeignKey('inventory.EquipmentClass', on_delete=models.SET_NULL, null=True, blank=True)
     brand = models.ForeignKey('inventory.Brand', on_delete=models.CASCADE)
+    warranty_days = models.IntegerField(blank=True, null=True)
+    asset_type = models.CharField(choices=AssetType.choices, max_length=20, default=AssetType.SHORT_TERM)
+
 
     def __str__(self):
         return f'{self.name}'
@@ -45,7 +56,7 @@ class EquipmentItem(models.Model):
 
     equipment = models.ForeignKey('inventory.Equipment', on_delete=models.CASCADE)
     serial_number = models.CharField(max_length=50, unique=True)
-    purchase_date = models.DateField(null=True, blank=True)
+    purchase_date = models.DateField(null=True, blank=True, default=timezone.now())
     purchase_price = models.DecimalField(decimal_places=2, max_digits=8, default=0)
     purchase_from = models.ForeignKey('inventory.Vendor', blank=True, null=True, on_delete=models.SET_NULL)
     purchased_by = models.ForeignKey('users.User', on_delete=models.CASCADE)
@@ -53,6 +64,12 @@ class EquipmentItem(models.Model):
     stock_location = models.ForeignKey('inventory.StockLocation', on_delete=models.SET_NULL, blank=True, null=True)
     condition = models.ForeignKey('Condition', on_delete=models.CASCADE, default=1)
     notes = models.TextField(blank=True)
+    warranty_expiration_date = models.DateField(null=True, blank=True, editable=False)
+
+    def save(self, *args, **kwargs):
+        if self.purchase_date and self.equipment.warranty_days:
+            self.warranty_expiration_date = self.purchase_date + timedelta(days=self.equipment.warranty_days)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.equipment.name} ({self.serial_number})"
