@@ -1,7 +1,10 @@
 from django.contrib.admin import register, ModelAdmin, TabularInline
 from django.contrib.contenttypes.admin import GenericStackedInline
 from django.db import models
+from django.db.models import Count
 from django.forms import TextInput, Textarea
+from django.urls import reverse
+from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 from mptt.admin import MPTTModelAdmin
 
@@ -73,30 +76,48 @@ class EquipmentItemInline(TabularInline):
     model = EquipmentItem
     extra = 1
 
+    def formfield_for_foreignkey(self, db_field, request=None, **kwargs):
+        if db_field.name == 'purchased_by':
+            kwargs['initial'] = request.user.id
+            return db_field.formfield(**kwargs)
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
 
 @register(Equipment)
 class EquipmentAdmin(ModelAdmin):
-    list_display = ('name', 'brand', 'category', 'equipment_class')
+    list_display = (
+        'name', 'brand', 'category', 'equipment_class', 'asset_type', 'warranty_days', 'equipmentitem_count')
     list_filter = ('brand', 'category', 'equipment_class')
     inlines = (EquipmentItemInline, EquipmentFieldInline)
     search_fields = ('name',)
     ordering = ('name',)
 
     fieldsets = (
-        (None, {'fields': ('name', 'brand',)}),
-        ('Additional Information', {'fields': ('category', 'equipment_class')}),
+        (None, {'fields': ('name', 'brand', 'asset_type')}),
+        ('Additional Information', {'fields': ('category', 'equipment_class', 'warranty_days')}),
     )
 
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
-        return queryset.select_related('category', 'equipment_class', 'brand')
+        queryset = queryset.select_related('category', 'equipment_class', 'brand')
+        queryset = queryset.annotate(equipmentitem_count=Count('equipmentitem'))
+        return queryset
+
+    def equipmentitem_count(self, obj):
+        count = obj.equipmentitem_count
+        url = reverse('admin:inventory_equipmentitem_changelist') + f'?equipment__id__exact={obj.id}'
+        return format_html('<a href="{}">{}</a>', url, count)
+
+    equipmentitem_count.admin_order_field = 'equipmentitem_count'
+    equipmentitem_count.short_description = 'Equipment Items'
 
 
 @register(EquipmentItem)
 class EquipmentItemAdmin(ModelAdmin):
     list_display = (
         'equipment', 'serial_number', 'condition', 'purchase_price', 'purchased_by', 'purchase_date', 'status',
-        'stock_location')
+        'stock_location', 'warranty_expiration_date'
+    )
     list_filter = ('equipment', 'status', 'condition', 'stock_location')
     search_fields = ('equipment__name', 'serial_number', 'notes', 'condition__name', 'stock_location__name')
     fieldsets = (
@@ -104,7 +125,7 @@ class EquipmentItemAdmin(ModelAdmin):
             'fields': ('equipment', 'serial_number', 'condition', 'status')
         }),
         ('Details', {
-            'fields': ('purchase_price', 'purchased_by', 'purchase_date', 'notes')
+            'fields': ('purchase_price', 'purchased_by', 'purchase_date', 'notes', 'warranty_expiration_date')
         }),
         ('Stock Location', {
             'fields': ('stock_location',)
@@ -118,15 +139,9 @@ class EquipmentItemAdmin(ModelAdmin):
 
     def get_readonly_fields(self, request, obj=None):
         if obj:
-            return self.readonly_fields + ('equipment', 'serial_number', 'condition',)
+            return self.readonly_fields + ('equipment', 'serial_number', 'condition', 'warranty_expiration_date',)
         else:
             return self.readonly_fields
-
-    def current_value_display(self, obj):
-        return f"${obj.current_value:,.2f}"
-
-    current_value_display.admin_order_field = 'current_value'
-    current_value_display.short_description = 'Current Value'
 
 
 @register(EquipmentField)
