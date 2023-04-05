@@ -32,8 +32,6 @@ class Transfer(models.Model):
     transfer_start_date = models.DateTimeField(verbose_name=_('Transfer Start Date'), null=True, blank=True)
     transfer_end_date = models.DateTimeField(verbose_name=_('Transfer End Date'), null=True, blank=True)
     transfer_notes = models.TextField(verbose_name=_('Transfer Notes'), blank=True)
-    receiving_agent = models.ForeignKey('users.User', verbose_name=_('Receiving Agent'), on_delete=models.SET_NULL,
-                                        null=True, blank=True, related_name='received_transfers')
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -42,11 +40,6 @@ class Transfer(models.Model):
 
     def __str__(self):
         return f'Transfer from {self.source} to {self.destination}'
-
-    def save(self, *args, **kwargs):
-        if self.transfer_end_date and not self.receiving_agent:
-            raise ValueError("A receiving agent must be specified to complete the transfer")
-        super().save(*args, **kwargs)
 
 
 class TransferItem(models.Model):
