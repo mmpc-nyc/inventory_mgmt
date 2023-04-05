@@ -111,9 +111,14 @@ class EquipmentItemAdmin(ModelAdmin):
         })
     )
 
+    def get_changeform_initial_data(self, request):
+        initial_data = super().get_changeform_initial_data(request)
+        initial_data['purchased_by'] = request.user.pk
+        return initial_data
+
     def get_readonly_fields(self, request, obj=None):
         if obj:
-            return self.readonly_fields + ('equipment', 'serial_number', 'condition')
+            return self.readonly_fields + ('equipment', 'serial_number', 'condition',)
         else:
             return self.readonly_fields
 
