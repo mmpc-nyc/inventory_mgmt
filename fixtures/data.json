@@ -66,14 +66,14 @@
     "model": "contenttypes.contenttype",
     "fields": {
         "app_label": "inventory",
-        "model": "equipment"
+        "model": "condition"
     }
 },
 {
     "model": "contenttypes.contenttype",
     "fields": {
         "app_label": "inventory",
-        "model": "equipmentitem"
+        "model": "equipment"
     }
 },
 {
@@ -87,21 +87,49 @@
     "model": "contenttypes.contenttype",
     "fields": {
         "app_label": "inventory",
-        "model": "equipmentcategory"
+        "model": "equipmentitem"
     }
 },
 {
     "model": "contenttypes.contenttype",
     "fields": {
         "app_label": "inventory",
-        "model": "equipmentfield"
+        "model": "material"
     }
 },
 {
     "model": "contenttypes.contenttype",
     "fields": {
         "app_label": "inventory",
-        "model": "condition"
+        "model": "materialclass"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "fields": {
+        "app_label": "inventory",
+        "model": "materialstock"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "fields": {
+        "app_label": "inventory",
+        "model": "transfer"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "fields": {
+        "app_label": "inventory",
+        "model": "transferacceptance"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "fields": {
+        "app_label": "inventory",
+        "model": "transferitem"
     }
 },
 {
@@ -122,21 +150,14 @@
     "model": "contenttypes.contenttype",
     "fields": {
         "app_label": "inventory",
-        "model": "material"
+        "model": "transferitemacceptance"
     }
 },
 {
     "model": "contenttypes.contenttype",
     "fields": {
         "app_label": "inventory",
-        "model": "materialcategory"
-    }
-},
-{
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "app_label": "inventory",
-        "model": "materialclass"
+        "model": "stocklocation"
     }
 },
 {
@@ -150,6 +171,27 @@
     "model": "contenttypes.contenttype",
     "fields": {
         "app_label": "inventory",
+        "model": "materialcategory"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "fields": {
+        "app_label": "inventory",
+        "model": "equipmentfield"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "fields": {
+        "app_label": "inventory",
+        "model": "equipmentcategory"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "fields": {
+        "app_label": "inventory",
         "model": "materialfield"
     }
 },
@@ -157,7 +199,42 @@
     "model": "contenttypes.contenttype",
     "fields": {
         "app_label": "inventory",
-        "model": "stocklocation"
+        "model": "assetrequirementcategory"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "fields": {
+        "app_label": "inventory",
+        "model": "vehicle"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "fields": {
+        "app_label": "inventory",
+        "model": "vehiclematerial"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "fields": {
+        "app_label": "inventory",
+        "model": "vehicleequipmentitem"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "fields": {
+        "app_label": "inventory",
+        "model": "materialrequirement"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "fields": {
+        "app_label": "inventory",
+        "model": "equipmentitemrequirement"
     }
 },
 {
@@ -171,14 +248,14 @@
     "model": "contenttypes.contenttype",
     "fields": {
         "app_label": "users",
-        "model": "profile"
+        "model": "historicaluser"
     }
 },
 {
     "model": "contenttypes.contenttype",
     "fields": {
         "app_label": "users",
-        "model": "historicaluser"
+        "model": "profile"
     }
 },
 {
@@ -192,14 +269,70 @@
     "model": "contenttypes.contenttype",
     "fields": {
         "app_label": "common",
-        "model": "attachment"
+        "model": "contact"
     }
 },
 {
     "model": "contenttypes.contenttype",
     "fields": {
         "app_label": "common",
-        "model": "contact"
+        "model": "emailtype"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "fields": {
+        "app_label": "common",
+        "model": "phonenumbertype"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "fields": {
+        "app_label": "common",
+        "model": "unitcategory"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "fields": {
+        "app_label": "common",
+        "model": "unit"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "fields": {
+        "app_label": "common",
+        "model": "task"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "fields": {
+        "app_label": "common",
+        "model": "target"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "fields": {
+        "app_label": "common",
+        "model": "question"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "fields": {
+        "app_label": "common",
+        "model": "field"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "fields": {
+        "app_label": "common",
+        "model": "document"
     }
 },
 {
@@ -220,35 +353,7 @@
     "model": "contenttypes.contenttype",
     "fields": {
         "app_label": "common",
-        "model": "document"
-    }
-},
-{
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "app_label": "common",
-        "model": "field"
-    }
-},
-{
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "app_label": "common",
-        "model": "target"
-    }
-},
-{
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "app_label": "common",
-        "model": "unitcategory"
-    }
-},
-{
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "app_label": "common",
-        "model": "unit"
+        "model": "attachment"
     }
 },
 {
@@ -262,13 +367,6 @@
     "model": "contenttypes.contenttype",
     "fields": {
         "app_label": "customers",
-        "model": "customercontact"
-    }
-},
-{
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "app_label": "customers",
         "model": "servicelocation"
     }
 },
@@ -276,21 +374,14 @@
     "model": "contenttypes.contenttype",
     "fields": {
         "app_label": "customers",
+        "model": "customercontact"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "fields": {
+        "app_label": "customers",
         "model": "billinglocation"
-    }
-},
-{
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "app_label": "orders",
-        "model": "warranty"
-    }
-},
-{
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "app_label": "orders",
-        "model": "service"
     }
 },
 {
@@ -311,7 +402,14 @@
     "model": "contenttypes.contenttype",
     "fields": {
         "app_label": "orders",
-        "model": "requiredserviceequipment"
+        "model": "service"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "fields": {
+        "app_label": "orders",
+        "model": "warranty"
     }
 },
 {
@@ -319,6 +417,13 @@
     "fields": {
         "app_label": "orders",
         "model": "suggestedservicematerial"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "fields": {
+        "app_label": "orders",
+        "model": "servicewarranty"
     }
 },
 {
@@ -339,7 +444,7 @@
     "model": "contenttypes.contenttype",
     "fields": {
         "app_label": "orders",
-        "model": "servicewarranty"
+        "model": "requiredserviceequipment"
     }
 },
 {
@@ -462,116 +567,27 @@
     }
 },
 {
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "app_label": "common",
-        "model": "emailtype"
-    }
-},
-{
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "app_label": "common",
-        "model": "phonenumbertype"
-    }
-},
-{
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "app_label": "common",
-        "model": "task"
-    }
-},
-{
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "app_label": "common",
-        "model": "question"
-    }
-},
-{
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "app_label": "inventory",
-        "model": "transferacceptance"
-    }
-},
-{
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "app_label": "inventory",
-        "model": "transfer"
-    }
-},
-{
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "app_label": "inventory",
-        "model": "materialstock"
-    }
-},
-{
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "app_label": "inventory",
-        "model": "transferitem"
-    }
-},
-{
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "app_label": "inventory",
-        "model": "transferitemacceptance"
-    }
-},
-{
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "app_label": "inventory",
-        "model": "assetrequirementcategory"
-    }
-},
-{
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "app_label": "inventory",
-        "model": "vehicle"
-    }
-},
-{
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "app_label": "inventory",
-        "model": "vehiclematerial"
-    }
-},
-{
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "app_label": "inventory",
-        "model": "vehicleequipmentitem"
-    }
-},
-{
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "app_label": "inventory",
-        "model": "materialrequirement"
-    }
-},
-{
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "app_label": "inventory",
-        "model": "equipmentitemrequirement"
-    }
-},
-{
     "model": "sessions.session",
     "pk": "0q9ipfgyf1aui32veaqod18l50srrnkx",
     "fields": {
         "session_data": ".eJxVjMsOwiAQRf-FtSHAAAWX7v0GMsNDqgaS0q6M_65NutDtPefcFwu4rTVsIy9hTuzMJDv9boTxkdsO0h3brfPY27rMxHeFH3Twa0_5eTncv4OKo35rBGn0ZA04jN6nIrzwWkEkQHIFiRCE98oK7YyMKChZpXJSQpbJOAXs_QHNcDcw:1pegef:ADKyyu4o8hrvfbIgWp_nDIU9pRF2PGXSH7pyV1lMuP8",
         "expire_date": "2023-04-04T18:24:17.963Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "1pxj6bcj4yvs8t895b07023tpknqt46l",
+    "fields": {
+        "session_data": ".eJxVjMsOwiAQRf-FtSHAAAWX7v0GMsNDqgaS0q6M_65NutDtPefcFwu4rTVsIy9hTuzMJDv9boTxkdsO0h3brfPY27rMxHeFH3Twa0_5eTncv4OKo35rBGn0ZA04jN6nIrzwWkEkQHIFiRCE98oK7YyMKChZpXJSQpbJOAXs_QHNcDcw:1phaEX:8SNelwrZnO889Na0gfttQ7KzknCL00rMEmvsu2dpHiI",
+        "expire_date": "2023-04-12T18:09:17.456Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "31nnotvnj2npy23ezkgg2rp3fhcwa9v0",
+    "fields": {
+        "session_data": ".eJxVjMsOwiAQRf-FtSHAAAWX7v0GMsNDqgaS0q6M_65NutDtPefcFwu4rTVsIy9hTuzMJDv9boTxkdsO0h3brfPY27rMxHeFH3Twa0_5eTncv4OKo35rBGn0ZA04jN6nIrzwWkEkQHIFiRCE98oK7YyMKChZpXJSQpbJOAXs_QHNcDcw:1pjMTj:pHipLU5UcEn5pDI9glpkpW2BPMN-N65m9YH-rFSICE0",
+        "expire_date": "2023-04-17T15:52:19.251Z"
     }
 },
 {
@@ -584,10 +600,50 @@
 },
 {
     "model": "sessions.session",
+    "pk": "gb9thxx29xqeqlpfa42nlvexd6kdksbz",
+    "fields": {
+        "session_data": ".eJxVjMsOwiAQRf-FtSHAAAWX7v0GMsNDqgaS0q6M_65NutDtPefcFwu4rTVsIy9hTuzMJDv9boTxkdsO0h3brfPY27rMxHeFH3Twa0_5eTncv4OKo35rBGn0ZA04jN6nIrzwWkEkQHIFiRCE98oK7YyMKChZpXJSQpbJOAXs_QHNcDcw:1phqjk:nYYiFcvTEG3r-iFyem85sR6CbRnobr0hYVbMGJgub1o",
+        "expire_date": "2023-04-13T11:46:36.729Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "jzyslvxfyswg3kc1b1qxe8ym49vf001v",
+    "fields": {
+        "session_data": ".eJxVjMsOwiAQRf-FtSHAAAWX7v0GMsNDqgaS0q6M_65NutDtPefcFwu4rTVsIy9hTuzMJDv9boTxkdsO0h3brfPY27rMxHeFH3Twa0_5eTncv4OKo35rBGn0ZA04jN6nIrzwWkEkQHIFiRCE98oK7YyMKChZpXJSQpbJOAXs_QHNcDcw:1pjN0J:2UFoUuuvftrimlz00Lkxxpj2Gy7oRropyWvtND935Tk",
+        "expire_date": "2023-04-17T16:25:59.156Z"
+    }
+},
+{
+    "model": "sessions.session",
     "pk": "k109unhjmgjmcuesfqz1ac32zd1er8rk",
     "fields": {
         "session_data": ".eJxVjMsOwiAQRf-FtSHAAAWX7v0GMsNDqgaS0q6M_65NutDtPefcFwu4rTVsIy9hTuzMJDv9boTxkdsO0h3brfPY27rMxHeFH3Twa0_5eTncv4OKo35rBGn0ZA04jN6nIrzwWkEkQHIFiRCE98oK7YyMKChZpXJSQpbJOAXs_QHNcDcw:1paKLX:BXL_rFfiEbWNTy7ams1y6i2-02WQjBWyTW0rJ6vHZoM",
         "expire_date": "2023-03-23T17:46:31.238Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "m2ikaplf30paqh43dd9i4n0j3o88zxar",
+    "fields": {
+        "session_data": ".eJxVjMsOwiAQRf-FtSHAAAWX7v0GMsNDqgaS0q6M_65NutDtPefcFwu4rTVsIy9hTuzMJDv9boTxkdsO0h3brfPY27rMxHeFH3Twa0_5eTncv4OKo35rBGn0ZA04jN6nIrzwWkEkQHIFiRCE98oK7YyMKChZpXJSQpbJOAXs_QHNcDcw:1pjfhr:W2VnjFphhSZGyx_gm9faR2SOxs1xfE0x2cENvxnKcdQ",
+        "expire_date": "2023-04-18T12:24:11.527Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "mzsys38c65xwpwyueog9uar017h9qzjs",
+    "fields": {
+        "session_data": ".eJxVjMsOwiAQRf-FtSHAAAWX7v0GMsNDqgaS0q6M_65NutDtPefcFwu4rTVsIy9hTuzMJDv9boTxkdsO0h3brfPY27rMxHeFH3Twa0_5eTncv4OKo35rBGn0ZA04jN6nIrzwWkEkQHIFiRCE98oK7YyMKChZpXJSQpbJOAXs_QHNcDcw:1pha5m:U-rrRB2o9iBNH909uE5Ku6bVOqeIovX_8KszarBKO3I",
+        "expire_date": "2023-04-12T18:00:14.061Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "qutig8icex0x45eorryqsen5tqvloyfn",
+    "fields": {
+        "session_data": ".eJxVjMsOwiAQRf-FtSHAAAWX7v0GMsNDqgaS0q6M_65NutDtPefcFwu4rTVsIy9hTuzMJDv9boTxkdsO0h3brfPY27rMxHeFH3Twa0_5eTncv4OKo35rBGn0ZA04jN6nIrzwWkEkQHIFiRCE98oK7YyMKChZpXJSQpbJOAXs_QHNcDcw:1pjMd3:yo7xMWjhgNfWiI1lJB1D_6CXwbSIaZBdn3QDGW9AO_s",
+        "expire_date": "2023-04-17T16:01:57.129Z"
     }
 },
 {
@@ -628,12 +684,20 @@
     }
 },
 {
+    "model": "inventory.brand",
+    "pk": 3,
+    "fields": {
+        "name": "B&G Equipment Company"
+    }
+},
+{
     "model": "inventory.equipment",
     "pk": 1,
     "fields": {
         "name": "B&G Tank",
         "category": null,
-        "equipment_class": null
+        "equipment_class": null,
+        "brand": 3
     }
 },
 {
@@ -660,14 +724,32 @@
     "model": "inventory.condition",
     "pk": 1,
     "fields": {
+        "name": "New",
+        "description": "Brand new, never used equipment in perfect condition"
+    }
+},
+{
+    "model": "inventory.condition",
+    "pk": 2,
+    "fields": {
         "name": "Working",
-        "description": "Working",
-        "action_collect": true,
-        "action_decommission": true,
-        "action_deploy": true,
-        "action_store": true,
-        "action_transfer": true,
-        "action_withdraw": true
+        "description": "Used equipment in good working condition"
+    }
+},
+{
+    "model": "inventory.condition",
+    "pk": 3,
+    "fields": {
+        "name": "Damaged",
+        "description": "Equipment with minor damage that can still be used"
+    }
+},
+{
+    "model": "inventory.condition",
+    "pk": 4,
+    "fields": {
+        "name": "Decommissioned",
+        "description": "Equipment that has been taken out of service and can no longer be used"
     }
 },
 {
@@ -678,6 +760,16 @@
         "is_active": true,
         "delivery_time": 7,
         "website": "https://www.domyown.com/"
+    }
+},
+{
+    "model": "inventory.vendor",
+    "pk": 2,
+    "fields": {
+        "name": "Veseris",
+        "is_active": true,
+        "delivery_time": 7,
+        "website": "https://store.veseris.com/"
     }
 },
 {
@@ -696,9 +788,7 @@
         "preferred_vendor": 1,
         "usage_unit": 1,
         "retail_unit": 2,
-        "targets": [
-            1
-        ]
+        "targets": []
     }
 },
 {
@@ -736,10 +826,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            4,
-            19
-        ]
+        "targets": []
     }
 },
 {
@@ -758,10 +845,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            20,
-            21
-        ]
+        "targets": []
     }
 },
 {
@@ -780,22 +864,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            22,
-            23,
-            24,
-            25,
-            26,
-            27,
-            28,
-            29,
-            30,
-            31,
-            32,
-            33,
-            34,
-            35
-        ]
+        "targets": []
     }
 },
 {
@@ -814,23 +883,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            22,
-            23,
-            26,
-            27,
-            28,
-            29,
-            30,
-            31,
-            32,
-            33,
-            34,
-            36,
-            37,
-            38,
-            39
-        ]
+        "targets": []
     }
 },
 {
@@ -849,23 +902,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            4,
-            12,
-            38,
-            40,
-            41,
-            42,
-            43,
-            44,
-            45,
-            46,
-            47,
-            48,
-            49,
-            50,
-            51
-        ]
+        "targets": []
     }
 },
 {
@@ -884,9 +921,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            52
-        ]
+        "targets": []
     }
 },
 {
@@ -905,9 +940,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            12
-        ]
+        "targets": []
     }
 },
 {
@@ -926,16 +959,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            12,
-            53,
-            54,
-            55,
-            56,
-            57,
-            58,
-            59
-        ]
+        "targets": []
     }
 },
 {
@@ -954,23 +978,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            20,
-            33,
-            60,
-            61,
-            62,
-            63,
-            64,
-            65,
-            66,
-            67,
-            68,
-            69,
-            70,
-            71,
-            72
-        ]
+        "targets": []
     }
 },
 {
@@ -989,16 +997,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            4,
-            21,
-            38,
-            48,
-            73,
-            74,
-            75,
-            76
-        ]
+        "targets": []
     }
 },
 {
@@ -1017,23 +1016,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            77,
-            78,
-            79,
-            80,
-            81,
-            82,
-            83,
-            84,
-            85,
-            86,
-            87,
-            88,
-            89,
-            90,
-            91
-        ]
+        "targets": []
     }
 },
 {
@@ -1052,11 +1035,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            9,
-            92,
-            93
-        ]
+        "targets": []
     }
 },
 {
@@ -1075,23 +1054,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            4,
-            33,
-            38,
-            40,
-            45,
-            47,
-            50,
-            51,
-            94,
-            95,
-            96,
-            97,
-            98,
-            99,
-            100
-        ]
+        "targets": []
     }
 },
 {
@@ -1110,21 +1073,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            14,
-            16,
-            15,
-            17,
-            18,
-            101,
-            102,
-            103,
-            104,
-            105,
-            106,
-            107,
-            108
-        ]
+        "targets": []
     }
 },
 {
@@ -1143,20 +1092,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            14,
-            16,
-            15,
-            17,
-            18,
-            101,
-            102,
-            103,
-            104,
-            105,
-            107,
-            109
-        ]
+        "targets": []
     }
 },
 {
@@ -1175,11 +1111,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            16,
-            17,
-            18
-        ]
+        "targets": []
     }
 },
 {
@@ -1198,10 +1130,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            17,
-            18
-        ]
+        "targets": []
     }
 },
 {
@@ -1220,11 +1149,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            12,
-            110,
-            111
-        ]
+        "targets": []
     }
 },
 {
@@ -1243,10 +1168,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            12,
-            110
-        ]
+        "targets": []
     }
 },
 {
@@ -1265,23 +1187,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            38,
-            41,
-            49,
-            51,
-            54,
-            83,
-            88,
-            90,
-            98,
-            112,
-            113,
-            114,
-            115,
-            116,
-            117
-        ]
+        "targets": []
     }
 },
 {
@@ -1300,23 +1206,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            12,
-            29,
-            33,
-            38,
-            41,
-            45,
-            62,
-            83,
-            85,
-            99,
-            118,
-            119,
-            120,
-            121,
-            122
-        ]
+        "targets": []
     }
 },
 {
@@ -1335,23 +1225,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            12,
-            38,
-            41,
-            46,
-            49,
-            62,
-            83,
-            85,
-            88,
-            112,
-            114,
-            116,
-            118,
-            119,
-            120
-        ]
+        "targets": []
     }
 },
 {
@@ -1370,23 +1244,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            4,
-            33,
-            38,
-            41,
-            43,
-            44,
-            45,
-            47,
-            49,
-            51,
-            54,
-            99,
-            113,
-            120,
-            123
-        ]
+        "targets": []
     }
 },
 {
@@ -1405,23 +1263,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            4,
-            12,
-            33,
-            38,
-            41,
-            43,
-            44,
-            45,
-            49,
-            51,
-            54,
-            97,
-            113,
-            120,
-            123
-        ]
+        "targets": []
     }
 },
 {
@@ -1440,11 +1282,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            16,
-            17,
-            18
-        ]
+        "targets": []
     }
 },
 {
@@ -1463,23 +1301,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            3,
-            4,
-            6,
-            12,
-            38,
-            40,
-            41,
-            45,
-            47,
-            49,
-            50,
-            51,
-            98,
-            124,
-            125
-        ]
+        "targets": []
     }
 },
 {
@@ -1498,9 +1320,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            4
-        ]
+        "targets": []
     }
 },
 {
@@ -1519,17 +1339,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            4,
-            5,
-            6,
-            7,
-            97,
-            126,
-            127,
-            128,
-            129
-        ]
+        "targets": []
     }
 },
 {
@@ -1548,23 +1358,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            12,
-            38,
-            46,
-            79,
-            88,
-            96,
-            112,
-            114,
-            130,
-            131,
-            132,
-            133,
-            134,
-            135,
-            136
-        ]
+        "targets": []
     }
 },
 {
@@ -1583,23 +1377,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            12,
-            38,
-            44,
-            45,
-            49,
-            54,
-            77,
-            90,
-            96,
-            98,
-            100,
-            112,
-            133,
-            137,
-            138
-        ]
+        "targets": []
     }
 },
 {
@@ -1618,12 +1396,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            16,
-            17,
-            18,
-            102
-        ]
+        "targets": []
     }
 },
 {
@@ -1642,20 +1415,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            14,
-            16,
-            15,
-            17,
-            18,
-            101,
-            102,
-            103,
-            104,
-            105,
-            107,
-            109
-        ]
+        "targets": []
     }
 },
 {
@@ -1674,18 +1434,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            14,
-            16,
-            17,
-            18,
-            101,
-            102,
-            103,
-            104,
-            105,
-            107
-        ]
+        "targets": []
     }
 },
 {
@@ -1704,21 +1453,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            16,
-            17,
-            18,
-            101,
-            102,
-            103,
-            104,
-            105,
-            106,
-            107,
-            108,
-            109,
-            139
-        ]
+        "targets": []
     }
 },
 {
@@ -1737,17 +1472,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            4,
-            9,
-            11,
-            50,
-            56,
-            59,
-            76,
-            93,
-            140
-        ]
+        "targets": []
     }
 },
 {
@@ -1766,9 +1491,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            13
-        ]
+        "targets": []
     }
 },
 {
@@ -1787,11 +1510,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            16,
-            17,
-            18
-        ]
+        "targets": []
     }
 },
 {
@@ -1810,23 +1529,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            14,
-            16,
-            15,
-            17,
-            18,
-            101,
-            102,
-            103,
-            104,
-            105,
-            106,
-            108,
-            109,
-            139,
-            141
-        ]
+        "targets": []
     }
 },
 {
@@ -1845,23 +1548,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            4,
-            12,
-            19,
-            47,
-            51,
-            59,
-            60,
-            142,
-            143,
-            144,
-            145,
-            146,
-            147,
-            148,
-            149
-        ]
+        "targets": []
     }
 },
 {
@@ -1880,10 +1567,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            5,
-            38
-        ]
+        "targets": []
     }
 },
 {
@@ -1902,19 +1586,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            87,
-            88,
-            150,
-            151,
-            152,
-            153,
-            154,
-            155,
-            156,
-            157,
-            158
-        ]
+        "targets": []
     }
 },
 {
@@ -1933,23 +1605,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            12,
-            38,
-            41,
-            44,
-            49,
-            83,
-            96,
-            120,
-            131,
-            133,
-            135,
-            159,
-            160,
-            161,
-            162
-        ]
+        "targets": []
     }
 },
 {
@@ -1968,23 +1624,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            5,
-            6,
-            22,
-            23,
-            24,
-            26,
-            29,
-            31,
-            33,
-            36,
-            38,
-            39,
-            50,
-            163,
-            164
-        ]
+        "targets": []
     }
 },
 {
@@ -2003,20 +1643,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            23,
-            25,
-            27,
-            28,
-            29,
-            30,
-            33,
-            34,
-            39,
-            165,
-            166,
-            167
-        ]
+        "targets": []
     }
 },
 {
@@ -2035,20 +1662,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            23,
-            25,
-            26,
-            27,
-            28,
-            29,
-            31,
-            33,
-            34,
-            36,
-            37,
-            39
-        ]
+        "targets": []
     }
 },
 {
@@ -2067,23 +1681,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            5,
-            6,
-            126,
-            146,
-            168,
-            169,
-            170,
-            171,
-            172,
-            173,
-            174,
-            175,
-            176,
-            177,
-            178
-        ]
+        "targets": []
     }
 },
 {
@@ -2102,23 +1700,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            4,
-            5,
-            126,
-            145,
-            146,
-            168,
-            169,
-            171,
-            172,
-            174,
-            175,
-            176,
-            177,
-            178,
-            179
-        ]
+        "targets": []
     }
 },
 {
@@ -2137,13 +1719,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            5,
-            7,
-            126,
-            128,
-            180
-        ]
+        "targets": []
     }
 },
 {
@@ -2162,10 +1738,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            92,
-            140
-        ]
+        "targets": []
     }
 },
 {
@@ -2184,20 +1757,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            23,
-            25,
-            26,
-            27,
-            28,
-            29,
-            30,
-            32,
-            34,
-            36,
-            38,
-            181
-        ]
+        "targets": []
     }
 },
 {
@@ -2216,15 +1776,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            4,
-            5,
-            6,
-            7,
-            19,
-            126,
-            128
-        ]
+        "targets": []
     }
 },
 {
@@ -2243,14 +1795,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            5,
-            6,
-            7,
-            74,
-            75,
-            126
-        ]
+        "targets": []
     }
 },
 {
@@ -2269,23 +1814,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            4,
-            5,
-            6,
-            29,
-            30,
-            33,
-            38,
-            50,
-            97,
-            126,
-            127,
-            182,
-            183,
-            184,
-            185
-        ]
+        "targets": []
     }
 },
 {
@@ -2304,23 +1833,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            4,
-            12,
-            38,
-            49,
-            50,
-            54,
-            59,
-            83,
-            92,
-            110,
-            137,
-            186,
-            187,
-            188,
-            189
-        ]
+        "targets": []
     }
 },
 {
@@ -2339,23 +1852,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            4,
-            12,
-            29,
-            33,
-            38,
-            41,
-            46,
-            49,
-            54,
-            83,
-            96,
-            99,
-            111,
-            123,
-            190
-        ]
+        "targets": []
     }
 },
 {
@@ -2374,23 +1871,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            6,
-            41,
-            44,
-            46,
-            83,
-            96,
-            97,
-            117,
-            120,
-            126,
-            127,
-            129,
-            133,
-            161,
-            191
-        ]
+        "targets": []
     }
 },
 {
@@ -2409,23 +1890,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            38,
-            88,
-            89,
-            91,
-            112,
-            114,
-            192,
-            193,
-            194,
-            195,
-            196,
-            197,
-            198,
-            199,
-            200
-        ]
+        "targets": []
     }
 },
 {
@@ -2444,20 +1909,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            4,
-            11,
-            24,
-            38,
-            47,
-            50,
-            148,
-            164,
-            183,
-            201,
-            202,
-            203
-        ]
+        "targets": []
     }
 },
 {
@@ -2476,23 +1928,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            12,
-            38,
-            45,
-            49,
-            54,
-            83,
-            96,
-            113,
-            120,
-            204,
-            205,
-            206,
-            207,
-            208,
-            209
-        ]
+        "targets": []
     }
 },
 {
@@ -2511,21 +1947,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            4,
-            9,
-            38,
-            47,
-            50,
-            56,
-            59,
-            92,
-            93,
-            149,
-            203,
-            210,
-            211
-        ]
+        "targets": []
     }
 },
 {
@@ -2544,23 +1966,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            4,
-            6,
-            12,
-            23,
-            29,
-            38,
-            41,
-            45,
-            46,
-            47,
-            83,
-            97,
-            122,
-            126,
-            212
-        ]
+        "targets": []
     }
 },
 {
@@ -2579,23 +1985,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            4,
-            6,
-            12,
-            23,
-            29,
-            33,
-            38,
-            41,
-            45,
-            46,
-            47,
-            97,
-            122,
-            126,
-            212
-        ]
+        "targets": []
     }
 },
 {
@@ -2614,10 +2004,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            213,
-            214
-        ]
+        "targets": []
     }
 },
 {
@@ -2636,21 +2023,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            20,
-            38,
-            62,
-            64,
-            65,
-            68,
-            72,
-            94,
-            99,
-            215,
-            216,
-            217,
-            218
-        ]
+        "targets": []
     }
 },
 {
@@ -2669,23 +2042,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            47,
-            83,
-            148,
-            169,
-            186,
-            187,
-            219,
-            220,
-            221,
-            222,
-            223,
-            224,
-            225,
-            226,
-            227
-        ]
+        "targets": []
     }
 },
 {
@@ -2704,23 +2061,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            38,
-            41,
-            51,
-            54,
-            57,
-            80,
-            96,
-            98,
-            100,
-            113,
-            123,
-            125,
-            133,
-            138,
-            159
-        ]
+        "targets": []
     }
 },
 {
@@ -2739,12 +2080,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            16,
-            15,
-            17,
-            18
-        ]
+        "targets": []
     }
 },
 {
@@ -2763,23 +2099,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            38,
-            41,
-            51,
-            54,
-            80,
-            96,
-            98,
-            100,
-            113,
-            125,
-            133,
-            138,
-            159,
-            190,
-            228
-        ]
+        "targets": []
     }
 },
 {
@@ -2798,11 +2118,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            16,
-            17,
-            18
-        ]
+        "targets": []
     }
 },
 {
@@ -2821,23 +2137,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            3,
-            4,
-            29,
-            38,
-            41,
-            45,
-            47,
-            50,
-            54,
-            96,
-            120,
-            123,
-            159,
-            183,
-            229
-        ]
+        "targets": []
     }
 },
 {
@@ -2856,23 +2156,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            12,
-            38,
-            45,
-            53,
-            55,
-            59,
-            92,
-            110,
-            111,
-            164,
-            230,
-            231,
-            232,
-            233,
-            234
-        ]
+        "targets": []
     }
 },
 {
@@ -2891,23 +2175,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            12,
-            33,
-            38,
-            41,
-            42,
-            46,
-            62,
-            72,
-            83,
-            88,
-            96,
-            99,
-            161,
-            216,
-            229
-        ]
+        "targets": []
     }
 },
 {
@@ -2926,23 +2194,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            23,
-            26,
-            29,
-            33,
-            41,
-            45,
-            46,
-            83,
-            85,
-            99,
-            100,
-            121,
-            122,
-            129,
-            235
-        ]
+        "targets": []
     }
 },
 {
@@ -2961,10 +2213,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            20,
-            64
-        ]
+        "targets": []
     }
 },
 {
@@ -2983,23 +2232,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            4,
-            12,
-            33,
-            38,
-            41,
-            43,
-            45,
-            47,
-            51,
-            83,
-            98,
-            113,
-            120,
-            123,
-            125
-        ]
+        "targets": []
     }
 },
 {
@@ -3018,23 +2251,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            12,
-            38,
-            44,
-            49,
-            83,
-            88,
-            96,
-            131,
-            133,
-            135,
-            159,
-            160,
-            162,
-            206,
-            228
-        ]
+        "targets": []
     }
 },
 {
@@ -3053,23 +2270,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            12,
-            38,
-            44,
-            49,
-            83,
-            88,
-            96,
-            131,
-            133,
-            135,
-            159,
-            160,
-            162,
-            206,
-            236
-        ]
+        "targets": []
     }
 },
 {
@@ -3088,18 +2289,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            4,
-            9,
-            38,
-            50,
-            56,
-            59,
-            93,
-            140,
-            149,
-            210
-        ]
+        "targets": []
     }
 },
 {
@@ -3118,9 +2308,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            5
-        ]
+        "targets": []
     }
 },
 {
@@ -3139,23 +2327,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            4,
-            6,
-            12,
-            38,
-            54,
-            57,
-            59,
-            64,
-            69,
-            92,
-            94,
-            126,
-            146,
-            207,
-            208
-        ]
+        "targets": []
     }
 },
 {
@@ -3174,12 +2346,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            11,
-            49,
-            237,
-            238
-        ]
+        "targets": []
     }
 },
 {
@@ -3198,11 +2365,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            52,
-            60,
-            239
-        ]
+        "targets": []
     }
 },
 {
@@ -3221,9 +2384,7 @@
         "preferred_vendor": null,
         "usage_unit": 11,
         "retail_unit": 11,
-        "targets": [
-            16
-        ]
+        "targets": []
     }
 },
 {
@@ -6995,7 +6156,7 @@
     "model": "users.user",
     "fields": {
         "password": "pbkdf2_sha256$390000$FXC9mVNJ5J5XKZxlEmUZG8$rWMXiSUKBZptToU3Tt4Qwz5tICO96bot5npceyIvvQ4=",
-        "last_login": "2023-03-21T19:09:22.406Z",
+        "last_login": "2023-04-04T12:24:11.520Z",
         "is_superuser": true,
         "username": "mareks",
         "first_name": "",
@@ -7152,25 +6313,6 @@
 },
 {
     "model": "common.field",
-    "pk": 2,
-    "fields": {
-        "name": "Size",
-        "label": "Label",
-        "description": "Size",
-        "content_type": [
-            "inventory",
-            "equipmentcategory"
-        ],
-        "object_id": 1,
-        "field_type": "SELECT",
-        "validation_type": "LIST",
-        "validation_value": "Small|Medium|Large",
-        "default_value": "Medium",
-        "is_required": true
-    }
-},
-{
-    "model": "common.field",
     "pk": 3,
     "fields": {
         "name": "pests",
@@ -7242,6 +6384,25 @@
         "validation_type": "NONE",
         "validation_value": "",
         "default_value": null,
+        "is_required": true
+    }
+},
+{
+    "model": "common.field",
+    "pk": 7,
+    "fields": {
+        "name": "size",
+        "label": "Size",
+        "description": "Size",
+        "content_type": [
+            "inventory",
+            "equipment"
+        ],
+        "object_id": 1,
+        "field_type": "MULTIPLE_SELECT",
+        "validation_type": "NONE",
+        "validation_value": "S|M|L",
+        "default_value": "M",
         "is_required": true
     }
 },
@@ -10852,6 +10013,153 @@
     }
 },
 {
+    "model": "users.historicaluser",
+    "pk": 9,
+    "fields": {
+        "id": 1,
+        "password": "pbkdf2_sha256$390000$FXC9mVNJ5J5XKZxlEmUZG8$rWMXiSUKBZptToU3Tt4Qwz5tICO96bot5npceyIvvQ4=",
+        "last_login": "2023-03-29T18:00:14.050Z",
+        "is_superuser": true,
+        "username": "mareks",
+        "first_name": "",
+        "last_name": "",
+        "email": "schir2@gmail.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2023-03-08T15:38:37.275Z",
+        "history_date": "2023-03-29T18:00:14.055Z",
+        "history_change_reason": null,
+        "history_type": "~",
+        "history_user": null
+    }
+},
+{
+    "model": "users.historicaluser",
+    "pk": 10,
+    "fields": {
+        "id": 1,
+        "password": "pbkdf2_sha256$390000$FXC9mVNJ5J5XKZxlEmUZG8$rWMXiSUKBZptToU3Tt4Qwz5tICO96bot5npceyIvvQ4=",
+        "last_login": "2023-03-29T18:09:17.439Z",
+        "is_superuser": true,
+        "username": "mareks",
+        "first_name": "",
+        "last_name": "",
+        "email": "schir2@gmail.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2023-03-08T15:38:37.275Z",
+        "history_date": "2023-03-29T18:09:17.446Z",
+        "history_change_reason": null,
+        "history_type": "~",
+        "history_user": null
+    }
+},
+{
+    "model": "users.historicaluser",
+    "pk": 11,
+    "fields": {
+        "id": 1,
+        "password": "pbkdf2_sha256$390000$FXC9mVNJ5J5XKZxlEmUZG8$rWMXiSUKBZptToU3Tt4Qwz5tICO96bot5npceyIvvQ4=",
+        "last_login": "2023-03-30T11:46:36.714Z",
+        "is_superuser": true,
+        "username": "mareks",
+        "first_name": "",
+        "last_name": "",
+        "email": "schir2@gmail.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2023-03-08T15:38:37.275Z",
+        "history_date": "2023-03-30T11:46:36.720Z",
+        "history_change_reason": null,
+        "history_type": "~",
+        "history_user": null
+    }
+},
+{
+    "model": "users.historicaluser",
+    "pk": 12,
+    "fields": {
+        "id": 1,
+        "password": "pbkdf2_sha256$390000$FXC9mVNJ5J5XKZxlEmUZG8$rWMXiSUKBZptToU3Tt4Qwz5tICO96bot5npceyIvvQ4=",
+        "last_login": "2023-04-03T15:52:19.243Z",
+        "is_superuser": true,
+        "username": "mareks",
+        "first_name": "",
+        "last_name": "",
+        "email": "schir2@gmail.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2023-03-08T15:38:37.275Z",
+        "history_date": "2023-04-03T15:52:19.247Z",
+        "history_change_reason": null,
+        "history_type": "~",
+        "history_user": null
+    }
+},
+{
+    "model": "users.historicaluser",
+    "pk": 13,
+    "fields": {
+        "id": 1,
+        "password": "pbkdf2_sha256$390000$FXC9mVNJ5J5XKZxlEmUZG8$rWMXiSUKBZptToU3Tt4Qwz5tICO96bot5npceyIvvQ4=",
+        "last_login": "2023-04-03T16:01:57.120Z",
+        "is_superuser": true,
+        "username": "mareks",
+        "first_name": "",
+        "last_name": "",
+        "email": "schir2@gmail.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2023-03-08T15:38:37.275Z",
+        "history_date": "2023-04-03T16:01:57.124Z",
+        "history_change_reason": null,
+        "history_type": "~",
+        "history_user": null
+    }
+},
+{
+    "model": "users.historicaluser",
+    "pk": 14,
+    "fields": {
+        "id": 1,
+        "password": "pbkdf2_sha256$390000$FXC9mVNJ5J5XKZxlEmUZG8$rWMXiSUKBZptToU3Tt4Qwz5tICO96bot5npceyIvvQ4=",
+        "last_login": "2023-04-03T16:25:59.149Z",
+        "is_superuser": true,
+        "username": "mareks",
+        "first_name": "",
+        "last_name": "",
+        "email": "schir2@gmail.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2023-03-08T15:38:37.275Z",
+        "history_date": "2023-04-03T16:25:59.152Z",
+        "history_change_reason": null,
+        "history_type": "~",
+        "history_user": null
+    }
+},
+{
+    "model": "users.historicaluser",
+    "pk": 15,
+    "fields": {
+        "id": 1,
+        "password": "pbkdf2_sha256$390000$FXC9mVNJ5J5XKZxlEmUZG8$rWMXiSUKBZptToU3Tt4Qwz5tICO96bot5npceyIvvQ4=",
+        "last_login": "2023-04-04T12:24:11.520Z",
+        "is_superuser": true,
+        "username": "mareks",
+        "first_name": "",
+        "last_name": "",
+        "email": "schir2@gmail.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2023-03-08T15:38:37.275Z",
+        "history_date": "2023-04-04T12:24:11.524Z",
+        "history_change_reason": null,
+        "history_type": "~",
+        "history_user": null
+    }
+},
+{
     "model": "admin.logentry",
     "pk": 1,
     "fields": {
@@ -12091,6 +11399,96 @@
         "object_repr": "Marek Schir",
         "action_flag": 2,
         "change_message": "[{\"changed\": {\"fields\": [\"Name\", \"Street address\"]}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 70,
+    "fields": {
+        "action_time": "2023-04-03T16:08:23.794Z",
+        "user": [
+            "mareks"
+        ],
+        "content_type": [
+            "inventory",
+            "brand"
+        ],
+        "object_id": "3",
+        "object_repr": "B&G Equipment Company",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 71,
+    "fields": {
+        "action_time": "2023-04-03T16:11:14.240Z",
+        "user": [
+            "mareks"
+        ],
+        "content_type": [
+            "common",
+            "field"
+        ],
+        "object_id": "2",
+        "object_repr": "Label | Pesticide Applicator",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 72,
+    "fields": {
+        "action_time": "2023-04-03T16:12:33.548Z",
+        "user": [
+            "mareks"
+        ],
+        "content_type": [
+            "common",
+            "field"
+        ],
+        "object_id": "7",
+        "object_repr": "Size | B&G Tank",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 73,
+    "fields": {
+        "action_time": "2023-04-03T16:22:03.030Z",
+        "user": [
+            "mareks"
+        ],
+        "content_type": [
+            "inventory",
+            "vendor"
+        ],
+        "object_id": "2",
+        "object_repr": "Veseris",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 74,
+    "fields": {
+        "action_time": "2023-04-03T16:31:39.221Z",
+        "user": [
+            "mareks"
+        ],
+        "content_type": [
+            "inventory",
+            "equipment"
+        ],
+        "object_id": "1",
+        "object_repr": "B&G Tank",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"fields\": [\"Brand\"]}}]"
     }
 }
 ]
