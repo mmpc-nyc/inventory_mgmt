@@ -56,7 +56,7 @@ class EquipmentItem(models.Model):
 
     equipment = models.ForeignKey('inventory.Equipment', on_delete=models.CASCADE)
     serial_number = models.CharField(max_length=50, unique=True)
-    purchase_date = models.DateField(null=True, blank=True, default=timezone.now())
+    purchase_date = models.DateField(null=True, blank=True, default=timezone.now)
     purchase_price = models.DecimalField(decimal_places=2, max_digits=8, default=0)
     purchase_from = models.ForeignKey('inventory.Vendor', blank=True, null=True, on_delete=models.SET_NULL)
     purchased_by = models.ForeignKey('users.User', on_delete=models.CASCADE)
