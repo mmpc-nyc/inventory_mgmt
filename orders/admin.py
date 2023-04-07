@@ -1,8 +1,9 @@
 from django.contrib.admin import TabularInline, register, ModelAdmin, StackedInline
 from django.db import models
 from django.forms import TextInput
-
+from django.utils.translation import gettext_lazy as _
 from common.admin import TaskInline, QuestionInline
+from orders.models import Job, JobService, JobMaterial, JobProduct
 from orders.models.warranty import Warranty
 from orders.models.service import RequiredServiceMaterial, SuggestedServiceMaterial, ServiceProduct, \
     ServiceMaterialClass, Service, ServiceWarranty
@@ -85,3 +86,64 @@ class WarrantyAdmin(ModelAdmin):
 @register(Warranty)
 class WarrantyTemplateAdmin(ModelAdmin):
     inlines = [WarrantyInline]
+
+
+class JobServiceInline(TabularInline):
+    model = JobService
+    extra = 0
+
+    autocomplete_fields = ('service', )
+
+
+class JobMaterialInline(TabularInline):
+    model = JobMaterial
+    extra = 0
+
+    autocomplete_fields = ('material', )
+
+
+class JobProductInline(TabularInline):
+    model = JobProduct
+    extra = 0
+
+    autocomplete_fields = ('product', )
+
+
+@register(Job)
+class JobAdmin(ModelAdmin):
+    list_display = ('name', 'customer', 'scheduled_start_time', 'scheduled_end_time', 'status', 'sub_status')
+    list_filter = ('status', 'sub_status')
+    search_fields = ('name', 'customer__name')
+    autocomplete_fields = ('customer',)
+    inlines = (JobServiceInline, JobMaterialInline, JobProductInline)
+    fieldsets = (
+        (None, {'fields': ('name', 'description', 'status', 'sub_status')}),
+        (_('Scheduled Time'), {'fields': ('scheduled_start_time', 'scheduled_end_time')}),
+        (_('Actual Time'), {'fields': ('actual_start_time', 'actual_end_time')}),
+        (_('Technicians'), {'fields': ('technicians',)}),
+        (_('Customer'), {'fields': ('customer',)}),
+    )
+
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        return queryset.prefetch_related('services', 'materials', 'products')
+
+@register(JobService)
+class JobServiceAdmin(ModelAdmin):
+    list_display = ('job', 'service', 'quantity')
+    list_filter = ('job', 'service')
+    search_fields = ('job__name', 'service__name')
+
+
+@register(JobMaterial)
+class JobMaterialAdmin(ModelAdmin):
+    list_display = ('job', 'material', 'quantity')
+    list_filter = ('job', 'material')
+    search_fields = ('job__name', 'material__name')
+
+
+@register(JobProduct)
+class JobProductAdmin(ModelAdmin):
+    list_display = ('job', 'product', 'quantity')
+    list_filter = ('job', 'product')
+    search_fields = ('job__name', 'product__name')

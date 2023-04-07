@@ -1,4 +1,4 @@
-from django.contrib.admin import register, ModelAdmin, TabularInline
+from django.contrib.admin import register, ModelAdmin, TabularInline, StackedInline
 from django.contrib.contenttypes.admin import GenericStackedInline
 from django.db import models
 from django.db.models import Count
@@ -16,7 +16,7 @@ from inventory.models.equipment import Equipment, Condition, EquipmentCategory, 
 from inventory.models.material import Material, MaterialClass, MaterialCategory, MaterialClassMembership
 from inventory.models.material import MaterialField
 from inventory.models.stock_location import StockLocation, MaterialStock
-from inventory.models.transfer import TransferItem, TransferItemAcceptance
+from inventory.models.transfer import TransferMaterialItem, TransferEquipmentItem
 from inventory.models.vendor import Vendor
 
 
@@ -242,9 +242,14 @@ class MaterialClassMembershipAdmin(ModelAdmin):
     search_fields = ('material__name', 'material__description', 'material__id')
 
 
-class TransferItemInline(TabularInline):
-    model = TransferItem
-    min_num = 1
+class TransferEquipmentItemInline(StackedInline):
+    model = TransferEquipmentItem
+    extra = 0
+
+
+class TransferMaterialItemInline(StackedInline):
+    model = TransferMaterialItem
+    extra = 0
 
 
 @register(Transfer)
@@ -252,12 +257,7 @@ class TransferAdmin(ModelAdmin):
     list_display = ('created_at', 'source', 'destination', 'agent', 'status')
     search_fields = ('item__name', 'source__name', 'destination__name')
     list_filter = ('status',)
-    inlines = (TransferItemInline,)
-
-
-class TransferItemAcceptanceInline(TabularInline):
-    model = TransferItemAcceptance
-    extra = 1
+    inlines = (TransferEquipmentItemInline, TransferMaterialItemInline)
 
 
 @register(TransferAcceptance)
@@ -267,7 +267,6 @@ class TransferAcceptanceAdmin(ModelAdmin):
         'transfer__item__name', 'transfer__source__name', 'transfer__destination__name', 'accepted_by__first_name',
         'accepted_by__last_name')
     list_filter = ('transfer__status', 'accepted_at')
-    inlines = (TransferItemAcceptanceInline,)
 
 
 class VehicleMaterialInline(TabularInline):

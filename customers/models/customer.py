@@ -33,7 +33,7 @@ class Customer(MPTTModel):
         return f'{self.company_name}' if self.company_name else f'{self.first_name} {self.last_name}'
 
     def __str__(self):
-        return f'{self.name}'
+        return f'{self.pk} {self.name}'
 
     @property
     def primary_service_location(self):
@@ -48,7 +48,7 @@ class Customer(MPTTModel):
     class Meta:
         verbose_name = _('Customer')
         verbose_name_plural = _('Customers')
-        ordering = ('company_name', 'first_name', 'last_name',)
+        ordering = ('company_name', 'first_name', 'last_name', 'pk',)
 
 
 class ServiceLocation(Address):

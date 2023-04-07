@@ -12,6 +12,7 @@ class Transfer(models.Model):
         A transfer represents the movement of a quantity of an item (either equipment or material)
         from a source location (e.g. a technician, a vehicle, or a stock location) to a destination location.
     """
+
     class TransferStatus(models.TextChoices):
         PENDING = 'Pending', _('Pending')
         IN_TRANSIT = 'In Transit', _('In Transit')
@@ -26,9 +27,9 @@ class Transfer(models.Model):
     destination = GenericForeignKey('destination_type', 'destination_id')
 
     agent = models.ForeignKey('users.User', verbose_name=_('Transfer Agent'), on_delete=models.SET_NULL,
-                                       null=True, blank=True)
+                              null=True, blank=True)
     status = models.CharField(verbose_name=_('Transfer Status'), max_length=16, choices=TransferStatus.choices,
-                                       default=TransferStatus.PENDING)
+                              default=TransferStatus.PENDING)
     transfer_start_date = models.DateTimeField(verbose_name=_('Transfer Start Date'), null=True, blank=True)
     transfer_end_date = models.DateTimeField(verbose_name=_('Transfer End Date'), null=True, blank=True)
     transfer_notes = models.TextField(verbose_name=_('Transfer Notes'), blank=True)
@@ -42,11 +43,38 @@ class Transfer(models.Model):
         return f'Transfer from {self.source} to {self.destination}'
 
 
-class TransferItem(models.Model):
-    transfer = models.ForeignKey(Transfer, on_delete=models.CASCADE, related_name='transfer_items')
-    equipment_item = models.ForeignKey('inventory.EquipmentItem', on_delete=models.CASCADE, null=True, blank=True)
-    material_stock = models.ForeignKey('inventory.MaterialStock', on_delete=models.CASCADE, null=True, blank=True)
-    quantity = models.PositiveIntegerField()
+class TransferEquipmentItem(models.Model):
+    """
+    Represents an individual equipment item transferred from one stock location to another.
+    """
+    equipment_item = models.ForeignKey('inventory.EquipmentItem', on_delete=models.CASCADE)
+    transfer = models.ForeignKey(Transfer, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+    notes = models.TextField(blank=True)
+
+    class Meta:
+        verbose_name = _('Transfer Equipment Item')
+        verbose_name_plural = _('Transfer Equipment Items')
+
+    def __str__(self):
+        return f'{self.equipment_item} ({self.quantity})'
+
+
+class TransferMaterialItem(models.Model):
+    """
+    Represents an individual material item transferred from one stock location to another.
+    """
+    material_item = models.ForeignKey('inventory.Material', on_delete=models.CASCADE)
+    transfer = models.ForeignKey(Transfer, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+    notes = models.TextField(blank=True)
+
+    class Meta:
+        verbose_name = _('Transfer Material Item')
+        verbose_name_plural = _('Transfer Material Items')
+
+    def __str__(self):
+        return f'{self.material_item} ({self.quantity})'
 
 
 class TransferAcceptance(models.Model):
@@ -60,8 +88,8 @@ class TransferAcceptance(models.Model):
 
 
 class TransferItemAcceptance(models.Model):
-    transfer_acceptance = models.ForeignKey(TransferAcceptance, on_delete=models.CASCADE, related_name='item_acceptances')
-    transfer_item = models.ForeignKey(TransferItem, on_delete=models.CASCADE, related_name='acceptances')
+    transfer_acceptance = models.ForeignKey(TransferAcceptance, on_delete=models.CASCADE,
+                                            related_name='item_acceptances')
     accepted_by = models.ForeignKey('users.User', on_delete=models.CASCADE)
     accepted_at = models.DateTimeField(auto_now_add=True)
     accepted_quantity = models.IntegerField()
