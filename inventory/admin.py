@@ -179,10 +179,11 @@ class ConditionAdmin(ModelAdmin):
 
 @register(Material)
 class MaterialAdmin(ModelAdmin):
-    list_display = ('name', 'get_targets', 'brand', 'category', 'is_taxable', 'is_active')
+    list_display = ('name', 'get_targets', 'brand', 'category', 'documentation_link', 'is_taxable', 'is_active')
     list_filter = ('brand', 'category', 'is_taxable', 'is_active')
     search_fields = ('name', 'description')
     filter_horizontal = ('material_classes', 'targets')
+    readonly_fields = ('documentation_link',)
 
     inlines = [
         MaterialFieldInline,
@@ -191,22 +192,34 @@ class MaterialAdmin(ModelAdmin):
 
     fieldsets = (
         (None, {
-            'fields': ('name', 'description', 'brand', 'category', 'targets')
+            'fields': ('name', 'documentation', 'description', 'brand', 'category')
+        }),
+        ('Units', {
+            'fields': ('usage_unit', 'retail_unit')
         }),
         ('Pricing', {
             'fields': (
                 'is_taxable', 'is_active', 'is_product', 'product_sell_price', 'material_sell_price',
                 'preferred_vendor')
         }),
-        ('Units', {
-            'fields': ('usage_unit', 'retail_unit')
-        }),
+        ('Targets', {
+            'fields': ('targets',)
+        })
     )
 
     def get_targets(self, obj):
         return ", ".join([t.name for t in obj.targets.all()])
 
     get_targets.short_description = 'Targets'
+
+    def documentation_link(self, obj):
+        if obj.documentation:
+            return format_html('<a href="{0}" target="_blank">{1}</a>',
+                               obj.documentation.url, obj.documentation.name)
+        else:
+            return '-'
+
+    documentation_link.short_description = 'Documentation'
 
 
 @register(Vendor)

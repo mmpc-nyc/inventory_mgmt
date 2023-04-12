@@ -36,6 +36,7 @@ class Material(models.Model):
     preferred_vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE, blank=True, null=True)
     usage_unit = models.ForeignKey(Unit, on_delete=models.CASCADE, related_name='usage_unit')
     retail_unit = models.ForeignKey(Unit, on_delete=models.CASCADE, related_name='retail_unit')
+    documentation = models.FileField(upload_to='materials/documentation', blank=True, null=True)
 
     def __str__(self):
         return f'{self.name} | {self.brand.name}'

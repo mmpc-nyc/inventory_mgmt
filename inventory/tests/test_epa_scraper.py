@@ -14,6 +14,7 @@ pesticides = [Pesticide(
     first_registered_date=datetime.datetime(year=1997, month=6, day=25).date(),
     current_registered_date=datetime.datetime(year=1997, month=6, day=25).date(),
     registered=True,
+    documentation_url='https://www3.epa.gov/pesticides/chem_search/ppls/054471-00010-20100521.pdf',
     restricted_use=False,
     active_ingredients={
         'Borax (B4Na2O7.10H2O)':

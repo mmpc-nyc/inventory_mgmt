@@ -1,33 +1,36 @@
 from dataclasses import dataclass
 from datetime import datetime
-
 from selenium import webdriver
 from selenium.common import NoSuchElementException
 from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
 
+from core import settings
 from inventory.utils.datetime_utils import date_from_string
 
 SEARCH_URL = 'https://ordspub.epa.gov/ords/pesticides/f?p=PPLS:1'
 SEARCH_INPUT_ID = 'P1_EPA_REG_NO'
+MATERIAL_PATH = settings.BASE_DIR / 'media' / 'materials'
+
 
 @dataclass
 class Pesticide:
     registration_number: str
     label: str
-    company_name: str
-    address: str
-    po_box: str
-    city: str
-    state: str
-    zipcode: str
-    first_registered_date: datetime.date
-    current_registered_date: datetime.date
-    registered: bool
     restricted_use: bool
     active_ingredients: dict[str, dict]
     sites: list[str]
     pests: list[str]
+    documentation_url: str
+    company_name: str = ''
+    address: str = ''
+    po_box: str = ''
+    city: str = ''
+    state: str = ''
+    zipcode: str = ''
+    first_registered_date: datetime.date = None
+    current_registered_date: datetime.date = None
+    registered: bool = True
 
 
 class SeleniumScraper:
@@ -162,23 +165,16 @@ class SeleniumScraper:
             return []
         return [pest.text for pest in pests]
 
+    def _get_documentation_url(self):
+        return self.driver.find_element(By.XPATH, "//td[@headers='LABEL_DATE']/a").get_attribute('href')
+
     def _parse_pesticide(self) -> Pesticide:
         return Pesticide(
             label=self._get_pesticide_label(),
             registration_number=self._get_pesticide_registration_number(),
-            company_name=self._get_pesticide_company_name(),
-            address=self._get_pesticide_address(),
-            po_box=self._get_pesticide_po_box(),
-            city=self._get_pesticide_city(),
-            state=self._get_pesticide_state(),
-            zipcode=self._get_pesticide_zipcode(),
-            first_registered_date=self._get_pesticide_first_registered_date(),
-            current_registered_date=self._get_pesticide_current_registered_date(),
-            registered=self._get_pesticide_registered(),
             restricted_use=self._get_pesticide_restricted_use(),
             active_ingredients=self._get_pesticide_active_ingredients(),
             sites=self._get_pesticide_sites(),
             pests=self._get_pesticide_pests(),
+            documentation_url=self._get_documentation_url()
         )
-
-

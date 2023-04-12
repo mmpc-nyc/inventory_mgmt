@@ -1,7 +1,7 @@
 from django.contrib.admin import register, ModelAdmin, TabularInline
 from django.contrib.contenttypes.admin import GenericTabularInline
-from django.db import models
-from django.forms.widgets import RadioSelect
+from django.urls import reverse
+from django.utils.html import format_html
 
 from common.models.address import Address
 from common.models.contact import Contact, ContactEmail, ContactPhoneNumber
@@ -83,8 +83,22 @@ class ContactAdmin(ModelAdmin):
 
 @register(Target)
 class TargetAdmin(ModelAdmin):
-    list_display = ['name', 'description', 'parent', ]
+    list_display = ['name', 'description', 'parent', 'materials_list']
     ordering = 'parent', 'name'
+
+    readonly_fields = ('materials_list',)
+
+    def materials_list(self, obj):
+        materials = obj.material_targets.all()
+        links = []
+        for material in materials:
+            url = reverse('admin:inventory_material_change', args=[material.pk])
+            link = f'<a href="{url}">{material.name}</a>'
+            links.append(link)
+        return format_html(', '.join(links))
+
+    materials_list.short_description = 'Materials Associated'
+    materials_list.allow_tags = True
 
 
 @register(UnitCategory)
@@ -120,8 +134,6 @@ class AgreementAdmin(ModelAdmin):
         if obj is not None and not request.user.is_superuser and obj.sender != request.user:
             return False
         return True
-
-
 
 
 class TaskInline(GenericTabularInline):
