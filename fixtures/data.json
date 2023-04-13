@@ -1212,7 +1212,7 @@
     "pk": 193,
     "fields": {
         "name": "Botanigard Es",
-        "description": "Mycotrol® es",
+        "description": "MycotrolÂ® es",
         "brand": 2,
         "category": 1,
         "is_taxable": true,
@@ -1363,7 +1363,7 @@
     "pk": 198,
     "fields": {
         "name": "Contrapest",
-        "description": "Contrapest®",
+        "description": "ContrapestÂ®",
         "brand": 2,
         "category": 1,
         "is_taxable": true,
@@ -3372,7 +3372,7 @@
     "pk": 261,
     "fields": {
         "name": "Uld Bp-300",
-        "description": "Uld® bp-300 insecticide",
+        "description": "UldÂ® bp-300 insecticide",
         "brand": 2,
         "category": 1,
         "is_taxable": true,
@@ -3439,7 +3439,7 @@
     "pk": 263,
     "fields": {
         "name": "Vendetta Plus",
-        "description": "Mgk® formula 2976",
+        "description": "MgkÂ® formula 2976",
         "brand": 2,
         "category": 1,
         "is_taxable": true,
@@ -13041,7 +13041,7 @@
             "material"
         ],
         "object_id": "81",
-        "object_repr": "Mgk® Formula 2976 | Unspecified",
+        "object_repr": "MgkÂ® Formula 2976 | Unspecified",
         "action_flag": 3,
         "change_message": ""
     }
@@ -13077,7 +13077,7 @@
             "material"
         ],
         "object_id": "79",
-        "object_repr": "Uld® Bp-300 Insecticide | Unspecified",
+        "object_repr": "UldÂ® Bp-300 Insecticide | Unspecified",
         "action_flag": 3,
         "change_message": ""
     }
@@ -14157,7 +14157,7 @@
             "material"
         ],
         "object_id": "19",
-        "object_repr": "Contrapest® | Unspecified",
+        "object_repr": "ContrapestÂ® | Unspecified",
         "action_flag": 3,
         "change_message": ""
     }
@@ -14265,7 +14265,7 @@
             "material"
         ],
         "object_id": "13",
-        "object_repr": "Mycotrol® Es | Unspecified",
+        "object_repr": "MycotrolÂ® Es | Unspecified",
         "action_flag": 3,
         "change_message": ""
     }

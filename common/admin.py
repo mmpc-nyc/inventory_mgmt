@@ -83,6 +83,7 @@ class ContactAdmin(ModelAdmin):
 
 @register(Target)
 class TargetAdmin(ModelAdmin):
+    search_fields = ('name', )
     list_display = ['name', 'description', 'parent', 'materials_list']
     ordering = 'parent', 'name'
 
