@@ -1,17 +1,17 @@
 from django.urls import path, include
 from inventory.views import customer_views, equipment_views
 from inventory.views import material_views
-from inventory.views import stock_location_views
+from inventory.views import storage_location_views
 from inventory.views.dashboard_views import HomeView
 
 urlpatterns = [
     path('', HomeView.as_view(), name='home'),
     path('stock_location/', include([
-        path('', stock_location_views.StockLocationListView.as_view(), name='stock_location_list'),
-        path('create', stock_location_views.StockLocationCreateView.as_view(), name='stock_location_create'),
-        path('<int:pk>', stock_location_views.StockLocationDetailView.as_view(), name='stock_location_detail'),
-        path('<int:pk>/delete', stock_location_views.StockLocationDeleteView.as_view(), name='stock_location_delete'),
-        path('<int:pk>/update', stock_location_views.StockLocationUpdateView.as_view(), name='stock_location_update'),
+        path('', storage_location_views.StorageLocationListView.as_view(), name='stock_location_list'),
+        path('create', storage_location_views.StorageLocationCreateView.as_view(), name='stock_location_create'),
+        path('<int:pk>', storage_location_views.StorageLocationDetailView.as_view(), name='stock_location_detail'),
+        path('<int:pk>/delete', storage_location_views.StorageLocationDeleteView.as_view(), name='stock_location_delete'),
+        path('<int:pk>/update', storage_location_views.StorageLocationUpdateView.as_view(), name='stock_location_update'),
     ])),
     path('materials/', include([
         path('', material_views.MaterialListView.as_view(), name='material_list'),

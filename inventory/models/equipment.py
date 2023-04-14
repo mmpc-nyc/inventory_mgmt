@@ -48,7 +48,7 @@ class EquipmentItem(models.Model):
     class Status(models.TextChoices):
         """Current status of the material"""
 
-        STORED = 'STORED', _('Stored')  # Equipment stored in Stock Location
+        STORED = 'STORED', _('Stored')  # Equipment stored in Storage Location
         DEPLOYED = 'DEPLOYED', _('Deployed')  # Equipment is currently deployed at order location
         PICKED_UP = 'PICKED_UP', _('Picked Up')  # Equipment is with the employee
         MISSING = 'MISSING', _('Missing')  # Equipment cannot be found.
@@ -61,7 +61,7 @@ class EquipmentItem(models.Model):
     purchase_from = models.ForeignKey('inventory.Vendor', blank=True, null=True, on_delete=models.SET_NULL)
     purchased_by = models.ForeignKey('users.User', on_delete=models.CASCADE)
     status = models.CharField(max_length=32, choices=Status.choices, default=Status.STORED)
-    stock_location = models.ForeignKey('inventory.StockLocation', on_delete=models.SET_NULL, blank=True, null=True)
+    storage_location = models.ForeignKey('inventory.StorageLocation', on_delete=models.SET_NULL, blank=True, null=True)
     condition = models.ForeignKey('Condition', on_delete=models.CASCADE, default=1)
     notes = models.TextField(blank=True)
     warranty_expiration_date = models.DateField(null=True, blank=True, editable=False)

@@ -87,12 +87,12 @@ class TargetAdmin(DraggableMPTTAdmin):
     mptt_level_indent = 10
     mptt_indent_field = 'name'
     search_fields = ('name', )
-    list_display = ['tree_actions', 'indented_title', 'materials_list']
+    list_display = ['tree_actions', 'indented_title', 'material_list']
     list_display_links = ('indented_title',)
 
-    readonly_fields = ('materials_list',)
+    readonly_fields = ('material_list',)
 
-    def materials_list(self, obj):
+    def material_list(self, obj):
         materials = obj.material_targets.all()
         links = []
         for material in materials:
@@ -101,8 +101,8 @@ class TargetAdmin(DraggableMPTTAdmin):
             links.append(link)
         return format_html(', '.join(links))
 
-    materials_list.short_description = 'Materials Associated'
-    materials_list.allow_tags = True
+    material_list.short_description = 'Materials Associated'
+    material_list.allow_tags = True
 
 
 @register(UnitCategory)
@@ -177,3 +177,5 @@ class QuestionInline(GenericTabularInline):
 @register(Question)
 class QuestionAdmin(ModelAdmin):
     list_display = ('text',)
+
+

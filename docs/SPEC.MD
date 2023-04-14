@@ -14,19 +14,19 @@ A location record for a single location
 A list of locations associated with the customer
 ## 3.2 Customer Contacts
 A list of contacts associated with the customer
-# 4 Stock Location
+# 4 Storage Location
 A place where equipment and materials are stored
 ## 4.1 Name
-Name of Stock Location/ Stock Location
+Name of Storage Location/ Storage Location
 ## 4.2 Location
-A location associated with the stock_location
+A location associated with the storage_location
 ## 4.3 Status
 ### 4.3.1 Active
-A stock_location location that is available for withdrawing and storing equipment.
+A storage location that is available for withdrawing and storing equipment.
 ### 4.3.2 Inactive
-A stock_location location that is not available for withdrawing or storing equipment.
+A storage location that is not available for withdrawing or storing equipment.
 ### 4.3.3 Full
-A stock_location location that is full and is not available for storing equipment. It is available for withdrawing equipment.
+A storage location that is full and is not available for storing equipment. It is available for withdrawing equipment.
 ## 5.1 Category
 A hierarchical way of grouping generic materials. For example, an 18 Inch Industrial Fan would be under the category of Fans, which has a subcategory of 18 inch fans.
 ## 5.2 Status
@@ -56,7 +56,7 @@ The material and all of its associated equipment should be recalled
 Equipment refers to tracked physical assets such as machinery and tools used in a business, that are not vehicles and are tracked for inventory purposes. These assets are depreciable and can be used to generate income or are necessary for production. The inventory tracking system maintains their quantity, location, status, maintenance and other relevant information.
 ## 7.1 Status
 ### 7.1.1 Stored
-Equipment is stored in Stock Location. A user is not assigned to this equipment
+Equipment is stored in Storage Location. A user is not assigned to this equipment
 ### 7.1.2 Deployed
 Equipment is stored at a customer location based on the order.
 ### 7.1.3 Picked Up
@@ -75,11 +75,11 @@ Decommission’s equipment. It can no longer be used or stored. Sets status to D
 ### 7.2.3 Deploy
 Deploys equipment at the customer location and sets the status to Deployed
 ### 7.2.4 Store
-Stores the equipment at stock_location and sets the status to Stored
+Stores the equipment at storage_location and sets the status to Stored
 ### 7.2.5 Transfer
 Transfers equipment from one user to another. Sets status to Picked Up
 ### 7.2.6 Withdraw
-Picks up equipment from stock_location and sets status to Picked Up
+Picks up equipment from storage_location and sets status to Picked Up
 
 # 8 Order
 An order for requested services, materials or equipment. An order consists of three activities. Collect, Deploy and Inspect

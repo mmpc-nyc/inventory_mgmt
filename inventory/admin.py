@@ -2,12 +2,13 @@ from django.contrib.admin import register, ModelAdmin, TabularInline, StackedInl
 from django.contrib.contenttypes.admin import GenericStackedInline
 from django.db import models
 from django.db.models import Count
-from django.forms import TextInput, Textarea
+from django.forms import TextInput, Textarea, ModelForm
 from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 from mptt.admin import MPTTModelAdmin
 
+from common.models import Address
 from common.models.field import Field
 from inventory.models import Transfer, TransferAcceptance, Vehicle, VehicleEquipmentItem, VehicleMaterial
 from inventory.models.brand import Brand
@@ -15,7 +16,7 @@ from inventory.models.equipment import Equipment, Condition, EquipmentCategory, 
     EquipmentItem
 from inventory.models.material import Material, MaterialClass, MaterialCategory
 from inventory.models.material import MaterialField
-from inventory.models.stock_location import StockLocation, MaterialStock
+from inventory.models.storage_location import StorageLocation, MaterialStock
 from inventory.models.transfer import TransferMaterialItem, TransferEquipmentItem
 from inventory.models.vendor import Vendor
 
@@ -111,10 +112,10 @@ class EquipmentAdmin(ModelAdmin):
 class EquipmentItemAdmin(ModelAdmin):
     list_display = (
         'equipment', 'serial_number', 'condition', 'purchase_price', 'purchased_by', 'purchase_date', 'status',
-        'stock_location', 'warranty_expiration_date'
+        'storage_location', 'warranty_expiration_date'
     )
-    list_filter = ('equipment', 'status', 'condition', 'stock_location')
-    search_fields = ('equipment__name', 'serial_number', 'notes', 'condition__name', 'stock_location__name')
+    list_filter = ('equipment', 'status', 'condition', 'storage_location')
+    search_fields = ('equipment__name', 'serial_number', 'notes', 'condition__name', 'storage_location__name')
     fieldsets = (
         (None, {
             'fields': ('equipment', 'serial_number', 'condition', 'status')
@@ -122,8 +123,8 @@ class EquipmentItemAdmin(ModelAdmin):
         ('Details', {
             'fields': ('purchase_price', 'purchased_by', 'purchase_date', 'notes', 'warranty_expiration_date')
         }),
-        ('Stock Location', {
-            'fields': ('stock_location',)
+        ('Storage Location', {
+            'fields': ('storage_location',)
         })
     )
 
@@ -149,17 +150,23 @@ class EquipmentClassAdmin(ModelAdmin):
     ...
 
 
-@register(StockLocation)
-class StockLocationAdmin(ModelAdmin):
-    list_display = ('name', 'address', 'status')
-    search_fields = ('name', 'location__street_address', 'location__city', 'location__state')
-    list_filter = ('status',)
-    actions = ['deactivate_stock_location']
-
-    def deactivate_stock_location(self, request, queryset):
-        queryset.update(status=StockLocation.StockLocationStatus.INACTIVE)
-
-    deactivate_stock_location.short_description = 'Deactivate selected stock locations'
+@register(StorageLocation)
+class StorageLocationAdmin(ModelAdmin):
+    list_display = ('name', 'address')
+    fieldsets = (
+        (None, {
+            'fields': ('is_active', 'name', 'address', 'description',)
+        }),
+        ('Access Times', {
+            'fields': (('access_monday_start', 'access_monday_end'),
+                       ('access_tuesday_start', 'access_tuesday_end'),
+                       ('access_wednesday_start', 'access_wednesday_end'),
+                       ('access_thursday_start', 'access_thursday_end'),
+                       ('access_friday_start', 'access_friday_end'),
+                       ('access_saturday_start', 'access_saturday_end'),
+                       ('access_sunday_start', 'access_sunday_end'))
+        }),
+    )
 
 
 @register(Brand)

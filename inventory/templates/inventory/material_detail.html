@@ -20,8 +20,8 @@
             <li class="property">
                 <span class="property-name">StockLocation</span>
                 <span class="property-value">
-                    {% if object.stock_location %}
-                        <a href="{% url 'inventory:stock_location_detail' pk=object.stock_location.id %}">{{ object.stock_location }}</a>
+                    {% if object.storage_location %}
+                        <a href="{% url 'inventory:storage_location_detail' pk=object.storage_location.id %}">{{ object.storage_location }}</a>
                     {% endif %}
                 </span>
             </li>

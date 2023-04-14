@@ -7,7 +7,7 @@ from common.models.address import Address
 from inventory.models.equipment import Equipment, Condition
 from inventory.models.material import Material
 from inventory.models.brand import Brand
-from inventory.models.stock_location import StockLocation
+from inventory.models.storage_location import StorageLocation
 
 User = get_user_model()
 
@@ -21,11 +21,11 @@ class AbstractTest(TestCase):
         self.customer_email = "customer@email.com"
         self.customer_phone = "2122198218"
         self.customer_contact = Contact.objects.create(first_name="Customer", last_name="contact")
-        self.location_stock_location = Address.objects.create(
-            name='Stock Location 1',
-            street_address='Stock Location 1',
-            city="Stock Location City",
-            state="Stock LocationState",
+        self.location_storage_location = Address.objects.create(
+            name='Storage Location 1',
+            street_address='Storage Location 1',
+            city="Storage Location City",
+            state="Storage LocationState",
             postal_code="00000",
             latitude=0,
             longitude=0, )
@@ -55,7 +55,7 @@ class AbstractTest(TestCase):
             postal_code="00000",
             latitude=0,
             longitude=0, )
-        self.stock_location = StockLocation.objects.create(name='Stock Location1', location=self.location_stock_location)
+        self.storage_location = StorageLocation.objects.create(name='Storage Location1', location=self.location_storage_location)
         self.billing_location_1 = Address.objects.create(
             name='Billing Location 1',
             street_address='Billing Location 1',
@@ -103,14 +103,14 @@ class AbstractTest(TestCase):
             name='stored_working',
             material=self.material,
             condition=self.condition_working,
-            stock_location=self.stock_location,
-            location=self.stock_location.address
+            storage_location=self.storage_location,
+            location=self.storage_location.address
         )
         self.equipment_picked_up_working_1 = Equipment.objects.create(
             name='picked_up_working_1',
             material=self.material,
             condition=self.condition_working,
-            stock_location=self.stock_location,
+            storage_location=self.storage_location,
             location=self.location_user,
             user=self.user,
             status=Equipment.Status.PICKED_UP
@@ -119,7 +119,7 @@ class AbstractTest(TestCase):
             name='picked_up_working_2',
             material=self.material,
             condition=self.condition_working,
-            stock_location=self.stock_location,
+            storage_location=self.storage_location,
             location=self.location_user,
             user=self.user,
             status=Equipment.Status.PICKED_UP
@@ -128,13 +128,13 @@ class AbstractTest(TestCase):
             name='deployed_working_1',
             material=self.material,
             condition=self.condition_working,
-            stock_location=self.stock_location,
+            storage_location=self.storage_location,
             status=Equipment.Status.DEPLOYED
         )
         self.equipment_deployed_working_2 = Equipment.objects.create(
             name='deployed_working_2',
             material=self.material,
             condition=self.condition_working,
-            stock_location=self.stock_location,
+            storage_location=self.storage_location,
             status=Equipment.Status.DEPLOYED
         )

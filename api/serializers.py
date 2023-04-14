@@ -7,7 +7,7 @@ from common.models.address import Address
 from inventory.models.equipment import Equipment, Condition
 from inventory.models.material import Material, MaterialClass, MaterialCategory
 from inventory.models.brand import Brand
-from inventory.models.stock_location import StockLocation
+from inventory.models.storage_location import StorageLocation
 
 User = get_user_model()
 
@@ -136,7 +136,7 @@ class StockLocationSerializer(serializers.HyperlinkedModelSerializer):
     location = LocationSerializer()
 
     class Meta:
-        model = StockLocation
+        model = StorageLocation
         fields = ['id', 'url', 'name', 'status', 'location']
 
 
@@ -149,9 +149,9 @@ class ConditionSerializer(serializers.HyperlinkedModelSerializer):
 
 class EquipmentSerializer(serializers.HyperlinkedModelSerializer):
     material = MaterialSerializer()
-    stock_location = StockLocationSerializer()
+    storage_location = StockLocationSerializer()
     condition = ConditionSerializer(many=False)
 
     class Meta:
         model = Equipment
-        fields = ['id', 'url', 'name', 'material', 'status', 'condition', 'stock_location', 'user', ]
+        fields = ['id', 'url', 'name', 'material', 'status', 'condition', 'storage_location', 'user', ]
