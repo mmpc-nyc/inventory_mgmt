@@ -13,7 +13,7 @@ from inventory.models import Transfer, TransferAcceptance, Vehicle, VehicleEquip
 from inventory.models.brand import Brand
 from inventory.models.equipment import Equipment, Condition, EquipmentCategory, EquipmentField, EquipmentClass, \
     EquipmentItem
-from inventory.models.material import Material, MaterialClass, MaterialCategory, MaterialClassMembership
+from inventory.models.material import Material, MaterialClass, MaterialCategory
 from inventory.models.material import MaterialField
 from inventory.models.stock_location import StockLocation, MaterialStock
 from inventory.models.transfer import TransferMaterialItem, TransferEquipmentItem
@@ -38,11 +38,6 @@ class EquipmentFieldInline(TabularInline):
 class MaterialFieldInline(TabularInline):
     model = MaterialField
     extra = 0
-
-
-class MaterialClassMembershipInline(TabularInline):
-    model = MaterialClassMembership
-    extra = 1
 
 
 class MaterialInline(TabularInline):
@@ -179,10 +174,12 @@ class ConditionAdmin(ModelAdmin):
 
 @register(Material)
 class MaterialAdmin(ModelAdmin):
-    list_display = ('name', 'get_targets', 'brand', 'category', 'documentation_link', 'is_taxable', 'is_active')
+    list_display = (
+        'name', 'get_targets', 'brand', 'category', 'material_class', 'material_sell_price', 'product_sell_price',
+        'is_product', 'is_taxable', 'is_active')
     list_filter = ('brand', 'category', 'is_taxable', 'is_active')
     search_fields = ('name', 'description')
-    filter_horizontal = ('material_classes', 'targets')
+    filter_horizontal = ('targets',)
     readonly_fields = ('documentation_link',)
 
     inlines = [
@@ -192,7 +189,7 @@ class MaterialAdmin(ModelAdmin):
 
     fieldsets = (
         (None, {
-            'fields': ('name', 'documentation', 'description', 'brand', 'category')
+            'fields': ('name', 'documentation', 'description', 'brand', 'category', 'material_class')
         }),
         ('Units', {
             'fields': ('usage_unit', 'retail_unit')
@@ -208,14 +205,20 @@ class MaterialAdmin(ModelAdmin):
     )
 
     def get_targets(self, obj):
-        return ", ".join([t.name for t in obj.targets.all()])
+        targets = obj.targets.all()
+        links = []
+        for target in targets:
+            url = reverse('admin:common_target_change', args=[target.pk])
+            link = f'<a href="{url}">{target.name}</a>'
+            links.append(link)
+        return format_html(', '.join(links))
 
     get_targets.short_description = 'Targets'
 
     def documentation_link(self, obj):
         if obj.documentation:
-            return format_html('<a href="{0}" target="_blank">{1}</a>',
-                               obj.documentation.url, obj.documentation.name)
+            return format_html('<a href="{0}" target="_blank">PDF</a>',
+                               obj.documentation.url)
         else:
             return '-'
 
@@ -240,19 +243,11 @@ class EquipmentCategoryAdmin(ModelAdmin):
 @register(MaterialClass)
 class MaterialClassAdmin(ModelAdmin):
     list_display = ('name', 'description')
-    inlines = [MaterialClassMembershipInline]
 
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
         queryset = queryset.prefetch_related('materialclassmembership_set__material')
         return queryset
-
-
-@register(MaterialClassMembership)
-class MaterialClassMembershipAdmin(ModelAdmin):
-    list_display = ('material', 'material_class', 'priority')
-    list_filter = ('material_class',)
-    search_fields = ('material__name', 'material__description', 'material__id')
 
 
 class TransferEquipmentItemInline(StackedInline):

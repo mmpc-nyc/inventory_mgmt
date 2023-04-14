@@ -25,7 +25,7 @@ class Material(models.Model):
     name = models.CharField(max_length=150, unique=True)
     description = models.TextField()
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
-    material_classes = models.ManyToManyField('MaterialClass', through='MaterialClassMembership')
+    material_class = models.ForeignKey('MaterialClass', on_delete=models.CASCADE)
     category = TreeForeignKey('MaterialCategory', on_delete=models.CASCADE)
     targets = models.ManyToManyField(Target, related_name='material_targets')
     is_taxable = models.BooleanField(default=True)
@@ -86,25 +86,6 @@ class MaterialClass(models.Model):
         verbose_name_plural = _('Material Classes')
 
 
-class MaterialClassMembership(models.Model):
-    """
-    A material class membership defines the relationship between a material and a material class.
-    It also defines the priority of the material within the material class.
-    """
-    material = models.ForeignKey(Material, on_delete=models.CASCADE)
-    material_class = models.ForeignKey(MaterialClass, on_delete=models.CASCADE)
-    priority = models.PositiveIntegerField()
-
-    class Meta:
-        unique_together = ('material', 'material_class')
-        ordering = ['priority']
-        verbose_name = _('Material Class Membership')
-        verbose_name_plural = _('Material Class Memberships')
-
-    def __str__(self):
-        return f'{self.material.name} ({self.material_class.name})'
-
-
 class MaterialField(models.Model):
     material = models.ForeignKey(Material, on_delete=models.CASCADE)
     field = models.ForeignKey(Field, on_delete=models.CASCADE)
@@ -117,31 +98,3 @@ class MaterialField(models.Model):
         verbose_name = _('Material Field')
         verbose_name_plural = _('Material Fields')
         unique_together = ('material', 'field',)
-
-
-@receiver(pre_save, sender=MaterialClassMembership)
-def update_material_priority(sender, instance, **kwargs):
-    # Get the current priority
-    current_priority = instance.priority
-
-    # Check if the priority has changed
-    if instance.pk:
-        original_instance = sender.objects.get(pk=instance.pk)
-        if original_instance.priority == instance.priority:
-            return
-
-    # Get the other memberships with the same material and material class
-    other_memberships = sender.objects.filter(material=instance.equipment, material_class=instance.material_class)
-
-    # If the priority is already the lowest, there is nothing to do
-    if current_priority == 1:
-        return
-
-    # If the priority is greater than 1, move the lower-priority memberships up by one
-    for membership in other_memberships:
-        if membership.pk != instance.pk and membership.priority < current_priority:
-            membership.priority += 1
-            membership.save()
-
-    # Update the priority of the current membership
-    instance.priority = 1

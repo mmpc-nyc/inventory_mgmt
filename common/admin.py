@@ -2,6 +2,7 @@ from django.contrib.admin import register, ModelAdmin, TabularInline
 from django.contrib.contenttypes.admin import GenericTabularInline
 from django.urls import reverse
 from django.utils.html import format_html
+from mptt.admin import DraggableMPTTAdmin
 
 from common.models.address import Address
 from common.models.contact import Contact, ContactEmail, ContactPhoneNumber
@@ -82,10 +83,12 @@ class ContactAdmin(ModelAdmin):
 
 
 @register(Target)
-class TargetAdmin(ModelAdmin):
+class TargetAdmin(DraggableMPTTAdmin):
+    mptt_level_indent = 10
+    mptt_indent_field = 'name'
     search_fields = ('name', )
-    list_display = ['name', 'description', 'parent', 'materials_list']
-    ordering = 'parent', 'name'
+    list_display = ['tree_actions', 'indented_title', 'materials_list']
+    list_display_links = ('indented_title',)
 
     readonly_fields = ('materials_list',)
 
