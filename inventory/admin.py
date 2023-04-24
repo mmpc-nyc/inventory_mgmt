@@ -2,13 +2,11 @@ from django.contrib.admin import register, ModelAdmin, TabularInline, StackedInl
 from django.contrib.contenttypes.admin import GenericStackedInline
 from django.db import models
 from django.db.models import Count
-from django.forms import TextInput, Textarea, ModelForm
+from django.forms import TextInput, Textarea
 from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 from mptt.admin import MPTTModelAdmin
-
-from common.models import Address
 from common.models.field import Field
 from inventory.models import Transfer, TransferAcceptance, Vehicle, VehicleEquipmentItem, VehicleMaterial
 from inventory.models.brand import Brand
@@ -236,12 +234,24 @@ class VendorMaterialInline(TabularInline):
     model = VendorMaterial
     extra = 0
     autocomplete_fields = ('material',)
+    readonly_fields = ['current_price']
+
+    def current_price(self, obj):
+        return obj.current_price()
+
+    current_price.short_description = 'Current Price'
 
 
 class VendorEquipmentInline(TabularInline):
     model = VendorEquipment
     extra = 0
     autocomplete_fields = ('equipment',)
+    readonly_fields = ['current_price']
+
+    def current_price(self, obj):
+        return obj.current_price()
+
+    current_price.short_description = 'Current Price'
 
 
 @register(Vendor)
@@ -269,6 +279,26 @@ class VendorAdmin(ModelAdmin):
     website_link.allow_tags = True
 
 
+@register(VendorMaterial)
+class VendorMaterialAdmin(ModelAdmin):
+    list_display = ['material', 'sku', 'unit_price', 'promo_unit_price', 'promo_start_date', 'promo_end_date',
+                    'current_price']
+    list_display_links = ['material']
+    list_filter = ['promo_start_date', 'promo_end_date']
+    search_fields = ['material__name', 'sku']
+    autocomplete_fields = ['material']
+
+
+@register(VendorEquipment)
+class VendorEquipmentAdmin(ModelAdmin):
+    list_display = ['equipment', 'sku', 'unit_price', 'promo_unit_price', 'promo_start_date', 'promo_end_date',
+                    'current_price']
+    list_display_links = ['equipment']
+    list_filter = ['promo_start_date', 'promo_end_date']
+    search_fields = ['material__name', 'sku']
+    autocomplete_fields = ['equipment']
+
+
 @register(MaterialCategory)
 class MaterialCategoryAdmin(MPTTModelAdmin):
     inlines = [GenericFieldInline]
@@ -282,11 +312,6 @@ class EquipmentCategoryAdmin(ModelAdmin):
 @register(MaterialClass)
 class MaterialClassAdmin(ModelAdmin):
     list_display = ('name', 'description')
-
-    def get_queryset(self, request):
-        queryset = super().get_queryset(request)
-        queryset = queryset.prefetch_related('materialclassmembership_set__material')
-        return queryset
 
 
 class TransferEquipmentItemInline(StackedInline):

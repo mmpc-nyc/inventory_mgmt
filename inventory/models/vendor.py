@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.utils import timezone
 
 
 class Vendor(models.Model):
@@ -18,46 +19,52 @@ class Vendor(models.Model):
         verbose_name_plural = _('Vendors')
 
 
-class VendorMaterial(models.Model):
-    """A good or service that is produced or supplied by an external vendor or supplier,
-    rather than being produced in-house. It is offered for sale by the vendor."""
-
+class VendorItem(models.Model):
     sku = models.CharField(max_length=256, verbose_name=_('SKU'))
-    material = models.ForeignKey('inventory.Material', on_delete=models.CASCADE, verbose_name=_('material'))
     vendor = models.ForeignKey('Vendor', on_delete=models.CASCADE)
-    retail_unit = models.ForeignKey('common.Unit', on_delete=models.SET_NULL, blank=True, null=True,
-                                    verbose_name=_('retail unit'))
     unit_price = models.DecimalField(max_digits=5, decimal_places=2, verbose_name=_('unit price'))
     promo_unit_price = models.DecimalField(max_digits=5, decimal_places=2, verbose_name=_('promotional unit price'),
                                            blank=True, null=True)
     promo_start_date = models.DateField(blank=True, null=True, verbose_name=_('promotion start date'))
     promo_end_date = models.DateField(blank=True, null=True, verbose_name=_('promotion end date'))
+    delivery_time = models.PositiveIntegerField(default=7, blank=True)
+    is_taxed = models.BooleanField(default=True)
+    is_available = models.BooleanField(default=True)
+
+    @property
+    def current_price(self):
+        current_date = timezone.now().date()
+        if self.promo_start_date and self.promo_end_date and self.promo_start_date <= current_date <= self.promo_end_date:
+            return self.promo_unit_price
+        else:
+            return self.unit_price
+
+    class Meta:
+        abstract = True
+
+
+class VendorMaterial(VendorItem):
+    """A good or service that is produced or supplied by an external vendor or supplier,
+    rather than being produced in-house. It is offered for sale by the vendor."""
+
+    material = models.ForeignKey('inventory.Material', on_delete=models.CASCADE, verbose_name=_('material'))
 
     def __str__(self):
-        return self.sku
+        return f'{self.material.name} ({self.sku})'
 
     class Meta:
         verbose_name = _('Vendor Material')
         verbose_name_plural = _('Vendor Materials')
 
 
-class VendorEquipment(models.Model):
+class VendorEquipment(VendorItem):
     """Equipment that is produced or supplied by an external vendor or supplier,
     rather than being produced in-house. It is offered for sale by the vendor."""
 
-    sku = models.CharField(max_length=256, verbose_name=_('SKU'))
     equipment = models.ForeignKey('inventory.Material', on_delete=models.CASCADE, verbose_name=_('material'))
-    vendor = models.ForeignKey('Vendor', on_delete=models.CASCADE)
-    retail_unit = models.ForeignKey('common.Unit', on_delete=models.SET_NULL, blank=True, null=True,
-                                    verbose_name=_('retail unit'))
-    unit_price = models.DecimalField(max_digits=5, decimal_places=2, verbose_name=_('unit price'))
-    promo_unit_price = models.DecimalField(max_digits=5, decimal_places=2, verbose_name=_('promotional unit price'),
-                                           blank=True, null=True)
-    promo_start_date = models.DateField(blank=True, null=True, verbose_name=_('promotion start date'))
-    promo_end_date = models.DateField(blank=True, null=True, verbose_name=_('promotion end date'))
 
     def __str__(self):
-        return self.sku
+        return f'{self.equipment.name} ({self.sku})'
 
     class Meta:
         verbose_name = _('Vendor Equipment')
