@@ -3,12 +3,14 @@ from django.contrib.contenttypes.admin import GenericStackedInline
 from django.db import models
 from django.db.models import Count
 from django.forms import TextInput, Textarea
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
+from django.utils import timezone
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 from mptt.admin import MPTTModelAdmin
 from common.models.field import Field
-from inventory.models import Transfer, TransferAcceptance, Vehicle, VehicleEquipmentItem, VehicleMaterial
+from inventory.models import Transfer, TransferAcceptance, Vehicle, VehicleEquipmentItem, VehicleMaterial, \
+    PurchaseOrderItem, PurchaseOrder
 from inventory.models.brand import Brand
 from inventory.models.equipment import Equipment, Condition, EquipmentCategory, EquipmentField, EquipmentClass, \
     EquipmentItem
@@ -365,3 +367,83 @@ class VehicleAdmin(ModelAdmin):
             'fields': ('vin_number', 'license_plate', 'make', 'model', 'model_year')
         }),
     )
+
+
+class PurchaseOrderItemInline(TabularInline):
+    extra = 1
+    readonly_fields = ('price', 'current_price')
+    autocomplete_fields = ('vendor_material', 'vendor_equipment')
+
+    def price(self, obj):
+        return obj.quantity * obj.vendor_price
+
+    price.short_description = _('Price')
+
+
+@register(PurchaseOrder)
+class PurchaseOrderAdmin(ModelAdmin):
+    list_display = (
+    'id', 'vendor', 'status', 'created_by', 'created_at', 'approved_by', 'approved_at', 'get_total_price')
+    list_filter = ('status', 'created_by', 'approved_by')
+    search_fields = ('id', 'vendor__name', 'created_by__username', 'approved_by__username')
+    date_hierarchy = 'created_at'
+    readonly_fields = ('created_by', 'created_at', 'approved_by', 'approved_at', 'get_total_price')
+    inlines = (PurchaseOrderItemInline,)
+    autocomplete_fields = ('vendor',)
+
+    def save_model(self, request, obj, form, change):
+        if not change:
+            obj.created_by = request.user
+        super().save_model(request, obj, form, change)
+
+    def get_total_price(self, obj):
+        return sum(item.price() for item in obj.items.all())
+
+    get_total_price.short_description = _('Total Price')
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def response_change(self, request, obj):
+        if '_approve' in request.POST:
+            obj.status = PurchaseOrder.Status.INTERNALLY_APPROVED
+            obj.approved_by = request.user
+            obj.approved_at = timezone.now()
+            obj.save()
+            self.message_user(request, _('The purchase order has been approved.'))
+            return self.response_post_save_change(request, obj)
+        elif '_reject' in request.POST:
+            obj.status = PurchaseOrder.Status.INTERNALLY_REJECTED
+            obj.approved_by = request.user
+            obj.approved_at = timezone.now()
+            obj.save()
+            self.message_user(request, _('The purchase order has been rejected.'))
+            return self.response_post_save_change(request, obj)
+        else:
+            return super().response_change(request, obj)
+
+    def response_post_save_change(self, request, obj):
+        if '_save' in request.POST:
+            return super().response_post_save_change(request, obj)
+        else:
+            return self.response_change(request, obj)
+
+    def get_view_url(self, obj):
+        return reverse_lazy('admin:inventory_purchaseorder_view', args=[obj.pk])
+
+    def change_view(self, request, object_id, form_url='', extra_context=None):
+        extra_context = extra_context or {}
+        extra_context['view_url'] = self.get_view_url(PurchaseOrder.objects.get(pk=object_id))
+        return super().change_view(request, object_id, form_url, extra_context=extra_context)
+
+
+@register(PurchaseOrderItem)
+class PurchaseOrderItemAdmin(ModelAdmin):
+    list_display = ('id', 'purchase_order', 'vendor_material', 'vendor_equipment', 'quantity', 'vendor_price', 'price')
+    list_filter = ('purchase_order__status',)
+    search_fields = ('purchase_order__id', 'vendor_material__material__name', 'vendor_equipment__equipment__name')
+    autocomplete_fields = ('vendor_material', 'vendor_equipment')
+

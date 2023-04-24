@@ -36,9 +36,6 @@ class PurchaseOrderItem(models.Model):
     quantity = models.DecimalField(max_digits=5, decimal_places=2)
     price = models.DecimalField(max_digits=7, decimal_places=2)
 
-    class Meta:
-        abstract = True
-
     def __str__(self):
         return f'{self.item} ({self.quantity})'
 
