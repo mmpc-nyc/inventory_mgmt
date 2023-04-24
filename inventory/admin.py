@@ -18,7 +18,7 @@ from inventory.models.material import Material, MaterialClass, MaterialCategory
 from inventory.models.material import MaterialField
 from inventory.models.storage_location import StorageLocation, MaterialStock
 from inventory.models.transfer import TransferMaterialItem, TransferEquipmentItem
-from inventory.models.vendor import Vendor
+from inventory.models.vendor import Vendor, VendorMaterial, VendorEquipment
 
 
 class MaterialClassInline(TabularInline):
@@ -232,9 +232,41 @@ class MaterialAdmin(ModelAdmin):
     documentation_link.short_description = 'Documentation'
 
 
+class VendorMaterialInline(TabularInline):
+    model = VendorMaterial
+    extra = 0
+    autocomplete_fields = ('material',)
+
+
+class VendorEquipmentInline(TabularInline):
+    model = VendorEquipment
+    extra = 0
+    autocomplete_fields = ('equipment',)
+
+
 @register(Vendor)
 class VendorAdmin(ModelAdmin):
-    ...
+    inlines = [VendorMaterialInline, VendorEquipmentInline]
+    list_display = ('name', 'delivery_time', 'website_link', 'is_active')
+    search_fields = ('name', 'website')
+    list_filter = ('is_active',)
+    fieldsets = (
+        (None, {
+            'fields': ('name', 'is_active')
+        }),
+        (_('Contact Information'), {
+            'fields': ('delivery_time', 'website', 'contact')
+        })
+    )
+
+    def website_link(self, obj):
+        if obj.website:
+            return format_html('<a href="{0}" target="_blank">{0}</a>', obj.website)
+        else:
+            return '-'
+
+    website_link.short_description = _('Website')
+    website_link.allow_tags = True
 
 
 @register(MaterialCategory)
