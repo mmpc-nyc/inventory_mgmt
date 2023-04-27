@@ -61,7 +61,7 @@ class VendorEquipment(VendorItem):
     """Equipment that is produced or supplied by an external vendor or supplier,
     rather than being produced in-house. It is offered for sale by the vendor."""
 
-    equipment = models.ForeignKey('inventory.Material', on_delete=models.CASCADE, verbose_name=_('material'))
+    equipment = models.ForeignKey('inventory.Equipment', on_delete=models.CASCADE, verbose_name=_('equipment'))
 
     def __str__(self):
         return f'{self.equipment.name} ({self.sku})'
