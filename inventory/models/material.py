@@ -1,7 +1,5 @@
 from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
-from django.db.models.signals import pre_save
-from django.dispatch import receiver
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from mptt.fields import TreeForeignKey
@@ -21,6 +19,8 @@ class Material(models.Model):
         Each material has a name and a unique identifier, and can be associated with multiple material classes.
         The priority of the material within a material class determines its suggested order of use.
     """
+
+    # TODO  Add Min Stock / Max Stock
 
     name = models.CharField(max_length=150, unique=True)
     description = models.TextField()

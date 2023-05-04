@@ -15,6 +15,7 @@ class Transfer(models.Model):
 
     class TransferStatus(models.TextChoices):
         PENDING = 'Pending', _('Pending')
+        RELEASING = 'Releasing', _('Releasing')
         IN_TRANSIT = 'In Transit', _('In Transit')
         COMPLETED = 'Completed', _('Completed')
 
@@ -25,14 +26,13 @@ class Transfer(models.Model):
     destination_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, related_name='destination_transfers')
     destination_id = models.PositiveIntegerField()
     destination = GenericForeignKey('destination_type', 'destination_id')
-
-    agent = models.ForeignKey('users.User', verbose_name=_('Transfer Agent'), on_delete=models.SET_NULL,
-                              null=True, blank=True)
+    release_agent = models.ForeignKey('users.User', verbose_name=_('Release Agent'), on_delete=models.CASCADE, related_name='release_agent')
+    transfer_agent = models.ForeignKey('users.User', verbose_name=_('Transfer Agent'), on_delete=models.CASCADE, related_name='transfer_agent')
     status = models.CharField(verbose_name=_('Transfer Status'), max_length=16, choices=TransferStatus.choices,
                               default=TransferStatus.PENDING)
-    transfer_start_date = models.DateTimeField(verbose_name=_('Transfer Start Date'), null=True, blank=True)
-    transfer_end_date = models.DateTimeField(verbose_name=_('Transfer End Date'), null=True, blank=True)
-    transfer_notes = models.TextField(verbose_name=_('Transfer Notes'), blank=True)
+    start_date = models.DateTimeField(verbose_name=_('Transfer Start Date'), null=True, blank=True)
+    end_date = models.DateTimeField(verbose_name=_('Transfer End Date'), null=True, blank=True)
+    notes = models.TextField(verbose_name=_('Transfer Notes'), blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

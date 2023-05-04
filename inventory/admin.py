@@ -1,5 +1,6 @@
 from django.contrib.admin import register, ModelAdmin, TabularInline, StackedInline
 from django.contrib.contenttypes.admin import GenericStackedInline
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.db.models import Count
 from django.forms import TextInput, Textarea
@@ -373,10 +374,16 @@ class TransferMaterialItemInline(StackedInline):
 
 @register(Transfer)
 class TransferAdmin(ModelAdmin):
-    list_display = ('created_at', 'source', 'destination', 'agent', 'status')
+    list_display = ('created_at', 'source', 'destination','release_agent', 'transfer_agent', 'status')
     search_fields = ('item__name', 'source__name', 'destination__name')
     list_filter = ('status',)
     inlines = (TransferEquipmentItemInline, TransferMaterialItemInline)
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name in ('source_type','destination_type'):
+            kwargs['queryset'] = db_field.related_model.objects.filter(model__in=('vehicle', 'storagelocation'))
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
 
 
 @register(TransferAcceptance)
